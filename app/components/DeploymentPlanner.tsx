@@ -1,78 +1,69 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
-interface Turn {
-  number: number;
-  notes: string;
+interface Layout {
+  id: string;
+  title: string;
+  image: string;
 }
 
+const layouts: Layout[] = [
+  { id: 'terraform', title: 'Round 1: Terraform', image: '/round1_terraform.png' },
+  { id: 'purge', title: 'Round 2: Purge the Foe', image: '/round2_purge.png' },
+  { id: 'supplies', title: 'Round 3: Hidden Supplies', image: '/round3_hidden_supplies.png' },
+  { id: 'linchpin', title: 'Round 4: Linchpin', image: '/round4_linchpin.png' },
+  { id: 'take', title: 'Round 5: Take and Hold', image: '/round5_take.png' },
+];
+
 export default function DeploymentPlanner() {
-  const [deployment, setDeployment] = useState('');
-  const [turns, setTurns] = useState<Turn[]>([
-    { number: 1, notes: '' },
-    { number: 2, notes: '' },
-    { number: 3, notes: '' },
-    { number: 4, notes: '' },
-    { number: 5, notes: '' },
-  ]);
-
-  const updateTurn = (turnNumber: number, notes: string) => {
-    setTurns(turns.map(turn =>
-      turn.number === turnNumber ? { ...turn, notes } : turn
-    ));
-  };
-
-  const handleClear = () => {
-    setDeployment('');
-    setTurns(turns.map(turn => ({ ...turn, notes: '' })));
-  };
+  const [selectedLayout, setSelectedLayout] = useState(layouts[0]);
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold mb-4 text-[#39FF14]">Deployment & Turn Planner</h2>
         <p className="text-gray-400 mb-4">
-          Plan your deployment strategy and outline your actions for each turn.
+          View terrain layouts for different mission types.
         </p>
       </div>
 
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold mb-2 text-gray-200">Deployment Strategy</h3>
-          <textarea
-            value={deployment}
-            onChange={(e) => setDeployment(e.target.value)}
-            placeholder="Describe your deployment plan...&#10;- Unit positions&#10;- Screening units&#10;- Reserved units&#10;- Deployment zone coverage"
-            className="w-full h-40 p-4 bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] resize-none"
-          />
+          <label className="block mb-2 font-semibold text-gray-200">
+            Select Mission Layout
+          </label>
+          <select
+            value={selectedLayout.id}
+            onChange={(e) => {
+              const layout = layouts.find(l => l.id === e.target.value);
+              if (layout) setSelectedLayout(layout);
+            }}
+            className="w-full p-3 bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg text-gray-200 focus:outline-none focus:border-[#39FF14] cursor-pointer"
+          >
+            {layouts.map((layout) => (
+              <option key={layout.id} value={layout.id}>
+                {layout.title}
+              </option>
+            ))}
+          </select>
         </div>
 
-        <div>
-          <h3 className="text-lg font-semibold mb-3 text-gray-200">Turn-by-Turn Plan</h3>
-          <div className="space-y-3">
-            {turns.map((turn) => (
-              <div key={turn.number} className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-4">
-                <label className="block mb-2 font-semibold text-[#39FF14]">
-                  Turn {turn.number}
-                </label>
-                <textarea
-                  value={turn.notes}
-                  onChange={(e) => updateTurn(turn.number, e.target.value)}
-                  placeholder={`Plan for turn ${turn.number}...`}
-                  className="w-full h-24 p-3 bg-[#0a0a0a] border border-[#1a2a1a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] resize-none text-sm"
-                />
-              </div>
-            ))}
+        <div className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-6">
+          <h3 className="text-xl font-bold mb-4 text-[#39FF14] text-center">
+            {selectedLayout.title}
+          </h3>
+          <div className="relative w-full" style={{ aspectRatio: '1' }}>
+            <Image
+              src={selectedLayout.image}
+              alt={selectedLayout.title}
+              fill
+              className="object-contain"
+              priority
+            />
           </div>
         </div>
-
-        <button
-          onClick={handleClear}
-          className="px-6 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] text-gray-300 font-semibold rounded-lg transition-colors"
-        >
-          Clear All
-        </button>
       </div>
     </div>
   );

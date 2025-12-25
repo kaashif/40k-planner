@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import ArmyImporter from './components/ArmyImporter';
 import DeploymentPlanner from './components/DeploymentPlanner';
 import FlashcardMaker from './components/FlashcardMaker';
@@ -8,7 +9,21 @@ import FlashcardMaker from './components/FlashcardMaker';
 type Tab = 'army' | 'deployment' | 'flashcards';
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<Tab>('army');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<Tab>('deployment');
+
+  useEffect(() => {
+    const tab = searchParams.get('tab') as Tab;
+    if (tab && ['army', 'deployment', 'flashcards'].includes(tab)) {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
+
+  const handleTabChange = (tab: Tab) => {
+    setActiveTab(tab);
+    router.push(`?tab=${tab}`, { scroll: false });
+  };
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
@@ -25,7 +40,7 @@ export default function Home() {
         <div className="mb-6 border-b border-[#1a2a1a]">
           <nav className="flex gap-1">
             <button
-              onClick={() => setActiveTab('army')}
+              onClick={() => handleTabChange('army')}
               className={`px-6 py-3 font-semibold transition-colors border-b-2 ${
                 activeTab === 'army'
                   ? 'border-[#39FF14] text-[#39FF14]'
@@ -35,7 +50,7 @@ export default function Home() {
               Army Importer
             </button>
             <button
-              onClick={() => setActiveTab('deployment')}
+              onClick={() => handleTabChange('deployment')}
               className={`px-6 py-3 font-semibold transition-colors border-b-2 ${
                 activeTab === 'deployment'
                   ? 'border-[#39FF14] text-[#39FF14]'
@@ -45,7 +60,7 @@ export default function Home() {
               Deployment & Turns
             </button>
             <button
-              onClick={() => setActiveTab('flashcards')}
+              onClick={() => handleTabChange('flashcards')}
               className={`px-6 py-3 font-semibold transition-colors border-b-2 ${
                 activeTab === 'flashcards'
                   ? 'border-[#39FF14] text-[#39FF14]'
