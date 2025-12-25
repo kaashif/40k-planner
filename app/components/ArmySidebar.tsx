@@ -95,7 +95,7 @@ export default function ArmySidebar() {
 
   return (
     <>
-      <aside className="w-80 bg-[#0f0f0f] border-r border-[#1a2a1a] p-6 min-h-screen">
+      <aside className="w-96 bg-[#0f0f0f] border-r border-[#1a2a1a] p-6 min-h-screen">
         <h2 className="text-2xl font-bold text-[#39FF14] mb-6">Army List</h2>
 
         <div className="mb-6">
@@ -129,12 +129,10 @@ export default function ArmySidebar() {
                       : 'bg-[#1a1a1a] border-[#1a2a1a] hover:border-[#39FF14]'
                   }`}
                 >
-                  <div className="mb-2">
-                    <p className="font-semibold text-gray-200">{unit.name}</p>
-                    <p className="text-sm text-gray-400">{unit.number} models</p>
-                  </div>
+                  <p className="font-semibold text-gray-200 mb-2">{unit.name}</p>
 
-                  <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-400 whitespace-nowrap">{unit.number} models</span>
                     <input
                       type="number"
                       value={baseSizes[unit.id] || ''}
@@ -144,13 +142,13 @@ export default function ArmySidebar() {
                           [unit.id]: e.target.value
                         }))
                       }
-                      placeholder="Base size (mm)"
-                      className="w-full px-2 py-1 text-sm bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14]"
+                      placeholder="mm"
+                      className="w-16 px-2 py-1 text-sm bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                     <button
                       onClick={() => console.log(`Spawning ${unit.name} with base size ${baseSizes[unit.id]}mm`)}
                       disabled={!hasBaseSize}
-                      className={`w-full px-2 py-1 text-sm font-semibold rounded transition-colors ${
+                      className={`flex-1 px-3 py-1 text-sm font-semibold rounded transition-colors ${
                         hasBaseSize
                           ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
                           : 'bg-gray-600 text-gray-400 cursor-not-allowed'
