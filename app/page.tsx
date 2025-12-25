@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import ArmyImporter from './components/ArmyImporter';
 import DeploymentPlanner from './components/DeploymentPlanner';
@@ -8,7 +8,7 @@ import FlashcardMaker from './components/FlashcardMaker';
 
 type Tab = 'army' | 'deployment' | 'flashcards';
 
-export default function Home() {
+function TabContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<Tab>('deployment');
@@ -79,5 +79,13 @@ export default function Home() {
         </main>
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#0a0a0a]" />}>
+      <TabContent />
+    </Suspense>
   );
 }
