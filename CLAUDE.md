@@ -16,10 +16,11 @@ Warhammer 40k Tournament Planner - A web application for planning tournament str
 
 ```bash
 npm run dev    # Start development server at http://localhost:3000
-npm run build  # Create production build
 npm start      # Run production server
 npm run lint   # Run ESLint
 ```
+
+**IMPORTANT**: Do NOT run `npm run build` during development. The build process is slow and unnecessary for development work.
 
 ## Architecture
 
@@ -64,3 +65,22 @@ npm run lint   # Run ESLint
 - **URL State**: Tab state persists via query params using `useSearchParams` and `useRouter` from `next/navigation`
 - **Static Assets**: Mission layout PNGs are duplicated in both `/layouts/` (source) and `/public/` (served)
 - **Image Loading**: Use Next.js `Image` component with absolute paths (e.g., `/round1_terraform.png`)
+
+## Development Guidelines
+
+### Working with JSON Data
+
+When inspecting or understanding the structure of JSON files (especially army list exports), **always use `jq`** to examine the structure:
+
+```bash
+# View overall structure
+jq '.' /path/to/file.json
+
+# Inspect specific paths
+jq '.roster.forces[0].selections[]' /path/to/file.json
+
+# Filter by type
+jq '.roster.forces[0].selections[] | select(.type == "unit")' /path/to/file.json
+```
+
+This helps understand the data hierarchy before writing parsing code.
