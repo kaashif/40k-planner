@@ -15,12 +15,29 @@ interface UnitWithBase extends Unit {
   length?: string;
 }
 
-export default function ArmySidebar() {
+interface SpawnedUnit {
+  unitId: string;
+  unitName: string;
+  isRectangular: boolean;
+  baseSize?: number;
+  width?: number;
+  length?: number;
+  modelCount: number;
+}
+
+interface ArmySidebarProps {
+  onSpawn: (unit: SpawnedUnit) => void;
+  onDelete: (unitId: string) => void;
+  spawnedUnits: Set<string>;
+}
+
+export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits }: ArmySidebarProps) {
   const [units, setUnits] = useState<UnitWithBase[]>([]);
   const [baseSizes, setBaseSizes] = useState<{ [key: string]: string }>({});
   const [flyDimensions, setFlyDimensions] = useState<{ [key: string]: { width: string; length: string } }>({});
   const [isRectangular, setIsRectangular] = useState<{ [key: string]: boolean }>({});
-  const [savedBaseSizes, setSavedBaseSizes] = useState<{ [key: string]: string | { width: string; length: string } }>({});
+  const [defaultBaseSizes, setDefaultBaseSizes] = useState<{ [key: string]: string | { width: string; length: string } }>({});
+  const [overrideBaseSizes, setOverrideBaseSizes] = useState<{ [key: string]: string | { width: string; length: string } }>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const extractModels = (selections: any[]): UnitWithBase[] => {
@@ -72,20 +89,30 @@ export default function ArmySidebar() {
     return models;
   };
 
-  // Load saved base sizes on mount
+  // Load default base sizes from API and overrides from localStorage on mount
   useEffect(() => {
-    const loadSavedBaseSizes = async () => {
+    const loadBaseSizes = async () => {
       try {
+        // Load defaults from base_sizes.json
         const response = await fetch('/api/base-sizes');
-        const data = await response.json();
-        setSavedBaseSizes(data);
+        const defaults = await response.json();
+        setDefaultBaseSizes(defaults);
+
+        // Load overrides from localStorage
+        const overrides = localStorage.getItem('baseSizeOverrides');
+        if (overrides) {
+          setOverrideBaseSizes(JSON.parse(overrides));
+        }
       } catch (error) {
-        console.error('Error loading saved base sizes:', error);
+        console.error('Error loading base sizes:', error);
       }
     };
 
-    loadSavedBaseSizes();
+    loadBaseSizes();
   }, []);
+
+  // Merge defaults and overrides
+  const mergedBaseSizes = { ...defaultBaseSizes, ...overrideBaseSizes };
 
   // Load example army on mount
   useEffect(() => {
@@ -99,13 +126,13 @@ export default function ArmySidebar() {
 
         setUnits(models);
 
-        // Pre-populate base sizes from saved data
+        // Pre-populate base sizes from merged data (defaults + overrides)
         const initialBaseSizes: { [key: string]: string } = {};
         const initialFlyDimensions: { [key: string]: { width: string; length: string } } = {};
         const initialIsRectangular: { [key: string]: boolean } = {};
 
         models.forEach(model => {
-          const saved = savedBaseSizes[model.name];
+          const saved = mergedBaseSizes[model.name];
           if (saved) {
             if (typeof saved === 'object' && 'width' in saved && 'length' in saved) {
               initialFlyDimensions[model.id] = saved as { width: string; length: string };
@@ -125,10 +152,10 @@ export default function ArmySidebar() {
       }
     };
 
-    if (Object.keys(savedBaseSizes).length > 0 || units.length === 0) {
+    if (Object.keys(mergedBaseSizes).length > 0 || units.length === 0) {
       loadExampleArmy();
     }
-  }, [savedBaseSizes]);
+  }, [mergedBaseSizes]);
 
   const handleJsonImport = () => {
     fileInputRef.current?.click();
@@ -149,13 +176,13 @@ export default function ArmySidebar() {
 
         setUnits(models);
 
-        // Pre-populate base sizes from saved data
+        // Pre-populate base sizes from merged data (defaults + overrides)
         const initialBaseSizes: { [key: string]: string } = {};
         const initialFlyDimensions: { [key: string]: { width: string; length: string } } = {};
         const initialIsRectangular: { [key: string]: boolean } = {};
 
         models.forEach(model => {
-          const saved = savedBaseSizes[model.name];
+          const saved = mergedBaseSizes[model.name];
           if (saved) {
             if (typeof saved === 'object' && 'width' in saved && 'length' in saved) {
               initialFlyDimensions[model.id] = saved as { width: string; length: string };
@@ -177,29 +204,29 @@ export default function ArmySidebar() {
     }
   };
 
-  // Save base sizes whenever they change
+  // Save base sizes to localStorage as overrides
   const updateBaseSize = (unitId: string, unitName: string, value: string) => {
     setBaseSizes((prev) => ({
       ...prev,
       [unitId]: value
     }));
 
-    // Update saved base sizes by model name
-    const newSavedBaseSizes = {
-      ...savedBaseSizes,
+    // Update override base sizes by model name
+    const newOverrides = {
+      ...overrideBaseSizes,
       [unitName]: value
     };
-    setSavedBaseSizes(newSavedBaseSizes);
+    setOverrideBaseSizes(newOverrides);
 
-    // Save to file
-    fetch('/api/base-sizes', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newSavedBaseSizes)
-    }).catch(error => console.error('Error saving base sizes:', error));
+    // Save to localStorage
+    try {
+      localStorage.setItem('baseSizeOverrides', JSON.stringify(newOverrides));
+    } catch (error) {
+      console.error('Error saving base size overrides to localStorage:', error);
+    }
   };
 
-  // Save fly dimensions whenever they change
+  // Save fly dimensions to localStorage as overrides
   const updateFlyDimension = (unitId: string, unitName: string, dimension: 'width' | 'length', value: string) => {
     setFlyDimensions((prev) => ({
       ...prev,
@@ -215,19 +242,19 @@ export default function ArmySidebar() {
       length: dimension === 'length' ? value : currentDims.length
     };
 
-    // Update saved base sizes by model name
-    const newSavedBaseSizes = {
-      ...savedBaseSizes,
+    // Update override base sizes by model name
+    const newOverrides = {
+      ...overrideBaseSizes,
       [unitName]: newDims
     };
-    setSavedBaseSizes(newSavedBaseSizes);
+    setOverrideBaseSizes(newOverrides);
 
-    // Save to file
-    fetch('/api/base-sizes', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newSavedBaseSizes)
-    }).catch(error => console.error('Error saving base sizes:', error));
+    // Save to localStorage
+    try {
+      localStorage.setItem('baseSizeOverrides', JSON.stringify(newOverrides));
+    } catch (error) {
+      console.error('Error saving base size overrides to localStorage:', error);
+    }
   };
 
   // Toggle between round and rectangular base
@@ -266,7 +293,8 @@ export default function ArmySidebar() {
               const hasBaseSize = isRect
                 ? (flyDimensions[unit.id]?.width && flyDimensions[unit.id]?.length)
                 : baseSizes[unit.id];
-              const isRed = !hasBaseSize;
+              const isSpawned = spawnedUnits.has(unit.id);
+              const isRed = !hasBaseSize && !isSpawned;
 
               return (
                 <div
@@ -325,21 +353,36 @@ export default function ArmySidebar() {
 
                     <button
                       onClick={() => {
-                        if (isRect) {
-                          const dims = flyDimensions[unit.id];
-                          console.log(`Spawning ${unit.name} with dimensions ${dims.width}×${dims.length}mm`);
+                        if (isSpawned) {
+                          onDelete(unit.id);
                         } else {
-                          console.log(`Spawning ${unit.name} with base size ${baseSizes[unit.id]}mm`);
+                          const spawnData: SpawnedUnit = {
+                            unitId: unit.id,
+                            unitName: unit.name,
+                            isRectangular: isRect,
+                            modelCount: unit.number,
+                            ...(isRect
+                              ? {
+                                  width: parseFloat(flyDimensions[unit.id]?.width || '0'),
+                                  length: parseFloat(flyDimensions[unit.id]?.length || '0')
+                                }
+                              : {
+                                  baseSize: parseFloat(baseSizes[unit.id] || '0')
+                                })
+                          };
+                          onSpawn(spawnData);
                         }
                       }}
-                      disabled={!hasBaseSize}
+                      disabled={!hasBaseSize && !isSpawned}
                       className={`flex-1 px-3 py-1 text-sm font-semibold rounded transition-colors ${
-                        hasBaseSize
+                        isSpawned
+                          ? 'bg-red-900 hover:bg-red-700 text-white'
+                          : hasBaseSize
                           ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
                           : 'bg-gray-600 text-gray-400 cursor-not-allowed'
                       }`}
                     >
-                      Spawn
+                      {isSpawned ? 'Delete' : 'Spawn'}
                     </button>
                   </div>
                 </div>
