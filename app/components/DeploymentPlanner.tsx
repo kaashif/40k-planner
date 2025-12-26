@@ -50,6 +50,7 @@ export default function DeploymentPlanner({
   const [selectedLayout, setSelectedLayout] = useState(layouts[0]);
   const [toolMode, setToolMode] = useState<'selection' | 'ruler'>('selection');
   const [rulerPoints, setRulerPoints] = useState<{ x: number; y: number }[]>([]);
+  const [showDeepStrikeZones, setShowDeepStrikeZones] = useState(false);
   const [draggedModel, setDraggedModel] = useState<{ groupId: string; modelId: string | null } | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1); // pixels per mm
@@ -623,8 +624,22 @@ export default function DeploymentPlanner({
           </>
         )}
 
+        {/* Deep Strike View Toggle */}
+        <div className="ml-auto flex items-center gap-4">
+          <button
+            onClick={() => setShowDeepStrikeZones(!showDeepStrikeZones)}
+            className={`px-3 py-1 font-semibold rounded transition-colors ${
+              showDeepStrikeZones
+                ? 'bg-red-900 hover:bg-red-700 text-white'
+                : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+            }`}
+          >
+            {showDeepStrikeZones ? '✓ ' : ''}Deep Strike Zones
+          </button>
+        </div>
+
         {/* Coherency status */}
-        <div className="ml-auto flex items-center gap-2">
+        <div className="flex items-center gap-2">
           {spawnedGroups.length > 0 && (() => {
             // Group by parent unit to check coherency correctly
             const parentUnitMap = new Map<string | undefined, SpawnedGroup[]>();
@@ -1171,6 +1186,123 @@ export default function DeploymentPlanner({
               })()}
             </>
           )}
+
+          {/* Deep Strike View - 9-inch exclusion zones */}
+          {showDeepStrikeZones && (() => {
+            // Collect all model positions and create a unified exclusion zone
+            const exclusionZones: Array<{
+              type: 'circle' | 'rect';
+              centerX: number;
+              centerY: number;
+              radius?: number;
+              width?: number;
+              height?: number;
+              rotation?: number;
+            }> = [];
+
+            spawnedGroups.forEach(group => {
+              group.models.forEach(model => {
+                // 9 inches = 228.6mm
+                const exclusionDistanceMm = 9 * 25.4; // 228.6mm
+                const exclusionDistancePixels = exclusionDistanceMm * scale;
+
+                if (group.isRectangular) {
+                  // Rectangular base - create rounded rectangle zone
+                  const baseWidthMm = group.width || 25;
+                  const baseLengthMm = group.length || 25;
+                  const baseWidthPixels = baseWidthMm * scale;
+                  const baseLengthPixels = baseLengthMm * scale;
+
+                  // Zone dimensions = base + 2 * 9 inches (on all sides)
+                  const zoneWidth = baseWidthPixels + 2 * exclusionDistancePixels;
+                  const zoneHeight = baseLengthPixels + 2 * exclusionDistancePixels;
+
+                  // Center of the base
+                  const centerX = group.groupX + (model.x * scale) + baseWidthPixels / 2;
+                  const centerY = group.groupY + (model.y * scale) + baseLengthPixels / 2;
+
+                  exclusionZones.push({
+                    type: 'rect',
+                    centerX,
+                    centerY,
+                    width: zoneWidth,
+                    height: zoneHeight,
+                    rotation: model.rotation || 0
+                  });
+                } else {
+                  // Circular base - create circular zone
+                  const baseDiameterMm = group.baseSize || 25;
+                  const baseDiameterPixels = baseDiameterMm * scale;
+                  const baseRadiusMm = baseDiameterMm / 2;
+
+                  // Zone radius = base radius + 9 inches
+                  const zoneRadiusMm = baseRadiusMm + exclusionDistanceMm;
+                  const zoneRadiusPixels = zoneRadiusMm * scale;
+
+                  // Center of the base
+                  const centerX = group.groupX + (model.x * scale) + baseDiameterPixels / 2;
+                  const centerY = group.groupY + (model.y * scale) + baseDiameterPixels / 2;
+
+                  exclusionZones.push({
+                    type: 'circle',
+                    centerX,
+                    centerY,
+                    radius: zoneRadiusPixels
+                  });
+                }
+              });
+            });
+
+            return (
+              <svg
+                className="absolute pointer-events-none"
+                style={{
+                  left: 0,
+                  top: 0,
+                  width: '100%',
+                  height: '100%',
+                  zIndex: 10,
+                  opacity: 0.2
+                }}
+              >
+                <g>
+                  {exclusionZones.map((zone, idx) => {
+                    if (zone.type === 'circle') {
+                      return (
+                        <circle
+                          key={`exclusion-${idx}`}
+                          cx={zone.centerX}
+                          cy={zone.centerY}
+                          r={zone.radius}
+                          fill="red"
+                          stroke="darkred"
+                          strokeWidth="3"
+                        />
+                      );
+                    } else {
+                      // Rounded rectangle
+                      const cornerRadius = 9 * 25.4 * scale; // 9 inches in pixels
+                      return (
+                        <rect
+                          key={`exclusion-${idx}`}
+                          x={zone.centerX! - zone.width! / 2}
+                          y={zone.centerY! - zone.height! / 2}
+                          width={zone.width}
+                          height={zone.height}
+                          rx={cornerRadius}
+                          ry={cornerRadius}
+                          fill="red"
+                          stroke="darkred"
+                          strokeWidth="3"
+                          transform={zone.rotation ? `rotate(${zone.rotation} ${zone.centerX} ${zone.centerY})` : undefined}
+                        />
+                      );
+                    }
+                  })}
+                </g>
+              </svg>
+            );
+          })()}
         </div>
       </div>
     </div>
