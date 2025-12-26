@@ -13,6 +13,8 @@ interface UnitWithBase extends Unit {
   id: string;
   width?: string;
   length?: string;
+  parentUnitId?: string; // Track parent unit's unique ID
+  parentUnitName?: string; // Track parent unit's name for display
 }
 
 interface SpawnedUnit {
@@ -46,48 +48,39 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
     const models: UnitWithBase[] = [];
     let modelIndex = 0;
 
-    const processSelections = (sels: any[]) => {
-      if (!sels) return;
+    for (const sel of selections) {
+      // Skip non-model/non-unit selections
+      if (sel.type !== 'model' && sel.type !== 'unit') continue;
 
-      for (const sel of sels) {
-        // If this selection has nested selections, check for nested models
-        if (sel.selections && sel.selections.length > 0) {
-          const nestedModels = sel.selections.filter(
-            (nested: any) => nested.type === 'model'
-          );
+      if (sel.type === 'unit' && sel.selections && sel.selections.length > 0) {
+        // This is a unit with nested models
+        const nestedModels = sel.selections.filter(
+          (nested: any) => nested.type === 'model'
+        );
 
-          // Add nested models if found
-          for (const model of nestedModels) {
-            models.push({
-              name: model.name,
-              type: model.type,
-              number: model.number || 1,
-              id: `model-${modelIndex++}`
-            });
-          }
-
-          // If this selection itself is a model, also add it
-          if (sel.type === 'model') {
-            models.push({
-              name: sel.name,
-              type: sel.type,
-              number: sel.number || 1,
-              id: `model-${modelIndex++}`
-            });
-          }
-        } else if (sel.type === 'model') {
-          // Top-level model without nested selections
+        for (const model of nestedModels) {
           models.push({
-            name: sel.name,
-            type: sel.type,
-            number: sel.number || 1,
-            id: `model-${modelIndex++}`
+            name: model.name,
+            type: model.type,
+            number: model.number || 1,
+            id: `model-${modelIndex++}`,
+            parentUnitId: sel.id, // Track the parent unit's unique ID
+            parentUnitName: sel.name // Track the parent unit name for display
           });
         }
+      } else if (sel.type === 'model') {
+        // Standalone model without a parent unit
+        models.push({
+          name: sel.name,
+          type: sel.type,
+          number: sel.number || 1,
+          id: `model-${modelIndex++}`,
+          parentUnitId: undefined,
+          parentUnitName: undefined
+        });
       }
-    };
+    }
 
-    processSelections(selections);
     return models;
   };
 
@@ -289,8 +282,45 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
         </div>
 
         {units.length > 0 && (
-          <div className="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto">
-            {units.map((unit) => {
+          <div className="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto">
+            {/* Group models by parent unit */}
+            {(() => {
+              // Create groups: standalone models and models grouped by parent unit ID
+              const groupedUnits = new Map<string | undefined, UnitWithBase[]>();
+              units.forEach(unit => {
+                const key = unit.parentUnitId || unit.id;
+                if (!groupedUnits.has(key)) {
+                  groupedUnits.set(key, []);
+                }
+                groupedUnits.get(key)!.push(unit);
+              });
+
+              return Array.from(groupedUnits.entries()).map(([groupKey, groupUnits]) => {
+                const isGroupedUnit = groupUnits[0].parentUnitId !== undefined;
+                const parentUnitName = groupUnits[0].parentUnitName;
+
+                return (
+                  <div
+                    key={groupKey}
+                    className={`border rounded-lg transition-colors ${
+                      isGroupedUnit
+                        ? 'bg-[#0f0f0f] border-[#2a2a2a] p-3'
+                        : ''
+                    }`}
+                  >
+                    {/* Parent unit header if grouped */}
+                    {isGroupedUnit && parentUnitName && (
+                      <div className="mb-3 pb-2 border-b border-[#2a2a2a]">
+                        <h3 className="font-bold text-[#39FF14]">{parentUnitName}</h3>
+                        <span className="text-xs text-gray-400">
+                          {groupUnits.reduce((sum, u) => sum + u.number, 0)} models total
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Individual models */}
+                    <div className={isGroupedUnit ? "space-y-2" : ""}>
+                      {groupUnits.map((unit) => {
               const isRect = isRectangular[unit.id];
               const hasBaseSize = isRect
                 ? (flyDimensions[unit.id]?.width && flyDimensions[unit.id]?.length)
@@ -408,8 +438,13 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                     )}
                   </div>
                 </div>
-              );
-            })}
+                      );
+                    })}
+                    </div>
+                  </div>
+                );
+              });
+            })()}
           </div>
         )}
       </aside>
