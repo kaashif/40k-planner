@@ -22,6 +22,7 @@ interface DeploymentPlannerProps {
   setBoxSelectStart: (pos: { x: number; y: number } | null) => void;
   boxSelectEnd: { x: number; y: number } | null;
   setBoxSelectEnd: (pos: { x: number; y: number } | null) => void;
+  onRoundChange: (roundId: string) => void;
 }
 
 const layouts: Layout[] = [
@@ -42,7 +43,8 @@ export default function DeploymentPlanner({
   boxSelectStart,
   setBoxSelectStart,
   boxSelectEnd,
-  setBoxSelectEnd
+  setBoxSelectEnd,
+  onRoundChange
 }: DeploymentPlannerProps) {
   const [selectedLayout, setSelectedLayout] = useState(layouts[0]);
   const [draggedModel, setDraggedModel] = useState<{ groupId: string; modelId: string | null } | null>(null);
@@ -59,6 +61,11 @@ export default function DeploymentPlanner({
   // Map dimensions in mm: 44" × 60" = 1117.6mm × 1524mm
   const MAP_HEIGHT_MM = 44 * 25.4; // 1117.6 mm
   const MAP_WIDTH_MM = 60 * 25.4; // 1524 mm
+
+  // Notify parent of initial round on mount
+  useEffect(() => {
+    onRoundChange(selectedLayout.id);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Calculate scale when image loads or container resizes
   useEffect(() => {
@@ -421,7 +428,10 @@ export default function DeploymentPlanner({
           value={selectedLayout.id}
           onChange={(e) => {
             const layout = layouts.find(l => l.id === e.target.value);
-            if (layout) setSelectedLayout(layout);
+            if (layout) {
+              setSelectedLayout(layout);
+              onRoundChange(layout.id);
+            }
           }}
           className="w-full p-3 bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg text-gray-200 focus:outline-none focus:border-[#39FF14] cursor-pointer"
         >

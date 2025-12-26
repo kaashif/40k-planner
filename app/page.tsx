@@ -6,27 +6,41 @@ import DeploymentPlanner from './components/DeploymentPlanner';
 import { Model, SpawnedGroup, SpawnedUnit, SelectedModel } from './types';
 
 function MainContent() {
-  const [spawnedGroups, setSpawnedGroups] = useState<SpawnedGroup[]>([]);
-  const [spawnedUnitIds, setSpawnedUnitIds] = useState<Set<string>>(new Set());
+  // Per-round state
+  const [currentRound, setCurrentRound] = useState<string>('terraform');
+  const [spawnedGroupsByRound, setSpawnedGroupsByRound] = useState<{ [roundId: string]: SpawnedGroup[] }>({
+    terraform: [],
+    purge: [],
+    supplies: [],
+    linchpin: [],
+    take: []
+  });
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Selection state
-  const [selectedModels, setSelectedModels] = useState<SelectedModel[]>([]);
+  // Selection state (per-round)
+  const [selectedModelsByRound, setSelectedModelsByRound] = useState<{ [roundId: string]: SelectedModel[] }>({
+    terraform: [],
+    purge: [],
+    supplies: [],
+    linchpin: [],
+    take: []
+  });
   const [isBoxSelecting, setIsBoxSelecting] = useState(false);
   const [boxSelectStart, setBoxSelectStart] = useState<{ x: number; y: number } | null>(null);
   const [boxSelectEnd, setBoxSelectEnd] = useState<{ x: number; y: number } | null>(null);
 
+  // Derived state for current round
+  const spawnedGroups = spawnedGroupsByRound[currentRound] || [];
+  const spawnedUnitIds = new Set(spawnedGroups.map(g => g.unitId));
+  const selectedModels = selectedModelsByRound[currentRound] || [];
+
   // Load state from localStorage on mount
   useEffect(() => {
     try {
-      const savedGroups = localStorage.getItem('spawnedGroups');
-      if (savedGroups) {
-        const groups = JSON.parse(savedGroups);
-        setSpawnedGroups(groups);
-
-        // Rebuild the spawnedUnitIds set from loaded groups
-        const unitIds = new Set(groups.map((g: SpawnedGroup) => g.unitId));
-        setSpawnedUnitIds(unitIds);
+      const savedGroupsByRound = localStorage.getItem('spawnedGroupsByRound');
+      if (savedGroupsByRound) {
+        const groupsByRound = JSON.parse(savedGroupsByRound);
+        setSpawnedGroupsByRound(groupsByRound);
       }
     } catch (error) {
       console.error('Error loading spawned groups from localStorage:', error);
@@ -34,16 +48,16 @@ function MainContent() {
     setIsLoaded(true);
   }, []);
 
-  // Save state to localStorage whenever spawnedGroups changes
+  // Save state to localStorage whenever spawnedGroupsByRound changes
   useEffect(() => {
     if (!isLoaded) return; // Don't save on initial load
 
     try {
-      localStorage.setItem('spawnedGroups', JSON.stringify(spawnedGroups));
+      localStorage.setItem('spawnedGroupsByRound', JSON.stringify(spawnedGroupsByRound));
     } catch (error) {
       console.error('Error saving spawned groups to localStorage:', error);
     }
-  }, [spawnedGroups, isLoaded]);
+  }, [spawnedGroupsByRound, isLoaded]);
 
   const handleSpawn = (unit: SpawnedUnit) => {
     // Create models in a grid formation
@@ -78,24 +92,42 @@ function MainContent() {
       groupY: 50
     };
 
-    setSpawnedGroups([...spawnedGroups, newGroup]);
-    setSpawnedUnitIds(new Set([...spawnedUnitIds, unit.unitId]));
+    setSpawnedGroupsByRound(prev => ({
+      ...prev,
+      [currentRound]: [...(prev[currentRound] || []), newGroup]
+    }));
   };
 
   const handleDelete = (unitId: string) => {
-    setSpawnedGroups(spawnedGroups.filter(group => group.unitId !== unitId));
+    setSpawnedGroupsByRound(prev => ({
+      ...prev,
+      [currentRound]: (prev[currentRound] || []).filter(group => group.unitId !== unitId)
+    }));
 
     // Remove deleted models from selection
-    setSelectedModels(selectedModels.filter(sel => sel.groupId !== unitId));
+    setSelectedModelsByRound(prev => ({
+      ...prev,
+      [currentRound]: (prev[currentRound] || []).filter(sel => sel.groupId !== unitId)
+    }));
+  };
 
-    const newSet = new Set(spawnedUnitIds);
-    newSet.delete(unitId);
-    setSpawnedUnitIds(newSet);
+  const handleUpdateGroups = (groups: SpawnedGroup[]) => {
+    setSpawnedGroupsByRound(prev => ({
+      ...prev,
+      [currentRound]: groups
+    }));
+  };
+
+  const handleSelectionChange = (models: SelectedModel[]) => {
+    setSelectedModelsByRound(prev => ({
+      ...prev,
+      [currentRound]: models
+    }));
   };
 
   const handleClearLocalStorage = () => {
     if (confirm('Are you sure you want to clear all saved data? This will reset spawned models and base size overrides.')) {
-      localStorage.removeItem('spawnedGroups');
+      localStorage.removeItem('spawnedGroupsByRound');
       localStorage.removeItem('baseSizeOverrides');
       window.location.reload();
     }
@@ -110,7 +142,7 @@ function MainContent() {
           onDelete={handleDelete}
           spawnedUnits={spawnedUnitIds}
           spawnedGroups={spawnedGroups}
-          onSelectAll={setSelectedModels}
+          onSelectAll={handleSelectionChange}
         />
 
         {/* Main Content */}
@@ -130,15 +162,16 @@ function MainContent() {
           <main className="bg-[#0f0f0f] border border-[#1a2a1a] rounded-lg p-6">
             <DeploymentPlanner
               spawnedGroups={spawnedGroups}
-              onUpdateGroups={setSpawnedGroups}
+              onUpdateGroups={handleUpdateGroups}
               selectedModels={selectedModels}
-              onSelectionChange={setSelectedModels}
+              onSelectionChange={handleSelectionChange}
               isBoxSelecting={isBoxSelecting}
               setIsBoxSelecting={setIsBoxSelecting}
               boxSelectStart={boxSelectStart}
               setBoxSelectStart={setBoxSelectStart}
               boxSelectEnd={boxSelectEnd}
               setBoxSelectEnd={setBoxSelectEnd}
+              onRoundChange={setCurrentRound}
             />
           </main>
         </div>
