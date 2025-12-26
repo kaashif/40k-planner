@@ -309,14 +309,75 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                     }`}
                   >
                     {/* Parent unit header if grouped */}
-                    {isGroupedUnit && parentUnitName && (
-                      <div className="mb-3 pb-2 border-b border-[#2a2a2a]">
-                        <h3 className="font-bold text-[#39FF14]">{parentUnitName}</h3>
-                        <span className="text-xs text-gray-400">
-                          {groupUnits.reduce((sum, u) => sum + u.number, 0)} models total
-                        </span>
-                      </div>
-                    )}
+                    {isGroupedUnit && parentUnitName && (() => {
+                      // Check if all models have base sizes and if any are spawned
+                      const allHaveBaseSizes = groupUnits.every(unit => {
+                        const isRect = isRectangular[unit.id];
+                        return isRect
+                          ? (flyDimensions[unit.id]?.width && flyDimensions[unit.id]?.length)
+                          : baseSizes[unit.id];
+                      });
+                      const anySpawned = groupUnits.some(unit => spawnedUnits.has(unit.id));
+
+                      return (
+                        <div className="mb-3 pb-3 border-b border-[#2a2a2a]">
+                          <div className="flex items-center justify-between mb-2">
+                            <div>
+                              <h3 className="font-bold text-[#39FF14]">{parentUnitName}</h3>
+                              <span className="text-xs text-gray-400">
+                                {groupUnits.reduce((sum, u) => sum + u.number, 0)} models total
+                              </span>
+                            </div>
+                            {!anySpawned && (
+                              <button
+                                onClick={() => {
+                                  // Spawn all models in this unit
+                                  groupUnits.forEach(unit => {
+                                    const isRect = isRectangular[unit.id];
+                                    const spawnData: SpawnedUnit = {
+                                      unitId: unit.id,
+                                      unitName: unit.name,
+                                      isRectangular: isRect,
+                                      modelCount: unit.number,
+                                      ...(isRect
+                                        ? {
+                                            width: parseFloat(flyDimensions[unit.id]?.width || '0'),
+                                            length: parseFloat(flyDimensions[unit.id]?.length || '0')
+                                          }
+                                        : {
+                                            baseSize: parseFloat(baseSizes[unit.id] || '0')
+                                          })
+                                    };
+                                    onSpawn(spawnData);
+                                  });
+                                }}
+                                disabled={!allHaveBaseSizes}
+                                className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors ${
+                                  allHaveBaseSizes
+                                    ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
+                                    : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                                }`}
+                              >
+                                Spawn All
+                              </button>
+                            )}
+                            {anySpawned && (
+                              <button
+                                onClick={() => {
+                                  // Delete all models in this unit
+                                  groupUnits.forEach(unit => {
+                                    onDelete(unit.id);
+                                  });
+                                }}
+                                className="px-4 py-2 text-sm font-bold bg-red-900 hover:bg-red-700 text-white rounded-lg transition-colors"
+                              >
+                                Delete All
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })()}
 
                     {/* Individual models */}
                     <div className={isGroupedUnit ? "space-y-2" : ""}>

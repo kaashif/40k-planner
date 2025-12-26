@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { SpawnedGroup, SelectedModel } from '../types';
 import { deleteSelectedOperation } from '../utils/selectionOperations';
@@ -449,7 +449,7 @@ export default function DeploymentPlanner({
         </h3>
         <div
           ref={canvasRef}
-          className="relative w-full h-[calc(100vh-400px)] cursor-crosshair"
+          className="relative w-full h-[calc(100vh-400px)] cursor-crosshair select-none"
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseDown={handleCanvasMouseDown}
@@ -459,11 +459,11 @@ export default function DeploymentPlanner({
             src={selectedLayout.image}
             alt={selectedLayout.title}
             fill
-            className="object-contain pointer-events-none"
+            className="object-contain pointer-events-none select-none"
             priority
           />
 
-          {/* Render spawned models */}
+          {/* Render spawned models - bases first */}
           {spawnedGroups.map(group => (
             <div key={group.unitId}>
               {/* Group background - for easier group dragging */}
@@ -479,7 +479,7 @@ export default function DeploymentPlanner({
                 title={`${group.unitName} (drag group)`}
               />
 
-              {/* Individual models */}
+              {/* Individual model bases */}
               {group.models.map(model => {
                 // Convert mm to pixels using scale
                 const size = group.isRectangular
@@ -519,6 +519,39 @@ export default function DeploymentPlanner({
                     }}
                     title={`${group.unitName} - Model ${model.id}`}
                   />
+                );
+              })}
+            </div>
+          ))}
+
+          {/* Render model labels on top */}
+          {spawnedGroups.map(group => (
+            <div key={`labels-${group.unitId}`}>
+              {group.models.map(model => {
+                const size = group.isRectangular
+                  ? {
+                      width: (group.width || 25) * scale,
+                      height: (group.length || 25) * scale
+                    }
+                  : {
+                      width: (group.baseSize || 25) * scale,
+                      height: (group.baseSize || 25) * scale
+                    };
+
+                return (
+                  <div
+                    key={model.id}
+                    className="absolute pointer-events-none text-xs font-semibold whitespace-nowrap"
+                    style={{
+                      left: group.groupX + (model.x * scale) + size.width / 2,
+                      top: group.groupY + (model.y * scale) + size.height + 2,
+                      transform: 'translateX(-50%)',
+                      color: '#ffffff',
+                      textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000',
+                    }}
+                  >
+                    {group.unitName}
+                  </div>
                 );
               })}
             </div>
