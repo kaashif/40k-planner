@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { SpawnedGroup } from '../types';
+import { checkCoherency } from '../utils/coherencyChecker';
 
 interface Unit {
   name: string;
@@ -31,7 +33,7 @@ interface ArmySidebarProps {
   onSpawn: (unit: SpawnedUnit) => void;
   onDelete: (unitId: string) => void;
   spawnedUnits: Set<string>;
-  spawnedGroups: any[]; // TODO: import SpawnedGroup type
+  spawnedGroups: SpawnedGroup[];
   onSelectAll: (models: { groupId: string; modelId: string }[]) => void;
 }
 
@@ -375,6 +377,23 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                               </button>
                             )}
                           </div>
+                          {anySpawned && (() => {
+                            // Check coherency for all spawned groups in this unit
+                            const outOfCoherencyUnits = groupUnits.filter(unit => {
+                              const group = spawnedGroups.find(g => g.unitId === unit.id);
+                              if (!group) return false; // Not spawned yet
+                              return !checkCoherency(group).isInCoherency;
+                            });
+
+                            // Only show if some units are out of coherency
+                            if (outOfCoherencyUnits.length === 0) return null;
+
+                            return (
+                              <div className="text-center text-sm font-semibold py-1 rounded bg-red-900 text-red-200">
+                                Unit not coherent
+                              </div>
+                            );
+                          })()}
                         </div>
                       );
                     })()}
@@ -447,29 +466,31 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                     </div>
 
                     {isSpawned ? (
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => {
-                            const group = spawnedGroups.find(g => g.unitId === unit.id);
-                            if (group) {
-                              const unitModels = group.models.map((m: any) => ({
-                                groupId: unit.id,
-                                modelId: m.id
-                              }));
-                              onSelectAll(unitModels);
-                            }
-                          }}
-                          className="flex-1 px-3 py-1 text-sm font-semibold bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white rounded transition-colors"
-                        >
-                          Select All
-                        </button>
-                        <button
-                          onClick={() => onDelete(unit.id)}
-                          className="flex-1 px-3 py-1 text-sm font-semibold bg-red-900 hover:bg-red-700 text-white rounded transition-colors"
-                        >
-                          Delete
-                        </button>
-                      </div>
+                      <>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => {
+                              const group = spawnedGroups.find(g => g.unitId === unit.id);
+                              if (group) {
+                                const unitModels = group.models.map((m: any) => ({
+                                  groupId: unit.id,
+                                  modelId: m.id
+                                }));
+                                onSelectAll(unitModels);
+                              }
+                            }}
+                            className="flex-1 px-3 py-1 text-sm font-semibold bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white rounded transition-colors"
+                          >
+                            Select All
+                          </button>
+                          <button
+                            onClick={() => onDelete(unit.id)}
+                            className="flex-1 px-3 py-1 text-sm font-semibold bg-red-900 hover:bg-red-700 text-white rounded transition-colors"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </>
                     ) : (
                       <button
                         onClick={() => {

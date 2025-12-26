@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { SpawnedGroup, SelectedModel } from '../types';
 import { deleteSelectedOperation } from '../utils/selectionOperations';
+import { checkCoherency } from '../utils/coherencyChecker';
 
 interface Layout {
   id: string;
@@ -418,6 +419,27 @@ export default function DeploymentPlanner({
         >
           Delete Selected
         </button>
+
+        {/* Coherency status */}
+        <div className="ml-auto flex items-center gap-2">
+          {spawnedGroups.length > 0 && (() => {
+            const coherencyResults = spawnedGroups.map(group => ({
+              group,
+              result: checkCoherency(group)
+            }));
+
+            const outOfCoherencyCount = coherencyResults.filter(r => !r.result.isInCoherency).length;
+
+            // Only show if some units are out of coherency
+            if (outOfCoherencyCount === 0) return null;
+
+            return (
+              <div className="px-4 py-2 font-bold rounded bg-red-900 text-red-200">
+                {outOfCoherencyCount} unit{outOfCoherencyCount !== 1 ? 's' : ''} not coherent
+              </div>
+            );
+          })()}
+        </div>
       </div>
 
       <div>
@@ -464,65 +486,75 @@ export default function DeploymentPlanner({
           />
 
           {/* Render spawned models - bases first */}
-          {spawnedGroups.map(group => (
-            <div key={group.unitId}>
-              {/* Group background - for easier group dragging */}
-              <div
-                onMouseDown={(e) => handleMouseDown(e, group.unitId, null)}
-                className="absolute cursor-move hover:opacity-80"
-                style={{
-                  left: group.groupX,
-                  top: group.groupY,
-                  width: 100 * scale,
-                  height: 100 * scale,
-                }}
-                title={`${group.unitName} (drag group)`}
-              />
+          {spawnedGroups.map(group => {
+            // Check coherency for this group
+            const coherencyResult = checkCoherency(group);
 
-              {/* Individual model bases */}
-              {group.models.map(model => {
-                // Convert mm to pixels using scale
-                const size = group.isRectangular
-                  ? {
-                      width: (group.width || 25) * scale,
-                      height: (group.length || 25) * scale
-                    }
-                  : {
-                      width: (group.baseSize || 25) * scale,
-                      height: (group.baseSize || 25) * scale
-                    };
+            return (
+              <div key={group.unitId}>
+                {/* Group background - for easier group dragging */}
+                <div
+                  onMouseDown={(e) => handleMouseDown(e, group.unitId, null)}
+                  className="absolute cursor-move hover:opacity-80"
+                  style={{
+                    left: group.groupX,
+                    top: group.groupY,
+                    width: 100 * scale,
+                    height: 100 * scale,
+                  }}
+                  title={`${group.unitName} (drag group)`}
+                />
 
-                // Check if this model is selected
-                const isSelected = selectedModels.some(
-                  sel => sel.groupId === group.unitId && sel.modelId === model.id
-                );
+                {/* Individual model bases */}
+                {group.models.map(model => {
+                  // Convert mm to pixels using scale
+                  const size = group.isRectangular
+                    ? {
+                        width: (group.width || 25) * scale,
+                        height: (group.length || 25) * scale
+                      }
+                    : {
+                        width: (group.baseSize || 25) * scale,
+                        height: (group.baseSize || 25) * scale
+                      };
 
-                return (
-                  <div
-                    key={model.id}
-                    onMouseDown={(e) => {
-                      e.stopPropagation();
-                      handleMouseDown(e, group.unitId, model.id);
-                    }}
-                    className={`absolute cursor-move transition-colors ${
-                      isSelected
-                        ? 'border-[3px] border-[#FFFF00]'
-                        : 'border-2 border-[#808080] hover:border-[#FFFF00]'
-                    }`}
-                    style={{
-                      left: group.groupX + (model.x * scale),
-                      top: group.groupY + (model.y * scale),
-                      width: size.width,
-                      height: size.height,
-                      borderRadius: group.isRectangular ? '4px' : '50%',
-                      backgroundColor: '#000000',
-                    }}
-                    title={`${group.unitName} - Model ${model.id}`}
-                  />
-                );
-              })}
-            </div>
-          ))}
+                  // Check if this model is selected
+                  const isSelected = selectedModels.some(
+                    sel => sel.groupId === group.unitId && sel.modelId === model.id
+                  );
+
+                  // Check if this model is out of coherency
+                  const isOutOfCoherency = coherencyResult.outOfCoherencyModels.has(model.id);
+
+                  return (
+                    <div
+                      key={model.id}
+                      onMouseDown={(e) => {
+                        e.stopPropagation();
+                        handleMouseDown(e, group.unitId, model.id);
+                      }}
+                      className={`absolute cursor-move transition-colors ${
+                        isSelected
+                          ? 'border-[3px] border-[#FFFF00]'
+                          : isOutOfCoherency
+                          ? 'border-2 border-red-500 hover:border-[#FFFF00]'
+                          : 'border-2 border-[#808080] hover:border-[#FFFF00]'
+                      }`}
+                      style={{
+                        left: group.groupX + (model.x * scale),
+                        top: group.groupY + (model.y * scale),
+                        width: size.width,
+                        height: size.height,
+                        borderRadius: group.isRectangular ? '4px' : '50%',
+                        backgroundColor: '#000000',
+                      }}
+                      title={`${group.unitName} - Model ${model.id}${isOutOfCoherency ? ' (Out of Coherency)' : ''}`}
+                    />
+                  );
+                })}
+              </div>
+            );
+          })}
 
           {/* Render model labels on top - one per unit at center-bottom */}
           {spawnedGroups.map(group => {
