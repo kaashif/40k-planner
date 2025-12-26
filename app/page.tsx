@@ -110,6 +110,14 @@ function MainContent() {
     setSpawnedUnitIds(newSet);
   };
 
+  const handleClearLocalStorage = () => {
+    if (confirm('Are you sure you want to clear all saved data? This will reset spawned models and base size overrides.')) {
+      localStorage.removeItem('spawnedGroups');
+      localStorage.removeItem('baseSizeOverrides');
+      window.location.reload();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
       <div className="flex">
@@ -122,10 +130,16 @@ function MainContent() {
 
         {/* Main Content */}
         <div className="flex-1 p-8">
-          <header className="mb-8">
+          <header className="mb-8 flex items-center justify-between">
             <h1 className="text-4xl font-bold text-[#39FF14] mb-2">
               Warhammer 40k Tournament Planner
             </h1>
+            <button
+              onClick={handleClearLocalStorage}
+              className="px-4 py-2 bg-red-900 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors"
+            >
+              Clear Saved Data
+            </button>
           </header>
 
           <main className="bg-[#0f0f0f] border border-[#1a2a1a] rounded-lg p-6">
