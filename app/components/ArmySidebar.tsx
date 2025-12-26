@@ -29,9 +29,11 @@ interface ArmySidebarProps {
   onSpawn: (unit: SpawnedUnit) => void;
   onDelete: (unitId: string) => void;
   spawnedUnits: Set<string>;
+  spawnedGroups: any[]; // TODO: import SpawnedGroup type
+  onSelectAll: (models: { groupId: string; modelId: string }[]) => void;
 }
 
-export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits }: ArmySidebarProps) {
+export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGroups, onSelectAll }: ArmySidebarProps) {
   const [units, setUnits] = useState<UnitWithBase[]>([]);
   const [baseSizes, setBaseSizes] = useState<{ [key: string]: string }>({});
   const [flyDimensions, setFlyDimensions] = useState<{ [key: string]: { width: string; length: string } }>({});
@@ -351,11 +353,33 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits }: ArmySid
                       </div>
                     )}
 
-                    <button
-                      onClick={() => {
-                        if (isSpawned) {
-                          onDelete(unit.id);
-                        } else {
+                    {isSpawned ? (
+                      <div className="flex gap-2 flex-1">
+                        <button
+                          onClick={() => {
+                            const group = spawnedGroups.find(g => g.unitId === unit.id);
+                            if (group) {
+                              const unitModels = group.models.map((m: any) => ({
+                                groupId: unit.id,
+                                modelId: m.id
+                              }));
+                              onSelectAll(unitModels);
+                            }
+                          }}
+                          className="flex-1 px-3 py-1 text-sm font-semibold bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white rounded transition-colors"
+                        >
+                          Select All
+                        </button>
+                        <button
+                          onClick={() => onDelete(unit.id)}
+                          className="flex-1 px-3 py-1 text-sm font-semibold bg-red-900 hover:bg-red-700 text-white rounded transition-colors"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => {
                           const spawnData: SpawnedUnit = {
                             unitId: unit.id,
                             unitName: unit.name,
@@ -371,19 +395,17 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits }: ArmySid
                                 })
                           };
                           onSpawn(spawnData);
-                        }
-                      }}
-                      disabled={!hasBaseSize && !isSpawned}
-                      className={`flex-1 px-3 py-1 text-sm font-semibold rounded transition-colors ${
-                        isSpawned
-                          ? 'bg-red-900 hover:bg-red-700 text-white'
-                          : hasBaseSize
-                          ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
-                          : 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                      }`}
-                    >
-                      {isSpawned ? 'Delete' : 'Spawn'}
-                    </button>
+                        }}
+                        disabled={!hasBaseSize}
+                        className={`flex-1 px-3 py-1 text-sm font-semibold rounded transition-colors ${
+                          hasBaseSize
+                            ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
+                            : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                        }`}
+                      >
+                        Spawn
+                      </button>
+                    )}
                   </div>
                 </div>
               );

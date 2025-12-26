@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { SpawnedGroup, SelectedModel } from '../types';
+import { deleteSelectedOperation } from '../utils/selectionOperations';
 
 interface Layout {
   id: string;
@@ -9,27 +11,17 @@ interface Layout {
   image: string;
 }
 
-interface Model {
-  id: string;
-  x: number;
-  y: number;
-}
-
-interface SpawnedGroup {
-  unitId: string;
-  unitName: string;
-  isRectangular: boolean;
-  baseSize?: number;
-  width?: number;
-  length?: number;
-  models: Model[];
-  groupX: number;
-  groupY: number;
-}
-
 interface DeploymentPlannerProps {
   spawnedGroups: SpawnedGroup[];
   onUpdateGroups: (groups: SpawnedGroup[]) => void;
+  selectedModels: SelectedModel[];
+  onSelectionChange: (models: SelectedModel[]) => void;
+  isBoxSelecting: boolean;
+  setIsBoxSelecting: (selecting: boolean) => void;
+  boxSelectStart: { x: number; y: number } | null;
+  setBoxSelectStart: (pos: { x: number; y: number } | null) => void;
+  boxSelectEnd: { x: number; y: number } | null;
+  setBoxSelectEnd: (pos: { x: number; y: number } | null) => void;
 }
 
 const layouts: Layout[] = [
@@ -40,11 +32,25 @@ const layouts: Layout[] = [
   { id: 'take', title: 'Round 5: Take and Hold', image: '/round5_take.png' },
 ];
 
-export default function DeploymentPlanner({ spawnedGroups, onUpdateGroups }: DeploymentPlannerProps) {
+export default function DeploymentPlanner({
+  spawnedGroups,
+  onUpdateGroups,
+  selectedModels,
+  onSelectionChange,
+  isBoxSelecting,
+  setIsBoxSelecting,
+  boxSelectStart,
+  setBoxSelectStart,
+  boxSelectEnd,
+  setBoxSelectEnd
+}: DeploymentPlannerProps) {
   const [selectedLayout, setSelectedLayout] = useState(layouts[0]);
   const [draggedModel, setDraggedModel] = useState<{ groupId: string; modelId: string | null } | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1); // pixels per mm
+  const [mouseDownTime, setMouseDownTime] = useState<number | null>(null);
+  const [mouseDownPos, setMouseDownPos] = useState<{ x: number; y: number } | null>(null);
+  const [lastDragPos, setLastDragPos] = useState<{ x: number; y: number } | null>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -82,13 +88,95 @@ export default function DeploymentPlanner({ spawnedGroups, onUpdateGroups }: Dep
     return () => window.removeEventListener('resize', updateScale);
   }, []);
 
+  // Handle model click for selection
+  const handleModelClick = (e: React.MouseEvent, groupId: string, modelId: string) => {
+    e.stopPropagation();
+
+    const isCtrlOrCmd = e.ctrlKey || e.metaKey;
+    const clickedSelection = { groupId, modelId };
+    const isAlreadySelected = selectedModels.some(
+      sel => sel.groupId === groupId && sel.modelId === modelId
+    );
+
+    if (isCtrlOrCmd) {
+      // Toggle selection
+      if (isAlreadySelected) {
+        onSelectionChange(selectedModels.filter(
+          sel => !(sel.groupId === groupId && sel.modelId === modelId)
+        ));
+      } else {
+        onSelectionChange([...selectedModels, clickedSelection]);
+      }
+    } else {
+      // Replace selection
+      onSelectionChange([clickedSelection]);
+    }
+  };
+
+  // Calculate box intersection with models
+  const calculateBoxIntersections = (
+    start: { x: number; y: number } | null,
+    end: { x: number; y: number } | null
+  ): SelectedModel[] => {
+    if (!start || !end) return [];
+
+    const boxLeft = Math.min(start.x, end.x);
+    const boxRight = Math.max(start.x, end.x);
+    const boxTop = Math.min(start.y, end.y);
+    const boxBottom = Math.max(start.y, end.y);
+
+    const selections: SelectedModel[] = [];
+
+    spawnedGroups.forEach(group => {
+      group.models.forEach(model => {
+        const modelLeft = group.groupX + (model.x * scale);
+        const modelTop = group.groupY + (model.y * scale);
+        const modelSize = group.isRectangular
+          ? { width: (group.width || 25) * scale, height: (group.length || 25) * scale }
+          : { width: (group.baseSize || 25) * scale, height: (group.baseSize || 25) * scale };
+        const modelRight = modelLeft + modelSize.width;
+        const modelBottom = modelTop + modelSize.height;
+
+        // Check if box intersects with model bounds
+        if (!(modelRight < boxLeft || modelLeft > boxRight ||
+              modelBottom < boxTop || modelTop > boxBottom)) {
+          selections.push({ groupId: group.unitId, modelId: model.id });
+        }
+      });
+    });
+
+    return selections;
+  };
+
+  // Handle canvas click to deselect
+  const handleCanvasClick = (e: React.MouseEvent) => {
+    if (e.target === canvasRef.current) {
+      onSelectionChange([]);
+    }
+  };
+
   const handleMouseDown = (e: React.MouseEvent, groupId: string, modelId: string | null) => {
     e.preventDefault();
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return;
 
+    // Track time and position for click vs drag detection
+    setMouseDownTime(Date.now());
+    setMouseDownPos({ x: e.clientX, y: e.clientY });
+
     const group = spawnedGroups.find(g => g.unitId === groupId);
     if (!group) return;
+
+    // Auto-select model if clicking on non-selected model
+    if (modelId !== null) {
+      const isSelected = selectedModels.some(
+        sel => sel.groupId === groupId && sel.modelId === modelId
+      );
+
+      if (!isSelected && !e.ctrlKey && !e.metaKey) {
+        onSelectionChange([{ groupId, modelId }]);
+      }
+    }
 
     if (modelId === null) {
       // Dragging the whole group
@@ -104,42 +192,113 @@ export default function DeploymentPlanner({ spawnedGroups, onUpdateGroups }: Dep
         x: e.clientX - rect.left - (group.groupX + model.x * scale),
         y: e.clientY - rect.top - (group.groupY + model.y * scale)
       });
+      setLastDragPos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
     }
 
     setDraggedModel({ groupId, modelId });
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    // Handle box selection
+    if (isBoxSelecting && boxSelectStart && canvasRef.current) {
+      const rect = canvasRef.current.getBoundingClientRect();
+      setBoxSelectEnd({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+      return;
+    }
+
     if (!draggedModel || !canvasRef.current) return;
 
     const rect = canvasRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left - dragOffset.x;
     const y = e.clientY - rect.top - dragOffset.y;
 
-    const updatedGroups = spawnedGroups.map(group => {
-      if (group.unitId !== draggedModel.groupId) return group;
+    // Check if dragging a selected model with other models selected
+    const isDraggingSelected = draggedModel.modelId !== null && selectedModels.some(
+      sel => sel.groupId === draggedModel.groupId && sel.modelId === draggedModel.modelId
+    );
 
-      if (draggedModel.modelId === null) {
-        // Move entire group
-        return { ...group, groupX: x, groupY: y };
-      } else {
-        // Move individual model
-        return {
-          ...group,
-          models: group.models.map(model =>
-            model.id === draggedModel.modelId
-              ? { ...model, x: (x - group.groupX) / scale, y: (y - group.groupY) / scale }
-              : model
-          )
-        };
-      }
-    });
+    if (isDraggingSelected && selectedModels.length > 1 && lastDragPos) {
+      // Multi-model drag: move all selected models together
+      const currentX = e.clientX - rect.left;
+      const currentY = e.clientY - rect.top;
+      const deltaX = (currentX - lastDragPos.x) / scale;
+      const deltaY = (currentY - lastDragPos.y) / scale;
 
-    onUpdateGroups(updatedGroups);
+      const updatedGroups = spawnedGroups.map(group => ({
+        ...group,
+        models: group.models.map(model => {
+          const isSelected = selectedModels.some(
+            sel => sel.groupId === group.unitId && sel.modelId === model.id
+          );
+          return isSelected
+            ? { ...model, x: model.x + deltaX, y: model.y + deltaY }
+            : model;
+        })
+      }));
+
+      onUpdateGroups(updatedGroups);
+      setLastDragPos({ x: currentX, y: currentY });
+    } else {
+      // Single model/group drag
+      const updatedGroups = spawnedGroups.map(group => {
+        if (group.unitId !== draggedModel.groupId) return group;
+
+        if (draggedModel.modelId === null) {
+          // Move entire group
+          return { ...group, groupX: x, groupY: y };
+        } else {
+          // Move individual model
+          return {
+            ...group,
+            models: group.models.map(model =>
+              model.id === draggedModel.modelId
+                ? { ...model, x: (x - group.groupX) / scale, y: (y - group.groupY) / scale }
+                : model
+            )
+          };
+        }
+      });
+
+      onUpdateGroups(updatedGroups);
+    }
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (e: React.MouseEvent) => {
+    // Handle box selection end
+    if (isBoxSelecting) {
+      const selections = calculateBoxIntersections(boxSelectStart, boxSelectEnd);
+      onSelectionChange(selections);
+      setIsBoxSelecting(false);
+      setBoxSelectStart(null);
+      setBoxSelectEnd(null);
+      return;
+    }
+
+    // Check if this was a click (not a drag)
+    const timeSinceDown = mouseDownTime ? Date.now() - mouseDownTime : Infinity;
+    const isQuickClick = timeSinceDown < 150;
+
+    if (isQuickClick && mouseDownPos && draggedModel && draggedModel.modelId !== null) {
+      const dx = e.clientX - mouseDownPos.x;
+      const dy = e.clientY - mouseDownPos.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < 5) {
+        // This was a click, not a drag - handle selection
+        handleModelClick(e, draggedModel.groupId, draggedModel.modelId);
+      }
+    }
+
     setDraggedModel(null);
+    setMouseDownTime(null);
+    setMouseDownPos(null);
+    setLastDragPos(null);
   };
 
   useEffect(() => {
@@ -148,8 +307,89 @@ export default function DeploymentPlanner({ spawnedGroups, onUpdateGroups }: Dep
     return () => window.removeEventListener('mouseup', handleGlobalMouseUp);
   }, []);
 
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onSelectionChange([]);
+      } else if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+        e.preventDefault();
+        const allModels = spawnedGroups.flatMap(group =>
+          group.models.map(model => ({ groupId: group.unitId, modelId: model.id }))
+        );
+        onSelectionChange(allModels);
+      } else if ((e.key === 'Delete' || e.key === 'Backspace') && selectedModels.length > 0) {
+        e.preventDefault();
+        if (deleteSelectedOperation.canExecute(selectedModels)) {
+          const updatedGroups = deleteSelectedOperation.execute(spawnedGroups, selectedModels);
+          onUpdateGroups(updatedGroups);
+          onSelectionChange([]);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedModels, spawnedGroups, onSelectionChange, onUpdateGroups]);
+
+  // Handle canvas mousedown for box selection
+  const handleCanvasMouseDown = (e: React.MouseEvent) => {
+    if (e.target !== canvasRef.current) return; // Only on empty space
+
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    setIsBoxSelecting(true);
+    setBoxSelectStart({ x, y });
+    setBoxSelectEnd({ x, y });
+  };
+
   return (
     <div className="space-y-4">
+      {/* Selection toolbar - always visible */}
+      <div className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-4 flex items-center gap-4">
+        <span className={`font-semibold ${selectedModels.length > 0 ? 'text-gray-200' : 'text-gray-500'}`}>
+          {selectedModels.length > 0
+            ? `${selectedModels.length} model${selectedModels.length !== 1 ? 's' : ''} selected`
+            : 'No models selected'
+          }
+        </span>
+        {selectedModels.length > 0 && (
+          <span className="text-sm text-gray-400">
+            from {new Set(selectedModels.map(s => s.groupId)).size} unit(s)
+          </span>
+        )}
+        <button
+          onClick={() => onSelectionChange([])}
+          disabled={selectedModels.length === 0}
+          className={`px-3 py-1 font-semibold rounded transition-colors ${
+            selectedModels.length > 0
+              ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
+              : 'bg-gray-600 text-gray-500 cursor-not-allowed'
+          }`}
+        >
+          Clear Selection
+        </button>
+        <button
+          onClick={() => {
+            if (deleteSelectedOperation.canExecute(selectedModels)) {
+              const updatedGroups = deleteSelectedOperation.execute(spawnedGroups, selectedModels);
+              onUpdateGroups(updatedGroups);
+              onSelectionChange([]);
+            }
+          }}
+          disabled={selectedModels.length === 0}
+          className={`px-3 py-1 font-semibold rounded transition-colors ${
+            selectedModels.length > 0
+              ? 'bg-red-900 hover:bg-red-700 text-white'
+              : 'bg-gray-600 text-gray-500 cursor-not-allowed'
+          }`}
+        >
+          Delete Selected
+        </button>
+      </div>
+
       <div>
         <label className="block mb-2 font-semibold text-gray-200">
           Select Mission Layout
@@ -179,6 +419,8 @@ export default function DeploymentPlanner({ spawnedGroups, onUpdateGroups }: Dep
           className="relative w-full h-[calc(100vh-400px)] cursor-crosshair"
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
+          onMouseDown={handleCanvasMouseDown}
+          onClick={handleCanvasClick}
         >
           <Image
             src={selectedLayout.image}
@@ -217,6 +459,11 @@ export default function DeploymentPlanner({ spawnedGroups, onUpdateGroups }: Dep
                       height: (group.baseSize || 25) * scale
                     };
 
+                // Check if this model is selected
+                const isSelected = selectedModels.some(
+                  sel => sel.groupId === group.unitId && sel.modelId === model.id
+                );
+
                 return (
                   <div
                     key={model.id}
@@ -224,14 +471,20 @@ export default function DeploymentPlanner({ spawnedGroups, onUpdateGroups }: Dep
                       e.stopPropagation();
                       handleMouseDown(e, group.unitId, model.id);
                     }}
-                    className="absolute cursor-move border-2 border-[#39FF14] hover:border-[#FFFF00] transition-colors"
+                    className={`absolute cursor-move transition-colors ${
+                      isSelected
+                        ? 'border-[3px] border-[#FFFF00]'
+                        : 'border-2 border-[#39FF14] hover:border-[#FFFF00]'
+                    }`}
                     style={{
                       left: group.groupX + (model.x * scale),
                       top: group.groupY + (model.y * scale),
                       width: size.width,
                       height: size.height,
                       borderRadius: group.isRectangular ? '4px' : '50%',
-                      backgroundColor: 'rgba(57, 255, 20, 0.2)',
+                      backgroundColor: isSelected
+                        ? 'rgba(57, 255, 20, 0.4)'
+                        : 'rgba(57, 255, 20, 0.2)',
                     }}
                     title={`${group.unitName} - Model ${model.id}`}
                   />
@@ -239,6 +492,19 @@ export default function DeploymentPlanner({ spawnedGroups, onUpdateGroups }: Dep
               })}
             </div>
           ))}
+
+          {/* Box selection visual */}
+          {isBoxSelecting && boxSelectStart && boxSelectEnd && (
+            <div
+              className="absolute border-2 border-dashed border-[#39FF14] bg-[#39FF14] bg-opacity-10 pointer-events-none z-50"
+              style={{
+                left: Math.min(boxSelectStart.x, boxSelectEnd.x),
+                top: Math.min(boxSelectStart.y, boxSelectEnd.y),
+                width: Math.abs(boxSelectEnd.x - boxSelectStart.x),
+                height: Math.abs(boxSelectEnd.y - boxSelectStart.y),
+              }}
+            />
+          )}
         </div>
       </div>
     </div>

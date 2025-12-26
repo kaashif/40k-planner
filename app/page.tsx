@@ -3,39 +3,18 @@
 import { Suspense, useState, useEffect } from 'react';
 import ArmySidebar from './components/ArmySidebar';
 import DeploymentPlanner from './components/DeploymentPlanner';
-
-interface Model {
-  id: string;
-  x: number;
-  y: number;
-}
-
-interface SpawnedGroup {
-  unitId: string;
-  unitName: string;
-  isRectangular: boolean;
-  baseSize?: number;
-  width?: number;
-  length?: number;
-  models: Model[];
-  groupX: number;
-  groupY: number;
-}
-
-interface SpawnedUnit {
-  unitId: string;
-  unitName: string;
-  isRectangular: boolean;
-  baseSize?: number;
-  width?: number;
-  length?: number;
-  modelCount: number;
-}
+import { Model, SpawnedGroup, SpawnedUnit, SelectedModel } from './types';
 
 function MainContent() {
   const [spawnedGroups, setSpawnedGroups] = useState<SpawnedGroup[]>([]);
   const [spawnedUnitIds, setSpawnedUnitIds] = useState<Set<string>>(new Set());
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Selection state
+  const [selectedModels, setSelectedModels] = useState<SelectedModel[]>([]);
+  const [isBoxSelecting, setIsBoxSelecting] = useState(false);
+  const [boxSelectStart, setBoxSelectStart] = useState<{ x: number; y: number } | null>(null);
+  const [boxSelectEnd, setBoxSelectEnd] = useState<{ x: number; y: number } | null>(null);
 
   // Load state from localStorage on mount
   useEffect(() => {
@@ -105,6 +84,10 @@ function MainContent() {
 
   const handleDelete = (unitId: string) => {
     setSpawnedGroups(spawnedGroups.filter(group => group.unitId !== unitId));
+
+    // Remove deleted models from selection
+    setSelectedModels(selectedModels.filter(sel => sel.groupId !== unitId));
+
     const newSet = new Set(spawnedUnitIds);
     newSet.delete(unitId);
     setSpawnedUnitIds(newSet);
@@ -126,6 +109,8 @@ function MainContent() {
           onSpawn={handleSpawn}
           onDelete={handleDelete}
           spawnedUnits={spawnedUnitIds}
+          spawnedGroups={spawnedGroups}
+          onSelectAll={setSelectedModels}
         />
 
         {/* Main Content */}
@@ -146,6 +131,14 @@ function MainContent() {
             <DeploymentPlanner
               spawnedGroups={spawnedGroups}
               onUpdateGroups={setSpawnedGroups}
+              selectedModels={selectedModels}
+              onSelectionChange={setSelectedModels}
+              isBoxSelecting={isBoxSelecting}
+              setIsBoxSelecting={setIsBoxSelecting}
+              boxSelectStart={boxSelectStart}
+              setBoxSelectStart={setBoxSelectStart}
+              boxSelectEnd={boxSelectEnd}
+              setBoxSelectEnd={setBoxSelectEnd}
             />
           </main>
         </div>
