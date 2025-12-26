@@ -302,11 +302,11 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                 return (
                   <div
                     key={groupKey}
-                    className={`border rounded-lg transition-colors ${
+                    className={
                       isGroupedUnit
-                        ? 'bg-[#0f0f0f] border-[#2a2a2a] p-3'
+                        ? 'border rounded-lg transition-colors bg-[#0f0f0f] border-[#2a2a2a] p-3'
                         : ''
-                    }`}
+                    }
                   >
                     {/* Parent unit header if grouped */}
                     {isGroupedUnit && parentUnitName && (() => {
@@ -409,43 +409,45 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-400 whitespace-nowrap">{unit.number} models</span>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-400 whitespace-nowrap">{unit.number} models</span>
 
-                    {isRect ? (
-                      <div className="flex items-center gap-1">
-                        <input
-                          type="number"
-                          value={flyDimensions[unit.id]?.width || ''}
-                          onChange={(e) => updateFlyDimension(unit.id, unit.name, 'width', e.target.value)}
-                          placeholder="W"
-                          className="w-12 px-2 py-1 text-sm bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                        />
-                        <span className="text-sm text-gray-400">×</span>
-                        <input
-                          type="number"
-                          value={flyDimensions[unit.id]?.length || ''}
-                          onChange={(e) => updateFlyDimension(unit.id, unit.name, 'length', e.target.value)}
-                          placeholder="L"
-                          className="w-12 px-2 py-1 text-sm bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                        />
-                        <span className="text-sm text-gray-400">mm</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-1">
-                        <input
-                          type="number"
-                          value={baseSizes[unit.id] || ''}
-                          onChange={(e) => updateBaseSize(unit.id, unit.name, e.target.value)}
-                          placeholder="mm"
-                          className="w-16 px-2 py-1 text-sm bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                        />
-                        <span className="text-sm text-gray-400">mm</span>
-                      </div>
-                    )}
+                      {isRect ? (
+                        <div className="flex items-center gap-1">
+                          <input
+                            type="number"
+                            value={flyDimensions[unit.id]?.width || ''}
+                            onChange={(e) => updateFlyDimension(unit.id, unit.name, 'width', e.target.value)}
+                            placeholder="W"
+                            className="w-12 px-2 py-1 text-sm bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          />
+                          <span className="text-sm text-gray-400">×</span>
+                          <input
+                            type="number"
+                            value={flyDimensions[unit.id]?.length || ''}
+                            onChange={(e) => updateFlyDimension(unit.id, unit.name, 'length', e.target.value)}
+                            placeholder="L"
+                            className="w-12 px-2 py-1 text-sm bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          />
+                          <span className="text-sm text-gray-400">mm</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1">
+                          <input
+                            type="number"
+                            value={baseSizes[unit.id] || ''}
+                            onChange={(e) => updateBaseSize(unit.id, unit.name, e.target.value)}
+                            placeholder="mm"
+                            className="w-16 px-2 py-1 text-sm bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          />
+                          <span className="text-sm text-gray-400">mm</span>
+                        </div>
+                      )}
+                    </div>
 
                     {isSpawned ? (
-                      <div className="flex gap-2 flex-1">
+                      <div className="flex gap-2">
                         <button
                           onClick={() => {
                             const group = spawnedGroups.find(g => g.unitId === unit.id);
@@ -488,7 +490,7 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                           onSpawn(spawnData);
                         }}
                         disabled={!hasBaseSize}
-                        className={`flex-1 px-3 py-1 text-sm font-semibold rounded transition-colors ${
+                        className={`w-full px-3 py-1 text-sm font-semibold rounded transition-colors ${
                           hasBaseSize
                             ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
                             : 'bg-gray-600 text-gray-400 cursor-not-allowed'
