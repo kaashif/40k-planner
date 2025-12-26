@@ -4,6 +4,7 @@ export interface Model {
   id: string;
   x: number;
   y: number;
+  rotation?: number; // Rotation in degrees (0-360)
 }
 
 export interface SpawnedGroup {

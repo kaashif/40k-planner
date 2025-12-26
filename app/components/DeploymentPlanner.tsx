@@ -56,6 +56,10 @@ export default function DeploymentPlanner({
   const [mouseDownTime, setMouseDownTime] = useState<number | null>(null);
   const [mouseDownPos, setMouseDownPos] = useState<{ x: number; y: number } | null>(null);
   const [lastDragPos, setLastDragPos] = useState<{ x: number; y: number } | null>(null);
+  const [isRotating, setIsRotating] = useState(false);
+  const [rotationCenter, setRotationCenter] = useState<{ x: number; y: number } | null>(null);
+  const [lastRotationAngle, setLastRotationAngle] = useState<number>(0);
+  const [currentRotationDelta, setCurrentRotationDelta] = useState<number>(0);
   const canvasRef = useRef<HTMLDivElement>(null);
   const justCompletedBoxSelection = useRef(false);
   const justCompletedModelInteraction = useRef(false);
@@ -123,6 +127,55 @@ export default function DeploymentPlanner({
       // Replace selection
       onSelectionChange([clickedSelection]);
     }
+  };
+
+  // Handle rotation of selected models
+  const handleRotate = (degrees: number) => {
+    const updatedGroups = spawnedGroups.map(group => {
+      // Check if any models in this group are selected
+      const hasSelectedModels = selectedModels.some(sel => sel.groupId === group.unitId);
+      if (!hasSelectedModels) return group;
+
+      return {
+        ...group,
+        models: group.models.map(model => {
+          const isSelected = selectedModels.some(
+            sel => sel.groupId === group.unitId && sel.modelId === model.id
+          );
+          if (!isSelected) return model;
+
+          const currentRotation = model.rotation || 0;
+          return {
+            ...model,
+            rotation: (currentRotation + degrees + 360) % 360
+          };
+        })
+      };
+    });
+
+    onUpdateGroups(updatedGroups);
+  };
+
+  // Start rotation drag
+  const handleRotationMouseDown = (e: React.MouseEvent, centerX: number, centerY: number) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    setIsRotating(true);
+    setRotationCenter({ x: centerX, y: centerY });
+    setCurrentRotationDelta(0); // Reset rotation delta
+
+    // Calculate initial angle
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const angle = Math.atan2(mouseY - centerY, mouseX - centerX) * (180 / Math.PI);
+    setLastRotationAngle(angle);
+
+    // Mark that we're in rotation mode to prevent other interactions
+    justCompletedModelInteraction.current = true;
   };
 
   // Calculate box intersection with models
@@ -249,6 +302,33 @@ export default function DeploymentPlanner({
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    // Handle rotation drag
+    if (isRotating && rotationCenter && canvasRef.current) {
+      const rect = canvasRef.current.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      // Calculate current angle
+      const currentAngle = Math.atan2(mouseY - rotationCenter.y, mouseX - rotationCenter.x) * (180 / Math.PI);
+
+      // Calculate angle difference
+      let angleDelta = currentAngle - lastRotationAngle;
+
+      // Normalize angle delta to -180 to 180
+      if (angleDelta > 180) angleDelta -= 360;
+      if (angleDelta < -180) angleDelta += 360;
+
+      // Apply rotation
+      handleRotate(angleDelta);
+
+      // Accumulate rotation delta for visual feedback
+      setCurrentRotationDelta(prev => prev + angleDelta);
+
+      // Update last angle
+      setLastRotationAngle(currentAngle);
+      return;
+    }
+
     // Handle box selection
     if (isBoxSelecting && boxSelectStart && canvasRef.current) {
       const rect = canvasRef.current.getBoundingClientRect();
@@ -317,6 +397,19 @@ export default function DeploymentPlanner({
   };
 
   const handleMouseUp = (e: React.MouseEvent) => {
+    // Handle rotation end
+    if (isRotating) {
+      setIsRotating(false);
+      setRotationCenter(null);
+      setLastRotationAngle(0);
+      // Don't reset currentRotationDelta - let arrows stay in position
+      // Keep selection after rotation
+      setTimeout(() => {
+        justCompletedModelInteraction.current = false;
+      }, 0);
+      return;
+    }
+
     // Handle box selection end
     if (isBoxSelecting) {
       const selections = calculateBoxIntersections(boxSelectStart, boxSelectEnd);
@@ -357,10 +450,42 @@ export default function DeploymentPlanner({
   };
 
   useEffect(() => {
-    const handleGlobalMouseUp = () => setDraggedModel(null);
+    const handleGlobalMouseUp = () => {
+      setDraggedModel(null);
+      setIsRotating(false);
+      setRotationCenter(null);
+      setLastRotationAngle(0);
+      // Don't reset currentRotationDelta
+    };
     window.addEventListener('mouseup', handleGlobalMouseUp);
     return () => window.removeEventListener('mouseup', handleGlobalMouseUp);
   }, []);
+
+  // Update rotation delta when selection changes
+  useEffect(() => {
+    if (selectedModels.length === 0) {
+      setCurrentRotationDelta(0);
+    } else {
+      // Calculate average rotation of selected models
+      let totalRotation = 0;
+      let count = 0;
+
+      selectedModels.forEach(sel => {
+        const group = spawnedGroups.find(g => g.unitId === sel.groupId);
+        if (group) {
+          const model = group.models.find(m => m.id === sel.modelId);
+          if (model) {
+            totalRotation += (model.rotation || 0);
+            count++;
+          }
+        }
+      });
+
+      if (count > 0) {
+        setCurrentRotationDelta(totalRotation / count);
+      }
+    }
+  }, [selectedModels, spawnedGroups]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -650,6 +775,8 @@ export default function DeploymentPlanner({
                         height: size.height,
                         borderRadius: group.isRectangular ? '4px' : '50%',
                         backgroundColor: '#000000',
+                        transform: model.rotation ? `rotate(${model.rotation}deg)` : undefined,
+                        transformOrigin: 'center center',
                       }}
                       title={`${group.unitName} - Model ${model.id}${isOutOfCoherency ? ' (Out of Coherency)' : ''}`}
                     />
@@ -658,6 +785,135 @@ export default function DeploymentPlanner({
               </div>
             );
           })}
+
+          {/* Render rotation controls for selected models */}
+          {toolMode === 'selection' && selectedModels.length > 0 && (() => {
+            // Calculate bounding box of all selected models
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+
+            selectedModels.forEach(selected => {
+              const group = spawnedGroups.find(g => g.unitId === selected.groupId);
+              if (!group) return;
+
+              const model = group.models.find(m => m.id === selected.modelId);
+              if (!model) return;
+
+              const size = group.isRectangular
+                ? {
+                    width: (group.width || 25) * scale,
+                    height: (group.length || 25) * scale
+                  }
+                : {
+                    width: (group.baseSize || 25) * scale,
+                    height: (group.baseSize || 25) * scale
+                  };
+
+              const modelLeft = group.groupX + (model.x * scale);
+              const modelTop = group.groupY + (model.y * scale);
+              const modelRight = modelLeft + size.width;
+              const modelBottom = modelTop + size.height;
+
+              minX = Math.min(minX, modelLeft);
+              maxX = Math.max(maxX, modelRight);
+              minY = Math.min(minY, modelTop);
+              maxY = Math.max(maxY, modelBottom);
+            });
+
+            if (minX === Infinity) return null;
+
+            // Center and radius of control circle
+            const centerX = (minX + maxX) / 2;
+            const centerY = (minY + maxY) / 2;
+            const width = maxX - minX;
+            const height = maxY - minY;
+            const radius = Math.max(width, height) / 2 + 30; // 30px padding around selection
+
+            // Create SVG positioned absolutely to cover the canvas
+            const arcLength = 20; // Length of the arc in degrees (shorter)
+
+            // Helper to create arrow head pointing tangent to circle (clockwise)
+            const createArrowHead = (angle: number) => {
+              const endX = centerX + radius * Math.cos(angle * Math.PI/180);
+              const endY = centerY + radius * Math.sin(angle * Math.PI/180);
+              const tangentAngle = angle + 90; // Tangent direction (clockwise)
+              const arrowSize = 16; // 2x bigger (was 8)
+
+              // Create triangular arrow head
+              const tip = { x: endX, y: endY };
+              const base1X = endX - arrowSize * Math.cos(tangentAngle * Math.PI/180) - 8 * Math.cos((tangentAngle - 90) * Math.PI/180);
+              const base1Y = endY - arrowSize * Math.sin(tangentAngle * Math.PI/180) - 8 * Math.sin((tangentAngle - 90) * Math.PI/180);
+              const base2X = endX - arrowSize * Math.cos(tangentAngle * Math.PI/180) + 8 * Math.cos((tangentAngle - 90) * Math.PI/180);
+              const base2Y = endY - arrowSize * Math.sin(tangentAngle * Math.PI/180) + 8 * Math.sin((tangentAngle - 90) * Math.PI/180);
+
+              return `M ${tip.x} ${tip.y} L ${base1X} ${base1Y} L ${base2X} ${base2Y} Z`;
+            };
+
+            const angles = [0, 90, 180, 270];
+
+            return (
+              <>
+                {/* SVG for drawing arrows (visual only) */}
+                <svg
+                  className="absolute pointer-events-none"
+                  style={{
+                    left: 0,
+                    top: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 50
+                  }}
+                >
+                  <g transform={`rotate(${currentRotationDelta} ${centerX} ${centerY})`}>
+                    {angles.map(baseAngle => {
+                      // Shorten the arc by 3 degrees at the end so it doesn't stick through the arrow head
+                      const arcEndAngle = baseAngle + arcLength/2 - 3;
+
+                      return (
+                        <g key={baseAngle}>
+                          {/* Arc path */}
+                          <path
+                            d={`M ${centerX + radius * Math.cos((baseAngle - arcLength/2) * Math.PI/180)} ${centerY + radius * Math.sin((baseAngle - arcLength/2) * Math.PI/180)} A ${radius} ${radius} 0 0 1 ${centerX + radius * Math.cos(arcEndAngle * Math.PI/180)} ${centerY + radius * Math.sin(arcEndAngle * Math.PI/180)}`}
+                            fill="none"
+                            stroke="#39FF14"
+                            strokeWidth="6"
+                            strokeLinecap="round"
+                          />
+                          {/* Arrow head */}
+                          <path
+                            d={createArrowHead(baseAngle + arcLength/2)}
+                            fill="#39FF14"
+                          />
+                        </g>
+                      );
+                    })}
+                  </g>
+                </svg>
+
+                {/* Invisible divs for drag handling */}
+                {angles.map(baseAngle => {
+                  // Apply rotation delta to the handle positions
+                  const rotatedAngle = (baseAngle + currentRotationDelta) * Math.PI / 180;
+                  const handleX = centerX + radius * Math.cos(rotatedAngle);
+                  const handleY = centerY + radius * Math.sin(rotatedAngle);
+
+                  return (
+                    <div
+                      key={`handle-${baseAngle}`}
+                      className="absolute cursor-grab active:cursor-grabbing z-50"
+                      style={{
+                        left: handleX - 25,
+                        top: handleY - 25,
+                        width: 50,
+                        height: 50,
+                      }}
+                      onMouseDown={(e) => handleRotationMouseDown(e, centerX, centerY)}
+                      title="Drag to rotate"
+                    />
+                  );
+                })}
+              </>
+            );
+          })()}
 
           {/* Render measurement lines for selected models */}
           {selectedModels.map(selected => {

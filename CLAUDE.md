@@ -20,7 +20,9 @@ npm start      # Run production server
 npm run lint   # Run ESLint
 ```
 
-**IMPORTANT**: Do NOT run `npm run build` during development. The build process is slow and unnecessary for development work.
+**IMPORTANT**:
+- Do NOT run `npm run build` during development. The build process is slow and unnecessary for development work.
+- Do NOT run `npm run dev` - the user already runs this in a separate terminal window.
 
 ## Architecture
 
