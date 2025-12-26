@@ -1,5 +1,17 @@
 import type { SpawnedGroup } from '../types';
 
+export interface PDFConfig {
+  deploymentSpacing: number;    // 0-100pt - vertical gap between layouts
+  pageMargin: number;            // 10-50pt - margin to edge of page
+  layoutScale: number;           // 0.5-1.5 - scaling factor (50%-150%)
+}
+
+export const DEFAULT_PDF_CONFIG: PDFConfig = {
+  deploymentSpacing: 20,
+  pageMargin: 20,
+  layoutScale: 1.0,
+};
+
 interface Layout {
   id: string;
   title: string;
@@ -14,13 +26,9 @@ const LAYOUTS: Layout[] = [
   { id: 'take', title: 'Round 5: Take and Hold', image: '/round5_take.png' },
 ];
 
-const PDF_CONFIG = {
-  pageWidth: 595.28,   // A4 width in points
-  pageHeight: 841.89,  // A4 height in points
-  margin: 20,
-  layoutWidth: 555.28,
-  layoutHeight: 407,   // Maintains 60:44 aspect ratio
-};
+// A4 dimensions in points
+const A4_WIDTH = 595.28;
+const A4_HEIGHT = 841.89;
 
 const MAP_HEIGHT_MM = 44 * 25.4; // 1117.6 mm
 const MAP_WIDTH_MM = 60 * 25.4; // 1524 mm
@@ -134,12 +142,10 @@ async function captureContainerAsImage(container: HTMLDivElement): Promise<strin
 
   // Capture the container
   const canvas = await html2canvas(container, {
-    backgroundColor: '#0a0a0a',
-    scale: 2,  // Higher resolution
     logging: false,
     allowTaint: true,
     useCORS: true
-  });
+  } as any);
 
   // Convert to data URL
   return canvas.toDataURL('image/png');
@@ -150,7 +156,8 @@ async function captureContainerAsImage(container: HTMLDivElement): Promise<strin
  */
 export async function generateTournamentPDF(
   spawnedGroupsByRound: { [roundId: string]: SpawnedGroup[] },
-  onProgress?: (current: number, total: number) => void
+  onProgress?: (current: number, total: number) => void,
+  config: PDFConfig = DEFAULT_PDF_CONFIG
 ): Promise<void> {
   // Dynamically import jsPDF
   const { default: jsPDF } = await import('jspdf');
@@ -161,6 +168,10 @@ export async function generateTournamentPDF(
     unit: 'pt',
     format: 'a4'
   });
+
+  // Calculate layout dimensions based on config
+  const layoutWidth = (A4_WIDTH - 2 * config.pageMargin) * config.layoutScale;
+  const layoutHeight = 407 * config.layoutScale;
 
   let isFirstPage = true;
 
@@ -196,26 +207,26 @@ export async function generateTournamentPDF(
       pdf.addPage();
     }
 
-    // Calculate y position
+    // Calculate y position using config
     const yPosition = isTopPosition
-      ? PDF_CONFIG.margin
-      : PDF_CONFIG.pageHeight / 2 + PDF_CONFIG.margin / 2;
+      ? config.pageMargin
+      : A4_HEIGHT / 2 + config.deploymentSpacing / 2;
 
-    // Add title above layout
+    // Add title above layout (black, left-justified)
     pdf.setFontSize(12);
-    pdf.setTextColor(57, 255, 20); // Neon green
-    pdf.text(layout.title, PDF_CONFIG.pageWidth / 2, yPosition - 10, {
-      align: 'center'
+    pdf.setTextColor(0, 0, 0); // Black
+    pdf.text(layout.title, config.pageMargin, yPosition - 10, {
+      align: 'left'
     });
 
     // Add image to PDF
     pdf.addImage(
       imageData,
       'PNG',
-      PDF_CONFIG.margin,
+      config.pageMargin,
       yPosition,
-      PDF_CONFIG.layoutWidth,
-      PDF_CONFIG.layoutHeight
+      layoutWidth,
+      layoutHeight
     );
 
     if (isFirstPage) isFirstPage = false;

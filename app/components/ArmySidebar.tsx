@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { SpawnedGroup } from '../types';
+import { SpawnedGroup, SpawnedUnit } from '../types';
 import { checkCoherency, checkParentUnitCoherency } from '../utils/coherencyChecker';
 
 interface Unit {
@@ -17,16 +17,6 @@ interface UnitWithBase extends Unit {
   length?: string;
   parentUnitId?: string; // Track parent unit's unique ID
   parentUnitName?: string; // Track parent unit's name for display
-}
-
-interface SpawnedUnit {
-  unitId: string;
-  unitName: string;
-  isRectangular: boolean;
-  baseSize?: number;
-  width?: number;
-  length?: number;
-  modelCount: number;
 }
 
 interface ArmySidebarProps {
