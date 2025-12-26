@@ -52,6 +52,8 @@ export default function DeploymentPlanner({
   const [mouseDownPos, setMouseDownPos] = useState<{ x: number; y: number } | null>(null);
   const [lastDragPos, setLastDragPos] = useState<{ x: number; y: number } | null>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
+  const justCompletedBoxSelection = useRef(false);
+  const justCompletedModelInteraction = useRef(false);
   const imageRef = useRef<HTMLImageElement>(null);
 
   // Map dimensions in mm: 44" × 60" = 1117.6mm × 1524mm
@@ -148,9 +150,21 @@ export default function DeploymentPlanner({
     return selections;
   };
 
-  // Handle canvas click to deselect
+  // Handle canvas click to deselect (but not during box selection)
   const handleCanvasClick = (e: React.MouseEvent) => {
-    if (e.target === canvasRef.current) {
+    // Don't deselect if we just finished a box selection
+    if (justCompletedBoxSelection.current) {
+      justCompletedBoxSelection.current = false;
+      return;
+    }
+
+    // Don't deselect if we just finished interacting with a model
+    if (justCompletedModelInteraction.current) {
+      justCompletedModelInteraction.current = false;
+      return;
+    }
+
+    if (!isBoxSelecting && !draggedModel) {
       onSelectionChange([]);
     }
   };
@@ -277,24 +291,32 @@ export default function DeploymentPlanner({
       setIsBoxSelecting(false);
       setBoxSelectStart(null);
       setBoxSelectEnd(null);
+      justCompletedBoxSelection.current = true;
       return;
     }
 
     // Check if this was a click (not a drag)
-    const timeSinceDown = mouseDownTime ? Date.now() - mouseDownTime : Infinity;
-    const isQuickClick = timeSinceDown < 150;
-
-    if (isQuickClick && mouseDownPos && draggedModel && draggedModel.modelId !== null) {
+    let wasClick = false;
+    if (mouseDownPos && draggedModel && draggedModel.modelId !== null) {
       const dx = e.clientX - mouseDownPos.x;
       const dy = e.clientY - mouseDownPos.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
+      const timeSinceDown = mouseDownTime ? Date.now() - mouseDownTime : Infinity;
 
-      if (distance < 5) {
+      // Only treat as click if: quick (< 150ms) AND minimal movement (< 5px)
+      if (timeSinceDown < 150 && distance < 5) {
+        wasClick = true;
         // This was a click, not a drag - handle selection
         handleModelClick(e, draggedModel.groupId, draggedModel.modelId);
       }
     }
 
+    // Mark that we just finished a model interaction (click or drag)
+    if (draggedModel) {
+      justCompletedModelInteraction.current = true;
+    }
+
+    // If we dragged (not clicked), keep the selection as-is
     setDraggedModel(null);
     setMouseDownTime(null);
     setMouseDownPos(null);
@@ -334,7 +356,8 @@ export default function DeploymentPlanner({
 
   // Handle canvas mousedown for box selection
   const handleCanvasMouseDown = (e: React.MouseEvent) => {
-    if (e.target !== canvasRef.current) return; // Only on empty space
+    // Allow box selection on canvas or image (but not on models - they stop propagation)
+    if (!canvasRef.current) return;
 
     const rect = canvasRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -494,7 +517,7 @@ export default function DeploymentPlanner({
           {/* Box selection visual */}
           {isBoxSelecting && boxSelectStart && boxSelectEnd && (
             <div
-              className="absolute border-2 border-dashed border-[#39FF14] bg-[#39FF14] bg-opacity-10 pointer-events-none z-50"
+              className="absolute border-2 border-dashed border-[#FFFF00] pointer-events-none z-50"
               style={{
                 left: Math.min(boxSelectStart.x, boxSelectEnd.x),
                 top: Math.min(boxSelectStart.y, boxSelectEnd.y),
