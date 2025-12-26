@@ -19,6 +19,18 @@ interface UnitWithBase extends Unit {
   parentUnitName?: string; // Track parent unit's name for display
 }
 
+interface Weapon {
+  name: string;
+  type: 'Melee' | 'Ranged';
+  range: string;
+  attacks: string;
+  skill: string;
+  strength: string;
+  ap: string;
+  damage: string;
+  keywords: string;
+}
+
 interface ArmyUnit {
   name: string;
   parentUnitName?: string;
@@ -31,6 +43,13 @@ interface ArmyUnit {
     OC: string;
   };
   invulnSave?: string;
+  invulnFromLeader?: string;
+  fnp?: string;
+  fnpFromLeader?: string;
+  // For leaders - what buffs they grant
+  grantsInvuln?: string;
+  grantsFnp?: string;
+  weapons?: Weapon[];
 }
 
 interface ArmySidebarProps {
@@ -52,9 +71,109 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
   const [leaderAssignments, setLeaderAssignments] = useState<{ [leaderName: string]: string }>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const extractStatsFromProfiles = (profiles: any[]): {
+    stats?: ArmyUnit['stats'];
+    invulnSave?: string;
+    fnp?: string;
+    grantsInvuln?: string;
+    grantsFnp?: string;
+  } => {
+    // Find unit profile
+    const unitProfile = profiles.find((p: any) => p.typeName === 'Unit');
+    let stats;
+    if (unitProfile && unitProfile.characteristics) {
+      stats = {
+        M: unitProfile.characteristics.find((c: any) => c.name === 'M')?.$text || '-',
+        T: unitProfile.characteristics.find((c: any) => c.name === 'T')?.$text || '-',
+        SV: unitProfile.characteristics.find((c: any) => c.name === 'SV')?.$text || '-',
+        W: unitProfile.characteristics.find((c: any) => c.name === 'W')?.$text || '-',
+        LD: unitProfile.characteristics.find((c: any) => c.name === 'LD')?.$text || '-',
+        OC: unitProfile.characteristics.find((c: any) => c.name === 'OC')?.$text || '-',
+      };
+    }
+
+    let invulnSave;
+    let fnp;
+    let grantsInvuln;
+    let grantsFnp;
+
+    // Search all abilities
+    const abilities = profiles.filter((p: any) => p.typeName === 'Abilities');
+    for (const ability of abilities) {
+      const desc = ability.characteristics?.find((c: any) => c.name === 'Description')?.$text || '';
+
+      // Check for inherent invulnerable save
+      if (ability.name === 'Invulnerable Save') {
+        const match = desc.match(/(\d\+)\s+invulnerable save/i);
+        if (match) {
+          invulnSave = match[1];
+        }
+      }
+
+      // Check for inherent Feel No Pain
+      if (desc.match(/has the Feel No Pain/i) && !desc.match(/leading a unit/i)) {
+        const match = desc.match(/Feel No Pain\s+(\d\+)/i);
+        if (match) {
+          fnp = match[1];
+        }
+      }
+
+      // Check for leader-granted invuln (while leading a unit)
+      if (desc.match(/leading a unit/i) && desc.match(/invulnerable save/i)) {
+        const match = desc.match(/(\d\+)\s+invulnerable save/i);
+        if (match) {
+          grantsInvuln = match[1];
+        }
+      }
+
+      // Check for leader-granted FNP (while leading a unit)
+      if (desc.match(/leading a unit/i) && desc.match(/Feel No Pain/i)) {
+        const match = desc.match(/Feel No Pain\s+(\d\+)/i);
+        if (match) {
+          grantsFnp = match[1];
+        }
+      }
+    }
+
+    return { stats, invulnSave, fnp, grantsInvuln, grantsFnp };
+  };
+
+  const extractWeapons = (selections: any[]): Weapon[] => {
+    const weapons: Weapon[] = [];
+    const seenWeapons = new Set<string>();
+
+    for (const sel of selections) {
+      if (sel.profiles) {
+        for (const profile of sel.profiles) {
+          if (profile.typeName === 'Melee Weapons' || profile.typeName === 'Ranged Weapons') {
+            const weaponKey = `${profile.name}-${profile.typeName}`;
+            if (seenWeapons.has(weaponKey)) continue;
+            seenWeapons.add(weaponKey);
+
+            const chars = profile.characteristics || [];
+            const isMelee = profile.typeName === 'Melee Weapons';
+
+            weapons.push({
+              name: profile.name,
+              type: isMelee ? 'Melee' : 'Ranged',
+              range: chars.find((c: any) => c.name === 'Range')?.$text || '-',
+              attacks: chars.find((c: any) => c.name === 'A')?.$text || '-',
+              skill: chars.find((c: any) => c.name === (isMelee ? 'WS' : 'BS'))?.$text || '-',
+              strength: chars.find((c: any) => c.name === 'S')?.$text || '-',
+              ap: chars.find((c: any) => c.name === 'AP')?.$text || '-',
+              damage: chars.find((c: any) => c.name === 'D')?.$text || '-',
+              keywords: chars.find((c: any) => c.name === 'Keywords')?.$text || '-',
+            });
+          }
+        }
+      }
+    }
+
+    return weapons;
+  };
+
   const extractArmyUnits = (selections: any[]): ArmyUnit[] => {
     const armyUnits: ArmyUnit[] = [];
-    const processedUnits = new Set<string>();
 
     for (const sel of selections) {
       // Skip non-model/non-unit selections
@@ -67,91 +186,63 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
           (nested: any) => nested.type === 'model'
         );
 
-        for (const model of nestedModels) {
-          const modelName = model.name;
-          if (processedUnits.has(modelName)) continue;
-          processedUnits.add(modelName);
+        // Check if nested models have their own profiles
+        const nestedModelsWithProfiles = nestedModels.filter(
+          (m: any) => m.profiles && m.profiles.some((p: any) => p.typeName === 'Unit')
+        );
 
-          const profiles = model.profiles || [];
-
-          // Find unit profile
-          const unitProfile = profiles.find((p: any) => p.typeName === 'Unit');
-          let stats;
-          if (unitProfile && unitProfile.characteristics) {
-            stats = {
-              M: unitProfile.characteristics.find((c: any) => c.name === 'M')?.$text || '-',
-              T: unitProfile.characteristics.find((c: any) => c.name === 'T')?.$text || '-',
-              SV: unitProfile.characteristics.find((c: any) => c.name === 'SV')?.$text || '-',
-              W: unitProfile.characteristics.find((c: any) => c.name === 'W')?.$text || '-',
-              LD: unitProfile.characteristics.find((c: any) => c.name === 'LD')?.$text || '-',
-              OC: unitProfile.characteristics.find((c: any) => c.name === 'OC')?.$text || '-',
-            };
-          }
-
-          // Find invulnerable save
-          const invulnProfile = profiles.find((p: any) =>
-            p.typeName === 'Abilities' && p.name === 'Invulnerable Save'
-          );
-          let invulnSave;
-          if (invulnProfile && invulnProfile.characteristics) {
-            const desc = invulnProfile.characteristics.find((c: any) => c.name === 'Description')?.$text || '';
-            // Extract invuln save value (e.g., "4+" from "Models in this unit have a 4+ invulnerable save.")
-            const match = desc.match(/(\d\+)\s+invulnerable save/i);
-            if (match) {
-              invulnSave = match[1];
+        if (nestedModelsWithProfiles.length > 0) {
+          // Nested models have their own stats (e.g., The Silent King with Szarekh and Menhir)
+          for (const model of nestedModelsWithProfiles) {
+            const { stats, invulnSave, fnp, grantsInvuln, grantsFnp } = extractStatsFromProfiles(model.profiles || []);
+            const weapons = extractWeapons(model.selections || []);
+            if (stats || invulnSave || fnp) {
+              armyUnits.push({
+                name: model.name,
+                parentUnitName,
+                stats,
+                invulnSave,
+                fnp,
+                grantsInvuln,
+                grantsFnp,
+                weapons
+              });
             }
           }
-
-          if (stats || invulnSave) {
+        } else {
+          // Nested models don't have stats - use parent unit stats (e.g., Necron Warriors)
+          const { stats, invulnSave, fnp, grantsInvuln, grantsFnp } = extractStatsFromProfiles(sel.profiles || []);
+          // Get weapons from all nested model selections
+          const allWeapons: Weapon[] = [];
+          for (const nested of nestedModels) {
+            allWeapons.push(...extractWeapons(nested.selections || []));
+          }
+          if (stats || invulnSave || fnp) {
             armyUnits.push({
-              name: modelName,
+              name: parentUnitName,
               parentUnitName,
               stats,
-              invulnSave
+              invulnSave,
+              fnp,
+              grantsInvuln,
+              grantsFnp,
+              weapons: allWeapons
             });
           }
         }
       } else if (sel.type === 'model') {
         // Standalone model
-        const modelName = sel.name;
-        if (processedUnits.has(modelName)) continue;
-        processedUnits.add(modelName);
-
-        const profiles = sel.profiles || [];
-
-        // Find unit profile
-        const unitProfile = profiles.find((p: any) => p.typeName === 'Unit');
-        let stats;
-        if (unitProfile && unitProfile.characteristics) {
-          stats = {
-            M: unitProfile.characteristics.find((c: any) => c.name === 'M')?.$text || '-',
-            T: unitProfile.characteristics.find((c: any) => c.name === 'T')?.$text || '-',
-            SV: unitProfile.characteristics.find((c: any) => c.name === 'SV')?.$text || '-',
-            W: unitProfile.characteristics.find((c: any) => c.name === 'W')?.$text || '-',
-            LD: unitProfile.characteristics.find((c: any) => c.name === 'LD')?.$text || '-',
-            OC: unitProfile.characteristics.find((c: any) => c.name === 'OC')?.$text || '-',
-          };
-        }
-
-        // Find invulnerable save
-        const invulnProfile = profiles.find((p: any) =>
-          p.typeName === 'Abilities' && p.name === 'Invulnerable Save'
-        );
-        let invulnSave;
-        if (invulnProfile && invulnProfile.characteristics) {
-          const desc = invulnProfile.characteristics.find((c: any) => c.name === 'Description')?.$text || '';
-          // Extract invuln save value (e.g., "4+" from "Models in this unit have a 4+ invulnerable save.")
-          const match = desc.match(/(\d\+)\s+invulnerable save/i);
-          if (match) {
-            invulnSave = match[1];
-          }
-        }
-
-        if (stats || invulnSave) {
+        const { stats, invulnSave, fnp, grantsInvuln, grantsFnp } = extractStatsFromProfiles(sel.profiles || []);
+        const weapons = extractWeapons(sel.selections || []);
+        if (stats || invulnSave || fnp) {
           armyUnits.push({
-            name: modelName,
+            name: sel.name,
             stats,
-            invulnSave
+            invulnSave,
+            fnp,
+            grantsInvuln,
+            grantsFnp,
+            weapons
           });
         }
       }

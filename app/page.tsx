@@ -7,6 +7,18 @@ import DeploymentPlanner from './components/DeploymentPlanner';
 import ExportPDFButton from './components/ExportPDFButton';
 import { Model, SpawnedGroup, SpawnedUnit, SelectedModel } from './types';
 
+interface Weapon {
+  name: string;
+  type: 'Melee' | 'Ranged';
+  range: string;
+  attacks: string;
+  skill: string;
+  strength: string;
+  ap: string;
+  damage: string;
+  keywords: string;
+}
+
 interface ArmyUnit {
   name: string;
   parentUnitName?: string;
@@ -19,6 +31,13 @@ interface ArmyUnit {
     OC: string;
   };
   invulnSave?: string;
+  invulnFromLeader?: string;
+  fnp?: string;
+  fnpFromLeader?: string;
+  // For leaders - what buffs they grant
+  grantsInvuln?: string;
+  grantsFnp?: string;
+  weapons?: Weapon[];
 }
 
 function MainContent() {
@@ -28,6 +47,8 @@ function MainContent() {
   // Tab state from URL
   const tabParam = searchParams.get('tab');
   const activeTab = (tabParam === 'stats' ? 'stats' : 'deployment') as 'deployment' | 'stats';
+  const subTabParam = searchParams.get('subtab');
+  const activeSubTab = (subTabParam === 'weapons' ? 'weapons' : 'stats') as 'stats' | 'weapons';
 
   const setActiveTab = useCallback((tab: 'deployment' | 'stats') => {
     const params = new URLSearchParams(searchParams.toString());
@@ -35,8 +56,29 @@ function MainContent() {
     router.push(`?${params.toString()}`, { scroll: false });
   }, [searchParams, router]);
 
+  const setActiveSubTab = useCallback((subtab: 'stats' | 'weapons') => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('subtab', subtab);
+    router.push(`?${params.toString()}`, { scroll: false });
+  }, [searchParams, router]);
+
   // Army data state
   const [armyUnits, setArmyUnits] = useState<ArmyUnit[]>([]);
+  const [leaderAssignments, setLeaderAssignments] = useState<{ [leaderName: string]: string }>({});
+
+  // Load leaders configuration on mount
+  useEffect(() => {
+    const loadLeaders = async () => {
+      try {
+        const response = await fetch('/leaders.json');
+        const data = await response.json();
+        setLeaderAssignments(data.leaders || {});
+      } catch (error) {
+        console.error('Error loading leaders configuration:', error);
+      }
+    };
+    loadLeaders();
+  }, []);
 
   // Per-round state
   const [currentRound, setCurrentRound] = useState<string>('terraform');
@@ -302,69 +344,174 @@ function MainContent() {
             )}
 
             {activeTab === 'stats' && (
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <h2 className="text-2xl font-bold text-[#39FF14]">Army Statistics</h2>
 
-                {armyUnits.length > 0 ? (
-                  <div className="overflow-x-auto">
-                    <table className="w-full border-collapse">
+                {/* Subtabs */}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setActiveSubTab('stats')}
+                    className={`px-4 py-2 text-sm font-semibold rounded transition-colors ${
+                      activeSubTab === 'stats'
+                        ? 'bg-[#0f4d0f] text-[#39FF14] border border-[#39FF14]'
+                        : 'bg-[#1a1a1a] text-gray-400 border border-[#1a2a1a] hover:border-[#39FF14] hover:text-gray-200'
+                    }`}
+                  >
+                    Unit Stats
+                  </button>
+                  <button
+                    onClick={() => setActiveSubTab('weapons')}
+                    className={`px-4 py-2 text-sm font-semibold rounded transition-colors ${
+                      activeSubTab === 'weapons'
+                        ? 'bg-[#0f4d0f] text-[#39FF14] border border-[#39FF14]'
+                        : 'bg-[#1a1a1a] text-gray-400 border border-[#1a2a1a] hover:border-[#39FF14] hover:text-gray-200'
+                    }`}
+                  >
+                    Weapons
+                  </button>
+                </div>
+
+                {activeSubTab === 'stats' && (
+                  armyUnits.length > 0 ? (
+                  <div>
+                    <table className="border-collapse">
                       <thead>
                         <tr className="bg-[#1a1a1a] border-b-2 border-[#39FF14]">
-                          <th className="text-left p-3 text-gray-200 font-bold">Unit</th>
-                          <th className="text-center p-3 text-gray-200 font-bold">M</th>
-                          <th className="text-center p-3 text-gray-200 font-bold">T</th>
-                          <th className="text-center p-3 text-gray-200 font-bold">SV</th>
-                          <th className="text-center p-3 text-gray-200 font-bold">Invuln</th>
-                          <th className="text-center p-3 text-gray-200 font-bold">W</th>
-                          <th className="text-center p-3 text-gray-200 font-bold">LD</th>
-                          <th className="text-center p-3 text-gray-200 font-bold">OC</th>
+                          <th className="text-left pr-4 py-1 text-gray-200 font-bold">Unit</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">M</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">T</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">SV</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">Inv</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">FNP</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">W</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">LD</th>
+                          <th className="text-left py-1 text-gray-200 font-bold">OC</th>
                         </tr>
                       </thead>
                       <tbody>
                         {(() => {
-                          // Group units by parent unit name
-                          const groupedUnits = new Map<string | undefined, ArmyUnit[]>();
+                          // Deduplicate units by name (keep first occurrence)
+                          const seenNames = new Set<string>();
+                          const dedupedUnits = armyUnits.filter(u => {
+                            if (seenNames.has(u.name)) return false;
+                            seenNames.add(u.name);
+                            return true;
+                          });
 
-                          armyUnits.forEach(unit => {
-                            const key = unit.parentUnitName || unit.name;
-                            if (!groupedUnits.has(key)) {
-                              groupedUnits.set(key, []);
+                          // Create a map of unit name to unit data
+                          const unitMap = new Map(dedupedUnits.map(u => [u.name, u]));
+
+                          // Track which units have been displayed
+                          const displayedUnits = new Set<string>();
+
+                          // Build groups: bodyguard units with their leaders
+                          const groups: { groupName: string; units: ArmyUnit[] }[] = [];
+
+                          // First, create groups based on leader assignments (grouped by bodyguard unit)
+                          const bodyguardToLeaders = new Map<string, string[]>();
+                          Object.entries(leaderAssignments).forEach(([leader, bodyguard]) => {
+                            if (!bodyguardToLeaders.has(bodyguard)) {
+                              bodyguardToLeaders.set(bodyguard, []);
                             }
-                            groupedUnits.get(key)!.push(unit);
+                            bodyguardToLeaders.get(bodyguard)!.push(leader);
+                          });
+
+                          // Create groups for bodyguard units with their leaders
+                          bodyguardToLeaders.forEach((leaders, bodyguardName) => {
+                            const groupUnits: ArmyUnit[] = [];
+
+                            // Add leaders first
+                            leaders.forEach(leaderName => {
+                              const leader = unitMap.get(leaderName);
+                              if (leader) {
+                                groupUnits.push(leader);
+                                displayedUnits.add(leaderName);
+                              }
+                            });
+
+                            // Add bodyguard unit
+                            const bodyguard = unitMap.get(bodyguardName);
+                            if (bodyguard) {
+                              groupUnits.push(bodyguard);
+                              displayedUnits.add(bodyguardName);
+                            }
+
+                            if (groupUnits.length > 0) {
+                              groups.push({ groupName: bodyguardName, units: groupUnits });
+                            }
+                          });
+
+                          // Add remaining units grouped by their parentUnitName
+                          const remainingUnits = dedupedUnits.filter(u => !displayedUnits.has(u.name));
+                          const remainingGroups = new Map<string, ArmyUnit[]>();
+
+                          remainingUnits.forEach(unit => {
+                            const key = unit.parentUnitName || unit.name;
+                            if (!remainingGroups.has(key)) {
+                              remainingGroups.set(key, []);
+                            }
+                            remainingGroups.get(key)!.push(unit);
+                          });
+
+                          remainingGroups.forEach((units, groupName) => {
+                            groups.push({ groupName, units });
                           });
 
                           let rowIndex = 0;
-                          return Array.from(groupedUnits.entries()).map(([groupKey, units]) => {
-                            const hasParent = units.some(u => u.parentUnitName);
-                            const parentName = units[0].parentUnitName;
+                          return groups.map((group, groupIdx) => {
+                            // Don't show header if only one unit in the group
+                            const showHeader = group.units.length > 1;
 
                             return (
-                              <React.Fragment key={groupKey}>
-                                {/* Group Header */}
-                                <tr className="bg-[#0f4d0f] border-t-2 border-[#39FF14]">
-                                  <td colSpan={8} className="p-2 text-[#39FF14] font-bold text-sm">
-                                    {hasParent ? parentName : units[0].name}
-                                  </td>
-                                </tr>
+                              <React.Fragment key={groupIdx}>
+                                {/* Group Header - only show if multiple units or name differs */}
+                                {showHeader && (
+                                  <tr className="bg-[#0f4d0f] border-t border-[#39FF14]">
+                                    <td colSpan={9} className="py-1 text-[#39FF14] font-bold text-sm">
+                                      {group.groupName}
+                                    </td>
+                                  </tr>
+                                )}
                                 {/* Units in this group */}
-                                {units.map((unit, idx) => {
+                                {group.units.map((unit, idx) => {
                                   const isEven = rowIndex % 2 === 0;
                                   rowIndex++;
+
+                                  // Determine invuln and FNP values (inherent or from leader)
+                                  let invulnDisplay = unit.invulnSave || '-';
+                                  let fnpDisplay = unit.fnp || '-';
+
+                                  // Find leaders in this group that grant buffs (buffs apply to the whole unit including the leader)
+                                  const leadersInGroup = group.units.filter(u =>
+                                    Object.keys(leaderAssignments).includes(u.name) &&
+                                    leaderAssignments[u.name] === group.groupName
+                                  );
+
+                                  for (const leader of leadersInGroup) {
+                                    if (leader.grantsInvuln && invulnDisplay === '-') {
+                                      invulnDisplay = `${leader.grantsInvuln}(L)`;
+                                    }
+                                    if (leader.grantsFnp && fnpDisplay === '-') {
+                                      fnpDisplay = `${leader.grantsFnp}(L)`;
+                                    }
+                                  }
+
                                   return (
                                     <tr
-                                      key={`${groupKey}-${idx}`}
+                                      key={`${groupIdx}-${idx}`}
                                       className={`border-b border-[#1a2a1a] hover:bg-[#2a2a2a] transition-colors ${
                                         isEven ? 'bg-[#0f0f0f]' : 'bg-[#1a1a1a]'
                                       }`}
                                     >
-                                      <td className="p-3 text-gray-200 font-semibold">{unit.name}</td>
-                                      <td className="p-3 text-center text-gray-300">{unit.stats?.M || '-'}</td>
-                                      <td className="p-3 text-center text-gray-300">{unit.stats?.T || '-'}</td>
-                                      <td className="p-3 text-center text-gray-300">{unit.stats?.SV || '-'}</td>
-                                      <td className="p-3 text-center text-[#39FF14] font-semibold">{unit.invulnSave || '-'}</td>
-                                      <td className="p-3 text-center text-gray-300">{unit.stats?.W || '-'}</td>
-                                      <td className="p-3 text-center text-gray-300">{unit.stats?.LD || '-'}</td>
-                                      <td className="p-3 text-center text-gray-300">{unit.stats?.OC || '-'}</td>
+                                      <td className={`pr-4 py-1 text-gray-200 font-semibold ${showHeader ? 'pl-3' : ''}`}>{unit.name}</td>
+                                      <td className="pr-3 py-1 text-gray-300">{unit.stats?.M || '-'}</td>
+                                      <td className="pr-3 py-1 text-gray-300">{unit.stats?.T || '-'}</td>
+                                      <td className="pr-3 py-1 text-gray-300">{unit.stats?.SV || '-'}</td>
+                                      <td className="pr-3 py-1 text-gray-300">{invulnDisplay}</td>
+                                      <td className="pr-3 py-1 text-gray-300">{fnpDisplay}</td>
+                                      <td className="pr-3 py-1 text-gray-300">{unit.stats?.W || '-'}</td>
+                                      <td className="pr-3 py-1 text-gray-300">{unit.stats?.LD || '-'}</td>
+                                      <td className="py-1 text-gray-300">{unit.stats?.OC || '-'}</td>
                                     </tr>
                                   );
                                 })}
@@ -375,10 +522,78 @@ function MainContent() {
                       </tbody>
                     </table>
                   </div>
-                ) : (
-                  <div className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-8 text-center">
-                    <p className="text-gray-400">No army data loaded. Import an army list to see statistics.</p>
+                  ) : (
+                    <div className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-8 text-center">
+                      <p className="text-gray-400">No army data loaded. Import an army list to see statistics.</p>
+                    </div>
+                  )
+                )}
+
+                {activeSubTab === 'weapons' && (
+                  armyUnits.length > 0 ? (
+                  <div>
+                    <table className="border-collapse">
+                      <thead>
+                        <tr className="bg-[#1a1a1a] border-b-2 border-[#39FF14]">
+                          <th className="text-left pr-4 py-1 text-gray-200 font-bold">Unit</th>
+                          <th className="text-left pr-4 py-1 text-gray-200 font-bold">Weapon</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">Type</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">Range</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">A</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">BS/WS</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">S</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">AP</th>
+                          <th className="text-left pr-3 py-1 text-gray-200 font-bold">D</th>
+                          <th className="text-left py-1 text-gray-200 font-bold">Keywords</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(() => {
+                          // Deduplicate units by name
+                          const seenNames = new Set<string>();
+                          const dedupedUnits = armyUnits.filter(u => {
+                            if (seenNames.has(u.name)) return false;
+                            seenNames.add(u.name);
+                            return true;
+                          });
+
+                          let rowIndex = 0;
+                          return dedupedUnits.flatMap((unit) => {
+                            if (!unit.weapons || unit.weapons.length === 0) return [];
+
+                            return unit.weapons.map((weapon, weaponIdx) => {
+                              const isEven = rowIndex % 2 === 0;
+                              rowIndex++;
+                              return (
+                                <tr
+                                  key={`${unit.name}-${weaponIdx}`}
+                                  className={`border-b border-[#1a2a1a] hover:bg-[#2a2a2a] transition-colors ${
+                                    isEven ? 'bg-[#0f0f0f]' : 'bg-[#1a1a1a]'
+                                  }`}
+                                >
+                                  <td className="pr-4 py-1 text-gray-200 font-semibold">{weaponIdx === 0 ? unit.name : ''}</td>
+                                  <td className="pr-4 py-1 text-gray-300">{weapon.name}</td>
+                                  <td className="pr-3 py-1 text-gray-300">{weapon.type}</td>
+                                  <td className="pr-3 py-1 text-gray-300">{weapon.range}</td>
+                                  <td className="pr-3 py-1 text-gray-300">{weapon.attacks}</td>
+                                  <td className="pr-3 py-1 text-gray-300">{weapon.skill}</td>
+                                  <td className="pr-3 py-1 text-gray-300">{weapon.strength}</td>
+                                  <td className="pr-3 py-1 text-gray-300">{weapon.ap}</td>
+                                  <td className="pr-3 py-1 text-gray-300">{weapon.damage}</td>
+                                  <td className="py-1 text-gray-300">{weapon.keywords}</td>
+                                </tr>
+                              );
+                            });
+                          });
+                        })()}
+                      </tbody>
+                    </table>
                   </div>
+                  ) : (
+                    <div className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-8 text-center">
+                      <p className="text-gray-400">No army data loaded. Import an army list to see weapons.</p>
+                    </div>
+                  )
                 )}
               </div>
             )}
