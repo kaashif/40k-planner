@@ -524,38 +524,52 @@ export default function DeploymentPlanner({
             </div>
           ))}
 
-          {/* Render model labels on top */}
-          {spawnedGroups.map(group => (
-            <div key={`labels-${group.unitId}`}>
-              {group.models.map(model => {
-                const size = group.isRectangular
-                  ? {
-                      width: (group.width || 25) * scale,
-                      height: (group.length || 25) * scale
-                    }
-                  : {
-                      width: (group.baseSize || 25) * scale,
-                      height: (group.baseSize || 25) * scale
-                    };
+          {/* Render model labels on top - one per unit at center-bottom */}
+          {spawnedGroups.map(group => {
+            if (group.models.length === 0) return null;
 
-                return (
-                  <div
-                    key={model.id}
-                    className="absolute pointer-events-none text-xs font-semibold whitespace-nowrap"
-                    style={{
-                      left: group.groupX + (model.x * scale) + size.width / 2,
-                      top: group.groupY + (model.y * scale) + size.height + 2,
-                      transform: 'translateX(-50%)',
-                      color: '#ffffff',
-                      textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000',
-                    }}
-                  >
-                    {group.unitName}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+            // Calculate bounding box of all models in this group
+            const size = group.isRectangular
+              ? {
+                  width: (group.width || 25) * scale,
+                  height: (group.length || 25) * scale
+                }
+              : {
+                  width: (group.baseSize || 25) * scale,
+                  height: (group.baseSize || 25) * scale
+                };
+
+            let minX = Infinity, maxX = -Infinity, maxY = -Infinity;
+            group.models.forEach(model => {
+              const modelLeft = group.groupX + (model.x * scale);
+              const modelRight = modelLeft + size.width;
+              const modelBottom = group.groupY + (model.y * scale) + size.height;
+
+              minX = Math.min(minX, modelLeft);
+              maxX = Math.max(maxX, modelRight);
+              maxY = Math.max(maxY, modelBottom);
+            });
+
+            // Center horizontally, bottom of lowest model
+            const centerX = (minX + maxX) / 2;
+            const bottomY = maxY + 2;
+
+            return (
+              <div
+                key={`label-${group.unitId}`}
+                className="absolute pointer-events-none text-xs font-semibold whitespace-nowrap"
+                style={{
+                  left: centerX,
+                  top: bottomY,
+                  transform: 'translateX(-50%)',
+                  color: '#ffffff',
+                  textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000',
+                }}
+              >
+                {group.unitName}
+              </div>
+            );
+          })}
 
           {/* Box selection visual */}
           {isBoxSelecting && boxSelectStart && boxSelectEnd && (
