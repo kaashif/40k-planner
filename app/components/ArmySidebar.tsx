@@ -44,6 +44,7 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
   const [isRectangular, setIsRectangular] = useState<{ [key: string]: boolean }>({});
   const [defaultBaseSizes, setDefaultBaseSizes] = useState<{ [key: string]: string | { width: string; length: string } }>({});
   const [overrideBaseSizes, setOverrideBaseSizes] = useState<{ [key: string]: string | { width: string; length: string } }>({});
+  const [leaderAssignments, setLeaderAssignments] = useState<{ [leaderName: string]: string }>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const extractModels = (selections: any[]): UnitWithBase[] => {
@@ -86,6 +87,54 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
     return models;
   };
 
+  const applyLeaderAssignments = (models: UnitWithBase[]): UnitWithBase[] => {
+    if (Object.keys(leaderAssignments).length === 0) return models;
+
+    // Create a map of unit names to their IDs
+    const unitMap = new Map<string, { id: string; name: string }>();
+    models.forEach(model => {
+      if (model.parentUnitId && model.parentUnitName) {
+        unitMap.set(model.parentUnitName, {
+          id: model.parentUnitId,
+          name: model.parentUnitName
+        });
+      }
+    });
+
+    // Apply leader assignments
+    return models.map(model => {
+      // Check if this model is a leader
+      const leadsUnitName = leaderAssignments[model.name];
+      if (leadsUnitName) {
+        // Find the unit this leader should join
+        const ledUnit = unitMap.get(leadsUnitName);
+        if (ledUnit) {
+          return {
+            ...model,
+            parentUnitId: ledUnit.id,
+            parentUnitName: ledUnit.name
+          };
+        }
+      }
+      return model;
+    });
+  };
+
+  // Load leaders configuration and base sizes on mount
+  useEffect(() => {
+    const loadLeaders = async () => {
+      try {
+        const response = await fetch('/leaders.json');
+        const data = await response.json();
+        setLeaderAssignments(data.leaders || {});
+      } catch (error) {
+        console.error('Error loading leaders configuration:', error);
+      }
+    };
+
+    loadLeaders();
+  }, []);
+
   // Load default base sizes from API and overrides from localStorage on mount
   useEffect(() => {
     const loadBaseSizes = async () => {
@@ -119,7 +168,8 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
         const data = await response.json();
 
         const selections = data.roster?.forces?.[0]?.selections || [];
-        const models = extractModels(selections);
+        let models = extractModels(selections);
+        models = applyLeaderAssignments(models);
 
         setUnits(models);
 
@@ -149,10 +199,10 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
       }
     };
 
-    if (Object.keys(mergedBaseSizes).length > 0 || units.length === 0) {
+    if ((Object.keys(mergedBaseSizes).length > 0 && Object.keys(leaderAssignments).length > 0) || units.length === 0) {
       loadExampleArmy();
     }
-  }, [mergedBaseSizes]);
+  }, [mergedBaseSizes, leaderAssignments]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleJsonImport = () => {
     fileInputRef.current?.click();
@@ -169,7 +219,8 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
         const selections = data.roster?.forces?.[0]?.selections || [];
 
         // Extract models from all selections (including nested)
-        const models = extractModels(selections);
+        let models = extractModels(selections);
+        models = applyLeaderAssignments(models);
 
         setUnits(models);
 

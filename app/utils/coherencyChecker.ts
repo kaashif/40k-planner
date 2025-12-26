@@ -54,9 +54,42 @@ export function calculateEdgeDistance(
 }
 
 /**
+ * Check if all models form a single connected component using DFS
+ */
+function isConnectedComponent(
+  models: Model[],
+  adjacencyMap: Map<string, Set<string>>
+): boolean {
+  if (models.length <= 1) return true;
+
+  const visited = new Set<string>();
+  const stack = [models[0].id];
+
+  // DFS from first model
+  while (stack.length > 0) {
+    const current = stack.pop()!;
+    if (visited.has(current)) continue;
+
+    visited.add(current);
+    const neighbors = adjacencyMap.get(current);
+    if (neighbors) {
+      neighbors.forEach(neighbor => {
+        if (!visited.has(neighbor)) {
+          stack.push(neighbor);
+        }
+      });
+    }
+  }
+
+  // All models should be reachable from the first model
+  return visited.size === models.length;
+}
+
+/**
  * Check if a unit is in coherency according to 40k rules
  * - Units with 6 or fewer models: each model within 2" of at least 1 other model
  * - Units with 7+ models: each model within 2" of at least 2 other models
+ * - All models must form a single connected group
  */
 export function checkCoherency(group: SpawnedGroup): CoherencyResult {
   const modelCount = group.models.length;
@@ -72,6 +105,12 @@ export function checkCoherency(group: SpawnedGroup): CoherencyResult {
   const requiredConnections = modelCount <= 6 ? 1 : 2;
   const outOfCoherencyModels = new Set<string>();
 
+  // Build adjacency map for connectivity check
+  const adjacencyMap = new Map<string, Set<string>>();
+  group.models.forEach(model => {
+    adjacencyMap.set(model.id, new Set());
+  });
+
   // Check each model
   for (let i = 0; i < group.models.length; i++) {
     const model = group.models[i];
@@ -86,6 +125,8 @@ export function checkCoherency(group: SpawnedGroup): CoherencyResult {
 
       if (distance <= COHERENCY_DISTANCE_MM) {
         connectionsCount++;
+        // Build adjacency map for connectivity check
+        adjacencyMap.get(model.id)!.add(otherModel.id);
       }
     }
 
@@ -93,6 +134,14 @@ export function checkCoherency(group: SpawnedGroup): CoherencyResult {
     if (connectionsCount < requiredConnections) {
       outOfCoherencyModels.add(model.id);
     }
+  }
+
+  // Check if all models form a single connected component
+  const isConnected = isConnectedComponent(group.models, adjacencyMap);
+
+  // If not connected, all models are out of coherency
+  if (!isConnected) {
+    group.models.forEach(model => outOfCoherencyModels.add(model.id));
   }
 
   return {
@@ -127,9 +176,23 @@ export function checkParentUnitCoherency(groups: SpawnedGroup[]): CoherencyResul
   const requiredConnections = totalModelCount <= 6 ? 1 : 2;
   const outOfCoherencyModels = new Set<string>();
 
+  // Build adjacency map for connectivity check across all groups
+  const adjacencyMap = new Map<string, Set<string>>();
+  const allModelKeys: string[] = [];
+
+  // Initialize adjacency map with all models
+  for (const group of groups) {
+    for (const model of group.models) {
+      const key = `${group.unitId}-${model.id}`;
+      adjacencyMap.set(key, new Set());
+      allModelKeys.push(key);
+    }
+  }
+
   // Check each model in each group
   for (const currentGroup of groups) {
     for (const model of currentGroup.models) {
+      const currentKey = `${currentGroup.unitId}-${model.id}`;
       let connectionsCount = 0;
 
       // Check distance to all other models in all groups
@@ -148,6 +211,9 @@ export function checkParentUnitCoherency(groups: SpawnedGroup[]): CoherencyResul
 
           if (distance <= COHERENCY_DISTANCE_MM) {
             connectionsCount++;
+            // Build adjacency for connectivity check
+            const otherKey = `${otherGroup.unitId}-${otherModel.id}`;
+            adjacencyMap.get(currentKey)!.add(otherKey);
           }
         }
       }
@@ -157,6 +223,16 @@ export function checkParentUnitCoherency(groups: SpawnedGroup[]): CoherencyResul
         outOfCoherencyModels.add(`${currentGroup.unitId}-${model.id}`);
       }
     }
+  }
+
+  // Check if all models form a single connected component
+  // Create a simple models array for connectivity check
+  const simpleModels = allModelKeys.map(key => ({ id: key, x: 0, y: 0 }));
+  const isConnected = isConnectedComponent(simpleModels, adjacencyMap);
+
+  // If not connected, all models are out of coherency
+  if (!isConnected) {
+    allModelKeys.forEach(key => outOfCoherencyModels.add(key));
   }
 
   return {
