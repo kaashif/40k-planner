@@ -23,10 +23,16 @@ export function calculateEdgeDistance(
   model2: Model,
   group: SpawnedGroup
 ): number {
-  const centerX1 = model1.x;
-  const centerY1 = model1.y;
-  const centerX2 = model2.x;
-  const centerY2 = model2.y;
+  // Calculate base size to find center offset
+  const size = group.isRectangular && group.width && group.length
+    ? Math.max(group.width, group.length)
+    : (group.baseSize || 25);
+
+  // Model x,y are top-left corner positions, add half size to get center
+  const centerX1 = model1.x + size / 2;
+  const centerY1 = model1.y + size / 2;
+  const centerX2 = model2.x + size / 2;
+  const centerY2 = model2.y + size / 2;
 
   // Calculate center-to-center distance
   const centerDistance = Math.sqrt(
@@ -168,11 +174,20 @@ function calculateEdgeDistanceBetweenGroups(
   model2: Model,
   group2: SpawnedGroup
 ): number {
-  // Calculate absolute positions
-  const centerX1 = group1.groupX + model1.x;
-  const centerY1 = group1.groupY + model1.y;
-  const centerX2 = group2.groupX + model2.x;
-  const centerY2 = group2.groupY + model2.y;
+  // Calculate base sizes
+  const size1 = group1.isRectangular && group1.width && group1.length
+    ? Math.max(group1.width, group1.length)
+    : (group1.baseSize || 25);
+  const size2 = group2.isRectangular && group2.width && group2.length
+    ? Math.max(group2.width, group2.length)
+    : (group2.baseSize || 25);
+
+  // Calculate absolute center positions
+  // Model x,y are top-left corner positions, add half size to get center
+  const centerX1 = group1.groupX + model1.x + size1 / 2;
+  const centerY1 = group1.groupY + model1.y + size1 / 2;
+  const centerX2 = group2.groupX + model2.x + size2 / 2;
+  const centerY2 = group2.groupY + model2.y + size2 / 2;
 
   // Calculate center-to-center distance
   const centerDistance = Math.sqrt(

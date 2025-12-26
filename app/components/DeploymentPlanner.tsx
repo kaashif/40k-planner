@@ -48,6 +48,8 @@ export default function DeploymentPlanner({
   onRoundChange
 }: DeploymentPlannerProps) {
   const [selectedLayout, setSelectedLayout] = useState(layouts[0]);
+  const [toolMode, setToolMode] = useState<'selection' | 'ruler'>('selection');
+  const [rulerPoints, setRulerPoints] = useState<{ x: number; y: number }[]>([]);
   const [draggedModel, setDraggedModel] = useState<{ groupId: string; modelId: string | null } | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1); // pixels per mm
@@ -160,6 +162,26 @@ export default function DeploymentPlanner({
 
   // Handle canvas click to deselect (but not during box selection)
   const handleCanvasClick = (e: React.MouseEvent) => {
+    // Ruler mode - add measurement points
+    if (toolMode === 'ruler') {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (!rect) return;
+
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      if (rulerPoints.length === 0) {
+        setRulerPoints([{ x, y }]);
+      } else if (rulerPoints.length === 1) {
+        setRulerPoints([rulerPoints[0], { x, y }]);
+      } else {
+        // Reset and start new measurement
+        setRulerPoints([{ x, y }]);
+      }
+      return;
+    }
+
+    // Selection mode
     // Don't deselect if we just finished a box selection
     if (justCompletedBoxSelection.current) {
       justCompletedBoxSelection.current = false;
@@ -178,6 +200,9 @@ export default function DeploymentPlanner({
   };
 
   const handleMouseDown = (e: React.MouseEvent, groupId: string, modelId: string | null) => {
+    // Disable model interaction in ruler mode
+    if (toolMode === 'ruler') return;
+
     e.preventDefault();
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -364,6 +389,9 @@ export default function DeploymentPlanner({
 
   // Handle canvas mousedown for box selection
   const handleCanvasMouseDown = (e: React.MouseEvent) => {
+    // Disable box selection in ruler mode
+    if (toolMode === 'ruler') return;
+
     // Allow box selection on canvas or image (but not on models - they stop propagation)
     if (!canvasRef.current) return;
 
@@ -378,47 +406,97 @@ export default function DeploymentPlanner({
 
   return (
     <div className="space-y-4">
-      {/* Selection toolbar - always visible */}
+      {/* Toolbar - always visible */}
       <div className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-4 flex items-center gap-4">
-        <span className={`font-semibold ${selectedModels.length > 0 ? 'text-gray-200' : 'text-gray-500'}`}>
-          {selectedModels.length > 0
-            ? `${selectedModels.length} model${selectedModels.length !== 1 ? 's' : ''} selected`
-            : 'No models selected'
-          }
-        </span>
-        {selectedModels.length > 0 && (
-          <span className="text-sm text-gray-400">
-            from {new Set(selectedModels.map(s => s.groupId)).size} unit(s)
-          </span>
-        )}
-        <button
-          onClick={() => onSelectionChange([])}
-          disabled={selectedModels.length === 0}
-          className={`px-3 py-1 font-semibold rounded transition-colors ${
-            selectedModels.length > 0
-              ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
-              : 'bg-gray-600 text-gray-500 cursor-not-allowed'
-          }`}
-        >
-          Clear Selection
-        </button>
-        <button
-          onClick={() => {
-            if (deleteSelectedOperation.canExecute(selectedModels)) {
-              const updatedGroups = deleteSelectedOperation.execute(spawnedGroups, selectedModels);
-              onUpdateGroups(updatedGroups);
+        {/* Tool mode selector */}
+        <div className="flex gap-2 mr-4 border-r border-[#2a2a2a] pr-4">
+          <button
+            onClick={() => {
+              setToolMode('selection');
+              setRulerPoints([]);
+            }}
+            className={`px-3 py-1 font-semibold rounded transition-colors ${
+              toolMode === 'selection'
+                ? 'bg-[#39FF14] text-black'
+                : 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
+            }`}
+          >
+            Selection
+          </button>
+          <button
+            onClick={() => {
+              setToolMode('ruler');
               onSelectionChange([]);
-            }
-          }}
-          disabled={selectedModels.length === 0}
-          className={`px-3 py-1 font-semibold rounded transition-colors ${
-            selectedModels.length > 0
-              ? 'bg-red-900 hover:bg-red-700 text-white'
-              : 'bg-gray-600 text-gray-500 cursor-not-allowed'
-          }`}
-        >
-          Delete Selected
-        </button>
+            }}
+            className={`px-3 py-1 font-semibold rounded transition-colors ${
+              toolMode === 'ruler'
+                ? 'bg-[#39FF14] text-black'
+                : 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
+            }`}
+          >
+            Ruler
+          </button>
+        </div>
+
+        {toolMode === 'selection' && (
+          <>
+            <span className={`font-semibold ${selectedModels.length > 0 ? 'text-gray-200' : 'text-gray-500'}`}>
+              {selectedModels.length > 0
+                ? `${selectedModels.length} model${selectedModels.length !== 1 ? 's' : ''} selected`
+                : 'No models selected'
+              }
+            </span>
+            {selectedModels.length > 0 && (
+              <span className="text-sm text-gray-400">
+                from {new Set(selectedModels.map(s => s.groupId)).size} unit(s)
+              </span>
+            )}
+            <button
+              onClick={() => onSelectionChange([])}
+              disabled={selectedModels.length === 0}
+              className={`px-3 py-1 font-semibold rounded transition-colors ${
+                selectedModels.length > 0
+                  ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
+                  : 'bg-gray-600 text-gray-500 cursor-not-allowed'
+              }`}
+            >
+              Clear Selection
+            </button>
+            <button
+              onClick={() => {
+                if (deleteSelectedOperation.canExecute(selectedModels)) {
+                  const updatedGroups = deleteSelectedOperation.execute(spawnedGroups, selectedModels);
+                  onUpdateGroups(updatedGroups);
+                  onSelectionChange([]);
+                }
+              }}
+              disabled={selectedModels.length === 0}
+              className={`px-3 py-1 font-semibold rounded transition-colors ${
+                selectedModels.length > 0
+                  ? 'bg-red-900 hover:bg-red-700 text-white'
+                  : 'bg-gray-600 text-gray-500 cursor-not-allowed'
+              }`}
+            >
+              Delete Selected
+            </button>
+          </>
+        )}
+
+        {toolMode === 'ruler' && (
+          <>
+            <span className="font-semibold text-gray-200">
+              Click two points to measure distance
+            </span>
+            {rulerPoints.length > 0 && (
+              <button
+                onClick={() => setRulerPoints([])}
+                className="px-3 py-1 font-semibold rounded transition-colors bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white"
+              >
+                Clear Measurement
+              </button>
+            )}
+          </>
+        )}
 
         {/* Coherency status */}
         <div className="ml-auto flex items-center gap-2">
@@ -485,7 +563,9 @@ export default function DeploymentPlanner({
         </h3>
         <div
           ref={canvasRef}
-          className="relative w-full h-[calc(100vh-400px)] cursor-crosshair select-none"
+          className={`relative w-full h-[calc(100vh-400px)] select-none ${
+            toolMode === 'ruler' ? 'cursor-crosshair' : 'cursor-crosshair'
+          }`}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseDown={handleCanvasMouseDown}
@@ -759,6 +839,81 @@ export default function DeploymentPlanner({
                 height: Math.abs(boxSelectEnd.y - boxSelectStart.y),
               }}
             />
+          )}
+
+          {/* Ruler measurement visual */}
+          {toolMode === 'ruler' && rulerPoints.length > 0 && (
+            <>
+              {/* First point marker */}
+              <div
+                className="absolute w-3 h-3 bg-[#39FF14] rounded-full border-2 border-black pointer-events-none z-50"
+                style={{
+                  left: rulerPoints[0].x - 6,
+                  top: rulerPoints[0].y - 6,
+                }}
+              />
+
+              {/* Line and second point if we have 2 points */}
+              {rulerPoints.length === 2 && (() => {
+                const dx = rulerPoints[1].x - rulerPoints[0].x;
+                const dy = rulerPoints[1].y - rulerPoints[0].y;
+                const distancePixels = Math.sqrt(dx * dx + dy * dy);
+                const distanceMm = distancePixels / scale;
+                const distanceInches = Math.ceil(distanceMm / 25.4 * 100) / 100;
+
+                const midX = (rulerPoints[0].x + rulerPoints[1].x) / 2;
+                const midY = (rulerPoints[0].y + rulerPoints[1].y) / 2;
+
+                return (
+                  <>
+                    {/* Line */}
+                    <svg
+                      className="absolute pointer-events-none"
+                      style={{
+                        left: 0,
+                        top: 0,
+                        width: '100%',
+                        height: '100%',
+                        zIndex: 40
+                      }}
+                    >
+                      <line
+                        x1={rulerPoints[0].x}
+                        y1={rulerPoints[0].y}
+                        x2={rulerPoints[1].x}
+                        y2={rulerPoints[1].y}
+                        stroke="#39FF14"
+                        strokeWidth="3"
+                      />
+                    </svg>
+
+                    {/* Second point marker */}
+                    <div
+                      className="absolute w-3 h-3 bg-[#39FF14] rounded-full border-2 border-black pointer-events-none z-50"
+                      style={{
+                        left: rulerPoints[1].x - 6,
+                        top: rulerPoints[1].y - 6,
+                      }}
+                    />
+
+                    {/* Distance label */}
+                    <div
+                      className="absolute pointer-events-none text-sm font-bold"
+                      style={{
+                        left: midX,
+                        top: midY,
+                        transform: 'translate(-50%, -50%)',
+                        color: '#39FF14',
+                        textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000',
+                        zIndex: 50
+                      }}
+                    >
+                      {distanceInches.toFixed(2)}"
+                    </div>
+                  </>
+                );
+              })()}
+            </>
           )}
         </div>
       </div>
