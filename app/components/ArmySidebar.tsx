@@ -19,15 +19,30 @@ interface UnitWithBase extends Unit {
   parentUnitName?: string; // Track parent unit's name for display
 }
 
+interface ArmyUnit {
+  name: string;
+  parentUnitName?: string;
+  stats?: {
+    M: string;
+    T: string;
+    SV: string;
+    W: string;
+    LD: string;
+    OC: string;
+  };
+  invulnSave?: string;
+}
+
 interface ArmySidebarProps {
   onSpawn: (unit: SpawnedUnit) => void;
   onDelete: (unitId: string) => void;
   spawnedUnits: Set<string>;
   spawnedGroups: SpawnedGroup[];
   onSelectAll: (models: { groupId: string; modelId: string }[]) => void;
+  onArmyDataUpdate: (units: ArmyUnit[]) => void;
 }
 
-export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGroups, onSelectAll }: ArmySidebarProps) {
+export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGroups, onSelectAll, onArmyDataUpdate }: ArmySidebarProps) {
   const [units, setUnits] = useState<UnitWithBase[]>([]);
   const [baseSizes, setBaseSizes] = useState<{ [key: string]: string }>({});
   const [flyDimensions, setFlyDimensions] = useState<{ [key: string]: { width: string; length: string } }>({});
@@ -36,6 +51,114 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
   const [overrideBaseSizes, setOverrideBaseSizes] = useState<{ [key: string]: string | { width: string; length: string } }>({});
   const [leaderAssignments, setLeaderAssignments] = useState<{ [leaderName: string]: string }>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const extractArmyUnits = (selections: any[]): ArmyUnit[] => {
+    const armyUnits: ArmyUnit[] = [];
+    const processedUnits = new Set<string>();
+
+    for (const sel of selections) {
+      // Skip non-model/non-unit selections
+      if (sel.type !== 'model' && sel.type !== 'unit') continue;
+
+      if (sel.type === 'unit' && sel.selections && sel.selections.length > 0) {
+        // This is a unit with nested models
+        const parentUnitName = sel.name;
+        const nestedModels = sel.selections.filter(
+          (nested: any) => nested.type === 'model'
+        );
+
+        for (const model of nestedModels) {
+          const modelName = model.name;
+          if (processedUnits.has(modelName)) continue;
+          processedUnits.add(modelName);
+
+          const profiles = model.profiles || [];
+
+          // Find unit profile
+          const unitProfile = profiles.find((p: any) => p.typeName === 'Unit');
+          let stats;
+          if (unitProfile && unitProfile.characteristics) {
+            stats = {
+              M: unitProfile.characteristics.find((c: any) => c.name === 'M')?.$text || '-',
+              T: unitProfile.characteristics.find((c: any) => c.name === 'T')?.$text || '-',
+              SV: unitProfile.characteristics.find((c: any) => c.name === 'SV')?.$text || '-',
+              W: unitProfile.characteristics.find((c: any) => c.name === 'W')?.$text || '-',
+              LD: unitProfile.characteristics.find((c: any) => c.name === 'LD')?.$text || '-',
+              OC: unitProfile.characteristics.find((c: any) => c.name === 'OC')?.$text || '-',
+            };
+          }
+
+          // Find invulnerable save
+          const invulnProfile = profiles.find((p: any) =>
+            p.typeName === 'Abilities' && p.name === 'Invulnerable Save'
+          );
+          let invulnSave;
+          if (invulnProfile && invulnProfile.characteristics) {
+            const desc = invulnProfile.characteristics.find((c: any) => c.name === 'Description')?.$text || '';
+            // Extract invuln save value (e.g., "4+" from "Models in this unit have a 4+ invulnerable save.")
+            const match = desc.match(/(\d\+)\s+invulnerable save/i);
+            if (match) {
+              invulnSave = match[1];
+            }
+          }
+
+          if (stats || invulnSave) {
+            armyUnits.push({
+              name: modelName,
+              parentUnitName,
+              stats,
+              invulnSave
+            });
+          }
+        }
+      } else if (sel.type === 'model') {
+        // Standalone model
+        const modelName = sel.name;
+        if (processedUnits.has(modelName)) continue;
+        processedUnits.add(modelName);
+
+        const profiles = sel.profiles || [];
+
+        // Find unit profile
+        const unitProfile = profiles.find((p: any) => p.typeName === 'Unit');
+        let stats;
+        if (unitProfile && unitProfile.characteristics) {
+          stats = {
+            M: unitProfile.characteristics.find((c: any) => c.name === 'M')?.$text || '-',
+            T: unitProfile.characteristics.find((c: any) => c.name === 'T')?.$text || '-',
+            SV: unitProfile.characteristics.find((c: any) => c.name === 'SV')?.$text || '-',
+            W: unitProfile.characteristics.find((c: any) => c.name === 'W')?.$text || '-',
+            LD: unitProfile.characteristics.find((c: any) => c.name === 'LD')?.$text || '-',
+            OC: unitProfile.characteristics.find((c: any) => c.name === 'OC')?.$text || '-',
+          };
+        }
+
+        // Find invulnerable save
+        const invulnProfile = profiles.find((p: any) =>
+          p.typeName === 'Abilities' && p.name === 'Invulnerable Save'
+        );
+        let invulnSave;
+        if (invulnProfile && invulnProfile.characteristics) {
+          const desc = invulnProfile.characteristics.find((c: any) => c.name === 'Description')?.$text || '';
+          // Extract invuln save value (e.g., "4+" from "Models in this unit have a 4+ invulnerable save.")
+          const match = desc.match(/(\d\+)\s+invulnerable save/i);
+          if (match) {
+            invulnSave = match[1];
+          }
+        }
+
+        if (stats || invulnSave) {
+          armyUnits.push({
+            name: modelName,
+            stats,
+            invulnSave
+          });
+        }
+      }
+    }
+
+    return armyUnits;
+  };
 
   const extractModels = (selections: any[]): UnitWithBase[] => {
     const models: UnitWithBase[] = [];
@@ -163,6 +286,10 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
 
         setUnits(models);
 
+        // Extract and update army unit stats
+        const armyUnits = extractArmyUnits(selections);
+        onArmyDataUpdate(armyUnits);
+
         // Pre-populate base sizes from merged data (defaults + overrides)
         const initialBaseSizes: { [key: string]: string } = {};
         const initialFlyDimensions: { [key: string]: { width: string; length: string } } = {};
@@ -213,6 +340,10 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
         models = applyLeaderAssignments(models);
 
         setUnits(models);
+
+        // Extract and update army unit stats
+        const armyUnits = extractArmyUnits(selections);
+        onArmyDataUpdate(armyUnits);
 
         // Pre-populate base sizes from merged data (defaults + overrides)
         const initialBaseSizes: { [key: string]: string } = {};
