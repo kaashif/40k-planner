@@ -474,7 +474,7 @@ export default function DeploymentPlanner({
                     className={`absolute cursor-move transition-colors ${
                       isSelected
                         ? 'border-[3px] border-[#FFFF00]'
-                        : 'border-2 border-[#39FF14] hover:border-[#FFFF00]'
+                        : 'border-2 border-[#808080] hover:border-[#FFFF00]'
                     }`}
                     style={{
                       left: group.groupX + (model.x * scale),
@@ -482,9 +482,7 @@ export default function DeploymentPlanner({
                       width: size.width,
                       height: size.height,
                       borderRadius: group.isRectangular ? '4px' : '50%',
-                      backgroundColor: isSelected
-                        ? 'rgba(57, 255, 20, 0.4)'
-                        : 'rgba(57, 255, 20, 0.2)',
+                      backgroundColor: '#000000',
                     }}
                     title={`${group.unitName} - Model ${model.id}`}
                   />
