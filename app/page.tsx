@@ -3,6 +3,7 @@
 import { Suspense, useState, useEffect } from 'react';
 import ArmySidebar from './components/ArmySidebar';
 import DeploymentPlanner from './components/DeploymentPlanner';
+import ExportPDFButton from './components/ExportPDFButton';
 import { Model, SpawnedGroup, SpawnedUnit, SelectedModel } from './types';
 
 function MainContent() {
@@ -153,12 +154,15 @@ function MainContent() {
             <h1 className="text-4xl font-bold text-[#39FF14] mb-2">
               Warhammer 40k Tournament Planner
             </h1>
-            <button
-              onClick={handleClearLocalStorage}
-              className="px-4 py-2 bg-red-900 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors"
-            >
-              Clear Saved Data
-            </button>
+            <div className="flex gap-3">
+              <ExportPDFButton spawnedGroupsByRound={spawnedGroupsByRound} />
+              <button
+                onClick={handleClearLocalStorage}
+                className="px-4 py-2 bg-red-900 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors"
+              >
+                Clear Saved Data
+              </button>
+            </div>
           </header>
 
           <main className="bg-[#0f0f0f] border border-[#1a2a1a] rounded-lg p-6">
