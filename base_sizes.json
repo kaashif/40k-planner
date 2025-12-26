@@ -12,5 +12,8 @@
   "Canoptek Spyder": "60",
   "Wraith w/ claws and beamer": "50",
   "Canoptek Reanimator": "60",
-  "Doomsday Ark": "60"
+  "Doomsday Ark": {
+    "width": "216",
+    "length": "114"
+  }
 }
