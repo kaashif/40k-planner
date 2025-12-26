@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { SpawnedGroup } from '../types';
-import { checkCoherency } from '../utils/coherencyChecker';
+import { checkCoherency, checkParentUnitCoherency } from '../utils/coherencyChecker';
 
 interface Unit {
   name: string;
@@ -339,6 +339,8 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                                     const spawnData: SpawnedUnit = {
                                       unitId: unit.id,
                                       unitName: unit.name,
+                                      parentUnitId: unit.parentUnitId,
+                                      parentUnitName: unit.parentUnitName,
                                       isRectangular: isRect,
                                       modelCount: unit.number,
                                       ...(isRect
@@ -378,21 +380,23 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                             )}
                           </div>
                           {anySpawned && (() => {
-                            // Check coherency for all spawned groups in this unit
-                            const outOfCoherencyUnits = groupUnits.filter(unit => {
-                              const group = spawnedGroups.find(g => g.unitId === unit.id);
-                              if (!group) return false; // Not spawned yet
-                              return !checkCoherency(group).isInCoherency;
-                            });
-
-                            // Only show if some units are out of coherency
-                            if (outOfCoherencyUnits.length === 0) return null;
-
-                            return (
-                              <div className="text-center text-sm font-semibold py-1 rounded bg-red-900 text-red-200">
-                                Unit not coherent
-                              </div>
-                            );
+                            // For grouped units (with parentUnitId), check coherency across all model types
+                            const parentId = groupUnits[0].parentUnitId;
+                            if (parentId) {
+                              // Get all spawned groups belonging to this parent unit
+                              const parentUnitGroups = spawnedGroups.filter(g => g.parentUnitId === parentId);
+                              if (parentUnitGroups.length > 0) {
+                                const coherencyResult = checkParentUnitCoherency(parentUnitGroups);
+                                if (!coherencyResult.isInCoherency) {
+                                  return (
+                                    <div className="text-center text-sm font-semibold py-1 rounded bg-red-900 text-red-200">
+                                      Unit not coherent
+                                    </div>
+                                  );
+                                }
+                              }
+                            }
+                            return null;
                           })()}
                         </div>
                       );
@@ -497,6 +501,8 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                           const spawnData: SpawnedUnit = {
                             unitId: unit.id,
                             unitName: unit.name,
+                            parentUnitId: unit.parentUnitId,
+                            parentUnitName: unit.parentUnitName,
                             isRectangular: isRect,
                             modelCount: unit.number,
                             ...(isRect

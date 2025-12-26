@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { SpawnedGroup, SelectedModel } from '../types';
 import { deleteSelectedOperation } from '../utils/selectionOperations';
-import { checkCoherency } from '../utils/coherencyChecker';
+import { checkCoherency, findNearestModels, checkParentUnitCoherency } from '../utils/coherencyChecker';
 
 interface Layout {
   id: string;
@@ -423,12 +423,26 @@ export default function DeploymentPlanner({
         {/* Coherency status */}
         <div className="ml-auto flex items-center gap-2">
           {spawnedGroups.length > 0 && (() => {
-            const coherencyResults = spawnedGroups.map(group => ({
-              group,
-              result: checkCoherency(group)
-            }));
+            // Group by parent unit to check coherency correctly
+            const parentUnitMap = new Map<string | undefined, SpawnedGroup[]>();
+            spawnedGroups.forEach(group => {
+              const key = group.parentUnitId || group.unitId;
+              if (!parentUnitMap.has(key)) {
+                parentUnitMap.set(key, []);
+              }
+              parentUnitMap.get(key)!.push(group);
+            });
 
-            const outOfCoherencyCount = coherencyResults.filter(r => !r.result.isInCoherency).length;
+            // Check coherency for each parent unit
+            let outOfCoherencyCount = 0;
+            parentUnitMap.forEach(groups => {
+              const result = groups[0].parentUnitId
+                ? checkParentUnitCoherency(groups)
+                : checkCoherency(groups[0]);
+              if (!result.isInCoherency) {
+                outOfCoherencyCount++;
+              }
+            });
 
             // Only show if some units are out of coherency
             if (outOfCoherencyCount === 0) return null;
@@ -487,8 +501,15 @@ export default function DeploymentPlanner({
 
           {/* Render spawned models - bases first */}
           {spawnedGroups.map(group => {
-            // Check coherency for this group
-            const coherencyResult = checkCoherency(group);
+            // Check coherency for this group (or parent unit if applicable)
+            let coherencyResult;
+            if (group.parentUnitId) {
+              // Get all groups belonging to the same parent unit
+              const parentUnitGroups = spawnedGroups.filter(g => g.parentUnitId === group.parentUnitId);
+              coherencyResult = checkParentUnitCoherency(parentUnitGroups);
+            } else {
+              coherencyResult = checkCoherency(group);
+            }
 
             return (
               <div key={group.unitId}>
@@ -524,7 +545,9 @@ export default function DeploymentPlanner({
                   );
 
                   // Check if this model is out of coherency
-                  const isOutOfCoherency = coherencyResult.outOfCoherencyModels.has(model.id);
+                  // For parent units, the ID is stored as "unitId-modelId"
+                  const modelKey = group.parentUnitId ? `${group.unitId}-${model.id}` : model.id;
+                  const isOutOfCoherency = coherencyResult.outOfCoherencyModels.has(modelKey);
 
                   return (
                     <div
@@ -554,6 +577,128 @@ export default function DeploymentPlanner({
                 })}
               </div>
             );
+          })}
+
+          {/* Render measurement lines for selected models */}
+          {selectedModels.map(selected => {
+            const group = spawnedGroups.find(g => g.unitId === selected.groupId);
+            if (!group) return null;
+
+            const targetModel = group.models.find(m => m.id === selected.modelId);
+            if (!targetModel) return null;
+
+            // For parent units, find nearest models across all groups in the parent unit
+            const groupsToSearch = group.parentUnitId
+              ? spawnedGroups.filter(g => g.parentUnitId === group.parentUnitId)
+              : undefined;
+
+            const nearestModels = findNearestModels(targetModel, group, groupsToSearch);
+
+            // Calculate model size in pixels
+            const size = group.isRectangular
+              ? {
+                  width: (group.width || 25) * scale,
+                  height: (group.length || 25) * scale
+                }
+              : {
+                  width: (group.baseSize || 25) * scale,
+                  height: (group.baseSize || 25) * scale
+                };
+
+            // Target model center
+            const targetCenterX = group.groupX + (targetModel.x * scale) + size.width / 2;
+            const targetCenterY = group.groupY + (targetModel.y * scale) + size.height / 2;
+
+            return nearestModels.map((nearest, idx) => {
+              // Calculate nearest model's size
+              const nearestSize = nearest.group.isRectangular
+                ? {
+                    width: (nearest.group.width || 25) * scale,
+                    height: (nearest.group.length || 25) * scale
+                  }
+                : {
+                    width: (nearest.group.baseSize || 25) * scale,
+                    height: (nearest.group.baseSize || 25) * scale
+                  };
+
+              // Nearest model center (using its own group position)
+              const nearestCenterX = nearest.group.groupX + (nearest.model.x * scale) + nearestSize.width / 2;
+              const nearestCenterY = nearest.group.groupY + (nearest.model.y * scale) + nearestSize.height / 2;
+
+              // Calculate angle between centers
+              const dx = nearestCenterX - targetCenterX;
+              const dy = nearestCenterY - targetCenterY;
+              const angle = Math.atan2(dy, dx);
+
+              // Calculate edge points based on base shape
+              let targetEdgeX, targetEdgeY, nearestEdgeX, nearestEdgeY;
+
+              // Target edge point
+              if (group.isRectangular) {
+                const halfSize = Math.max(size.width, size.height) / 2;
+                targetEdgeX = targetCenterX + Math.cos(angle) * halfSize;
+                targetEdgeY = targetCenterY + Math.sin(angle) * halfSize;
+              } else {
+                const radius = size.width / 2;
+                targetEdgeX = targetCenterX + Math.cos(angle) * radius;
+                targetEdgeY = targetCenterY + Math.sin(angle) * radius;
+              }
+
+              // Nearest edge point
+              if (nearest.group.isRectangular) {
+                const halfSize = Math.max(nearestSize.width, nearestSize.height) / 2;
+                nearestEdgeX = nearestCenterX - Math.cos(angle) * halfSize;
+                nearestEdgeY = nearestCenterY - Math.sin(angle) * halfSize;
+              } else {
+                const radius = nearestSize.width / 2;
+                nearestEdgeX = nearestCenterX - Math.cos(angle) * radius;
+                nearestEdgeY = nearestCenterY - Math.sin(angle) * radius;
+              }
+
+              // Line midpoint for label
+              const midX = (targetEdgeX + nearestEdgeX) / 2;
+              const midY = (targetEdgeY + nearestEdgeY) / 2;
+
+              return (
+                <React.Fragment key={`measurement-${selected.groupId}-${selected.modelId}-${idx}`}>
+                  {/* Line */}
+                  <svg
+                    className="absolute pointer-events-none"
+                    style={{
+                      left: 0,
+                      top: 0,
+                      width: '100%',
+                      height: '100%',
+                      zIndex: 40
+                    }}
+                  >
+                    <line
+                      x1={targetEdgeX}
+                      y1={targetEdgeY}
+                      x2={nearestEdgeX}
+                      y2={nearestEdgeY}
+                      stroke="#ef4444"
+                      strokeWidth="2"
+                    />
+                  </svg>
+
+                  {/* Distance label */}
+                  <div
+                    className="absolute pointer-events-none text-xs font-bold"
+                    style={{
+                      left: midX,
+                      top: midY,
+                      transform: 'translate(-50%, -50%)',
+                      color: '#ef4444',
+                      textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000',
+                      zIndex: 41
+                    }}
+                  >
+                    {nearest.distanceInches.toFixed(2)}"
+                  </div>
+                </React.Fragment>
+              );
+            });
           })}
 
           {/* Render model labels on top - one per unit at center-bottom */}

@@ -9,6 +9,8 @@ export interface Model {
 export interface SpawnedGroup {
   unitId: string;
   unitName: string;
+  parentUnitId?: string; // ID of parent unit for multi-model units like "The Silent King"
+  parentUnitName?: string; // Name of parent unit
   isRectangular: boolean;
   baseSize?: number;
   width?: number;
@@ -26,6 +28,8 @@ export interface SelectedModel {
 export interface SpawnedUnit {
   unitId: string;
   unitName: string;
+  parentUnitId?: string;
+  parentUnitName?: string;
   isRectangular: boolean;
   baseSize?: number;
   width?: number;

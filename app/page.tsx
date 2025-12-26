@@ -83,6 +83,8 @@ function MainContent() {
     const newGroup: SpawnedGroup = {
       unitId: unit.unitId,
       unitName: unit.unitName,
+      parentUnitId: unit.parentUnitId,
+      parentUnitName: unit.parentUnitName,
       isRectangular: unit.isRectangular,
       baseSize: unit.baseSize,
       width: unit.width,
