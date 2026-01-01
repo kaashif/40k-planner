@@ -164,7 +164,7 @@ function MainContent() {
       width: unit.width,
       length: unit.length,
       models,
-      groupX: 50, // Default starting position
+      groupX: 50, // Default starting position in mm (about 2 inches from edge)
       groupY: 50
     };
 

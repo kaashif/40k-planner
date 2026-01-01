@@ -61,6 +61,7 @@ export default function DeploymentPlanner({
   const [rotationCenter, setRotationCenter] = useState<{ x: number; y: number } | null>(null);
   const [lastRotationAngle, setLastRotationAngle] = useState<number>(0);
   const [currentRotationDelta, setCurrentRotationDelta] = useState<number>(0);
+  const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
   const canvasRef = useRef<HTMLDivElement>(null);
   const justCompletedBoxSelection = useRef(false);
   const justCompletedModelInteraction = useRef(false);
@@ -75,9 +76,9 @@ export default function DeploymentPlanner({
     onRoundChange(selectedLayout.id);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Calculate scale when image loads or container resizes
+  // Calculate scale and image offset when image loads or container resizes
   useEffect(() => {
-    const updateScale = () => {
+    const updateScaleAndOffset = () => {
       if (!canvasRef.current) return;
 
       const container = canvasRef.current;
@@ -88,21 +89,29 @@ export default function DeploymentPlanner({
       const containerAspectRatio = containerWidth / containerHeight;
       const mapAspectRatio = MAP_WIDTH_MM / MAP_HEIGHT_MM;
 
-      let scale;
+      let newScale;
+      let offsetX = 0;
+      let offsetY = 0;
+
       if (containerAspectRatio > mapAspectRatio) {
-        // Height is limiting factor
-        scale = containerHeight / MAP_HEIGHT_MM;
+        // Height is limiting factor - image fills height, centered horizontally
+        newScale = containerHeight / MAP_HEIGHT_MM;
+        const imageWidth = containerHeight * mapAspectRatio;
+        offsetX = (containerWidth - imageWidth) / 2;
       } else {
-        // Width is limiting factor
-        scale = containerWidth / MAP_WIDTH_MM;
+        // Width is limiting factor - image fills width, centered vertically
+        newScale = containerWidth / MAP_WIDTH_MM;
+        const imageHeight = containerWidth / mapAspectRatio;
+        offsetY = (containerHeight - imageHeight) / 2;
       }
 
-      setScale(scale);
+      setScale(newScale);
+      setImageOffset({ x: offsetX, y: offsetY });
     };
 
-    updateScale();
-    window.addEventListener('resize', updateScale);
-    return () => window.removeEventListener('resize', updateScale);
+    updateScaleAndOffset();
+    window.addEventListener('resize', updateScaleAndOffset);
+    return () => window.removeEventListener('resize', updateScaleAndOffset);
   }, []);
 
   // Handle model click for selection
@@ -195,8 +204,9 @@ export default function DeploymentPlanner({
 
     spawnedGroups.forEach(group => {
       group.models.forEach(model => {
-        const modelLeft = group.groupX + (model.x * scale);
-        const modelTop = group.groupY + (model.y * scale);
+        // groupX/Y are in mm, convert to pixels and add image offset
+        const modelLeft = imageOffset.x + (group.groupX + model.x) * scale;
+        const modelTop = imageOffset.y + (group.groupY + model.y) * scale;
         const modelSize = group.isRectangular
           ? { width: (group.width || 25) * scale, height: (group.length || 25) * scale }
           : { width: (group.baseSize || 25) * scale, height: (group.baseSize || 25) * scale };
@@ -280,18 +290,18 @@ export default function DeploymentPlanner({
     }
 
     if (modelId === null) {
-      // Dragging the whole group
+      // Dragging the whole group - groupX/Y are in mm, convert to pixels for offset
       setDragOffset({
-        x: e.clientX - rect.left - group.groupX,
-        y: e.clientY - rect.top - group.groupY
+        x: e.clientX - rect.left - imageOffset.x - group.groupX * scale,
+        y: e.clientY - rect.top - imageOffset.y - group.groupY * scale
       });
     } else {
-      // Dragging individual model
+      // Dragging individual model - all positions in mm, convert to pixels
       const model = group.models.find(m => m.id === modelId);
       if (!model) return;
       setDragOffset({
-        x: e.clientX - rect.left - (group.groupX + model.x * scale),
-        y: e.clientY - rect.top - (group.groupY + model.y * scale)
+        x: e.clientX - rect.left - imageOffset.x - (group.groupX + model.x) * scale,
+        y: e.clientY - rect.top - imageOffset.y - (group.groupY + model.y) * scale
       });
       setLastDragPos({
         x: e.clientX - rect.left,
@@ -343,8 +353,9 @@ export default function DeploymentPlanner({
     if (!draggedModel || !canvasRef.current) return;
 
     const rect = canvasRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - dragOffset.x;
-    const y = e.clientY - rect.top - dragOffset.y;
+    // x, y are pixel positions relative to canvas; subtract imageOffset for board-relative position
+    const x = e.clientX - rect.left - dragOffset.x - imageOffset.x;
+    const y = e.clientY - rect.top - dragOffset.y - imageOffset.y;
 
     // Check if dragging a selected model with other models selected
     const isDraggingSelected = draggedModel.modelId !== null && selectedModels.some(
@@ -378,15 +389,15 @@ export default function DeploymentPlanner({
         if (group.unitId !== draggedModel.groupId) return group;
 
         if (draggedModel.modelId === null) {
-          // Move entire group
-          return { ...group, groupX: x, groupY: y };
+          // Move entire group - convert pixel position to mm
+          return { ...group, groupX: x / scale, groupY: y / scale };
         } else {
-          // Move individual model
+          // Move individual model - convert pixel position to mm
           return {
             ...group,
             models: group.models.map(model =>
               model.id === draggedModel.modelId
-                ? { ...model, x: (x - group.groupX) / scale, y: (y - group.groupY) / scale }
+                ? { ...model, x: x / scale - group.groupX, y: y / scale - group.groupY }
                 : model
             )
           };
@@ -738,8 +749,8 @@ export default function DeploymentPlanner({
                   onMouseDown={(e) => handleMouseDown(e, group.unitId, null)}
                   className="absolute cursor-move hover:opacity-80"
                   style={{
-                    left: group.groupX,
-                    top: group.groupY,
+                    left: imageOffset.x + group.groupX * scale,
+                    top: imageOffset.y + group.groupY * scale,
                     width: 100 * scale,
                     height: 100 * scale,
                   }}
@@ -784,8 +795,8 @@ export default function DeploymentPlanner({
                           : 'border-2 border-[#808080] hover:border-[#FFFF00]'
                       }`}
                       style={{
-                        left: group.groupX + (model.x * scale),
-                        top: group.groupY + (model.y * scale),
+                        left: imageOffset.x + (group.groupX + model.x) * scale,
+                        top: imageOffset.y + (group.groupY + model.y) * scale,
                         width: size.width,
                         height: size.height,
                         borderRadius: group.isRectangular ? '4px' : '50%',
@@ -823,8 +834,8 @@ export default function DeploymentPlanner({
                     height: (group.baseSize || 25) * scale
                   };
 
-              const modelLeft = group.groupX + (model.x * scale);
-              const modelTop = group.groupY + (model.y * scale);
+              const modelLeft = imageOffset.x + (group.groupX + model.x) * scale;
+              const modelTop = imageOffset.y + (group.groupY + model.y) * scale;
               const modelRight = modelLeft + size.width;
               const modelBottom = modelTop + size.height;
 
@@ -956,9 +967,9 @@ export default function DeploymentPlanner({
                   height: (group.baseSize || 25) * scale
                 };
 
-            // Target model center
-            const targetCenterX = group.groupX + (targetModel.x * scale) + size.width / 2;
-            const targetCenterY = group.groupY + (targetModel.y * scale) + size.height / 2;
+            // Target model center - groupX/Y and model.x/y are in mm
+            const targetCenterX = imageOffset.x + (group.groupX + targetModel.x) * scale + size.width / 2;
+            const targetCenterY = imageOffset.y + (group.groupY + targetModel.y) * scale + size.height / 2;
 
             return nearestModels.map((nearest, idx) => {
               // Calculate nearest model's size
@@ -972,9 +983,9 @@ export default function DeploymentPlanner({
                     height: (nearest.group.baseSize || 25) * scale
                   };
 
-              // Nearest model center (using its own group position)
-              const nearestCenterX = nearest.group.groupX + (nearest.model.x * scale) + nearestSize.width / 2;
-              const nearestCenterY = nearest.group.groupY + (nearest.model.y * scale) + nearestSize.height / 2;
+              // Nearest model center (using its own group position) - positions in mm
+              const nearestCenterX = imageOffset.x + (nearest.group.groupX + nearest.model.x) * scale + nearestSize.width / 2;
+              const nearestCenterY = imageOffset.y + (nearest.group.groupY + nearest.model.y) * scale + nearestSize.height / 2;
 
               // Calculate angle between centers
               const dx = nearestCenterX - targetCenterX;
@@ -1069,9 +1080,9 @@ export default function DeploymentPlanner({
 
             let minX = Infinity, maxX = -Infinity, maxY = -Infinity;
             group.models.forEach(model => {
-              const modelLeft = group.groupX + (model.x * scale);
+              const modelLeft = imageOffset.x + (group.groupX + model.x) * scale;
               const modelRight = modelLeft + size.width;
-              const modelBottom = group.groupY + (model.y * scale) + size.height;
+              const modelBottom = imageOffset.y + (group.groupY + model.y) * scale + size.height;
 
               minX = Math.min(minX, modelLeft);
               maxX = Math.max(maxX, modelRight);
@@ -1217,9 +1228,9 @@ export default function DeploymentPlanner({
                   const zoneWidth = baseWidthPixels + 2 * exclusionDistancePixels;
                   const zoneHeight = baseLengthPixels + 2 * exclusionDistancePixels;
 
-                  // Center of the base
-                  const centerX = group.groupX + (model.x * scale) + baseWidthPixels / 2;
-                  const centerY = group.groupY + (model.y * scale) + baseLengthPixels / 2;
+                  // Center of the base - positions in mm
+                  const centerX = imageOffset.x + (group.groupX + model.x) * scale + baseWidthPixels / 2;
+                  const centerY = imageOffset.y + (group.groupY + model.y) * scale + baseLengthPixels / 2;
 
                   exclusionZones.push({
                     type: 'rect',
@@ -1239,9 +1250,9 @@ export default function DeploymentPlanner({
                   const zoneRadiusMm = baseRadiusMm + exclusionDistanceMm;
                   const zoneRadiusPixels = zoneRadiusMm * scale;
 
-                  // Center of the base
-                  const centerX = group.groupX + (model.x * scale) + baseDiameterPixels / 2;
-                  const centerY = group.groupY + (model.y * scale) + baseDiameterPixels / 2;
+                  // Center of the base - positions in mm
+                  const centerX = imageOffset.x + (group.groupX + model.x) * scale + baseDiameterPixels / 2;
+                  const centerY = imageOffset.y + (group.groupY + model.y) * scale + baseDiameterPixels / 2;
 
                   exclusionZones.push({
                     type: 'circle',

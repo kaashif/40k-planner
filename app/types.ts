@@ -2,8 +2,8 @@
 
 export interface Model {
   id: string;
-  x: number;
-  y: number;
+  x: number; // in mm (relative to group origin)
+  y: number; // in mm (relative to group origin)
   rotation?: number; // Rotation in degrees (0-360)
 }
 
@@ -13,12 +13,12 @@ export interface SpawnedGroup {
   parentUnitId?: string; // ID of parent unit for multi-model units like "The Silent King"
   parentUnitName?: string; // Name of parent unit
   isRectangular: boolean;
-  baseSize?: number;
-  width?: number;
-  length?: number;
+  baseSize?: number; // in mm
+  width?: number; // in mm
+  length?: number; // in mm
   models: Model[];
-  groupX: number;
-  groupY: number;
+  groupX: number; // in mm (relative to board origin)
+  groupY: number; // in mm (relative to board origin)
 }
 
 export interface SelectedModel {
