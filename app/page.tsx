@@ -139,13 +139,13 @@ function MainContent() {
     const models: Model[] = [];
     const spacing = 5; // spacing in mm between models
     const modelsPerRow = Math.ceil(Math.sqrt(unit.modelCount));
+    const modelSize = unit.isRectangular
+      ? Math.max(unit.width || 25, unit.length || 25)
+      : (unit.baseSize || 25);
 
     for (let i = 0; i < unit.modelCount; i++) {
       const row = Math.floor(i / modelsPerRow);
       const col = i % modelsPerRow;
-      const modelSize = unit.isRectangular
-        ? Math.max(unit.width || 25, unit.length || 25)
-        : (unit.baseSize || 25);
 
       models.push({
         id: `model-${i}`,
@@ -154,24 +154,48 @@ function MainContent() {
       });
     }
 
-    const newGroup: SpawnedGroup = {
-      unitId: unit.unitId,
-      unitName: unit.unitName,
-      parentUnitId: unit.parentUnitId,
-      parentUnitName: unit.parentUnitName,
-      isRectangular: unit.isRectangular,
-      baseSize: unit.baseSize,
-      width: unit.width,
-      length: unit.length,
-      models,
-      groupX: 50, // Default starting position in mm (about 2 inches from edge)
-      groupY: 50
-    };
+    setSpawnedGroupsByRound(prev => {
+      const currentGroups = prev[currentRound] || [];
 
-    setSpawnedGroupsByRound(prev => ({
-      ...prev,
-      [currentRound]: [...(prev[currentRound] || []), newGroup]
-    }));
+      // Calculate spawn position based on existing groups
+      let groupX = 50; // Default starting position in mm
+      const groupY = 50;
+
+      if (currentGroups.length > 0) {
+        let maxRight = 0;
+        for (const group of currentGroups) {
+          const groupSize = group.isRectangular
+            ? Math.max(group.width || 25, group.length || 25)
+            : (group.baseSize || 25);
+          const groupModelsPerRow = Math.ceil(Math.sqrt(group.models.length));
+          const groupWidth = groupModelsPerRow * (groupSize + spacing);
+          const rightEdge = group.groupX + groupWidth;
+          if (rightEdge > maxRight) {
+            maxRight = rightEdge;
+          }
+        }
+        groupX = maxRight + 20; // 20mm gap between groups
+      }
+
+      const newGroup: SpawnedGroup = {
+        unitId: unit.unitId,
+        unitName: unit.unitName,
+        parentUnitId: unit.parentUnitId,
+        parentUnitName: unit.parentUnitName,
+        isRectangular: unit.isRectangular,
+        baseSize: unit.baseSize,
+        width: unit.width,
+        length: unit.length,
+        models,
+        groupX,
+        groupY
+      };
+
+      return {
+        ...prev,
+        [currentRound]: [...currentGroups, newGroup]
+      };
+    });
   };
 
   const handleDelete = (unitId: string) => {
