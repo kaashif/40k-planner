@@ -75,6 +75,67 @@ export default function DeploymentPlanner({
   const MAP_HEIGHT_MM = 44 * 25.4; // 1117.6 mm
   const MAP_WIDTH_MM = 60 * 25.4; // 1524 mm
 
+  // Check for overlapping bases - returns set of model keys that are overlapping
+  const findOverlappingModels = (): Set<string> => {
+    const overlapping = new Set<string>();
+
+    // Collect all models with their absolute positions
+    const allModels: Array<{
+      key: string;
+      centerX: number;
+      centerY: number;
+      radius: number;
+      isRect: boolean;
+      width: number;
+      height: number;
+    }> = [];
+
+    spawnedGroups.forEach(group => {
+      const baseSize = group.isRectangular
+        ? Math.max(group.width || 25, group.length || 25)
+        : (group.baseSize || 25);
+
+      group.models.forEach(model => {
+        const centerX = group.groupX + model.x + (group.isRectangular ? (group.width || 25) / 2 : baseSize / 2);
+        const centerY = group.groupY + model.y + (group.isRectangular ? (group.length || 25) / 2 : baseSize / 2);
+
+        allModels.push({
+          key: `${group.unitId}-${model.id}`,
+          centerX,
+          centerY,
+          radius: baseSize / 2,
+          isRect: group.isRectangular || false,
+          width: group.width || baseSize,
+          height: group.length || baseSize
+        });
+      });
+    });
+
+    // Check each pair for overlap
+    for (let i = 0; i < allModels.length; i++) {
+      for (let j = i + 1; j < allModels.length; j++) {
+        const a = allModels[i];
+        const b = allModels[j];
+
+        // Simple circle-circle overlap check (approximation for rectangular bases too)
+        const dx = a.centerX - b.centerX;
+        const dy = a.centerY - b.centerY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const minDist = a.radius + b.radius;
+
+        // Allow tiny overlap (0.5mm) to account for floating point errors
+        if (dist < minDist - 0.5) {
+          overlapping.add(a.key);
+          overlapping.add(b.key);
+        }
+      }
+    }
+
+    return overlapping;
+  };
+
+  const overlappingModels = findOverlappingModels();
+
   // Notify parent of initial round on mount
   useEffect(() => {
     onRoundChange(selectedLayout.id);
@@ -144,12 +205,47 @@ export default function DeploymentPlanner({
     }
   };
 
-  // Handle rotation of selected models
+  // Handle rotation of selected models around group center
   const handleRotate = (degrees: number) => {
+    // First, calculate the center of all selected models (in mm)
+    let centerX = 0;
+    let centerY = 0;
+    let count = 0;
+
+    selectedModels.forEach(sel => {
+      const group = spawnedGroups.find(g => g.unitId === sel.groupId);
+      if (!group) return;
+      const model = group.models.find(m => m.id === sel.modelId);
+      if (!model) return;
+
+      const baseSize = group.isRectangular
+        ? Math.max(group.width || 25, group.length || 25)
+        : (group.baseSize || 25);
+
+      // Absolute position of model center in mm
+      centerX += group.groupX + model.x + baseSize / 2;
+      centerY += group.groupY + model.y + baseSize / 2;
+      count++;
+    });
+
+    if (count === 0) return;
+
+    centerX /= count;
+    centerY /= count;
+
+    // Convert degrees to radians
+    const radians = degrees * Math.PI / 180;
+    const cos = Math.cos(radians);
+    const sin = Math.sin(radians);
+
     const updatedGroups = spawnedGroups.map(group => {
       // Check if any models in this group are selected
       const hasSelectedModels = selectedModels.some(sel => sel.groupId === group.unitId);
       if (!hasSelectedModels) return group;
+
+      const baseSize = group.isRectangular
+        ? Math.max(group.width || 25, group.length || 25)
+        : (group.baseSize || 25);
 
       return {
         ...group,
@@ -159,9 +255,29 @@ export default function DeploymentPlanner({
           );
           if (!isSelected) return model;
 
+          // Get absolute model center position
+          const modelCenterX = group.groupX + model.x + baseSize / 2;
+          const modelCenterY = group.groupY + model.y + baseSize / 2;
+
+          // Translate to origin (center of selection)
+          const relX = modelCenterX - centerX;
+          const relY = modelCenterY - centerY;
+
+          // Rotate around origin
+          const rotatedX = relX * cos - relY * sin;
+          const rotatedY = relX * sin + relY * cos;
+
+          // Translate back and convert to model position (top-left corner relative to group)
+          const newModelCenterX = rotatedX + centerX;
+          const newModelCenterY = rotatedY + centerY;
+          const newX = newModelCenterX - baseSize / 2 - group.groupX;
+          const newY = newModelCenterY - baseSize / 2 - group.groupY;
+
           const currentRotation = model.rotation || 0;
           return {
             ...model,
+            x: newX,
+            y: newY,
             rotation: (currentRotation + degrees + 360) % 360
           };
         })
@@ -699,6 +815,13 @@ export default function DeploymentPlanner({
               </div>
             );
           })()}
+
+          {/* Overlap warning */}
+          {overlappingModels.size > 0 && (
+            <div className="px-4 py-2 font-bold rounded bg-orange-700 text-orange-100">
+              {overlappingModels.size} base{overlappingModels.size !== 1 ? 's' : ''} overlapping
+            </div>
+          )}
         </div>
       </div>
 
@@ -836,6 +959,10 @@ export default function DeploymentPlanner({
                   const modelKey = group.parentUnitId ? `${group.unitId}-${model.id}` : model.id;
                   const isOutOfCoherency = coherencyResult.outOfCoherencyModels.has(modelKey);
 
+                  // Check if this model is overlapping with another
+                  const overlapKey = `${group.unitId}-${model.id}`;
+                  const isOverlapping = overlappingModels.has(overlapKey);
+
                   return (
                     <div
                       key={model.id}
@@ -846,6 +973,8 @@ export default function DeploymentPlanner({
                       className={`absolute cursor-move transition-colors ${
                         isSelected
                           ? 'border-[3px] border-[#FFFF00]'
+                          : isOverlapping
+                          ? 'border-2 border-orange-500 hover:border-[#FFFF00]'
                           : isOutOfCoherency
                           ? 'border-2 border-red-500 hover:border-[#FFFF00]'
                           : 'border-2 border-[#808080] hover:border-[#FFFF00]'
@@ -860,7 +989,7 @@ export default function DeploymentPlanner({
                         transform: model.rotation ? `rotate(${model.rotation}deg)` : undefined,
                         transformOrigin: 'center center',
                       }}
-                      title={`${group.unitName} - Model ${model.id}${isOutOfCoherency ? ' (Out of Coherency)' : ''}`}
+                      title={`${group.unitName} - Model ${model.id}${isOverlapping ? ' (Overlapping!)' : ''}${isOutOfCoherency ? ' (Out of Coherency)' : ''}`}
                     />
                   );
                 })}
