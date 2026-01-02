@@ -387,6 +387,7 @@ function MainContent() {
                 onRoundChange={setCurrentRound}
                 allUnitIds={allUnitIds}
                 reserveUnits={reserveUnits}
+                armyUnits={armyUnits}
               />
             )}
 

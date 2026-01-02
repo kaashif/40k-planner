@@ -14,6 +14,19 @@ interface Layout {
   overlay?: string;
 }
 
+interface ArmyUnit {
+  name: string;
+  parentUnitName?: string;
+  stats?: {
+    M: string;
+    T: string;
+    SV: string;
+    W: string;
+    LD: string;
+    OC: string;
+  };
+}
+
 interface DeploymentPlannerProps {
   spawnedGroups: SpawnedGroup[];
   onUpdateGroups: (groups: SpawnedGroup[]) => void;
@@ -28,6 +41,7 @@ interface DeploymentPlannerProps {
   onRoundChange: (roundId: string) => void;
   allUnitIds: string[];
   reserveUnits: Set<string>;
+  armyUnits: ArmyUnit[];
 }
 
 const layouts: Layout[] = [
@@ -51,16 +65,20 @@ export default function DeploymentPlanner({
   setBoxSelectEnd,
   onRoundChange,
   allUnitIds,
-  reserveUnits
+  reserveUnits,
+  armyUnits
 }: DeploymentPlannerProps) {
   const [selectedLayout, setSelectedLayout] = useState(layouts[0]);
   const [toolMode, setToolMode] = useState<'selection' | 'ruler'>('selection');
   const [rulerPoints, setRulerPoints] = useState<{ x: number; y: number }[]>([]);
   const [showDeepStrikeZones, setShowDeepStrikeZones] = useState(false);
+  const [showMovement, setShowMovement] = useState(false);
   const [showLos, setShowLos] = useState(false);
   const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0 });
   const [draggedModel, setDraggedModel] = useState<{ groupId: string; modelId: string | null } | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [dragStartPosMm, setDragStartPosMm] = useState<{ x: number; y: number } | null>(null);
+  const [movementZonePositions, setMovementZonePositions] = useState<Map<string, { x: number; y: number }> | null>(null);
   const [scale, setScale] = useState(1); // pixels per mm
   const [mouseDownTime, setMouseDownTime] = useState<number | null>(null);
   const [mouseDownPos, setMouseDownPos] = useState<{ x: number; y: number } | null>(null);
@@ -432,6 +450,32 @@ export default function DeploymentPlanner({
         x: e.clientX - rect.left,
         y: e.clientY - rect.top
       });
+
+      // Track start position in mm for movement ruler (center of base)
+      const baseWidth = group.isRectangular ? (group.width || 25) : (group.baseSize || 25);
+      const baseHeight = group.isRectangular ? (group.length || 25) : (group.baseSize || 25);
+      setDragStartPosMm({
+        x: group.groupX + model.x + baseWidth / 2,
+        y: group.groupY + model.y + baseHeight / 2
+      });
+
+      // Capture positions of all selected models for movement zones
+      const positions = new Map<string, { x: number; y: number }>();
+      selectedModels.forEach(sel => {
+        const selGroup = spawnedGroups.find(g => g.unitId === sel.groupId);
+        if (!selGroup) return;
+        const selModel = selGroup.models.find(m => m.id === sel.modelId);
+        if (!selModel) return;
+
+        const selBaseWidth = selGroup.isRectangular ? (selGroup.width || 25) : (selGroup.baseSize || 25);
+        const selBaseHeight = selGroup.isRectangular ? (selGroup.length || 25) : (selGroup.baseSize || 25);
+
+        positions.set(`${sel.groupId}-${sel.modelId}`, {
+          x: selGroup.groupX + selModel.x + selBaseWidth / 2,
+          y: selGroup.groupY + selModel.y + selBaseHeight / 2
+        });
+      });
+      setMovementZonePositions(positions);
     }
 
     setDraggedModel({ groupId, modelId });
@@ -581,6 +625,8 @@ export default function DeploymentPlanner({
 
     // If we dragged (not clicked), keep the selection as-is
     setDraggedModel(null);
+    setDragStartPosMm(null);
+    setMovementZonePositions(null);
     setMouseDownTime(null);
     setMouseDownPos(null);
     setLastDragPos(null);
@@ -589,6 +635,8 @@ export default function DeploymentPlanner({
   useEffect(() => {
     const handleGlobalMouseUp = () => {
       setDraggedModel(null);
+      setDragStartPosMm(null);
+      setMovementZonePositions(null);
       setIsRotating(false);
       setRotationCenter(null);
       setLastRotationAngle(0);
@@ -688,7 +736,6 @@ export default function DeploymentPlanner({
           <button
             onClick={() => {
               setToolMode('ruler');
-              onSelectionChange([]);
             }}
             className={`px-3 py-1 font-semibold rounded transition-colors ${
               toolMode === 'ruler'
@@ -783,6 +830,16 @@ export default function DeploymentPlanner({
             }`}
           >
             {showDeepStrikeZones ? '✓ ' : ''}Deep Strike Zones
+          </button>
+          <button
+            onClick={() => setShowMovement(!showMovement)}
+            className={`px-3 py-1 font-semibold rounded transition-colors ${
+              showMovement
+                ? 'bg-green-700 hover:bg-green-600 text-white'
+                : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+            }`}
+          >
+            {showMovement ? '✓ ' : ''}Show Movement
           </button>
         </div>
 
@@ -1402,6 +1459,195 @@ export default function DeploymentPlanner({
               })()}
             </>
           )}
+
+          {/* Live Movement Ruler - shows distance while dragging */}
+          {draggedModel && draggedModel.modelId && dragStartPosMm && (() => {
+            const group = spawnedGroups.find(g => g.unitId === draggedModel.groupId);
+            if (!group) return null;
+
+            const model = group.models.find(m => m.id === draggedModel.modelId);
+            if (!model) return null;
+
+            const baseWidth = group.isRectangular ? (group.width || 25) : (group.baseSize || 25);
+            const baseHeight = group.isRectangular ? (group.length || 25) : (group.baseSize || 25);
+
+            // Current position in mm (center of base)
+            const currentX = group.groupX + model.x + baseWidth / 2;
+            const currentY = group.groupY + model.y + baseHeight / 2;
+
+            // Calculate distance in mm then convert to inches
+            const dx = currentX - dragStartPosMm.x;
+            const dy = currentY - dragStartPosMm.y;
+            const distanceMm = Math.sqrt(dx * dx + dy * dy);
+            const distanceInches = distanceMm / 25.4;
+
+            // Convert to pixels for rendering
+            const startPixelX = imageOffset.x + dragStartPosMm.x * scale;
+            const startPixelY = imageOffset.y + dragStartPosMm.y * scale;
+            const currentPixelX = imageOffset.x + currentX * scale;
+            const currentPixelY = imageOffset.y + currentY * scale;
+
+            // Midpoint for label
+            const midX = (startPixelX + currentPixelX) / 2;
+            const midY = (startPixelY + currentPixelY) / 2;
+
+            if (distanceMm < 1) return null; // Don't show for tiny movements
+
+            return (
+              <svg
+                className="absolute pointer-events-none"
+                style={{
+                  left: 0,
+                  top: 0,
+                  width: '100%',
+                  height: '100%',
+                  zIndex: 100
+                }}
+              >
+                {/* Line from start to current */}
+                <line
+                  x1={startPixelX}
+                  y1={startPixelY}
+                  x2={currentPixelX}
+                  y2={currentPixelY}
+                  stroke="#39FF14"
+                  strokeWidth="3"
+                  strokeDasharray="8,4"
+                />
+                {/* Start point marker */}
+                <circle
+                  cx={startPixelX}
+                  cy={startPixelY}
+                  r="6"
+                  fill="#39FF14"
+                  stroke="black"
+                  strokeWidth="2"
+                />
+                {/* Distance label */}
+                <text
+                  x={midX}
+                  y={midY - 8}
+                  textAnchor="middle"
+                  fill="#39FF14"
+                  fontSize="11"
+                  fontWeight="bold"
+                  stroke="black"
+                  strokeWidth="3"
+                  paintOrder="stroke"
+                >
+                  {distanceInches.toFixed(1)}&quot;
+                </text>
+              </svg>
+            );
+          })()}
+
+          {/* Movement Zones - green for normal move, blue for advance */}
+          {showMovement && selectedModels.length > 0 && (() => {
+            const movementZones: Array<{
+              centerX: number;
+              centerY: number;
+              moveDistance: number; // in pixels
+              advanceDistance: number; // in pixels (move + 6")
+            }> = [];
+
+            selectedModels.forEach(selected => {
+              const group = spawnedGroups.find(g => g.unitId === selected.groupId);
+              if (!group) return;
+
+              const model = group.models.find(m => m.id === selected.modelId);
+              if (!model) return;
+
+              // Find the army unit stats for this model
+              const armyUnit = armyUnits.find(u =>
+                u.name === group.unitName ||
+                u.parentUnitName === group.unitName ||
+                group.unitName.includes(u.name)
+              );
+
+              // Parse movement stat (e.g., "6\"" or "10\"")
+              let moveInches = 6; // default
+              if (armyUnit?.stats?.M) {
+                const match = armyUnit.stats.M.match(/(\d+)/);
+                if (match) {
+                  moveInches = parseInt(match[1], 10);
+                }
+              }
+
+              const baseWidth = group.isRectangular ? (group.width || 25) : (group.baseSize || 25);
+              const baseHeight = group.isRectangular ? (group.length || 25) : (group.baseSize || 25);
+
+              // Use cached position if dragging, otherwise use current position
+              const modelKey = `${selected.groupId}-${selected.modelId}`;
+              const cachedPos = movementZonePositions?.get(modelKey);
+
+              let centerX: number;
+              let centerY: number;
+
+              if (cachedPos && draggedModel) {
+                // Use cached position during drag
+                centerX = imageOffset.x + cachedPos.x * scale;
+                centerY = imageOffset.y + cachedPos.y * scale;
+              } else {
+                // Use current position
+                centerX = imageOffset.x + (group.groupX + model.x + baseWidth / 2) * scale;
+                centerY = imageOffset.y + (group.groupY + model.y + baseHeight / 2) * scale;
+              }
+
+              // Convert inches to mm then to pixels
+              const moveDistanceMm = moveInches * 25.4;
+              const advanceDistanceMm = (moveInches + 6) * 25.4;
+
+              movementZones.push({
+                centerX,
+                centerY,
+                moveDistance: moveDistanceMm * scale,
+                advanceDistance: advanceDistanceMm * scale
+              });
+            });
+
+            if (movementZones.length === 0) return null;
+
+            return (
+              <svg
+                className="absolute pointer-events-none"
+                style={{
+                  left: 0,
+                  top: 0,
+                  width: '100%',
+                  height: '100%',
+                  zIndex: 8,
+                  opacity: 0.3
+                }}
+              >
+                <g>
+                  {/* Draw advance zones (blue) first - larger */}
+                  {movementZones.map((zone, idx) => (
+                    <circle
+                      key={`advance-${idx}`}
+                      cx={zone.centerX}
+                      cy={zone.centerY}
+                      r={zone.advanceDistance}
+                      fill="blue"
+                      stroke="darkblue"
+                      strokeWidth="2"
+                    />
+                  ))}
+                  {/* Draw movement zones (green) on top - smaller */}
+                  {movementZones.map((zone, idx) => (
+                    <circle
+                      key={`move-${idx}`}
+                      cx={zone.centerX}
+                      cy={zone.centerY}
+                      r={zone.moveDistance}
+                      fill="green"
+                      stroke="darkgreen"
+                      strokeWidth="2"
+                    />
+                  ))}
+                </g>
+              </svg>
+            );
+          })()}
 
           {/* Deep Strike View - 9-inch exclusion zones */}
           {showDeepStrikeZones && (() => {
