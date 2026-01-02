@@ -10,6 +10,7 @@ interface Layout {
   id: string;
   title: string;
   image: string;
+  overlay?: string;
 }
 
 interface DeploymentPlannerProps {
@@ -27,8 +28,8 @@ interface DeploymentPlannerProps {
 }
 
 const layouts: Layout[] = [
-  { id: 'terraform', title: 'Round 1: Terraform', image: '/round1_terraform.png' },
-  { id: 'purge', title: 'Round 2: Purge the Foe', image: '/round2_purge.png' },
+  { id: 'terraform', title: 'Round 1: Terraform', image: '/round1_terraform.png', overlay: '/round1_terraform_overlay.png' },
+  { id: 'purge', title: 'Round 2: Purge the Foe', image: '/round2_purge.png', overlay: '/round2_purge_overlay.png' },
   { id: 'supplies', title: 'Round 3: Hidden Supplies', image: '/round3_hidden_supplies.png' },
   { id: 'linchpin', title: 'Round 4: Linchpin', image: '/round4_linchpin.png' },
   { id: 'take', title: 'Round 5: Take and Hold', image: '/round5_take.png' },
@@ -51,6 +52,7 @@ export default function DeploymentPlanner({
   const [toolMode, setToolMode] = useState<'selection' | 'ruler'>('selection');
   const [rulerPoints, setRulerPoints] = useState<{ x: number; y: number }[]>([]);
   const [showDeepStrikeZones, setShowDeepStrikeZones] = useState(false);
+  const [showLosBlockers, setShowLosBlockers] = useState(false);
   const [draggedModel, setDraggedModel] = useState<{ groupId: string; modelId: string | null } | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1); // pixels per mm
@@ -635,8 +637,20 @@ export default function DeploymentPlanner({
           </>
         )}
 
-        {/* Deep Strike View Toggle */}
-        <div className="ml-auto flex items-center gap-4">
+        {/* View Toggles */}
+        <div className="ml-auto flex items-center gap-2">
+          {selectedLayout.overlay && (
+            <button
+              onClick={() => setShowLosBlockers(!showLosBlockers)}
+              className={`px-3 py-1 font-semibold rounded transition-colors ${
+                showLosBlockers
+                  ? 'bg-blue-700 hover:bg-blue-600 text-white'
+                  : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+              }`}
+            >
+              {showLosBlockers ? '✓ ' : ''}LoS Blockers
+            </button>
+          )}
           <button
             onClick={() => setShowDeepStrikeZones(!showDeepStrikeZones)}
             className={`px-3 py-1 font-semibold rounded transition-colors ${
@@ -729,6 +743,17 @@ export default function DeploymentPlanner({
             className="object-contain pointer-events-none select-none"
             priority
           />
+
+          {/* LoS Blockers Overlay */}
+          {showLosBlockers && selectedLayout.overlay && (
+            <Image
+              src={selectedLayout.overlay}
+              alt={`${selectedLayout.title} LoS Blockers`}
+              fill
+              className="object-contain pointer-events-none select-none"
+              style={{ opacity: 0.6 }}
+            />
+          )}
 
           {/* Render spawned models - bases first */}
           {spawnedGroups.map(group => {
