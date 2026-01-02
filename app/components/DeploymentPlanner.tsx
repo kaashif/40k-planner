@@ -309,6 +309,101 @@ export default function DeploymentPlanner({
     onUpdateGroups(updatedGroups);
   };
 
+  // Arrange selected models in a horizontal line with 2" spacing
+  const handleLineUp = () => {
+    if (selectedModels.length === 0) return;
+
+    const SPACING_MM = 2 * 25.4; // 2 inches in mm
+
+    // Collect selected models with their current positions
+    const modelsToArrange: Array<{
+      groupId: string;
+      modelId: string;
+      baseWidth: number;
+      baseHeight: number;
+      currentCenterX: number;
+      currentCenterY: number;
+    }> = [];
+
+    selectedModels.forEach(sel => {
+      const group = spawnedGroups.find(g => g.unitId === sel.groupId);
+      if (!group) return;
+      const model = group.models.find(m => m.id === sel.modelId);
+      if (!model) return;
+
+      const baseWidth = group.isRectangular ? (group.width || 25) : (group.baseSize || 25);
+      const baseHeight = group.isRectangular ? (group.length || 25) : (group.baseSize || 25);
+
+      modelsToArrange.push({
+        groupId: sel.groupId,
+        modelId: sel.modelId,
+        baseWidth,
+        baseHeight,
+        currentCenterX: group.groupX + model.x + baseWidth / 2,
+        currentCenterY: group.groupY + model.y + baseHeight / 2
+      });
+    });
+
+    if (modelsToArrange.length === 0) return;
+
+    // Calculate current barycenter
+    const currentBarycenter = {
+      x: modelsToArrange.reduce((sum, m) => sum + m.currentCenterX, 0) / modelsToArrange.length,
+      y: modelsToArrange.reduce((sum, m) => sum + m.currentCenterY, 0) / modelsToArrange.length
+    };
+
+    // Calculate total width of the line
+    let totalWidth = 0;
+    modelsToArrange.forEach((m, i) => {
+      totalWidth += m.baseWidth;
+      if (i < modelsToArrange.length - 1) {
+        totalWidth += SPACING_MM;
+      }
+    });
+
+    // Calculate new positions centered on barycenter
+    let currentX = currentBarycenter.x - totalWidth / 2;
+
+    // Create a map of new positions
+    const newPositions = new Map<string, { x: number; y: number }>();
+    modelsToArrange.forEach(m => {
+      const newCenterX = currentX + m.baseWidth / 2;
+      newPositions.set(`${m.groupId}-${m.modelId}`, {
+        x: newCenterX,
+        y: currentBarycenter.y
+      });
+      currentX += m.baseWidth + SPACING_MM;
+    });
+
+    const updatedGroups = spawnedGroups.map(group => {
+      const modelsInGroup = modelsToArrange.filter(m => m.groupId === group.unitId);
+      if (modelsInGroup.length === 0) return group;
+
+      return {
+        ...group,
+        models: group.models.map(model => {
+          const modelInfo = modelsInGroup.find(m => m.modelId === model.id);
+          if (!modelInfo) return model;
+
+          const newPos = newPositions.get(`${group.unitId}-${model.id}`);
+          if (!newPos) return model;
+
+          // Convert center position back to top-left relative to group
+          const newX = newPos.x - modelInfo.baseWidth / 2 - group.groupX;
+          const newY = newPos.y - modelInfo.baseHeight / 2 - group.groupY;
+
+          return {
+            ...model,
+            x: newX,
+            y: newY
+          };
+        })
+      };
+    });
+
+    onUpdateGroups(updatedGroups);
+  };
+
   // Start rotation drag
   const handleRotationMouseDown = (e: React.MouseEvent, centerX: number, centerY: number) => {
     e.stopPropagation();
@@ -787,6 +882,18 @@ export default function DeploymentPlanner({
               }`}
             >
               Delete Selected
+            </button>
+            <button
+              onClick={handleLineUp}
+              disabled={selectedModels.length < 2}
+              className={`px-3 py-1 font-semibold rounded transition-colors ${
+                selectedModels.length >= 2
+                  ? 'bg-blue-700 hover:bg-blue-600 text-white'
+                  : 'bg-gray-600 text-gray-500 cursor-not-allowed'
+              }`}
+              title="Arrange selected models in a horizontal line with 2&quot; spacing"
+            >
+              Line Up
             </button>
           </>
         )}
