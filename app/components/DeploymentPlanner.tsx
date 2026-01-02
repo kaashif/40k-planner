@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { SpawnedGroup, SelectedModel } from '../types';
 import { deleteSelectedOperation } from '../utils/selectionOperations';
 import { checkCoherency, findNearestModels, checkParentUnitCoherency } from '../utils/coherencyChecker';
+import LosRenderer from './LosRenderer';
 
 interface Layout {
   id: string;
@@ -52,7 +53,8 @@ export default function DeploymentPlanner({
   const [toolMode, setToolMode] = useState<'selection' | 'ruler'>('selection');
   const [rulerPoints, setRulerPoints] = useState<{ x: number; y: number }[]>([]);
   const [showDeepStrikeZones, setShowDeepStrikeZones] = useState(false);
-  const [showLosBlockers, setShowLosBlockers] = useState(false);
+  const [showLos, setShowLos] = useState(false);
+  const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0 });
   const [draggedModel, setDraggedModel] = useState<{ groupId: string; modelId: string | null } | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1); // pixels per mm
@@ -109,6 +111,7 @@ export default function DeploymentPlanner({
 
       setScale(newScale);
       setImageOffset({ x: offsetX, y: offsetY });
+      setCanvasDimensions({ width: containerWidth, height: containerHeight });
     };
 
     updateScaleAndOffset();
@@ -641,14 +644,14 @@ export default function DeploymentPlanner({
         <div className="ml-auto flex items-center gap-2">
           {selectedLayout.overlay && (
             <button
-              onClick={() => setShowLosBlockers(!showLosBlockers)}
+              onClick={() => setShowLos(!showLos)}
               className={`px-3 py-1 font-semibold rounded transition-colors ${
-                showLosBlockers
-                  ? 'bg-blue-700 hover:bg-blue-600 text-white'
+                showLos
+                  ? 'bg-yellow-600 hover:bg-yellow-500 text-white'
                   : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
               }`}
             >
-              {showLosBlockers ? '✓ ' : ''}LoS Blockers
+              {showLos ? '✓ ' : ''}Show LoS
             </button>
           )}
           <button
@@ -745,13 +748,41 @@ export default function DeploymentPlanner({
           />
 
           {/* LoS Blockers Overlay */}
-          {showLosBlockers && selectedLayout.overlay && (
+          {showLos && selectedLayout.overlay && (
             <Image
               src={selectedLayout.overlay}
               alt={`${selectedLayout.title} LoS Blockers`}
               fill
               className="object-contain pointer-events-none select-none"
-              style={{ opacity: 0.6 }}
+              style={{ opacity: 0.5, zIndex: 4 }}
+            />
+          )}
+
+          {/* LoS Visibility Renderer */}
+          {showLos && selectedLayout.overlay && (
+            <LosRenderer
+              overlayUrl={selectedLayout.overlay}
+              selectedModels={selectedModels.map(selected => {
+                const group = spawnedGroups.find(g => g.unitId === selected.groupId);
+                if (!group) return null;
+                const model = group.models.find(m => m.id === selected.modelId);
+                if (!model) return null;
+
+                const baseSize = group.isRectangular
+                  ? Math.max(group.width || 25, group.length || 25)
+                  : (group.baseSize || 25);
+
+                return {
+                  centerX: imageOffset.x + (group.groupX + model.x + baseSize / 2) * scale,
+                  centerY: imageOffset.y + (group.groupY + model.y + baseSize / 2) * scale,
+                  baseRadius: (baseSize / 2) * scale
+                };
+              }).filter((p): p is { centerX: number; centerY: number; baseRadius: number } => p !== null)}
+              width={canvasDimensions.width}
+              height={canvasDimensions.height}
+              enabled={showLos && selectedModels.length > 0}
+              imageOffset={imageOffset}
+              isDragging={draggedModel !== null || isRotating || isBoxSelecting}
             />
           )}
 
