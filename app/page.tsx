@@ -89,6 +89,8 @@ function MainContent() {
     linchpin: [],
     take: []
   });
+  const [reserveUnits, setReserveUnits] = useState<Set<string>>(new Set());
+  const [allUnitIds, setAllUnitIds] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Selection state (per-round)
@@ -225,6 +227,22 @@ function MainContent() {
     }));
   };
 
+  const handleReserveChange = (unitId: string, isReserve: boolean) => {
+    setReserveUnits(prev => {
+      const next = new Set(prev);
+      if (isReserve) {
+        next.add(unitId);
+      } else {
+        next.delete(unitId);
+      }
+      return next;
+    });
+  };
+
+  const handleUnitIdsUpdate = useCallback((unitIds: string[]) => {
+    setAllUnitIds(unitIds);
+  }, []);
+
   const handleClearLocalStorage = () => {
     if (confirm('Are you sure you want to clear all saved data? This will reset spawned models and base size overrides.')) {
       localStorage.removeItem('spawnedGroupsByRound');
@@ -295,6 +313,9 @@ function MainContent() {
           spawnedGroups={spawnedGroups}
           onSelectAll={handleSelectionChange}
           onArmyDataUpdate={setArmyUnits}
+          reserveUnits={reserveUnits}
+          onReserveChange={handleReserveChange}
+          onUnitIdsUpdate={handleUnitIdsUpdate}
         />
 
         {/* Main Content */}
@@ -364,6 +385,8 @@ function MainContent() {
                 boxSelectEnd={boxSelectEnd}
                 setBoxSelectEnd={setBoxSelectEnd}
                 onRoundChange={setCurrentRound}
+                allUnitIds={allUnitIds}
+                reserveUnits={reserveUnits}
               />
             )}
 

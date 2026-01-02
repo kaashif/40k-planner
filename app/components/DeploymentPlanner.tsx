@@ -26,6 +26,8 @@ interface DeploymentPlannerProps {
   boxSelectEnd: { x: number; y: number } | null;
   setBoxSelectEnd: (pos: { x: number; y: number } | null) => void;
   onRoundChange: (roundId: string) => void;
+  allUnitIds: string[];
+  reserveUnits: Set<string>;
 }
 
 const layouts: Layout[] = [
@@ -47,7 +49,9 @@ export default function DeploymentPlanner({
   setBoxSelectStart,
   boxSelectEnd,
   setBoxSelectEnd,
-  onRoundChange
+  onRoundChange,
+  allUnitIds,
+  reserveUnits
 }: DeploymentPlannerProps) {
   const [selectedLayout, setSelectedLayout] = useState(layouts[0]);
   const [toolMode, setToolMode] = useState<'selection' | 'ruler'>('selection');
@@ -822,6 +826,22 @@ export default function DeploymentPlanner({
               {overlappingModels.size} base{overlappingModels.size !== 1 ? 's' : ''} overlapping
             </div>
           )}
+
+          {/* Undeployed units warning */}
+          {(() => {
+            const spawnedUnitIds = new Set(spawnedGroups.map(g => g.unitId));
+            const undeployedCount = allUnitIds.filter(
+              id => !spawnedUnitIds.has(id) && !reserveUnits.has(id)
+            ).length;
+
+            if (undeployedCount === 0) return null;
+
+            return (
+              <div className="px-4 py-2 font-bold rounded bg-red-900 text-red-200">
+                {undeployedCount} unit{undeployedCount !== 1 ? 's' : ''} not deployed
+              </div>
+            );
+          })()}
         </div>
       </div>
 

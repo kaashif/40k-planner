@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { SpawnedGroup, SpawnedUnit } from '../types';
 import { checkCoherency, checkParentUnitCoherency } from '../utils/coherencyChecker';
 
@@ -59,9 +59,12 @@ interface ArmySidebarProps {
   spawnedGroups: SpawnedGroup[];
   onSelectAll: (models: { groupId: string; modelId: string }[]) => void;
   onArmyDataUpdate: (units: ArmyUnit[]) => void;
+  reserveUnits: Set<string>;
+  onReserveChange: (unitId: string, isReserve: boolean) => void;
+  onUnitIdsUpdate: (unitIds: string[]) => void;
 }
 
-export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGroups, onSelectAll, onArmyDataUpdate }: ArmySidebarProps) {
+export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGroups, onSelectAll, onArmyDataUpdate, reserveUnits, onReserveChange, onUnitIdsUpdate }: ArmySidebarProps) {
   const [units, setUnits] = useState<UnitWithBase[]>([]);
   const [baseSizes, setBaseSizes] = useState<{ [key: string]: string }>({});
   const [flyDimensions, setFlyDimensions] = useState<{ [key: string]: { width: string; length: string } }>({});
@@ -70,6 +73,7 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
   const [overrideBaseSizes, setOverrideBaseSizes] = useState<{ [key: string]: string | { width: string; length: string } }>({});
   const [leaderAssignments, setLeaderAssignments] = useState<{ [leaderName: string]: string }>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const hasLoadedExampleArmy = useRef(false);
 
   const extractStatsFromProfiles = (profiles: any[]): {
     stats?: ArmyUnit['stats'];
@@ -339,6 +343,13 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
     loadLeaders();
   }, []);
 
+  // Notify parent of all unit IDs when units change
+  useEffect(() => {
+    if (units.length > 0) {
+      onUnitIdsUpdate(units.map(u => u.id));
+    }
+  }, [units, onUnitIdsUpdate]);
+
   // Load default base sizes from API and overrides from localStorage on mount
   useEffect(() => {
     const loadBaseSizes = async () => {
@@ -362,7 +373,10 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
   }, []);
 
   // Merge defaults and overrides
-  const mergedBaseSizes = { ...defaultBaseSizes, ...overrideBaseSizes };
+  const mergedBaseSizes = useMemo(
+    () => ({ ...defaultBaseSizes, ...overrideBaseSizes }),
+    [defaultBaseSizes, overrideBaseSizes]
+  );
 
   // Load example army on mount
   useEffect(() => {
@@ -407,7 +421,10 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
       }
     };
 
-    if ((Object.keys(mergedBaseSizes).length > 0 && Object.keys(leaderAssignments).length > 0) || units.length === 0) {
+    if (!hasLoadedExampleArmy.current &&
+        Object.keys(mergedBaseSizes).length > 0 &&
+        Object.keys(leaderAssignments).length > 0) {
+      hasLoadedExampleArmy.current = true;
       loadExampleArmy();
     }
   }, [mergedBaseSizes, leaderAssignments]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -759,35 +776,46 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                         </div>
                       </>
                     ) : (
-                      <button
-                        onClick={() => {
-                          const spawnData: SpawnedUnit = {
-                            unitId: unit.id,
-                            unitName: unit.name,
-                            parentUnitId: unit.parentUnitId,
-                            parentUnitName: unit.parentUnitName,
-                            isRectangular: isRect,
-                            modelCount: unit.number,
-                            ...(isRect
-                              ? {
-                                  width: parseFloat(flyDimensions[unit.id]?.width || '0'),
-                                  length: parseFloat(flyDimensions[unit.id]?.length || '0')
-                                }
-                              : {
-                                  baseSize: parseFloat(baseSizes[unit.id] || '0')
-                                })
-                          };
-                          onSpawn(spawnData);
-                        }}
-                        disabled={!hasBaseSize}
-                        className={`w-full px-3 py-1 text-sm font-semibold rounded transition-colors ${
-                          hasBaseSize
-                            ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
-                            : 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                        }`}
-                      >
-                        Spawn
-                      </button>
+                      <div className="space-y-2">
+                        <button
+                          onClick={() => {
+                            const spawnData: SpawnedUnit = {
+                              unitId: unit.id,
+                              unitName: unit.name,
+                              parentUnitId: unit.parentUnitId,
+                              parentUnitName: unit.parentUnitName,
+                              isRectangular: isRect,
+                              modelCount: unit.number,
+                              ...(isRect
+                                ? {
+                                    width: parseFloat(flyDimensions[unit.id]?.width || '0'),
+                                    length: parseFloat(flyDimensions[unit.id]?.length || '0')
+                                  }
+                                : {
+                                    baseSize: parseFloat(baseSizes[unit.id] || '0')
+                                  })
+                            };
+                            onSpawn(spawnData);
+                          }}
+                          disabled={!hasBaseSize || reserveUnits.has(unit.id)}
+                          className={`w-full px-3 py-1 text-sm font-semibold rounded transition-colors ${
+                            hasBaseSize && !reserveUnits.has(unit.id)
+                              ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
+                              : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                          }`}
+                        >
+                          Spawn
+                        </button>
+                        <label className="flex items-center gap-2 text-sm text-gray-400 cursor-pointer hover:text-gray-200">
+                          <input
+                            type="checkbox"
+                            checked={reserveUnits.has(unit.id)}
+                            onChange={(e) => onReserveChange(unit.id, e.target.checked)}
+                            className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-[#39FF14] focus:ring-[#39FF14] focus:ring-offset-0 cursor-pointer"
+                          />
+                          In Reserves
+                        </label>
+                      </div>
                     )}
                   </div>
                 </div>
