@@ -62,9 +62,11 @@ interface ArmySidebarProps {
   reserveUnits: Set<string>;
   onReserveChange: (unitId: string, isReserve: boolean) => void;
   onUnitIdsUpdate: (unitIds: string[]) => void;
+  onAuraChange: (unitName: string, auraInches: number) => void;
+  auras: { [unitName: string]: number };
 }
 
-export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGroups, onSelectAll, onArmyDataUpdate, reserveUnits, onReserveChange, onUnitIdsUpdate }: ArmySidebarProps) {
+export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGroups, onSelectAll, onArmyDataUpdate, reserveUnits, onReserveChange, onUnitIdsUpdate, onAuraChange, auras }: ArmySidebarProps) {
   const [units, setUnits] = useState<UnitWithBase[]>([]);
   const [baseSizes, setBaseSizes] = useState<{ [key: string]: string }>({});
   const [flyDimensions, setFlyDimensions] = useState<{ [key: string]: { width: string; length: string } }>({});
@@ -747,6 +749,18 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                           <span className="text-sm text-gray-400">mm</span>
                         </div>
                       )}
+
+                      <div className="flex items-center gap-1">
+                        <span className="text-sm text-gray-400">Aura:</span>
+                        <input
+                          type="number"
+                          value={auras[unit.name] || ''}
+                          onChange={(e) => onAuraChange(unit.name, parseFloat(e.target.value) || 0)}
+                          placeholder="0"
+                          className="w-12 px-2 py-1 text-sm bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        />
+                        <span className="text-sm text-gray-400">"</span>
+                      </div>
                     </div>
 
                     {isSpawned ? (

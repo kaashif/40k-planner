@@ -42,6 +42,7 @@ interface DeploymentPlannerProps {
   allUnitIds: string[];
   reserveUnits: Set<string>;
   armyUnits: ArmyUnit[];
+  auras: { [unitName: string]: number };
 }
 
 const layouts: Layout[] = [
@@ -66,7 +67,8 @@ export default function DeploymentPlanner({
   onRoundChange,
   allUnitIds,
   reserveUnits,
-  armyUnits
+  armyUnits,
+  auras
 }: DeploymentPlannerProps) {
   const [selectedLayout, setSelectedLayout] = useState(layouts[0]);
   const [toolMode, setToolMode] = useState<'selection' | 'ruler'>('selection');
@@ -74,6 +76,8 @@ export default function DeploymentPlanner({
   const [showDeepStrikeZones, setShowDeepStrikeZones] = useState(false);
   const [showMovement, setShowMovement] = useState(false);
   const [showLos, setShowLos] = useState(false);
+  const [showAuras, setShowAuras] = useState(false);
+  const [selectedTurn, setSelectedTurn] = useState('deployment');
   const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0 });
   const [draggedModel, setDraggedModel] = useState<{ groupId: string; modelId: string | null } | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -929,6 +933,16 @@ export default function DeploymentPlanner({
             </button>
           )}
           <button
+            onClick={() => setShowAuras(!showAuras)}
+            className={`px-3 py-1 font-semibold rounded transition-colors ${
+              showAuras
+                ? 'bg-purple-600 hover:bg-purple-500 text-white'
+                : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+            }`}
+          >
+            {showAuras ? '✓ ' : ''}Show Auras
+          </button>
+          <button
             onClick={() => setShowDeepStrikeZones(!showDeepStrikeZones)}
             className={`px-3 py-1 font-semibold rounded transition-colors ${
               showDeepStrikeZones
@@ -1029,6 +1043,20 @@ export default function DeploymentPlanner({
               {layout.title}
             </option>
           ))}
+        </select>
+      </div>
+
+      <div>
+        <label className="block mb-2 font-semibold text-gray-200">
+          Turn Planning
+        </label>
+        <select
+          value={selectedTurn}
+          onChange={(e) => setSelectedTurn(e.target.value)}
+          className="w-full p-3 bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg text-gray-200 focus:outline-none focus:border-[#39FF14] cursor-pointer"
+        >
+          <option value="deployment">Deployment</option>
+          <option value="turn1">Turn 1</option>
         </select>
       </div>
 
@@ -1756,6 +1784,86 @@ export default function DeploymentPlanner({
             );
           })()}
 
+          {/* Aura Zones */}
+          {showAuras && (() => {
+            const auraZones: Array<{
+              centerX: number;
+              centerY: number;
+              radius: number; // in pixels
+            }> = [];
+
+            spawnedGroups.forEach(group => {
+              // Get the aura distance for this unit (in inches)
+              const auraInches = auras[group.unitName] || 0;
+              if (auraInches <= 0) return;
+
+              const auraDistanceMm = auraInches * 25.4;
+
+              group.models.forEach(model => {
+                if (group.isRectangular) {
+                  // For rectangular bases, use the larger dimension as the "radius"
+                  const baseWidthMm = group.width || 25;
+                  const baseLengthMm = group.length || 25;
+                  const baseWidthPixels = baseWidthMm * scale;
+                  const baseLengthPixels = baseLengthMm * scale;
+                  const baseRadius = Math.max(baseWidthMm, baseLengthMm) / 2;
+
+                  const centerX = imageOffset.x + (group.groupX + model.x) * scale + baseWidthPixels / 2;
+                  const centerY = imageOffset.y + (group.groupY + model.y) * scale + baseLengthPixels / 2;
+
+                  auraZones.push({
+                    centerX,
+                    centerY,
+                    radius: (baseRadius + auraDistanceMm) * scale
+                  });
+                } else {
+                  const baseDiameterMm = group.baseSize || 25;
+                  const baseDiameterPixels = baseDiameterMm * scale;
+                  const baseRadiusMm = baseDiameterMm / 2;
+
+                  const centerX = imageOffset.x + (group.groupX + model.x) * scale + baseDiameterPixels / 2;
+                  const centerY = imageOffset.y + (group.groupY + model.y) * scale + baseDiameterPixels / 2;
+
+                  auraZones.push({
+                    centerX,
+                    centerY,
+                    radius: (baseRadiusMm + auraDistanceMm) * scale
+                  });
+                }
+              });
+            });
+
+            if (auraZones.length === 0) return null;
+
+            return (
+              <svg
+                className="absolute pointer-events-none"
+                style={{
+                  left: 0,
+                  top: 0,
+                  width: '100%',
+                  height: '100%',
+                  zIndex: 7,
+                  opacity: 0.3
+                }}
+              >
+                <g>
+                  {auraZones.map((zone, idx) => (
+                    <circle
+                      key={`aura-${idx}`}
+                      cx={zone.centerX}
+                      cy={zone.centerY}
+                      r={zone.radius}
+                      fill="purple"
+                      stroke="darkmagenta"
+                      strokeWidth="2"
+                    />
+                  ))}
+                </g>
+              </svg>
+            );
+          })()}
+
           {/* Deep Strike View - 9-inch exclusion zones */}
           {showDeepStrikeZones && (() => {
             // Collect all model positions and create a unified exclusion zone
@@ -1874,6 +1982,7 @@ export default function DeploymentPlanner({
           })()}
         </div>
       </div>
+
     </div>
   );
 }

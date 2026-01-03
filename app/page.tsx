@@ -65,6 +65,7 @@ function MainContent() {
   // Army data state
   const [armyUnits, setArmyUnits] = useState<ArmyUnit[]>([]);
   const [leaderAssignments, setLeaderAssignments] = useState<{ [leaderName: string]: string }>({});
+  const [auras, setAuras] = useState<{ [unitName: string]: number }>({});
 
   // Load leaders configuration on mount
   useEffect(() => {
@@ -243,6 +244,13 @@ function MainContent() {
     setAllUnitIds(unitIds);
   }, []);
 
+  const handleAuraChange = useCallback((unitName: string, auraInches: number) => {
+    setAuras(prev => ({
+      ...prev,
+      [unitName]: auraInches
+    }));
+  }, []);
+
   const handleClearLocalStorage = () => {
     if (confirm('Are you sure you want to clear all saved data? This will reset spawned models and base size overrides.')) {
       localStorage.removeItem('spawnedGroupsByRound');
@@ -316,6 +324,8 @@ function MainContent() {
           reserveUnits={reserveUnits}
           onReserveChange={handleReserveChange}
           onUnitIdsUpdate={handleUnitIdsUpdate}
+          onAuraChange={handleAuraChange}
+          auras={auras}
         />
 
         {/* Main Content */}
@@ -388,6 +398,7 @@ function MainContent() {
                 allUnitIds={allUnitIds}
                 reserveUnits={reserveUnits}
                 armyUnits={armyUnits}
+                auras={auras}
               />
             )}
 
