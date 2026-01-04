@@ -97,7 +97,9 @@ function MainContent() {
 
   // Derived state for current round and turn
   const stateKey = `${currentRound}-${currentTurn}`;
+  const deploymentKey = `${currentRound}-deployment`;
   const spawnedGroups = spawnedGroupsByRoundAndTurn[stateKey] || [];
+  const deploymentGroups = spawnedGroupsByRoundAndTurn[deploymentKey] || [];
   const spawnedUnitIds = new Set(spawnedGroups.map(g => g.unitId));
   const selectedModels = selectedModelsByRoundAndTurn[stateKey] || [];
 
@@ -417,6 +419,7 @@ function MainContent() {
             {activeTab === 'deployment' && (
               <DeploymentPlanner
                 spawnedGroups={spawnedGroups}
+                deploymentGroups={deploymentGroups}
                 onUpdateGroups={handleUpdateGroups}
                 selectedModels={selectedModels}
                 onSelectionChange={handleSelectionChange}

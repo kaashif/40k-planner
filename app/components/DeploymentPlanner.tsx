@@ -29,6 +29,7 @@ interface ArmyUnit {
 
 interface DeploymentPlannerProps {
   spawnedGroups: SpawnedGroup[];
+  deploymentGroups: SpawnedGroup[];
   onUpdateGroups: (groups: SpawnedGroup[]) => void;
   selectedModels: SelectedModel[];
   onSelectionChange: (models: SelectedModel[]) => void;
@@ -58,6 +59,7 @@ const layouts: Layout[] = [
 
 export default function DeploymentPlanner({
   spawnedGroups,
+  deploymentGroups,
   onUpdateGroups,
   selectedModels,
   onSelectionChange,
@@ -83,6 +85,7 @@ export default function DeploymentPlanner({
   const [showMovement, setShowMovement] = useState(false);
   const [showLos, setShowLos] = useState(false);
   const [showAuras, setShowAuras] = useState(false);
+  const [showDiff, setShowDiff] = useState(false);
   const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0 });
   const [draggedModel, setDraggedModel] = useState<{ groupId: string; modelId: string | null } | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -947,6 +950,18 @@ export default function DeploymentPlanner({
           >
             {showAuras ? '✓ ' : ''}Show Auras
           </button>
+          {currentTurn !== 'deployment' && (
+            <button
+              onClick={() => setShowDiff(!showDiff)}
+              className={`px-3 py-1 font-semibold rounded transition-colors ${
+                showDiff
+                  ? 'bg-blue-600 hover:bg-blue-500 text-white'
+                  : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+              }`}
+            >
+              {showDiff ? '✓ ' : ''}Show Diff
+            </button>
+          )}
           <button
             onClick={() => setShowDeepStrikeZones(!showDeepStrikeZones)}
             className={`px-3 py-1 font-semibold rounded transition-colors ${
@@ -1135,6 +1150,174 @@ export default function DeploymentPlanner({
               isDragging={draggedModel !== null || isRotating || isBoxSelecting}
             />
           )}
+
+          {/* Diff View - Ghost models from deployment and movement arrows */}
+          {showDiff && currentTurn !== 'deployment' && (() => {
+            // Build a map of current model positions for quick lookup
+            const currentPositions = new Map<string, { x: number; y: number }>();
+            spawnedGroups.forEach(group => {
+              const baseSize = group.isRectangular
+                ? Math.max(group.width || 25, group.length || 25)
+                : (group.baseSize || 25);
+              group.models.forEach(model => {
+                const key = `${group.unitId}-${model.id}`;
+                currentPositions.set(key, {
+                  x: group.groupX + model.x + (group.isRectangular ? (group.width || 25) / 2 : baseSize / 2),
+                  y: group.groupY + model.y + (group.isRectangular ? (group.length || 25) / 2 : baseSize / 2)
+                });
+              });
+            });
+
+            // Pre-compute ghost models and arrows data
+            const ghostModels: Array<{
+              key: string;
+              left: number;
+              top: number;
+              width: number;
+              height: number;
+              isRect: boolean;
+              rotation: number;
+            }> = [];
+
+            const arrows: Array<{
+              fromX: number;
+              fromY: number;
+              toX: number;
+              toY: number;
+              distanceInches: number;
+            }> = [];
+
+            deploymentGroups.forEach(group => {
+              group.models.forEach(model => {
+                const size = group.isRectangular
+                  ? { width: (group.width || 25) * scale, height: (group.length || 25) * scale }
+                  : { width: (group.baseSize || 25) * scale, height: (group.baseSize || 25) * scale };
+
+                const baseSize = group.isRectangular
+                  ? Math.max(group.width || 25, group.length || 25)
+                  : (group.baseSize || 25);
+
+                // Add ghost model
+                ghostModels.push({
+                  key: `ghost-${group.unitId}-${model.id}`,
+                  left: imageOffset.x + (group.groupX + model.x) * scale,
+                  top: imageOffset.y + (group.groupY + model.y) * scale,
+                  width: size.width,
+                  height: size.height,
+                  isRect: group.isRectangular || false,
+                  rotation: model.rotation || 0
+                });
+
+                // Calculate deployment position (center in mm)
+                const deployX = group.groupX + model.x + (group.isRectangular ? (group.width || 25) / 2 : baseSize / 2);
+                const deployY = group.groupY + model.y + (group.isRectangular ? (group.length || 25) / 2 : baseSize / 2);
+
+                // Get current position if model exists
+                const posKey = `${group.unitId}-${model.id}`;
+                const currentPos = currentPositions.get(posKey);
+
+                if (currentPos) {
+                  const dx = currentPos.x - deployX;
+                  const dy = currentPos.y - deployY;
+                  const distanceMm = Math.sqrt(dx * dx + dy * dy);
+
+                  // Only show arrow if moved more than 1mm
+                  if (distanceMm > 1) {
+                    arrows.push({
+                      fromX: imageOffset.x + deployX * scale,
+                      fromY: imageOffset.y + deployY * scale,
+                      toX: imageOffset.x + currentPos.x * scale,
+                      toY: imageOffset.y + currentPos.y * scale,
+                      distanceInches: distanceMm / 25.4
+                    });
+                  }
+                }
+              });
+            });
+
+            return (
+              <>
+                {/* Ghost models from deployment */}
+                {ghostModels.map(ghost => (
+                  <div
+                    key={ghost.key}
+                    className="absolute pointer-events-none"
+                    style={{
+                      left: ghost.left,
+                      top: ghost.top,
+                      width: ghost.width,
+                      height: ghost.height,
+                      borderRadius: ghost.isRect ? '4px' : '50%',
+                      backgroundColor: 'rgba(100, 100, 100, 0.3)',
+                      border: '2px dashed rgba(150, 150, 150, 0.5)',
+                      zIndex: 5,
+                      transform: ghost.rotation ? `rotate(${ghost.rotation}deg)` : undefined,
+                      transformOrigin: 'center center'
+                    }}
+                  />
+                ))}
+
+                {/* Movement arrows */}
+                <svg
+                  className="absolute pointer-events-none"
+                  style={{
+                    left: 0,
+                    top: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 45
+                  }}
+                >
+                  <defs>
+                    <marker
+                      id="arrowhead-diff"
+                      markerWidth="10"
+                      markerHeight="7"
+                      refX="9"
+                      refY="3.5"
+                      orient="auto"
+                    >
+                      <polygon
+                        points="0 0, 10 3.5, 0 7"
+                        fill="#3b82f6"
+                      />
+                    </marker>
+                  </defs>
+                  {arrows.map((arrow, idx) => {
+                    const midX = (arrow.fromX + arrow.toX) / 2;
+                    const midY = (arrow.fromY + arrow.toY) / 2;
+
+                    return (
+                      <g key={`arrow-${idx}`}>
+                        <line
+                          x1={arrow.fromX}
+                          y1={arrow.fromY}
+                          x2={arrow.toX}
+                          y2={arrow.toY}
+                          stroke="#3b82f6"
+                          strokeWidth="3"
+                          markerEnd="url(#arrowhead-diff)"
+                        />
+                        <text
+                          x={midX}
+                          y={midY - 8}
+                          textAnchor="middle"
+                          fill="#3b82f6"
+                          fontSize="12"
+                          fontWeight="bold"
+                          stroke="black"
+                          strokeWidth="3"
+                          paintOrder="stroke"
+                        >
+                          {arrow.distanceInches.toFixed(1)}&quot;
+                        </text>
+                      </g>
+                    );
+                  })}
+                </svg>
+              </>
+            );
+          })()}
 
           {/* Render spawned models - bases first */}
           {spawnedGroups.map(group => {
