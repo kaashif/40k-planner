@@ -122,6 +122,7 @@ export default function DeploymentPlanner({
       isRect: boolean;
       width: number;
       height: number;
+      rotation: number; // in degrees
     }> = [];
 
     spawnedGroups.forEach(group => {
@@ -140,10 +141,108 @@ export default function DeploymentPlanner({
           radius: baseSize / 2,
           isRect: group.isRectangular || false,
           width: group.width || baseSize,
-          height: group.length || baseSize
+          height: group.length || baseSize,
+          rotation: model.rotation || 0
         });
       });
     });
+
+    // Helper: get corners of a rotated rectangle
+    const getRotatedRectCorners = (cx: number, cy: number, w: number, h: number, angleDeg: number) => {
+      const angleRad = (angleDeg * Math.PI) / 180;
+      const cos = Math.cos(angleRad);
+      const sin = Math.sin(angleRad);
+      const hw = w / 2;
+      const hh = h / 2;
+
+      // Four corners relative to center, then rotated
+      const corners = [
+        { x: -hw, y: -hh },
+        { x: hw, y: -hh },
+        { x: hw, y: hh },
+        { x: -hw, y: hh }
+      ];
+
+      return corners.map(c => ({
+        x: cx + c.x * cos - c.y * sin,
+        y: cy + c.x * sin + c.y * cos
+      }));
+    };
+
+    // Helper: project polygon onto axis and get min/max
+    const projectPolygon = (corners: Array<{x: number, y: number}>, axis: {x: number, y: number}) => {
+      let min = Infinity, max = -Infinity;
+      corners.forEach(c => {
+        const proj = c.x * axis.x + c.y * axis.y;
+        min = Math.min(min, proj);
+        max = Math.max(max, proj);
+      });
+      return { min, max };
+    };
+
+    // Helper: check if two ranges overlap
+    const rangesOverlap = (a: {min: number, max: number}, b: {min: number, max: number}, tolerance: number) => {
+      return a.max > b.min + tolerance && b.max > a.min + tolerance;
+    };
+
+    // Helper: SAT collision check for two rotated rectangles
+    const rectRectOverlap = (a: typeof allModels[0], b: typeof allModels[0], tolerance: number): boolean => {
+      const cornersA = getRotatedRectCorners(a.centerX, a.centerY, a.width, a.height, a.rotation);
+      const cornersB = getRotatedRectCorners(b.centerX, b.centerY, b.width, b.height, b.rotation);
+
+      // Get axes to test (normals of each edge)
+      const getAxes = (corners: Array<{x: number, y: number}>) => {
+        const axes = [];
+        for (let i = 0; i < corners.length; i++) {
+          const next = (i + 1) % corners.length;
+          const edge = { x: corners[next].x - corners[i].x, y: corners[next].y - corners[i].y };
+          // Normal (perpendicular)
+          const len = Math.sqrt(edge.x * edge.x + edge.y * edge.y);
+          axes.push({ x: -edge.y / len, y: edge.x / len });
+        }
+        return axes;
+      };
+
+      const axes = [...getAxes(cornersA), ...getAxes(cornersB)];
+
+      // Check all axes - if any axis has no overlap, shapes don't collide
+      for (const axis of axes) {
+        const projA = projectPolygon(cornersA, axis);
+        const projB = projectPolygon(cornersB, axis);
+        if (!rangesOverlap(projA, projB, tolerance)) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    // Helper: circle vs rotated rectangle overlap
+    const circleRectOverlap = (circle: typeof allModels[0], rect: typeof allModels[0], tolerance: number): boolean => {
+      // Transform circle center into rectangle's local space (unrotated)
+      const angleRad = (-rect.rotation * Math.PI) / 180;
+      const cos = Math.cos(angleRad);
+      const sin = Math.sin(angleRad);
+
+      const dx = circle.centerX - rect.centerX;
+      const dy = circle.centerY - rect.centerY;
+
+      // Circle center in rect's local coordinates
+      const localX = dx * cos - dy * sin;
+      const localY = dx * sin + dy * cos;
+
+      // Find closest point on rectangle to circle center
+      const hw = rect.width / 2;
+      const hh = rect.height / 2;
+      const closestX = Math.max(-hw, Math.min(hw, localX));
+      const closestY = Math.max(-hh, Math.min(hh, localY));
+
+      // Distance from circle center to closest point
+      const distX = localX - closestX;
+      const distY = localY - closestY;
+      const dist = Math.sqrt(distX * distX + distY * distY);
+
+      return dist < circle.radius - tolerance;
+    };
 
     // Check each pair for overlap
     for (let i = 0; i < allModels.length; i++) {
@@ -151,14 +250,26 @@ export default function DeploymentPlanner({
         const a = allModels[i];
         const b = allModels[j];
 
-        // Simple circle-circle overlap check (approximation for rectangular bases too)
-        const dx = a.centerX - b.centerX;
-        const dy = a.centerY - b.centerY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const minDist = a.radius + b.radius;
+        let isOverlapping = false;
+        const tolerance = 0.5; // Allow 0.5mm for floating point errors
 
-        // Allow tiny overlap (0.5mm) to account for floating point errors
-        if (dist < minDist - 0.5) {
+        if (!a.isRect && !b.isRect) {
+          // Circle vs Circle
+          const dx = a.centerX - b.centerX;
+          const dy = a.centerY - b.centerY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          isOverlapping = dist < a.radius + b.radius - tolerance;
+        } else if (a.isRect && b.isRect) {
+          // Rectangle vs Rectangle (using SAT)
+          isOverlapping = rectRectOverlap(a, b, tolerance);
+        } else {
+          // Circle vs Rectangle
+          const circle = a.isRect ? b : a;
+          const rect = a.isRect ? a : b;
+          isOverlapping = circleRectOverlap(circle, rect, tolerance);
+        }
+
+        if (isOverlapping) {
           overlapping.add(a.key);
           overlapping.add(b.key);
         }
@@ -321,11 +432,11 @@ export default function DeploymentPlanner({
     onUpdateGroups(updatedGroups);
   };
 
-  // Arrange selected models in a horizontal line with 2" spacing
+  // Arrange selected models in a horizontal line with 1.99" spacing (keeps coherency)
   const handleLineUp = () => {
     if (selectedModels.length === 0) return;
 
-    const SPACING_MM = 2 * 25.4; // 2 inches in mm
+    const SPACING_MM = 1.99 * 25.4; // 1.99 inches in mm - stays within 2" coherency
 
     // Collect selected models with their current positions
     const modelsToArrange: Array<{
@@ -903,7 +1014,7 @@ export default function DeploymentPlanner({
                   ? 'bg-blue-700 hover:bg-blue-600 text-white'
                   : 'bg-gray-600 text-gray-500 cursor-not-allowed'
               }`}
-              title="Arrange selected models in a horizontal line with 2&quot; spacing"
+              title="Arrange selected models in a horizontal line (1.99&quot; apart for coherency)"
             >
               Line Up
             </button>
@@ -1096,9 +1207,10 @@ export default function DeploymentPlanner({
         </h3>
         <div
           ref={canvasRef}
-          className={`relative w-full h-[calc(100vh-400px)] select-none ${
+          className={`relative w-full select-none ${
             toolMode === 'ruler' ? 'cursor-crosshair' : 'cursor-crosshair'
           }`}
+          style={{ aspectRatio: '60 / 44' }}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseDown={handleCanvasMouseDown}

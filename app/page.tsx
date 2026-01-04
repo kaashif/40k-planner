@@ -163,25 +163,18 @@ function MainContent() {
     setSpawnedGroupsByRoundAndTurn(prev => {
       const currentGroups = prev[stateKey] || [];
 
-      // Calculate spawn position based on existing groups
-      let groupX = 50; // Default starting position in mm
-      const groupY = 50;
+      // Map dimensions in mm (60" x 44")
+      const MAP_WIDTH_MM = 60 * 25.4;  // 1524mm
+      const MAP_HEIGHT_MM = 44 * 25.4; // 1117.6mm
 
-      if (currentGroups.length > 0) {
-        let maxRight = 0;
-        for (const group of currentGroups) {
-          const groupSize = group.isRectangular
-            ? Math.max(group.width || 25, group.length || 25)
-            : (group.baseSize || 25);
-          const groupModelsPerRow = Math.ceil(Math.sqrt(group.models.length));
-          const groupWidth = groupModelsPerRow * (groupSize + spacing);
-          const rightEdge = group.groupX + groupWidth;
-          if (rightEdge > maxRight) {
-            maxRight = rightEdge;
-          }
-        }
-        groupX = maxRight + 20; // 20mm gap between groups
-      }
+      // Calculate the size of the unit's formation
+      const formationWidth = modelsPerRow * (modelSize + spacing);
+      const formationRows = Math.ceil(unit.modelCount / modelsPerRow);
+      const formationHeight = formationRows * (modelSize + spacing);
+
+      // Spawn in the center of the map
+      const groupX = (MAP_WIDTH_MM - formationWidth) / 2;
+      const groupY = (MAP_HEIGHT_MM - formationHeight) / 2;
 
       const newGroup: SpawnedGroup = {
         unitId: unit.unitId,
