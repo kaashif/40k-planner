@@ -6,10 +6,16 @@ import PDFExportModal from './PDFExportModal';
 import type { SpawnedGroup } from '../types';
 
 export default function ExportPDFButton({
-  spawnedGroupsByRound
+  spawnedGroupsByRoundAndTurn
 }: {
-  spawnedGroupsByRound: { [roundId: string]: SpawnedGroup[] }
+  spawnedGroupsByRoundAndTurn: { [key: string]: SpawnedGroup[] }
 }) {
+  // Convert to old format for PDF export (use deployment state for each round)
+  const spawnedGroupsByRound: { [roundId: string]: SpawnedGroup[] } = {};
+  const rounds = ['terraform', 'purge', 'supplies', 'linchpin', 'take'];
+  for (const round of rounds) {
+    spawnedGroupsByRound[round] = spawnedGroupsByRoundAndTurn[`${round}-deployment`] || [];
+  }
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: 5 });

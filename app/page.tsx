@@ -81,43 +81,44 @@ function MainContent() {
     loadLeaders();
   }, []);
 
-  // Per-round state
+  // Per-round and per-turn state
   const [currentRound, setCurrentRound] = useState<string>('terraform');
-  const [spawnedGroupsByRound, setSpawnedGroupsByRound] = useState<{ [roundId: string]: SpawnedGroup[] }>({
-    terraform: [],
-    purge: [],
-    supplies: [],
-    linchpin: [],
-    take: []
-  });
+  const [currentTurn, setCurrentTurn] = useState<string>('deployment');
+  const [spawnedGroupsByRoundAndTurn, setSpawnedGroupsByRoundAndTurn] = useState<{ [key: string]: SpawnedGroup[] }>({});
   const [reserveUnits, setReserveUnits] = useState<Set<string>>(new Set());
   const [allUnitIds, setAllUnitIds] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Selection state (per-round)
-  const [selectedModelsByRound, setSelectedModelsByRound] = useState<{ [roundId: string]: SelectedModel[] }>({
-    terraform: [],
-    purge: [],
-    supplies: [],
-    linchpin: [],
-    take: []
-  });
+  // Selection state (per-round and per-turn)
+  const [selectedModelsByRoundAndTurn, setSelectedModelsByRoundAndTurn] = useState<{ [key: string]: SelectedModel[] }>({});
   const [isBoxSelecting, setIsBoxSelecting] = useState(false);
   const [boxSelectStart, setBoxSelectStart] = useState<{ x: number; y: number } | null>(null);
   const [boxSelectEnd, setBoxSelectEnd] = useState<{ x: number; y: number } | null>(null);
 
-  // Derived state for current round
-  const spawnedGroups = spawnedGroupsByRound[currentRound] || [];
+  // Derived state for current round and turn
+  const stateKey = `${currentRound}-${currentTurn}`;
+  const spawnedGroups = spawnedGroupsByRoundAndTurn[stateKey] || [];
   const spawnedUnitIds = new Set(spawnedGroups.map(g => g.unitId));
-  const selectedModels = selectedModelsByRound[currentRound] || [];
+  const selectedModels = selectedModelsByRoundAndTurn[stateKey] || [];
 
   // Load state from localStorage on mount
   useEffect(() => {
     try {
-      const savedGroupsByRound = localStorage.getItem('spawnedGroupsByRound');
-      if (savedGroupsByRound) {
-        const groupsByRound = JSON.parse(savedGroupsByRound);
-        setSpawnedGroupsByRound(groupsByRound);
+      const savedGroups = localStorage.getItem('spawnedGroupsByRoundAndTurn');
+      if (savedGroups) {
+        setSpawnedGroupsByRoundAndTurn(JSON.parse(savedGroups));
+      } else {
+        // Migration: try loading old format
+        const oldSavedGroups = localStorage.getItem('spawnedGroupsByRound');
+        if (oldSavedGroups) {
+          const oldGroups = JSON.parse(oldSavedGroups);
+          // Convert old format to new format (treat old data as deployment state)
+          const newGroups: { [key: string]: SpawnedGroup[] } = {};
+          for (const [roundId, groups] of Object.entries(oldGroups)) {
+            newGroups[`${roundId}-deployment`] = groups as SpawnedGroup[];
+          }
+          setSpawnedGroupsByRoundAndTurn(newGroups);
+        }
       }
     } catch (error) {
       console.error('Error loading spawned groups from localStorage:', error);
@@ -125,16 +126,16 @@ function MainContent() {
     setIsLoaded(true);
   }, []);
 
-  // Save state to localStorage whenever spawnedGroupsByRound changes
+  // Save state to localStorage whenever spawnedGroupsByRoundAndTurn changes
   useEffect(() => {
     if (!isLoaded) return; // Don't save on initial load
 
     try {
-      localStorage.setItem('spawnedGroupsByRound', JSON.stringify(spawnedGroupsByRound));
+      localStorage.setItem('spawnedGroupsByRoundAndTurn', JSON.stringify(spawnedGroupsByRoundAndTurn));
     } catch (error) {
       console.error('Error saving spawned groups to localStorage:', error);
     }
-  }, [spawnedGroupsByRound, isLoaded]);
+  }, [spawnedGroupsByRoundAndTurn, isLoaded]);
 
   const handleSpawn = (unit: SpawnedUnit) => {
     // Create models in a grid formation
@@ -157,8 +158,8 @@ function MainContent() {
       });
     }
 
-    setSpawnedGroupsByRound(prev => {
-      const currentGroups = prev[currentRound] || [];
+    setSpawnedGroupsByRoundAndTurn(prev => {
+      const currentGroups = prev[stateKey] || [];
 
       // Calculate spawn position based on existing groups
       let groupX = 50; // Default starting position in mm
@@ -196,35 +197,35 @@ function MainContent() {
 
       return {
         ...prev,
-        [currentRound]: [...currentGroups, newGroup]
+        [stateKey]: [...currentGroups, newGroup]
       };
     });
   };
 
   const handleDelete = (unitId: string) => {
-    setSpawnedGroupsByRound(prev => ({
+    setSpawnedGroupsByRoundAndTurn(prev => ({
       ...prev,
-      [currentRound]: (prev[currentRound] || []).filter(group => group.unitId !== unitId)
+      [stateKey]: (prev[stateKey] || []).filter(group => group.unitId !== unitId)
     }));
 
     // Remove deleted models from selection
-    setSelectedModelsByRound(prev => ({
+    setSelectedModelsByRoundAndTurn(prev => ({
       ...prev,
-      [currentRound]: (prev[currentRound] || []).filter(sel => sel.groupId !== unitId)
+      [stateKey]: (prev[stateKey] || []).filter(sel => sel.groupId !== unitId)
     }));
   };
 
   const handleUpdateGroups = (groups: SpawnedGroup[]) => {
-    setSpawnedGroupsByRound(prev => ({
+    setSpawnedGroupsByRoundAndTurn(prev => ({
       ...prev,
-      [currentRound]: groups
+      [stateKey]: groups
     }));
   };
 
   const handleSelectionChange = (models: SelectedModel[]) => {
-    setSelectedModelsByRound(prev => ({
+    setSelectedModelsByRoundAndTurn(prev => ({
       ...prev,
-      [currentRound]: models
+      [stateKey]: models
     }));
   };
 
@@ -251,9 +252,33 @@ function MainContent() {
     }));
   }, []);
 
+  const handleTurnChange = useCallback((turn: string) => {
+    setCurrentTurn(turn);
+  }, []);
+
+  const handleResetToDeployment = useCallback(() => {
+    const deploymentKey = `${currentRound}-deployment`;
+    const deploymentState = spawnedGroupsByRoundAndTurn[deploymentKey] || [];
+
+    // Deep copy the deployment state to the current turn
+    const copiedState = JSON.parse(JSON.stringify(deploymentState));
+
+    setSpawnedGroupsByRoundAndTurn(prev => ({
+      ...prev,
+      [stateKey]: copiedState
+    }));
+
+    // Clear selection
+    setSelectedModelsByRoundAndTurn(prev => ({
+      ...prev,
+      [stateKey]: []
+    }));
+  }, [currentRound, stateKey, spawnedGroupsByRoundAndTurn]);
+
   const handleClearLocalStorage = () => {
     if (confirm('Are you sure you want to clear all saved data? This will reset spawned models and base size overrides.')) {
-      localStorage.removeItem('spawnedGroupsByRound');
+      localStorage.removeItem('spawnedGroupsByRoundAndTurn');
+      localStorage.removeItem('spawnedGroupsByRound'); // Old format
       localStorage.removeItem('baseSizeOverrides');
       window.location.reload();
     }
@@ -262,7 +287,7 @@ function MainContent() {
   const handleExportData = () => {
     try {
       const exportData = {
-        spawnedGroupsByRound: JSON.parse(localStorage.getItem('spawnedGroupsByRound') || '{}'),
+        spawnedGroupsByRoundAndTurn: JSON.parse(localStorage.getItem('spawnedGroupsByRoundAndTurn') || '{}'),
         baseSizeOverrides: JSON.parse(localStorage.getItem('baseSizeOverrides') || '{}'),
         exportDate: new Date().toISOString()
       };
@@ -293,8 +318,15 @@ function MainContent() {
         const text = await file.text();
         const importData = JSON.parse(text);
 
-        if (importData.spawnedGroupsByRound) {
-          localStorage.setItem('spawnedGroupsByRound', JSON.stringify(importData.spawnedGroupsByRound));
+        if (importData.spawnedGroupsByRoundAndTurn) {
+          localStorage.setItem('spawnedGroupsByRoundAndTurn', JSON.stringify(importData.spawnedGroupsByRoundAndTurn));
+        } else if (importData.spawnedGroupsByRound) {
+          // Handle old format - convert to new format
+          const newGroups: { [key: string]: SpawnedGroup[] } = {};
+          for (const [roundId, groups] of Object.entries(importData.spawnedGroupsByRound)) {
+            newGroups[`${roundId}-deployment`] = groups as SpawnedGroup[];
+          }
+          localStorage.setItem('spawnedGroupsByRoundAndTurn', JSON.stringify(newGroups));
         }
         if (importData.baseSizeOverrides) {
           localStorage.setItem('baseSizeOverrides', JSON.stringify(importData.baseSizeOverrides));
@@ -335,7 +367,7 @@ function MainContent() {
               Warhammer 40k Tournament Planner
             </h1>
             <div className="flex gap-3">
-              <ExportPDFButton spawnedGroupsByRound={spawnedGroupsByRound} />
+              <ExportPDFButton spawnedGroupsByRoundAndTurn={spawnedGroupsByRoundAndTurn} />
               <button
                 onClick={handleImportData}
                 className="px-4 py-2 bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white font-semibold rounded-lg transition-colors"
@@ -399,6 +431,9 @@ function MainContent() {
                 reserveUnits={reserveUnits}
                 armyUnits={armyUnits}
                 auras={auras}
+                currentTurn={currentTurn}
+                onTurnChange={handleTurnChange}
+                onResetToDeployment={handleResetToDeployment}
               />
             )}
 

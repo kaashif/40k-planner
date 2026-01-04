@@ -43,6 +43,9 @@ interface DeploymentPlannerProps {
   reserveUnits: Set<string>;
   armyUnits: ArmyUnit[];
   auras: { [unitName: string]: number };
+  currentTurn: string;
+  onTurnChange: (turn: string) => void;
+  onResetToDeployment: () => void;
 }
 
 const layouts: Layout[] = [
@@ -68,7 +71,10 @@ export default function DeploymentPlanner({
   allUnitIds,
   reserveUnits,
   armyUnits,
-  auras
+  auras,
+  currentTurn,
+  onTurnChange,
+  onResetToDeployment
 }: DeploymentPlannerProps) {
   const [selectedLayout, setSelectedLayout] = useState(layouts[0]);
   const [toolMode, setToolMode] = useState<'selection' | 'ruler'>('selection');
@@ -77,7 +83,6 @@ export default function DeploymentPlanner({
   const [showMovement, setShowMovement] = useState(false);
   const [showLos, setShowLos] = useState(false);
   const [showAuras, setShowAuras] = useState(false);
-  const [selectedTurn, setSelectedTurn] = useState('deployment');
   const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0 });
   const [draggedModel, setDraggedModel] = useState<{ groupId: string; modelId: string | null } | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -1046,18 +1051,28 @@ export default function DeploymentPlanner({
         </select>
       </div>
 
-      <div>
-        <label className="block mb-2 font-semibold text-gray-200">
-          Turn Planning
-        </label>
-        <select
-          value={selectedTurn}
-          onChange={(e) => setSelectedTurn(e.target.value)}
-          className="w-full p-3 bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg text-gray-200 focus:outline-none focus:border-[#39FF14] cursor-pointer"
-        >
-          <option value="deployment">Deployment</option>
-          <option value="turn1">Turn 1</option>
-        </select>
+      <div className="flex gap-4 items-end">
+        <div className="flex-1">
+          <label className="block mb-2 font-semibold text-gray-200">
+            Turn Planning
+          </label>
+          <select
+            value={currentTurn}
+            onChange={(e) => onTurnChange(e.target.value)}
+            className="w-full p-3 bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg text-gray-200 focus:outline-none focus:border-[#39FF14] cursor-pointer"
+          >
+            <option value="deployment">Deployment</option>
+            <option value="turn1">Turn 1</option>
+          </select>
+        </div>
+        {currentTurn !== 'deployment' && (
+          <button
+            onClick={onResetToDeployment}
+            className="px-4 py-3 bg-orange-700 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors"
+          >
+            Reset to Deployment
+          </button>
+        )}
       </div>
 
       <div className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-6">
