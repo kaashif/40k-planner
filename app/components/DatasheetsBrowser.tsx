@@ -63,7 +63,7 @@ interface CatalogueData {
 
 export default function DatasheetsBrowser() {
   const [factions, setFactions] = useState<Faction[]>([]);
-  const [selectedFaction, setSelectedFaction] = useState<string>('');
+  const [selectedFaction, setSelectedFaction] = useState<string>('chaos-thousand-sons');
   const [catalogue, setCatalogue] = useState<CatalogueData | null>(null);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
@@ -74,6 +74,7 @@ export default function DatasheetsBrowser() {
       .then(r => r.json())
       .then(setFactions)
       .catch(console.error);
+    handleFactionChange('chaos-thousand-sons');
   }, []);
 
   const handleFactionChange = async (slug: string) => {
