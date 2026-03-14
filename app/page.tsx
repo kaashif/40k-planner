@@ -3,10 +3,12 @@
 import { Suspense, useState, useEffect, useCallback } from 'react';
 import ArmySidebar from './components/ArmySidebar';
 import DeploymentPlanner from './components/DeploymentPlanner';
+import DatasheetsBrowser from './components/DatasheetsBrowser';
 import ExportPDFButton from './components/ExportPDFButton';
 import { Model, SpawnedGroup, SpawnedUnit, SelectedModel } from './types';
 
 function MainContent() {
+  const [activeTab, setActiveTab] = useState<'deployment' | 'datasheets'>('deployment');
 
   // Army data state
   const [armyUnits, setArmyUnits] = useState<{ name: string; stats?: Record<string, string>; invulnSave?: string }[]>([]);
@@ -315,7 +317,32 @@ function MainContent() {
             </div>
           </header>
 
+          {/* Tab Navigation */}
+          <div className="flex gap-3 mb-6">
+            <button
+              onClick={() => setActiveTab('deployment')}
+              className={`px-6 py-3 font-semibold rounded-lg transition-colors ${
+                activeTab === 'deployment'
+                  ? 'bg-[#0f4d0f] text-[#39FF14] border-2 border-[#39FF14]'
+                  : 'bg-[#1a1a1a] text-gray-400 border-2 border-[#1a2a1a] hover:border-[#39FF14] hover:text-gray-200'
+              }`}
+            >
+              Deployment
+            </button>
+            <button
+              onClick={() => setActiveTab('datasheets')}
+              className={`px-6 py-3 font-semibold rounded-lg transition-colors ${
+                activeTab === 'datasheets'
+                  ? 'bg-[#0f4d0f] text-[#39FF14] border-2 border-[#39FF14]'
+                  : 'bg-[#1a1a1a] text-gray-400 border-2 border-[#1a2a1a] hover:border-[#39FF14] hover:text-gray-200'
+              }`}
+            >
+              Datasheets
+            </button>
+          </div>
+
           <main className="bg-[#0f0f0f] border border-[#1a2a1a] rounded-lg p-6">
+            {activeTab === 'deployment' && (
               <DeploymentPlanner
                 spawnedGroups={spawnedGroups}
                 deploymentGroups={deploymentGroups}
@@ -337,6 +364,10 @@ function MainContent() {
                 onTurnChange={handleTurnChange}
                 onResetToDeployment={handleResetToDeployment}
               />
+            )}
+            {activeTab === 'datasheets' && (
+              <DatasheetsBrowser />
+            )}
           </main>
         </div>
       </div>
