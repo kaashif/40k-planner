@@ -23,6 +23,7 @@ npm run lint   # Run ESLint
 **IMPORTANT**:
 - Do NOT run `npm run build` during development. The build process is slow and unnecessary for development work.
 - Do NOT run `npm run dev` - the user already runs this in a separate terminal window.
+- Commit after every significant change, but do NOT push unless explicitly asked.
 
 ## Architecture
 
