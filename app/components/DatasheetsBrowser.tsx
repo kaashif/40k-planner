@@ -68,6 +68,7 @@ export default function DatasheetsBrowser() {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [expandedUnit, setExpandedUnit] = useState<string | null>(null);
+  const [hideLegends, setHideLegends] = useState(true);
 
   useEffect(() => {
     fetch('/api/datasheets')
@@ -99,7 +100,8 @@ export default function DatasheetsBrowser() {
   };
 
   const filteredUnits = catalogue?.units.filter(u =>
-    u.name.toLowerCase().includes(search.toLowerCase())
+    u.name.toLowerCase().includes(search.toLowerCase()) &&
+    (!hideLegends || !u.name.includes('[Legends]'))
   ) || [];
 
   return (
@@ -127,6 +129,16 @@ export default function DatasheetsBrowser() {
             className="px-3 py-2 bg-[#14142a] text-gray-200 border border-[#1a1a2e] rounded-lg focus:border-[#C5A33E] focus:outline-none"
           />
         )}
+
+        <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={hideLegends}
+            onChange={e => setHideLegends(e.target.checked)}
+            className="accent-[#C5A33E]"
+          />
+          Hide Legends
+        </label>
 
         {catalogue && (
           <span className="text-gray-400 text-sm">
