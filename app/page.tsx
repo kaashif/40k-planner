@@ -271,40 +271,42 @@ function MainContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-[#0a0a14]">
       <div className="flex">
-        {/* Army Sidebar */}
-        <ArmySidebar
-          onSpawn={handleSpawn}
-          onDelete={handleDelete}
-          spawnedUnits={spawnedUnitIds}
-          spawnedGroups={spawnedGroups}
-          onSelectAll={handleSelectionChange}
-          onArmyDataUpdate={setArmyUnits}
-          reserveUnits={reserveUnits}
-          onReserveChange={handleReserveChange}
-          onUnitIdsUpdate={handleUnitIdsUpdate}
-          onAuraChange={handleAuraChange}
-          auras={auras}
-        />
+        {/* Army Sidebar - only shown on deployment tab */}
+        {activeTab === 'deployment' && (
+          <ArmySidebar
+            onSpawn={handleSpawn}
+            onDelete={handleDelete}
+            spawnedUnits={spawnedUnitIds}
+            spawnedGroups={spawnedGroups}
+            onSelectAll={handleSelectionChange}
+            onArmyDataUpdate={setArmyUnits}
+            reserveUnits={reserveUnits}
+            onReserveChange={handleReserveChange}
+            onUnitIdsUpdate={handleUnitIdsUpdate}
+            onAuraChange={handleAuraChange}
+            auras={auras}
+          />
+        )}
 
         {/* Main Content */}
         <div className="flex-1 p-8">
           <header className="mb-8">
-            <h1 className="text-4xl font-bold text-[#39FF14] mb-4">
+            <h1 className="text-4xl font-bold text-[#C5A33E] mb-4">
               Warhammer 40k Tournament Planner
             </h1>
             <div className="flex gap-3">
               <ExportPDFButton spawnedGroupsByRoundAndTurn={spawnedGroupsByRoundAndTurn} />
               <button
                 onClick={handleImportData}
-                className="px-4 py-2 bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white font-semibold rounded-lg transition-colors"
+                className="px-4 py-2 bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white font-semibold rounded-lg transition-colors"
               >
                 Load Saved Data
               </button>
               <button
                 onClick={handleExportData}
-                className="px-4 py-2 bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white font-semibold rounded-lg transition-colors"
+                className="px-4 py-2 bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white font-semibold rounded-lg transition-colors"
               >
                 Export Saved Data
               </button>
@@ -323,8 +325,8 @@ function MainContent() {
               onClick={() => setActiveTab('deployment')}
               className={`px-6 py-3 font-semibold rounded-lg transition-colors ${
                 activeTab === 'deployment'
-                  ? 'bg-[#0f4d0f] text-[#39FF14] border-2 border-[#39FF14]'
-                  : 'bg-[#1a1a1a] text-gray-400 border-2 border-[#1a2a1a] hover:border-[#39FF14] hover:text-gray-200'
+                  ? 'bg-[#4a3a0f] text-[#C5A33E] border-2 border-[#C5A33E]'
+                  : 'bg-[#14142a] text-gray-400 border-2 border-[#1a1a2e] hover:border-[#C5A33E] hover:text-gray-200'
               }`}
             >
               Deployment
@@ -333,15 +335,15 @@ function MainContent() {
               onClick={() => setActiveTab('datasheets')}
               className={`px-6 py-3 font-semibold rounded-lg transition-colors ${
                 activeTab === 'datasheets'
-                  ? 'bg-[#0f4d0f] text-[#39FF14] border-2 border-[#39FF14]'
-                  : 'bg-[#1a1a1a] text-gray-400 border-2 border-[#1a2a1a] hover:border-[#39FF14] hover:text-gray-200'
+                  ? 'bg-[#4a3a0f] text-[#C5A33E] border-2 border-[#C5A33E]'
+                  : 'bg-[#14142a] text-gray-400 border-2 border-[#1a1a2e] hover:border-[#C5A33E] hover:text-gray-200'
               }`}
             >
               Datasheets
             </button>
           </div>
 
-          <main className="bg-[#0f0f0f] border border-[#1a2a1a] rounded-lg p-6">
+          <main className="bg-[#0a0a14] border border-[#1a1a2e] rounded-lg p-6">
             {activeTab === 'deployment' && (
               <DeploymentPlanner
                 spawnedGroups={spawnedGroups}
@@ -377,7 +379,7 @@ function MainContent() {
 
 export default function Home() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#0a0a0a]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-[#0a0a14]" />}>
       <MainContent />
     </Suspense>
   );

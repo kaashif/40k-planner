@@ -264,7 +264,7 @@ export default function LosRenderer({
             right: 10,
             padding: '4px 8px',
             background: 'rgba(0,0,0,0.7)',
-            color: '#39FF14',
+            color: '#C5A33E',
             fontSize: '12px',
             borderRadius: '4px',
             zIndex: 100

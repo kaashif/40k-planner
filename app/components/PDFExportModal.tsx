@@ -120,10 +120,10 @@ export default function PDFExportModal({
       />
 
       {/* Modal */}
-      <div className="relative bg-[#1a1a1a] w-full max-w-4xl rounded-lg shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div className="relative bg-[#14142a] w-full max-w-4xl rounded-lg shadow-2xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="p-6 border-b border-[#1a2a1a] flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-[#39FF14]">PDF Export Configuration</h2>
+        <div className="p-6 border-b border-[#1a1a2e] flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-[#C5A33E]">PDF Export Configuration</h2>
           <button
             onClick={onClose}
             disabled={isExporting}
@@ -142,7 +142,7 @@ export default function PDFExportModal({
                 <label className="text-sm font-semibold text-gray-300">
                   Deployment Spacing
                 </label>
-                <span className="text-sm text-[#39FF14] font-mono">
+                <span className="text-sm text-[#C5A33E] font-mono">
                   {config.deploymentSpacing}pt
                 </span>
               </div>
@@ -170,7 +170,7 @@ export default function PDFExportModal({
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-sm font-semibold text-gray-300">Page Margin</label>
-                <span className="text-sm text-[#39FF14] font-mono">
+                <span className="text-sm text-[#C5A33E] font-mono">
                   {config.pageMargin}pt
                 </span>
               </div>
@@ -198,7 +198,7 @@ export default function PDFExportModal({
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-sm font-semibold text-gray-300">Layout Scale</label>
-                <span className="text-sm text-[#39FF14] font-mono">
+                <span className="text-sm text-[#C5A33E] font-mono">
                   {Math.round(config.layoutScale * 100)}%
                 </span>
               </div>
@@ -232,7 +232,7 @@ export default function PDFExportModal({
           </div>
 
           {/* Preview */}
-          <div className="bg-[#0a0a0a] rounded-lg p-4 flex items-center justify-center">
+          <div className="bg-[#0a0a14] rounded-lg p-4 flex items-center justify-center">
             <div>
               <h3 className="text-sm font-semibold text-gray-300 mb-4 text-center">
                 Preview (A4 Page)
@@ -243,7 +243,7 @@ export default function PDFExportModal({
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-[#1a2a1a] flex items-center justify-between">
+        <div className="p-6 border-t border-[#1a1a2e] flex items-center justify-between">
           <button
             onClick={handleReset}
             disabled={isExporting}
@@ -262,7 +262,7 @@ export default function PDFExportModal({
             <button
               onClick={handleExport}
               disabled={isExporting}
-              className="px-4 py-2 bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px]"
+              className="px-4 py-2 bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px]"
             >
               {isExporting ? (
                 <span className="flex items-center gap-2">

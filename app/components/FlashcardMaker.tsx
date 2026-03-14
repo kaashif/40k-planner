@@ -44,7 +44,7 @@ export default function FlashcardMaker() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold mb-4 text-[#39FF14]">Flashcard Maker</h2>
+        <h2 className="text-2xl font-bold mb-4 text-[#C5A33E]">Flashcard Maker</h2>
         <p className="text-gray-400 mb-4">
           Create flashcards to study stratagems, abilities, and rules.
         </p>
@@ -55,8 +55,8 @@ export default function FlashcardMaker() {
           onClick={() => setViewMode('edit')}
           className={`px-6 py-2 font-semibold rounded-lg transition-colors ${
             viewMode === 'edit'
-              ? 'bg-[#0f4d0f] text-[#39FF14]'
-              : 'bg-[#2a2a2a] text-gray-400 hover:bg-[#3a3a3a]'
+              ? 'bg-[#4a3a0f] text-[#C5A33E]'
+              : 'bg-[#1e1e3a] text-gray-400 hover:bg-[#3a3a3a]'
           }`}
         >
           Edit Mode
@@ -70,8 +70,8 @@ export default function FlashcardMaker() {
           disabled={flashcards.length === 0}
           className={`px-6 py-2 font-semibold rounded-lg transition-colors ${
             viewMode === 'study'
-              ? 'bg-[#0f4d0f] text-[#39FF14]'
-              : 'bg-[#2a2a2a] text-gray-400 hover:bg-[#3a3a3a] disabled:opacity-50 disabled:cursor-not-allowed'
+              ? 'bg-[#4a3a0f] text-[#C5A33E]'
+              : 'bg-[#1e1e3a] text-gray-400 hover:bg-[#3a3a3a] disabled:opacity-50 disabled:cursor-not-allowed'
           }`}
         >
           Study Mode
@@ -80,7 +80,7 @@ export default function FlashcardMaker() {
 
       {viewMode === 'edit' ? (
         <div className="space-y-4">
-          <div className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-4 space-y-4">
+          <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-4 space-y-4">
             <div>
               <label className="block mb-2 font-semibold text-gray-200">
                 Front (Question/Prompt)
@@ -90,7 +90,7 @@ export default function FlashcardMaker() {
                 value={currentFront}
                 onChange={(e) => setCurrentFront(e.target.value)}
                 placeholder="e.g., What is Reanimation Protocols?"
-                className="w-full p-3 bg-[#0a0a0a] border border-[#1a2a1a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14]"
+                className="w-full p-3 bg-[#0a0a14] border border-[#1a1a2e] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C5A33E]"
               />
             </div>
 
@@ -102,13 +102,13 @@ export default function FlashcardMaker() {
                 value={currentBack}
                 onChange={(e) => setCurrentBack(e.target.value)}
                 placeholder="e.g., At the end of your Command phase, roll one D6 for each slain model in this unit. For each 5+, return one model to this unit."
-                className="w-full h-24 p-3 bg-[#0a0a0a] border border-[#1a2a1a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] resize-none"
+                className="w-full h-24 p-3 bg-[#0a0a14] border border-[#1a1a2e] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C5A33E] resize-none"
               />
             </div>
 
             <button
               onClick={addFlashcard}
-              className="px-6 py-2 bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white font-semibold rounded-lg transition-colors"
+              className="px-6 py-2 bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white font-semibold rounded-lg transition-colors"
             >
               Add Flashcard
             </button>
@@ -116,14 +116,14 @@ export default function FlashcardMaker() {
 
           {flashcards.length > 0 && (
             <div>
-              <h3 className="text-xl font-bold mb-3 text-[#39FF14]">
+              <h3 className="text-xl font-bold mb-3 text-[#C5A33E]">
                 Your Flashcards ({flashcards.length})
               </h3>
               <div className="space-y-2">
                 {flashcards.map((card) => (
                   <div
                     key={card.id}
-                    className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-4 hover:border-[#39FF14] transition-colors"
+                    className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-4 hover:border-[#C5A33E] transition-colors"
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
@@ -132,7 +132,7 @@ export default function FlashcardMaker() {
                       </div>
                       <button
                         onClick={() => deleteFlashcard(card.id)}
-                        className="ml-4 px-3 py-1 bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white text-sm rounded transition-colors"
+                        className="ml-4 px-3 py-1 bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white text-sm rounded transition-colors"
                       >
                         Delete
                       </button>
@@ -151,14 +151,14 @@ export default function FlashcardMaker() {
                 Card {currentCardIndex + 1} of {flashcards.length}
               </div>
 
-              <div className="bg-[#1a1a1a] border-2 border-[#39FF14] rounded-lg p-8 min-h-[300px] flex flex-col items-center justify-center">
+              <div className="bg-[#14142a] border-2 border-[#C5A33E] rounded-lg p-8 min-h-[300px] flex flex-col items-center justify-center">
                 <div className="text-center">
                   <div className="text-lg font-semibold text-gray-200 mb-6">
                     {flashcards[currentCardIndex].front}
                   </div>
 
                   {showAnswer && (
-                    <div className="mt-6 pt-6 border-t border-[#1a2a1a] text-gray-300">
+                    <div className="mt-6 pt-6 border-t border-[#1a1a2e] text-gray-300">
                       {flashcards[currentCardIndex].back}
                     </div>
                   )}
@@ -168,19 +168,19 @@ export default function FlashcardMaker() {
               <div className="flex justify-center gap-3">
                 <button
                   onClick={previousCard}
-                  className="px-6 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] text-gray-300 font-semibold rounded-lg transition-colors"
+                  className="px-6 py-2 bg-[#1e1e3a] hover:bg-[#3a3a3a] text-gray-300 font-semibold rounded-lg transition-colors"
                 >
                   Previous
                 </button>
                 <button
                   onClick={() => setShowAnswer(!showAnswer)}
-                  className="px-6 py-2 bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white font-semibold rounded-lg transition-colors"
+                  className="px-6 py-2 bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white font-semibold rounded-lg transition-colors"
                 >
                   {showAnswer ? 'Hide Answer' : 'Show Answer'}
                 </button>
                 <button
                   onClick={nextCard}
-                  className="px-6 py-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] text-gray-300 font-semibold rounded-lg transition-colors"
+                  className="px-6 py-2 bg-[#1e1e3a] hover:bg-[#3a3a3a] text-gray-300 font-semibold rounded-lg transition-colors"
                 >
                   Next
                 </button>

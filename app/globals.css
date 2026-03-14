@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
+  --background: #0a0a14;
   --foreground: #e0e0e0;
-  --accent: #0f4d0f;
-  --accent-light: #39FF14;
-  --border: #1a2a1a;
+  --accent: #4a3a0f;
+  --accent-light: #C5A33E;
+  --border: #1a1a2e;
 }
 
 @theme inline {
@@ -29,7 +29,7 @@ input[type="range"].slider-thumb {
   -webkit-appearance: none;
   width: 100%;
   height: 8px;
-  background: #1a2a1a;
+  background: #1a1a2e;
   border-radius: 5px;
   outline: none;
 }
@@ -39,8 +39,8 @@ input[type="range"].slider-thumb::-webkit-slider-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #39FF14;
-  border: 3px solid #0a0a0a;
+  background: #C5A33E;
+  border: 3px solid #0a0a14;
   cursor: pointer;
 }
 
@@ -48,8 +48,8 @@ input[type="range"].slider-thumb::-moz-range-thumb {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #39FF14;
-  border: 3px solid #0a0a0a;
+  background: #C5A33E;
+  border: 3px solid #0a0a14;
   cursor: pointer;
   border: none;
 }

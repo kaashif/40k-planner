@@ -52,14 +52,14 @@ npm run lint   # Run ESLint
 
 ### Design System
 
-**Theme**: Dark Necron aesthetic with neon green accents
+**Theme**: Dark Thousand Sons aesthetic with blue-black and gold accents
 
 **Colors** (defined in `app/globals.css`):
-- Background: `#0a0a0a` (very dark)
+- Background: `#0a0a14` (very dark blue-black)
 - Foreground: `#e0e0e0` (light gray text)
-- Accent: `#39FF14` (neon green - primary)
-- Dark Accent: `#0f4d0f` (dark green)
-- Border: `#1a2a1a` (dark green borders)
+- Accent: `#C5A33E` (gold - primary)
+- Dark Accent: `#4a3a0f` (dark gold)
+- Border: `#1a1a2e` (dark blue borders)
 
 ## Key Patterns
 

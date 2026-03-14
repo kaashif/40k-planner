@@ -103,13 +103,13 @@ export default function DatasheetsBrowser() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold text-[#39FF14]">Datasheets Browser</h2>
+      <h2 className="text-2xl font-bold text-[#C5A33E]">Datasheets Browser</h2>
 
       <div className="flex gap-4 items-center flex-wrap">
         <select
           value={selectedFaction}
           onChange={e => handleFactionChange(e.target.value)}
-          className="px-3 py-2 bg-[#1a1a1a] text-gray-200 border border-[#1a2a1a] rounded-lg focus:border-[#39FF14] focus:outline-none"
+          className="px-3 py-2 bg-[#14142a] text-gray-200 border border-[#1a1a2e] rounded-lg focus:border-[#C5A33E] focus:outline-none"
         >
           <option value="">Select a faction...</option>
           {factions.map(f => (
@@ -123,7 +123,7 @@ export default function DatasheetsBrowser() {
             placeholder="Search units..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="px-3 py-2 bg-[#1a1a1a] text-gray-200 border border-[#1a2a1a] rounded-lg focus:border-[#39FF14] focus:outline-none"
+            className="px-3 py-2 bg-[#14142a] text-gray-200 border border-[#1a1a2e] rounded-lg focus:border-[#C5A33E] focus:outline-none"
           />
         )}
 
@@ -140,7 +140,7 @@ export default function DatasheetsBrowser() {
       )}
 
       {!loading && catalogue && filteredUnits.length === 0 && (
-        <div className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-8 text-center">
+        <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-8 text-center">
           <p className="text-gray-400">No units found{search ? ' matching your search' : ' in this catalogue'}.</p>
         </div>
       )}
@@ -159,7 +159,7 @@ export default function DatasheetsBrowser() {
       )}
 
       {!selectedFaction && !loading && (
-        <div className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-8 text-center">
+        <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-8 text-center">
           <p className="text-gray-400">Select a faction to browse datasheets.</p>
         </div>
       )}
@@ -169,27 +169,27 @@ export default function DatasheetsBrowser() {
 
 function UnitCard({ unit, expanded, onToggle }: { unit: Unit; expanded: boolean; onToggle: () => void }) {
   return (
-    <div className="border border-[#1a2a1a] rounded-lg overflow-hidden">
+    <div className="border border-[#1a1a2e] rounded-lg overflow-hidden">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between px-4 py-3 bg-[#1a1a1a] hover:bg-[#2a2a2a] transition-colors text-left"
+        className="w-full flex items-center justify-between px-4 py-3 bg-[#14142a] hover:bg-[#1e1e3a] transition-colors text-left"
       >
         <div className="flex items-center gap-3">
           <span className="text-gray-200 font-semibold">{unit.name}</span>
           {unit.points > 0 && (
-            <span className="text-[#39FF14] text-sm">{unit.points}pts</span>
+            <span className="text-[#C5A33E] text-sm">{unit.points}pts</span>
           )}
         </div>
         <span className="text-gray-400">{expanded ? '▲' : '▼'}</span>
       </button>
 
       {expanded && (
-        <div className="p-4 bg-[#0f0f0f] space-y-4">
+        <div className="p-4 bg-[#0a0a14] space-y-4">
           {/* Keywords */}
           {unit.keywords.length > 0 && (
             <div className="flex flex-wrap gap-1">
               {unit.keywords.map(kw => (
-                <span key={kw} className="px-2 py-0.5 text-xs bg-[#0f4d0f] text-[#39FF14] rounded">
+                <span key={kw} className="px-2 py-0.5 text-xs bg-[#4a3a0f] text-[#C5A33E] rounded">
                   {kw}
                 </span>
               ))}
@@ -199,10 +199,10 @@ function UnitCard({ unit, expanded, onToggle }: { unit: Unit; expanded: boolean;
           {/* Unit Stats */}
           {unit.stats.length > 0 && (
             <div>
-              <h4 className="text-sm font-bold text-[#39FF14] mb-1">Unit Stats</h4>
+              <h4 className="text-sm font-bold text-[#C5A33E] mb-1">Unit Stats</h4>
               <table className="border-collapse w-auto">
                 <thead>
-                  <tr className="border-b border-[#39FF14]">
+                  <tr className="border-b border-[#C5A33E]">
                     <th className="text-left pr-4 py-1 text-gray-200 text-sm font-bold">Model</th>
                     <th className="text-center px-2 py-1 text-gray-200 text-sm font-bold">M</th>
                     <th className="text-center px-2 py-1 text-gray-200 text-sm font-bold">T</th>
@@ -214,7 +214,7 @@ function UnitCard({ unit, expanded, onToggle }: { unit: Unit; expanded: boolean;
                 </thead>
                 <tbody>
                   {unit.stats.map((s, i) => (
-                    <tr key={i} className={`border-b border-[#1a2a1a] ${i % 2 === 0 ? 'bg-[#0f0f0f]' : 'bg-[#1a1a1a]'}`}>
+                    <tr key={i} className={`border-b border-[#1a1a2e] ${i % 2 === 0 ? 'bg-[#0a0a14]' : 'bg-[#14142a]'}`}>
                       <td className="pr-4 py-1 text-gray-200 text-sm">{s.name}</td>
                       <td className="text-center px-2 py-1 text-gray-300 text-sm">{s.M}</td>
                       <td className="text-center px-2 py-1 text-gray-300 text-sm">{s.T}</td>
@@ -232,10 +232,10 @@ function UnitCard({ unit, expanded, onToggle }: { unit: Unit; expanded: boolean;
           {/* Ranged Weapons */}
           {unit.rangedWeapons.length > 0 && (
             <div>
-              <h4 className="text-sm font-bold text-[#39FF14] mb-1">Ranged Weapons</h4>
+              <h4 className="text-sm font-bold text-[#C5A33E] mb-1">Ranged Weapons</h4>
               <table className="border-collapse w-auto">
                 <thead>
-                  <tr className="border-b border-[#39FF14]">
+                  <tr className="border-b border-[#C5A33E]">
                     <th className="text-left pr-4 py-1 text-gray-200 text-sm font-bold">Weapon</th>
                     <th className="text-center px-2 py-1 text-gray-200 text-sm font-bold">Range</th>
                     <th className="text-center px-2 py-1 text-gray-200 text-sm font-bold">A</th>
@@ -248,7 +248,7 @@ function UnitCard({ unit, expanded, onToggle }: { unit: Unit; expanded: boolean;
                 </thead>
                 <tbody>
                   {unit.rangedWeapons.map((w, i) => (
-                    <tr key={i} className={`border-b border-[#1a2a1a] ${i % 2 === 0 ? 'bg-[#0f0f0f]' : 'bg-[#1a1a1a]'}`}>
+                    <tr key={i} className={`border-b border-[#1a1a2e] ${i % 2 === 0 ? 'bg-[#0a0a14]' : 'bg-[#14142a]'}`}>
                       <td className="pr-4 py-1 text-gray-200 text-sm">{w.name}</td>
                       <td className="text-center px-2 py-1 text-gray-300 text-sm">{w.range}</td>
                       <td className="text-center px-2 py-1 text-gray-300 text-sm">{w.A}</td>
@@ -267,10 +267,10 @@ function UnitCard({ unit, expanded, onToggle }: { unit: Unit; expanded: boolean;
           {/* Melee Weapons */}
           {unit.meleeWeapons.length > 0 && (
             <div>
-              <h4 className="text-sm font-bold text-[#39FF14] mb-1">Melee Weapons</h4>
+              <h4 className="text-sm font-bold text-[#C5A33E] mb-1">Melee Weapons</h4>
               <table className="border-collapse w-auto">
                 <thead>
-                  <tr className="border-b border-[#39FF14]">
+                  <tr className="border-b border-[#C5A33E]">
                     <th className="text-left pr-4 py-1 text-gray-200 text-sm font-bold">Weapon</th>
                     <th className="text-center px-2 py-1 text-gray-200 text-sm font-bold">Range</th>
                     <th className="text-center px-2 py-1 text-gray-200 text-sm font-bold">A</th>
@@ -283,7 +283,7 @@ function UnitCard({ unit, expanded, onToggle }: { unit: Unit; expanded: boolean;
                 </thead>
                 <tbody>
                   {unit.meleeWeapons.map((w, i) => (
-                    <tr key={i} className={`border-b border-[#1a2a1a] ${i % 2 === 0 ? 'bg-[#0f0f0f]' : 'bg-[#1a1a1a]'}`}>
+                    <tr key={i} className={`border-b border-[#1a1a2e] ${i % 2 === 0 ? 'bg-[#0a0a14]' : 'bg-[#14142a]'}`}>
                       <td className="pr-4 py-1 text-gray-200 text-sm">{w.name}</td>
                       <td className="text-center px-2 py-1 text-gray-300 text-sm">{w.range}</td>
                       <td className="text-center px-2 py-1 text-gray-300 text-sm">{w.A}</td>
@@ -302,7 +302,7 @@ function UnitCard({ unit, expanded, onToggle }: { unit: Unit; expanded: boolean;
           {/* Abilities */}
           {unit.abilities.length > 0 && (
             <div>
-              <h4 className="text-sm font-bold text-[#39FF14] mb-1">Abilities</h4>
+              <h4 className="text-sm font-bold text-[#C5A33E] mb-1">Abilities</h4>
               <div className="space-y-1">
                 {unit.abilities.map((a, i) => (
                   <div key={i} className="text-sm">

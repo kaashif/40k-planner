@@ -52,7 +52,7 @@ function createHiddenRenderContainer(
   container.style.top = '0';
   container.style.width = '1600px';
   container.style.height = '1174px'; // Maintains 60:44 aspect ratio
-  container.style.backgroundColor = '#0a0a0a';
+  container.style.backgroundColor = '#0a0a14';
 
   // Set background image
   container.style.backgroundImage = `url(${layout.image})`;

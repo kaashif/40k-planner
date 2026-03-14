@@ -546,13 +546,13 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
 
   return (
     <>
-      <aside className="w-96 bg-[#0f0f0f] border-r border-[#1a2a1a] p-6 min-h-screen">
-        <h2 className="text-2xl font-bold text-[#39FF14] mb-6">Army List</h2>
+      <aside className="w-96 bg-[#0a0a14] border-r border-[#1a1a2e] p-6 min-h-screen">
+        <h2 className="text-2xl font-bold text-[#C5A33E] mb-6">Army List</h2>
 
         <div className="mb-6">
           <button
             onClick={handleJsonImport}
-            className="w-full px-4 py-3 bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white font-semibold rounded-lg transition-colors"
+            className="w-full px-4 py-3 bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white font-semibold rounded-lg transition-colors"
           >
             Import JSON
           </button>
@@ -588,7 +588,7 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                     key={groupKey}
                     className={
                       isGroupedUnit
-                        ? 'border rounded-lg transition-colors bg-[#0f0f0f] border-[#2a2a2a] p-3'
+                        ? 'border rounded-lg transition-colors bg-[#0a0a14] border-[#1e1e3a] p-3'
                         : ''
                     }
                   >
@@ -604,10 +604,10 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                       const anySpawned = groupUnits.some(unit => spawnedUnits.has(unit.id));
 
                       return (
-                        <div className="mb-3 pb-3 border-b border-[#2a2a2a]">
+                        <div className="mb-3 pb-3 border-b border-[#1e1e3a]">
                           <div className="flex items-center justify-between mb-2">
                             <div>
-                              <h3 className="font-bold text-[#39FF14]">{parentUnitName}</h3>
+                              <h3 className="font-bold text-[#C5A33E]">{parentUnitName}</h3>
                               <span className="text-xs text-gray-400">
                                 {groupUnits.reduce((sum, u) => sum + u.number, 0)} models total
                               </span>
@@ -640,7 +640,7 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                                 disabled={!allHaveBaseSizes}
                                 className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors ${
                                   allHaveBaseSizes
-                                    ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
+                                    ? 'bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white'
                                     : 'bg-gray-600 text-gray-400 cursor-not-allowed'
                                 }`}
                               >
@@ -700,14 +700,14 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                   className={`p-3 border rounded-lg transition-colors ${
                     isRed
                       ? 'bg-red-950 border-red-700 hover:border-red-600'
-                      : 'bg-[#1a1a1a] border-[#1a2a1a] hover:border-[#39FF14]'
+                      : 'bg-[#14142a] border-[#1a1a2e] hover:border-[#C5A33E]'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <p className="font-semibold text-gray-200">{unit.name}</p>
                     <button
                       onClick={() => toggleBaseType(unit.id)}
-                      className="px-2 py-0.5 text-xs bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-400 hover:border-[#39FF14] hover:text-[#39FF14] transition-colors font-semibold whitespace-nowrap flex-shrink-0"
+                      className="px-2 py-0.5 text-xs bg-[#0a0a14] border border-[#1e1e3a] rounded text-gray-400 hover:border-[#C5A33E] hover:text-[#C5A33E] transition-colors font-semibold whitespace-nowrap flex-shrink-0"
                       title={isRect ? "Switch to round base" : "Switch to rectangular base"}
                     >
                       {isRect ? '□ Rect' : '○ Round'}
@@ -725,7 +725,7 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                             value={flyDimensions[unit.id]?.width || ''}
                             onChange={(e) => updateFlyDimension(unit.id, unit.name, 'width', e.target.value)}
                             placeholder="W"
-                            className="w-12 px-2 py-1 text-sm bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            className="w-12 px-2 py-1 text-sm bg-[#0a0a14] border border-[#1e1e3a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C5A33E] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           />
                           <span className="text-sm text-gray-400">×</span>
                           <input
@@ -733,7 +733,7 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                             value={flyDimensions[unit.id]?.length || ''}
                             onChange={(e) => updateFlyDimension(unit.id, unit.name, 'length', e.target.value)}
                             placeholder="L"
-                            className="w-12 px-2 py-1 text-sm bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            className="w-12 px-2 py-1 text-sm bg-[#0a0a14] border border-[#1e1e3a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C5A33E] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           />
                           <span className="text-sm text-gray-400">mm</span>
                         </div>
@@ -744,7 +744,7 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                             value={baseSizes[unit.id] || ''}
                             onChange={(e) => updateBaseSize(unit.id, unit.name, e.target.value)}
                             placeholder="mm"
-                            className="w-16 px-2 py-1 text-sm bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            className="w-16 px-2 py-1 text-sm bg-[#0a0a14] border border-[#1e1e3a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C5A33E] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           />
                           <span className="text-sm text-gray-400">mm</span>
                         </div>
@@ -757,7 +757,7 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                           value={auras[unit.name] || ''}
                           onChange={(e) => onAuraChange(unit.name, parseFloat(e.target.value) || 0)}
                           placeholder="0"
-                          className="w-12 px-2 py-1 text-sm bg-[#0a0a0a] border border-[#2a2a2a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#39FF14] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          className="w-12 px-2 py-1 text-sm bg-[#0a0a14] border border-[#1e1e3a] rounded text-gray-200 placeholder-gray-600 focus:outline-none focus:border-[#C5A33E] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         />
                         <span className="text-sm text-gray-400">"</span>
                       </div>
@@ -777,7 +777,7 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                                 onSelectAll(unitModels);
                               }
                             }}
-                            className="flex-1 px-3 py-1 text-sm font-semibold bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white rounded transition-colors"
+                            className="flex-1 px-3 py-1 text-sm font-semibold bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white rounded transition-colors"
                           >
                             Select All
                           </button>
@@ -814,7 +814,7 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                           disabled={!hasBaseSize || reserveUnits.has(unit.id)}
                           className={`w-full px-3 py-1 text-sm font-semibold rounded transition-colors ${
                             hasBaseSize && !reserveUnits.has(unit.id)
-                              ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
+                              ? 'bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white'
                               : 'bg-gray-600 text-gray-400 cursor-not-allowed'
                           }`}
                         >
@@ -825,7 +825,7 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
                             type="checkbox"
                             checked={reserveUnits.has(unit.id)}
                             onChange={(e) => onReserveChange(unit.id, e.target.checked)}
-                            className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-[#39FF14] focus:ring-[#39FF14] focus:ring-offset-0 cursor-pointer"
+                            className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-[#C5A33E] focus:ring-[#C5A33E] focus:ring-offset-0 cursor-pointer"
                           />
                           In Reserves
                         </label>

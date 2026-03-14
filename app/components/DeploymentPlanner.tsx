@@ -935,9 +935,9 @@ export default function DeploymentPlanner({
   return (
     <div className="space-y-4">
       {/* Toolbar - always visible */}
-      <div className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-4 flex items-center gap-4">
+      <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-4 flex items-center gap-4">
         {/* Tool mode selector */}
-        <div className="flex gap-2 mr-4 border-r border-[#2a2a2a] pr-4">
+        <div className="flex gap-2 mr-4 border-r border-[#1e1e3a] pr-4">
           <button
             onClick={() => {
               setToolMode('selection');
@@ -945,8 +945,8 @@ export default function DeploymentPlanner({
             }}
             className={`px-3 py-1 font-semibold rounded transition-colors ${
               toolMode === 'selection'
-                ? 'bg-[#39FF14] text-black'
-                : 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
+                ? 'bg-[#C5A33E] text-black'
+                : 'bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white'
             }`}
           >
             Selection
@@ -957,8 +957,8 @@ export default function DeploymentPlanner({
             }}
             className={`px-3 py-1 font-semibold rounded transition-colors ${
               toolMode === 'ruler'
-                ? 'bg-[#39FF14] text-black'
-                : 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
+                ? 'bg-[#C5A33E] text-black'
+                : 'bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white'
             }`}
           >
             Ruler
@@ -983,7 +983,7 @@ export default function DeploymentPlanner({
               disabled={selectedModels.length === 0}
               className={`px-3 py-1 font-semibold rounded transition-colors ${
                 selectedModels.length > 0
-                  ? 'bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white'
+                  ? 'bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white'
                   : 'bg-gray-600 text-gray-500 cursor-not-allowed'
               }`}
             >
@@ -1029,7 +1029,7 @@ export default function DeploymentPlanner({
             {rulerPoints.length > 0 && (
               <button
                 onClick={() => setRulerPoints([])}
-                className="px-3 py-1 font-semibold rounded transition-colors bg-[#0f4d0f] hover:bg-[#39FF14] hover:text-black text-white"
+                className="px-3 py-1 font-semibold rounded transition-colors bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white"
               >
                 Clear Measurement
               </button>
@@ -1167,7 +1167,7 @@ export default function DeploymentPlanner({
               onRoundChange(layout.id);
             }
           }}
-          className="w-full p-3 bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg text-gray-200 focus:outline-none focus:border-[#39FF14] cursor-pointer"
+          className="w-full p-3 bg-[#14142a] border border-[#1a1a2e] rounded-lg text-gray-200 focus:outline-none focus:border-[#C5A33E] cursor-pointer"
         >
           {layouts.map((layout) => (
             <option key={layout.id} value={layout.id}>
@@ -1185,7 +1185,7 @@ export default function DeploymentPlanner({
           <select
             value={currentTurn}
             onChange={(e) => onTurnChange(e.target.value)}
-            className="w-full p-3 bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg text-gray-200 focus:outline-none focus:border-[#39FF14] cursor-pointer"
+            className="w-full p-3 bg-[#14142a] border border-[#1a1a2e] rounded-lg text-gray-200 focus:outline-none focus:border-[#C5A33E] cursor-pointer"
           >
             <option value="deployment">Deployment</option>
             <option value="turn1">Turn 1</option>
@@ -1201,8 +1201,8 @@ export default function DeploymentPlanner({
         )}
       </div>
 
-      <div className="bg-[#1a1a1a] border border-[#1a2a1a] rounded-lg p-6">
-        <h3 className="text-xl font-bold mb-4 text-[#39FF14] text-center">
+      <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-6">
+        <h3 className="text-xl font-bold mb-4 text-[#C5A33E] text-center">
           {selectedLayout.title}
         </h3>
         <div
@@ -1607,14 +1607,14 @@ export default function DeploymentPlanner({
                           <path
                             d={`M ${centerX + radius * Math.cos((baseAngle - arcLength/2) * Math.PI/180)} ${centerY + radius * Math.sin((baseAngle - arcLength/2) * Math.PI/180)} A ${radius} ${radius} 0 0 1 ${centerX + radius * Math.cos(arcEndAngle * Math.PI/180)} ${centerY + radius * Math.sin(arcEndAngle * Math.PI/180)}`}
                             fill="none"
-                            stroke="#39FF14"
+                            stroke="#C5A33E"
                             strokeWidth="6"
                             strokeLinecap="round"
                           />
                           {/* Arrow head */}
                           <path
                             d={createArrowHead(baseAngle + arcLength/2)}
-                            fill="#39FF14"
+                            fill="#C5A33E"
                           />
                         </g>
                       );
@@ -1835,7 +1835,7 @@ export default function DeploymentPlanner({
             <>
               {/* First point marker */}
               <div
-                className="absolute w-3 h-3 bg-[#39FF14] rounded-full border-2 border-black pointer-events-none z-50"
+                className="absolute w-3 h-3 bg-[#C5A33E] rounded-full border-2 border-black pointer-events-none z-50"
                 style={{
                   left: rulerPoints[0].x - 6,
                   top: rulerPoints[0].y - 6,
@@ -1871,14 +1871,14 @@ export default function DeploymentPlanner({
                         y1={rulerPoints[0].y}
                         x2={rulerPoints[1].x}
                         y2={rulerPoints[1].y}
-                        stroke="#39FF14"
+                        stroke="#C5A33E"
                         strokeWidth="3"
                       />
                     </svg>
 
                     {/* Second point marker */}
                     <div
-                      className="absolute w-3 h-3 bg-[#39FF14] rounded-full border-2 border-black pointer-events-none z-50"
+                      className="absolute w-3 h-3 bg-[#C5A33E] rounded-full border-2 border-black pointer-events-none z-50"
                       style={{
                         left: rulerPoints[1].x - 6,
                         top: rulerPoints[1].y - 6,
@@ -1892,7 +1892,7 @@ export default function DeploymentPlanner({
                         left: midX,
                         top: midY,
                         transform: 'translate(-50%, -50%)',
-                        color: '#39FF14',
+                        color: '#C5A33E',
                         textShadow: '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000',
                         zIndex: 50
                       }}
@@ -1955,7 +1955,7 @@ export default function DeploymentPlanner({
                   y1={startPixelY}
                   x2={currentPixelX}
                   y2={currentPixelY}
-                  stroke="#39FF14"
+                  stroke="#C5A33E"
                   strokeWidth="3"
                   strokeDasharray="8,4"
                 />
@@ -1964,7 +1964,7 @@ export default function DeploymentPlanner({
                   cx={startPixelX}
                   cy={startPixelY}
                   r="6"
-                  fill="#39FF14"
+                  fill="#C5A33E"
                   stroke="black"
                   strokeWidth="2"
                 />
@@ -1973,7 +1973,7 @@ export default function DeploymentPlanner({
                   x={midX}
                   y={midY - 8}
                   textAnchor="middle"
-                  fill="#39FF14"
+                  fill="#C5A33E"
                   fontSize="11"
                   fontWeight="bold"
                   stroke="black"
