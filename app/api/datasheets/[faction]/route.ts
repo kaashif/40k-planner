@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { XMLParser } from 'fast-xml-parser';
-
-const DATASHEETS_DIR = path.join(process.cwd(), 'wh40k-10e');
+import { resolveFilename, getCataloguesDir } from '../catalogues';
 
 interface Characteristic {
   '@_name': string;
@@ -231,15 +230,17 @@ function extractFromEntry(
   return unit;
 }
 
-export async function GET(request: NextRequest) {
-  const filename = request.nextUrl.searchParams.get('file');
+export async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ faction: string }> },
+) {
+  const { faction } = await params;
+  const filename = await resolveFilename(faction);
   if (!filename) {
-    return NextResponse.json({ error: 'Missing file parameter' }, { status: 400 });
+    return NextResponse.json({ error: 'Unknown faction' }, { status: 404 });
   }
 
-  // Sanitize filename
-  const safeName = path.basename(filename);
-  const filePath = path.join(DATASHEETS_DIR, safeName);
+  const filePath = path.join(getCataloguesDir(), filename);
 
   try {
     const xml = await fs.readFile(filePath, 'utf-8');
@@ -291,7 +292,7 @@ export async function GET(request: NextRequest) {
     units.sort((a, b) => a.name.localeCompare(b.name));
 
     return NextResponse.json({
-      name: catalogue['@_name'] || safeName.replace('.cat', ''),
+      name: catalogue['@_name'] || filename.replace('.cat', ''),
       library: catalogue['@_library'] === 'true',
       unitCount: units.length,
       units,

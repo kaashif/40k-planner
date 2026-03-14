@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 interface Faction {
-  filename: string;
+  slug: string;
   name: string;
 }
 
@@ -76,17 +76,17 @@ export default function DatasheetsBrowser() {
       .catch(console.error);
   }, []);
 
-  const handleFactionChange = async (filename: string) => {
-    setSelectedFaction(filename);
+  const handleFactionChange = async (slug: string) => {
+    setSelectedFaction(slug);
     setExpandedUnit(null);
     setSearch('');
-    if (!filename) {
+    if (!slug) {
       setCatalogue(null);
       return;
     }
     setLoading(true);
     try {
-      const r = await fetch(`/api/datasheets/units?file=${encodeURIComponent(filename)}`);
+      const r = await fetch(`/api/datasheets/${slug}`);
       const data = await r.json();
       setCatalogue(data);
     } catch (err) {
@@ -113,7 +113,7 @@ export default function DatasheetsBrowser() {
         >
           <option value="">Select a faction...</option>
           {factions.map(f => (
-            <option key={f.filename} value={f.filename}>{f.name}</option>
+            <option key={f.slug} value={f.slug}>{f.name}</option>
           ))}
         </select>
 
