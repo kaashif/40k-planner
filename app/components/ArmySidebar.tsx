@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { SpawnedGroup, SpawnedUnit } from '../types';
 import { checkCoherency, checkParentUnitCoherency } from '../utils/coherencyChecker';
+import { SavedArmyList, loadSavedLists } from '../utils/savedArmies';
 
 interface Unit {
   name: string;
@@ -544,12 +545,69 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
     }));
   };
 
+  const [mySavedLists, setMySavedLists] = useState<SavedArmyList[]>([]);
+
+  // Load saved lists on mount and whenever sidebar renders
+  useEffect(() => {
+    setMySavedLists(loadSavedLists());
+
+    // Re-check when storage changes or tab becomes visible (user may have saved in army builder)
+    const refresh = () => setMySavedLists(loadSavedLists());
+    window.addEventListener('focus', refresh);
+    window.addEventListener('storage', refresh);
+    // Also poll since storage events don't fire in the same tab
+    const interval = setInterval(refresh, 2000);
+    return () => {
+      window.removeEventListener('focus', refresh);
+      window.removeEventListener('storage', refresh);
+      clearInterval(interval);
+    };
+  }, []);
+
+  const handleLoadSavedList = (listId: string) => {
+    const list = mySavedLists.find(l => l.id === listId);
+    if (!list) return;
+
+    let modelIndex = 0;
+    const models: UnitWithBase[] = list.entries.map(entry => ({
+      name: entry.name,
+      type: 'model',
+      number: 1,
+      id: `saved-${modelIndex++}-${entry.name}`,
+    }));
+
+    setUnits(models);
+    onArmyDataUpdate([]);
+
+    // Pre-populate base sizes from merged data
+    const initialBaseSizes: { [key: string]: string } = {};
+    const initialFlyDimensions: { [key: string]: { width: string; length: string } } = {};
+    const initialIsRectangular: { [key: string]: boolean } = {};
+
+    models.forEach(model => {
+      const saved = mergedBaseSizes[model.name];
+      if (saved) {
+        if (typeof saved === 'object' && 'width' in saved && 'length' in saved) {
+          initialFlyDimensions[model.id] = saved as { width: string; length: string };
+          initialIsRectangular[model.id] = true;
+        } else if (typeof saved === 'string') {
+          initialBaseSizes[model.id] = saved;
+          initialIsRectangular[model.id] = false;
+        }
+      }
+    });
+
+    setBaseSizes(initialBaseSizes);
+    setFlyDimensions(initialFlyDimensions);
+    setIsRectangular(initialIsRectangular);
+  };
+
   return (
     <>
       <aside className="w-96 bg-[#0a0a14] border-r border-[#1a1a2e] p-6 min-h-screen">
         <h2 className="text-2xl font-bold text-[#C5A33E] mb-6">Army List</h2>
 
-        <div className="mb-6">
+        <div className="mb-4 space-y-2">
           <button
             onClick={handleJsonImport}
             className="w-full px-4 py-3 bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white font-semibold rounded-lg transition-colors"
@@ -563,6 +621,20 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
             onChange={handleFileSelected}
             className="hidden"
           />
+          {mySavedLists.length > 0 && (
+            <select
+              defaultValue=""
+              onChange={e => { if (e.target.value) { handleLoadSavedList(e.target.value); e.target.value = ''; } }}
+              className="w-full px-3 py-2 bg-[#14142a] text-gray-200 border border-[#1a1a2e] rounded-lg focus:border-[#C5A33E] focus:outline-none"
+            >
+              <option value="">Load from My Lists...</option>
+              {mySavedLists.map(list => (
+                <option key={list.id} value={list.id}>
+                  {list.listName} ({list.totalPoints}pts)
+                </option>
+              ))}
+            </select>
+          )}
         </div>
 
         {units.length > 0 && (
