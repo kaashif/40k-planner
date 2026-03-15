@@ -38,10 +38,20 @@ export interface CombatResult {
   expectedModelsKilled: number;
   expectedSelfMortals: number;
   mortalWoundDamage: number;
+  expectedDamagePerWound: number;
   // Intermediate probabilities for display
   hitProbability: number;
   woundProbability: number;
   saveFailProbability: number;
+  // Roll needed (for display)
+  hitRollNeeded: number | null; // null = auto-hit (Torrent)
+  woundRollNeeded: number;
+  saveRollNeeded: number; // effective save the defender needs
+  // Keyword effects active
+  hitNotes: string[];
+  woundNotes: string[];
+  saveNotes: string[];
+  damageNotes: string[];
 }
 
 /**
@@ -300,6 +310,41 @@ export function calculateResults(
     ? Math.min(Math.floor(totalExpectedDamage / defender.wounds), defender.modelCount)
     : 0;
 
+  // Build explanation notes
+  const hitNotes: string[] = [];
+  if (isTorrent) hitNotes.push('Torrent: auto-hits');
+  if (isHeavy && modifiers.stationary) hitNotes.push('Heavy + Stationary: +1 to hit');
+  if (isIndirectFire) hitNotes.push('Indirect Fire: -1 to hit');
+  if (sustainedX !== null) hitNotes.push(`Sustained Hits ${sustainedX}: 6s generate ${sustainedX} extra hit${sustainedX > 1 ? 's' : ''}`);
+  if (isLethalHits) hitNotes.push('Lethal Hits: 6s auto-wound');
+  if (isHazardous) hitNotes.push('Hazardous: 1/6 chance mortal to self per attack');
+
+  const woundNotes: string[] = [];
+  woundNotes.push(`S${attacker.strength} vs T${defender.toughness}`);
+  for (const kw of weaponKw) {
+    const antiMatch = kw.match(/^Anti-(.+?)\s+(\d)\+?$/i);
+    if (antiMatch && defender.keywords.some(dk => dk.toLowerCase().includes(antiMatch[1].toLowerCase()))) {
+      woundNotes.push(`${kw}: overrides to ${antiMatch[2]}+`);
+    }
+  }
+  if (hasKeyword(weaponKw, 'Lance') && modifiers.charged) woundNotes.push('Lance + Charged: +1 to wound');
+  if (hasKeyword(weaponKw, 'Twin-linked')) woundNotes.push('Twin-linked: re-roll failed wounds');
+  if (isDevastatingWounds) woundNotes.push('Devastating Wounds: 6s bypass saves');
+
+  const saveNotes: string[] = [];
+  saveNotes.push(`${defender.save}+ save, AP -${attacker.ap}`);
+  if (modifiers.cover && !ignoresCover) saveNotes.push('Cover: +1 to save');
+  if (isIndirectFire && !ignoresCover) saveNotes.push('Indirect Fire: target gets cover');
+  if (ignoresCover) saveNotes.push('Ignores Cover');
+  if (defender.invuln !== null && defender.invuln < effectiveSave) saveNotes.push(`Using ${defender.invuln}+ invuln (better than modified ${effectiveSave}+)`);
+
+  const damageNotes: string[] = [];
+  damageNotes.push(`${attacker.damage} damage per wound`);
+  if (modifiers.halfRange && getKeywordParam(weaponKw, 'Melta') !== null) {
+    damageNotes.push(`Melta + half range: +${getKeywordParam(weaponKw, 'Melta')} damage`);
+  }
+  if (defender.fnp !== null) damageNotes.push(`FNP ${defender.fnp}+: ${((1 - probOfNPlus(defender.fnp)) * 100).toFixed(0)}% damage ignored`);
+
   return {
     expectedAttacks: totalExpectedAttacks,
     expectedHits: totalExpectedHits,
@@ -309,9 +354,17 @@ export function calculateResults(
     expectedModelsKilled,
     expectedSelfMortals,
     mortalWoundDamage,
+    expectedDamagePerWound,
     hitProbability: hitProb,
     woundProbability: woundProb,
     saveFailProbability: saveFailProb,
+    hitRollNeeded: isTorrent ? null : effectiveSkill,
+    woundRollNeeded: woundThreshold,
+    saveRollNeeded: bestSave,
+    hitNotes,
+    woundNotes,
+    saveNotes,
+    damageNotes,
   };
 }
 

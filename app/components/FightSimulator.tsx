@@ -399,28 +399,89 @@ export default function FightSimulator() {
       </div>
 
       {/* Results */}
-      {result && (
-        <div className="bg-[#14142a] border border-[#C5A33E] rounded-lg p-5">
-          <h3 className="text-lg font-bold text-[#C5A33E] mb-4">Expected Results</h3>
+      {result && selectedWeapon && (
+        <div className="bg-[#14142a] border border-[#C5A33E] rounded-lg p-5 space-y-4">
+          <h3 className="text-lg font-bold text-[#C5A33E]">Attack Breakdown</h3>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <ResultCard label="Attacks" value={result.expectedAttacks} />
-            <ResultCard label="Hits" value={result.expectedHits} sub={`${(result.hitProbability * 100).toFixed(0)}% to hit`} />
-            <ResultCard label="Wounds" value={result.expectedWounds} sub={`${(result.woundProbability * 100).toFixed(0)}% to wound`} />
-            <ResultCard label="Unsaved" value={result.expectedUnsavedWounds} sub={`${(result.saveFailProbability * 100).toFixed(0)}% fail save`} />
-            <ResultCard label="Damage" value={result.expectedDamage} highlight />
-            <ResultCard label="Models Killed" value={result.expectedModelsKilled} highlight />
+          {/* Weapon profile reminder */}
+          <div className="bg-[#0a0a14] rounded-lg border border-[#1a1a2e] p-3">
+            <div className="text-sm font-semibold text-gray-200 mb-1">{selectedWeapon.name}</div>
+            <div className="flex gap-4 text-sm text-gray-400">
+              <span>A: {selectedWeapon.A}</span>
+              <span>{combatMode === 'shooting' ? 'BS' : 'WS'}: {combatMode === 'shooting' ? selectedWeapon.BS : selectedWeapon.WS}</span>
+              <span>S: {selectedWeapon.S}</span>
+              <span>AP: {selectedWeapon.AP}</span>
+              <span>D: {selectedWeapon.D}</span>
+            </div>
+            {selectedWeapon.keywords && selectedWeapon.keywords !== '-' && (
+              <div className="flex flex-wrap gap-1 mt-1.5">
+                {parseKeywords(selectedWeapon.keywords).map(kw => (
+                  <span key={kw} className="px-1.5 py-0.5 text-xs bg-[#4a3a0f] text-[#C5A33E] rounded">{kw}</span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Pipeline steps */}
+          <div className="space-y-3">
+            <PipelineStep
+              step="1. Attacks"
+              result={fmt(result.expectedAttacks)}
+              detail={`${attackerModels} model${attackerModels > 1 ? 's' : ''} x ${selectedWeapon.A} attacks`}
+              notes={[
+                ...(result.expectedAttacks !== attackerModels * parseStatValue(selectedWeapon.A) ?
+                  [`Modified to ${fmt(result.expectedAttacks)} total`] : []),
+              ]}
+            />
+            <PipelineStep
+              step="2. Hit Roll"
+              result={`${fmt(result.expectedHits)} hits`}
+              detail={result.hitRollNeeded === null
+                ? 'Auto-hit (Torrent)'
+                : `${result.hitRollNeeded}+ needed (${frac(result.hitProbability)})`}
+              notes={result.hitNotes}
+            />
+            <PipelineStep
+              step="3. Wound Roll"
+              result={`${fmt(result.expectedWounds)} wounds`}
+              detail={`${result.woundRollNeeded}+ needed (${frac(result.woundProbability)})`}
+              notes={result.woundNotes}
+            />
+            <PipelineStep
+              step="4. Save Roll"
+              result={`${fmt(result.expectedUnsavedWounds)} unsaved`}
+              detail={result.saveRollNeeded <= 7
+                ? `Defender needs ${result.saveRollNeeded}+ to save (${frac(1 - result.saveFailProbability)} chance), fails ${(result.saveFailProbability * 100).toFixed(0)}%`
+                : 'No save possible'}
+              notes={result.saveNotes}
+            />
+            <PipelineStep
+              step="5. Damage"
+              result={`${fmt(result.expectedDamage)} total damage`}
+              detail={`${fmt(result.expectedUnsavedWounds)} unsaved wounds x ${fmt(result.expectedDamagePerWound)} avg damage`}
+              notes={result.damageNotes}
+              highlight
+            />
+          </div>
+
+          {/* Final summary */}
+          <div className="border-t border-[#C5A33E] pt-3 flex items-center justify-between">
+            <div>
+              <span className="text-2xl font-bold text-[#C5A33E]">{fmt(result.expectedDamage)}</span>
+              <span className="text-gray-400 ml-2">expected damage</span>
+            </div>
+            <div>
+              <span className="text-2xl font-bold text-[#C5A33E]">{result.expectedModelsKilled}</span>
+              <span className="text-gray-400 ml-2">models killed</span>
+              {selectedDefenderUnit && selectedDefenderUnit.stats[0] && (
+                <span className="text-gray-500 text-sm ml-1">({selectedDefenderUnit.stats[0].W}W each)</span>
+              )}
+            </div>
           </div>
 
           {result.expectedSelfMortals > 0 && (
-            <div className="mt-3 text-sm text-yellow-400">
-              Hazardous: ~{result.expectedSelfMortals.toFixed(1)} expected mortal wounds to self
-            </div>
-          )}
-
-          {result.mortalWoundDamage > 0 && (
-            <div className="mt-1 text-sm text-purple-400">
-              Devastating Wounds: ~{result.mortalWoundDamage.toFixed(1)} damage bypassing saves
+            <div className="text-sm text-yellow-400">
+              Hazardous: ~{fmt(result.expectedSelfMortals)} expected mortal wounds to self
             </div>
           )}
         </div>
@@ -441,6 +502,47 @@ export default function FightSimulator() {
   );
 }
 
+/** Format a number: integers as-is, decimals to 2 places */
+function fmt(n: number): string {
+  return Number.isInteger(n) ? n.toString() : n.toFixed(2);
+}
+
+/** Format a probability as a fraction like "4/6" */
+function frac(p: number): string {
+  // Find the closest N/6
+  const sixths = Math.round(p * 6);
+  if (sixths === 6) return '6/6';
+  if (sixths === 0) return '0/6';
+  return `${sixths}/6`;
+}
+
+function PipelineStep({ step, result, detail, notes, highlight }: {
+  step: string;
+  result: string;
+  detail: string;
+  notes: string[];
+  highlight?: boolean;
+}) {
+  return (
+    <div className={`rounded-lg p-3 ${highlight ? 'bg-[#1a1506] border border-[#4a3a0f]' : 'bg-[#0a0a14] border border-[#1a1a2e]'}`}>
+      <div className="flex items-baseline justify-between gap-3">
+        <span className={`text-sm font-semibold ${highlight ? 'text-[#C5A33E]' : 'text-gray-300'}`}>{step}</span>
+        <span className={`text-sm font-bold ${highlight ? 'text-[#C5A33E]' : 'text-gray-200'}`}>{result}</span>
+      </div>
+      <div className="text-xs text-gray-400 mt-0.5">{detail}</div>
+      {notes.length > 0 && (
+        <div className="mt-1 space-y-0.5">
+          {notes.map((note, i) => (
+            <div key={i} className="text-xs text-gray-500">
+              {note}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Toggle({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
   return (
     <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer select-none bg-[#14142a] border border-[#1a1a2e] rounded-lg px-3 py-2 hover:border-[#C5A33E] transition-colors">
@@ -452,18 +554,6 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
       />
       {label}
     </label>
-  );
-}
-
-function ResultCard({ label, value, sub, highlight }: { label: string; value: number; sub?: string; highlight?: boolean }) {
-  return (
-    <div className="text-center">
-      <div className={`text-2xl font-bold ${highlight ? 'text-[#C5A33E]' : 'text-gray-200'}`}>
-        {Number.isInteger(value) ? value : value.toFixed(2)}
-      </div>
-      <div className="text-xs text-gray-400">{label}</div>
-      {sub && <div className="text-xs text-gray-500 mt-0.5">{sub}</div>}
-    </div>
   );
 }
 
