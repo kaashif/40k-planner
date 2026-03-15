@@ -52,9 +52,9 @@ interface CatalogueData {
   units: Unit[];
 }
 
-const selectClass = "px-3 py-2 bg-[#14142a] text-gray-200 border border-[#1a1a2e] rounded-lg focus:border-[#C5A33E] focus:outline-none w-full";
-const inputClass = "px-3 py-2 bg-[#14142a] text-gray-200 border border-[#1a1a2e] rounded-lg focus:border-[#C5A33E] focus:outline-none w-20 text-center";
-const labelClass = "text-sm text-gray-400";
+const selectClass = "px-3 py-2 bg-[#0a0a14] text-gray-200 border-2 border-[#3a3a5e] rounded-lg focus:border-[#C5A33E] focus:outline-none w-full";
+const inputClass = "px-3 py-2 bg-[#0a0a14] text-gray-200 border-2 border-[#3a3a5e] rounded-lg focus:border-[#C5A33E] focus:outline-none w-20 text-center";
+const labelClass = "text-sm text-gray-300";
 
 export default function FightSimulator() {
   const [factions, setFactions] = useState<Faction[]>([]);
