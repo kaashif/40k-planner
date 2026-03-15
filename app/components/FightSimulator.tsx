@@ -77,7 +77,6 @@ export default function FightSimulator() {
   const [attackerCatalogue, setAttackerCatalogue] = useState<CatalogueData | null>(null);
   const [attackerWeapon, setAttackerWeapon] = useState('');
   const [attackerModels, setAttackerModels] = useState(1);
-  const [combatMode, setCombatMode] = useState<'shooting' | 'melee'>('shooting');
   const [loadingAttacker, setLoadingAttacker] = useState(false);
 
   // Defender state
@@ -173,17 +172,25 @@ export default function FightSimulator() {
     [defenderCatalogue, defenderUnitName]
   );
 
-  // Get available weapons based on combat mode
-  const availableWeapons = useMemo(() => {
-    if (!selectedAttackerUnit) return [];
-    return combatMode === 'shooting'
-      ? selectedAttackerUnit.rangedWeapons
-      : selectedAttackerUnit.meleeWeapons;
-  }, [selectedAttackerUnit, combatMode]);
+  // All weapons combined: ranged then melee
+  const allWeapons = useMemo(() => {
+    if (!selectedAttackerUnit) return { ranged: [] as Weapon[], melee: [] as Weapon[] };
+    return {
+      ranged: selectedAttackerUnit.rangedWeapons,
+      melee: selectedAttackerUnit.meleeWeapons,
+    };
+  }, [selectedAttackerUnit]);
 
   const selectedWeapon = useMemo(
-    () => availableWeapons.find(w => w.name === attackerWeapon) ?? null,
-    [availableWeapons, attackerWeapon]
+    () => allWeapons.ranged.find(w => w.name === attackerWeapon)
+      ?? allWeapons.melee.find(w => w.name === attackerWeapon)
+      ?? null,
+    [allWeapons, attackerWeapon]
+  );
+
+  const isMeleeWeapon = useMemo(
+    () => allWeapons.melee.some(w => w.name === attackerWeapon),
+    [allWeapons.melee, attackerWeapon]
   );
 
   // Compute results
@@ -193,7 +200,7 @@ export default function FightSimulator() {
     const defStats = selectedDefenderUnit.stats[0];
     if (!defStats) return null;
 
-    const skill = parseStatValue(combatMode === 'shooting' ? (selectedWeapon.BS || '4+') : (selectedWeapon.WS || '4+'));
+    const skill = parseStatValue(isMeleeWeapon ? (selectedWeapon.WS || '4+') : (selectedWeapon.BS || '4+'));
     const weaponKeywords = parseKeywords(selectedWeapon.keywords);
 
     const attacker: AttackerInput = {
@@ -227,7 +234,7 @@ export default function FightSimulator() {
     return calculateResults(attacker, defender, modifiers);
   }, [selectedWeapon, selectedDefenderUnit, attackerModels, defenderModels,
       defenderInvuln, defenderFnp, stationary, charged, halfRange, cover,
-      rapidFire, combatMode]);
+      rapidFire, isMeleeWeapon]);
 
   // Compute full probability distribution
   const distribution: DistributionResult | null = useMemo(() => {
@@ -236,7 +243,7 @@ export default function FightSimulator() {
     const defStats = selectedDefenderUnit.stats[0];
     if (!defStats) return null;
 
-    const skill = parseStatValue(combatMode === 'shooting' ? (selectedWeapon.BS || '4+') : (selectedWeapon.WS || '4+'));
+    const skill = parseStatValue(isMeleeWeapon ? (selectedWeapon.WS || '4+') : (selectedWeapon.BS || '4+'));
     const weaponKw = parseKeywords(selectedWeapon.keywords);
 
     const attacker: AttackerInput = {
@@ -264,7 +271,7 @@ export default function FightSimulator() {
     return calculateDistribution(attacker, defender, modifiers, result);
   }, [selectedWeapon, selectedDefenderUnit, result, attackerModels, defenderModels,
       defenderInvuln, defenderFnp, stationary, charged, halfRange, cover,
-      rapidFire, combatMode]);
+      rapidFire, isMeleeWeapon]);
 
   // Check which modifier toggles are relevant
   const weaponKeywords = selectedWeapon ? parseKeywords(selectedWeapon.keywords) : [];
@@ -277,31 +284,7 @@ export default function FightSimulator() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-[#C5A33E]">Fight Simulator</h2>
-        <div className="flex bg-[#14142a] rounded-lg border border-[#1a1a2e] overflow-hidden">
-          <button
-            onClick={() => setCombatMode('shooting')}
-            className={`px-4 py-2 text-sm font-semibold transition-colors ${
-              combatMode === 'shooting'
-                ? 'bg-[#4a3a0f] text-[#C5A33E]'
-                : 'text-gray-400 hover:text-gray-200'
-            }`}
-          >
-            Shooting
-          </button>
-          <button
-            onClick={() => setCombatMode('melee')}
-            className={`px-4 py-2 text-sm font-semibold transition-colors ${
-              combatMode === 'melee'
-                ? 'bg-[#4a3a0f] text-[#C5A33E]'
-                : 'text-gray-400 hover:text-gray-200'
-            }`}
-          >
-            Melee
-          </button>
-        </div>
-      </div>
+      <h2 className="text-2xl font-bold text-[#C5A33E]">Fight Simulator</h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Attacker Panel */}
@@ -324,23 +307,35 @@ export default function FightSimulator() {
             <UnitDatasheet unit={selectedAttackerUnit} />
           )}
 
-          {availableWeapons.length > 0 && (
+          {(allWeapons.ranged.length > 0 || allWeapons.melee.length > 0) && (
             <div className="space-y-2">
               <label className={labelClass}>Weapon</label>
-              <WeaponTable
-                weapons={availableWeapons}
-                selectedWeapon={attackerWeapon}
-                onSelect={setAttackerWeapon}
-                isMelee={combatMode === 'melee'}
-              />
+              {allWeapons.ranged.length > 0 && (
+                <WeaponTable
+                  weapons={allWeapons.ranged}
+                  selectedWeapon={attackerWeapon}
+                  onSelect={setAttackerWeapon}
+                  isMelee={false}
+                  label="Ranged"
+                />
+              )}
+              {allWeapons.melee.length > 0 && (
+                <WeaponTable
+                  weapons={allWeapons.melee}
+                  selectedWeapon={attackerWeapon}
+                  onSelect={setAttackerWeapon}
+                  isMelee={true}
+                  label="Melee"
+                />
+              )}
             </div>
           )}
-          {selectedAttackerUnit && availableWeapons.length === 0 && (
-            <div className="text-sm text-gray-500">No {combatMode} weapons</div>
+          {selectedAttackerUnit && allWeapons.ranged.length === 0 && allWeapons.melee.length === 0 && (
+            <div className="text-sm text-gray-500">No weapons</div>
           )}
 
           <div className="space-y-2">
-            <label className={labelClass}>Number of models shooting</label>
+            <label className={labelClass}>Number of models attacking</label>
             <input
               type="number"
               min={1}
@@ -442,7 +437,7 @@ export default function FightSimulator() {
             <div className="text-sm font-semibold text-gray-200 mb-1">{selectedWeapon.name}</div>
             <div className="flex gap-4 text-sm text-gray-400">
               <span>A: {selectedWeapon.A}</span>
-              <span>{combatMode === 'shooting' ? 'BS' : 'WS'}: {combatMode === 'shooting' ? selectedWeapon.BS : selectedWeapon.WS}</span>
+              <span>{isMeleeWeapon ? 'WS' : 'BS'}: {isMeleeWeapon ? selectedWeapon.WS : selectedWeapon.BS}</span>
               <span>S: {selectedWeapon.S}</span>
               <span>AP: {selectedWeapon.AP}</span>
               <span>D: {selectedWeapon.D}</span>
@@ -767,15 +762,19 @@ function UnitDatasheet({ unit }: { unit: Unit }) {
   );
 }
 
-function WeaponTable({ weapons, selectedWeapon, onSelect, isMelee }: {
+function WeaponTable({ weapons, selectedWeapon, onSelect, isMelee, label }: {
   weapons: Weapon[];
   selectedWeapon: string;
   onSelect: (name: string) => void;
   isMelee: boolean;
+  label?: string;
 }) {
   const skillLabel = isMelee ? 'WS' : 'BS';
   return (
     <div className="overflow-x-auto rounded-lg border-2 border-[#3a3a5e]">
+      {label && (
+        <div className="bg-[#0a0a14] px-2 py-1 text-xs font-semibold text-gray-400 border-b border-[#3a3a5e]">{label}</div>
+      )}
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr className="bg-[#0a0a14] border-b-2 border-[#3a3a5e]">
