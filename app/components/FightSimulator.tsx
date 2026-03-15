@@ -172,10 +172,12 @@ export default function FightSimulator() {
   const [halfRange, setHalfRange] = useState(false);
   const [cover, setCover] = useState(false);
   const [rapidFire, setRapidFire] = useState(false);
+  const [minusOneToWound, setMinusOneToWound] = useState(false);
+  const [minusOneToWoundIfStrGtT, setMinusOneToWoundIfStrGtT] = useState(false);
 
   const modifiers: ModifierToggles = useMemo(() => ({
-    stationary, charged, halfRange, cover, rapidFire,
-  }), [stationary, charged, halfRange, cover, rapidFire]);
+    stationary, charged, halfRange, cover, rapidFire, minusOneToWound, minusOneToWoundIfStrGtT,
+  }), [stationary, charged, halfRange, cover, rapidFire, minusOneToWound, minusOneToWoundIfStrGtT]);
 
   // Catalogue cache
   const catalogueCacheRef = useRef<Map<string, CatalogueData>>(new Map());
@@ -612,6 +614,10 @@ export default function FightSimulator() {
                 <option value="4">4+</option><option value="5">5+</option><option value="6">6+</option>
               </select>
             </div>
+          </div>
+          <div className="flex flex-wrap gap-3 pt-1">
+            <Toggle label="-1 to wound" checked={minusOneToWound} onChange={setMinusOneToWound} />
+            <Toggle label="-1 to wound (if S &gt; T)" checked={minusOneToWoundIfStrGtT} onChange={setMinusOneToWoundIfStrGtT} />
           </div>
         </div>
       </div>

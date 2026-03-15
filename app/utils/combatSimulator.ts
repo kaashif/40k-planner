@@ -27,6 +27,8 @@ export interface ModifierToggles {
   halfRange: boolean;    // for Melta
   cover: boolean;        // target in cover
   rapidFire: boolean;    // for Rapid Fire
+  minusOneToWound: boolean;       // defender has -1 to wound rolls
+  minusOneToWoundIfStrGtT: boolean; // defender has -1 to wound if S > T
 }
 
 export interface CombatResult {
@@ -227,6 +229,14 @@ export function calculateResults(
     woundThreshold = Math.max(2, woundThreshold - 1);
   }
 
+  // Defender -1 to wound modifiers
+  if (modifiers.minusOneToWound) {
+    woundThreshold = Math.min(6, woundThreshold + 1);
+  }
+  if (modifiers.minusOneToWoundIfStrGtT && attacker.strength > defender.toughness) {
+    woundThreshold = Math.min(6, woundThreshold + 1);
+  }
+
   let woundProb = probOfNPlus(woundThreshold);
 
   // Twin-linked: re-roll failed wounds
@@ -328,6 +338,8 @@ export function calculateResults(
     }
   }
   if (hasKeyword(weaponKw, 'Lance') && modifiers.charged) woundNotes.push('Lance + Charged: +1 to wound');
+  if (modifiers.minusOneToWound) woundNotes.push('-1 to wound rolls');
+  if (modifiers.minusOneToWoundIfStrGtT && attacker.strength > defender.toughness) woundNotes.push('-1 to wound (S > T)');
   if (hasKeyword(weaponKw, 'Twin-linked')) woundNotes.push('Twin-linked: re-roll failed wounds');
   if (isDevastatingWounds) woundNotes.push('Devastating Wounds: 6s bypass saves');
 
