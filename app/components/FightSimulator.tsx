@@ -763,8 +763,11 @@ export default function FightSimulator() {
             return pairs.map(([li, ri]) => {
               const left = computed[li];
               const right = computed[ri];
-              const leftName = left.weapon ? `${left.entry.unitKey.split('||')[0]} - ${left.weapon.name}` : `Attacker ${li + 1}`;
-              const rightName = right.weapon ? `${right.entry.unitKey.split('||')[0]} - ${right.weapon.name}` : `Attacker ${ri + 1}`;
+              const leftUnit = left.entry.unitKey.split('||')[0] || '';
+              const rightUnit = right.entry.unitKey.split('||')[0] || '';
+              const sameUnit = leftUnit && leftUnit === rightUnit;
+              const leftName = left.weapon ? (sameUnit ? left.weapon.name : `${leftUnit} - ${left.weapon.name}`) : `Attacker ${li + 1}`;
+              const rightName = right.weapon ? (sameUnit ? right.weapon.name : `${rightUnit} - ${right.weapon.name}`) : `Attacker ${ri + 1}`;
               return (
                 <CompareStatsTable
                   key={`stats-${left.entry.id}-${right.entry.id}`}
@@ -993,7 +996,7 @@ function CompareStatsTable({ left, right, leftLabel, rightLabel, leftColor, righ
                 {statCols.map(col => {
                   const lv = col.fn(row.leftDist);
                   const rv = col.fn(row.rightDist);
-                  const diff = lv - rv;
+                  const diff = rv - lv;
                   const diffColor = Math.abs(diff) < 0.005 ? 'text-gray-600' : diff > 0 ? 'text-green-400' : 'text-red-400';
                   return (
                     <React.Fragment key={col.label}>
