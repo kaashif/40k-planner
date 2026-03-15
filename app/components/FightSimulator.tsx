@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import {
   calculateResults,
   calculateDistribution,
@@ -68,21 +69,31 @@ const inputClass = "px-3 py-2 bg-[#0a0a14] text-gray-200 border-2 border-[#3a3a5
 const labelClass = "text-sm text-gray-300";
 
 export default function FightSimulator() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   // Global unit index
   const [allGlobalUnits, setAllGlobalUnits] = useState<GlobalUnit[]>([]);
   const [globalUnitsLoading, setGlobalUnitsLoading] = useState(true);
 
+  // Read initial state from URL params
+  const urlAtk = searchParams.get('atk') || ''; // "unitName||factionSlug"
+  const urlDef = searchParams.get('def') || '';
+  const urlWep = searchParams.get('wep') || '';
+  const urlAtkModels = searchParams.get('atkn') || '';
+  const urlDefModels = searchParams.get('defn') || '';
+
   // Attacker state
-  const [attackerUnitKey, setAttackerUnitKey] = useState(''); // "unitName||factionSlug"
+  const [attackerUnitKey, setAttackerUnitKey] = useState(urlAtk);
   const [attackerCatalogue, setAttackerCatalogue] = useState<CatalogueData | null>(null);
-  const [attackerWeapon, setAttackerWeapon] = useState('');
-  const [attackerModels, setAttackerModels] = useState(1);
+  const [attackerWeapon, setAttackerWeapon] = useState(urlWep);
+  const [attackerModels, setAttackerModels] = useState(urlAtkModels ? parseInt(urlAtkModels) || 1 : 1);
   const [loadingAttacker, setLoadingAttacker] = useState(false);
 
   // Defender state
-  const [defenderUnitKey, setDefenderUnitKey] = useState(''); // "unitName||factionSlug"
+  const [defenderUnitKey, setDefenderUnitKey] = useState(urlDef);
   const [defenderCatalogue, setDefenderCatalogue] = useState<CatalogueData | null>(null);
-  const [defenderModels, setDefenderModels] = useState(1);
+  const [defenderModels, setDefenderModels] = useState(urlDefModels ? parseInt(urlDefModels) || 1 : 1);
   const [defenderInvuln, setDefenderInvuln] = useState('');
   const [defenderFnp, setDefenderFnp] = useState('');
   const [loadingDefender, setLoadingDefender] = useState(false);
@@ -97,12 +108,58 @@ export default function FightSimulator() {
   // Catalogue cache to avoid refetching
   const catalogueCacheRef = useRef<Map<string, CatalogueData>>(new Map());
 
-  // Fetch global unit index
+  // Update URL with current selections
+  const updateUrl = useCallback((overrides: Record<string, string>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    // Always keep tab=simulator
+    params.set('tab', 'simulator');
+    for (const [key, value] of Object.entries(overrides)) {
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
+    }
+    router.replace(`/?${params.toString()}`, { scroll: false });
+  }, [searchParams, router]);
+
+  // Fetch global unit index, then load catalogues for URL-specified units
   useEffect(() => {
     fetch('/api/datasheets/all-units')
       .then(r => r.json())
-      .then((units: GlobalUnit[]) => { setAllGlobalUnits(units); setGlobalUnitsLoading(false); })
+      .then(async (units: GlobalUnit[]) => {
+        setAllGlobalUnits(units);
+        setGlobalUnitsLoading(false);
+
+        // Load attacker catalogue from URL
+        if (urlAtk) {
+          const [, atkFaction] = urlAtk.split('||');
+          if (atkFaction) {
+            setLoadingAttacker(true);
+            const data = await fetchCatalogue(atkFaction);
+            setAttackerCatalogue(data);
+            setLoadingAttacker(false);
+          }
+        }
+        // Load defender catalogue from URL
+        if (urlDef) {
+          const [defName, defFaction] = urlDef.split('||');
+          if (defFaction) {
+            setLoadingDefender(true);
+            const data = await fetchCatalogue(defFaction);
+            setDefenderCatalogue(data);
+            setLoadingDefender(false);
+            // Auto-populate invuln/FNP
+            const unit = data?.units.find(u => u.name === defName);
+            if (unit) {
+              setDefenderInvuln(unit.invulnSave ? unit.invulnSave.replace('+', '') : '');
+              setDefenderFnp(unit.fnp ? unit.fnp.replace('+', '') : '');
+            }
+          }
+        }
+      })
       .catch(() => setGlobalUnitsLoading(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Build combobox options from global units
@@ -133,17 +190,25 @@ export default function FightSimulator() {
   const handleAttackerUnitChange = useCallback(async (key: string) => {
     setAttackerUnitKey(key);
     setAttackerWeapon('');
+    updateUrl({ atk: key, wep: '' });
     if (!key) { setAttackerCatalogue(null); return; }
     const [, factionSlug] = key.split('||');
     setLoadingAttacker(true);
     const data = await fetchCatalogue(factionSlug);
     setAttackerCatalogue(data);
     setLoadingAttacker(false);
-  }, [fetchCatalogue]);
+  }, [fetchCatalogue, updateUrl]);
+
+  // Handle attacker weapon selection
+  const handleWeaponSelect = useCallback((name: string) => {
+    setAttackerWeapon(name);
+    updateUrl({ wep: name });
+  }, [updateUrl]);
 
   // Handle defender unit selection
   const handleDefenderUnitChange = useCallback(async (key: string) => {
     setDefenderUnitKey(key);
+    updateUrl({ def: key });
     if (!key) { setDefenderCatalogue(null); setDefenderInvuln(''); setDefenderFnp(''); return; }
     const [unitName, factionSlug] = key.split('||');
     setLoadingDefender(true);
@@ -156,7 +221,18 @@ export default function FightSimulator() {
       setDefenderInvuln(unit.invulnSave ? unit.invulnSave.replace('+', '') : '');
       setDefenderFnp(unit.fnp ? unit.fnp.replace('+', '') : '');
     }
-  }, [fetchCatalogue]);
+  }, [fetchCatalogue, updateUrl]);
+
+  // Handle model count changes with URL sync
+  const handleAttackerModelsChange = useCallback((n: number) => {
+    setAttackerModels(n);
+    updateUrl({ atkn: n > 1 ? n.toString() : '' });
+  }, [updateUrl]);
+
+  const handleDefenderModelsChange = useCallback((n: number) => {
+    setDefenderModels(n);
+    updateUrl({ defn: n > 1 ? n.toString() : '' });
+  }, [updateUrl]);
 
   // Resolve selected units from catalogues
   const attackerUnitName = attackerUnitKey.split('||')[0] || '';
@@ -314,7 +390,7 @@ export default function FightSimulator() {
                 <WeaponTable
                   weapons={allWeapons.ranged}
                   selectedWeapon={attackerWeapon}
-                  onSelect={setAttackerWeapon}
+                  onSelect={handleWeaponSelect}
                   isMelee={false}
                   label="Ranged"
                 />
@@ -323,7 +399,7 @@ export default function FightSimulator() {
                 <WeaponTable
                   weapons={allWeapons.melee}
                   selectedWeapon={attackerWeapon}
-                  onSelect={setAttackerWeapon}
+                  onSelect={handleWeaponSelect}
                   isMelee={true}
                   label="Melee"
                 />
@@ -341,7 +417,7 @@ export default function FightSimulator() {
               min={1}
               max={30}
               value={attackerModels}
-              onChange={e => setAttackerModels(Math.max(1, parseInt(e.target.value) || 1))}
+              onChange={e => handleAttackerModelsChange(Math.max(1, parseInt(e.target.value) || 1))}
               className={inputClass}
             />
           </div>
@@ -375,7 +451,7 @@ export default function FightSimulator() {
                 min={1}
                 max={30}
                 value={defenderModels}
-                onChange={e => setDefenderModels(Math.max(1, parseInt(e.target.value) || 1))}
+                onChange={e => handleDefenderModelsChange(Math.max(1, parseInt(e.target.value) || 1))}
                 className={inputClass}
               />
             </div>
