@@ -512,25 +512,23 @@ export default function FightSimulator() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b border-[#1a1a2e]">
-                    <td className="py-1.5 text-gray-300 font-semibold">Damage</td>
-                    <td className="text-center py-1.5 text-[#C5A33E] font-bold px-3">{fmt(distMean(distribution.damageDist))}</td>
-                    <td className="text-center py-1.5 text-gray-200 px-3">{percentile(distribution.damageDist, 0.5)}</td>
-                    <td className="text-center py-1.5 text-gray-200 px-3">{percentile(distribution.damageDist, 0.75)}</td>
-                    <td className="text-center py-1.5 text-gray-200 px-3">{distMax(distribution.damageDist)}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-1.5 text-gray-300 font-semibold">
-                      Models killed
-                      {selectedDefenderUnit && selectedDefenderUnit.stats[0] && (
-                        <span className="text-gray-500 text-xs ml-1">({selectedDefenderUnit.stats[0].W}W each)</span>
-                      )}
-                    </td>
-                    <td className="text-center py-1.5 text-[#C5A33E] font-bold px-3">{fmt(distMean(distribution.modelsKilledDist))}</td>
-                    <td className="text-center py-1.5 text-gray-200 px-3">{percentile(distribution.modelsKilledDist, 0.5)}</td>
-                    <td className="text-center py-1.5 text-gray-200 px-3">{percentile(distribution.modelsKilledDist, 0.75)}</td>
-                    <td className="text-center py-1.5 text-gray-200 px-3">{distMax(distribution.modelsKilledDist)}</td>
-                  </tr>
+                  <StatsRow label="Attacks" dist={distribution.attacksDist} />
+                  <StatsRow label="Hits" dist={distribution.hitsDist} />
+                  <StatsRow label="Wounds" dist={distribution.woundsDist} />
+                  <StatsRow label="Unsaved wounds" dist={distribution.unsavedWoundsDist} />
+                  <StatsRow label="Damage" dist={distribution.damageDist} highlight />
+                  <StatsRow
+                    label={
+                      <>
+                        Models killed
+                        {selectedDefenderUnit && selectedDefenderUnit.stats[0] && (
+                          <span className="text-gray-500 text-xs ml-1">({selectedDefenderUnit.stats[0].W}W)</span>
+                        )}
+                      </>
+                    }
+                    dist={distribution.modelsKilledDist}
+                    highlight
+                  />
                 </tbody>
               </table>
             </div>
@@ -616,6 +614,22 @@ function distMean(dist: number[]): number {
   let sum = 0;
   for (let i = 0; i < dist.length; i++) sum += i * dist[i];
   return sum;
+}
+
+function StatsRow({ label, dist, highlight }: {
+  label: React.ReactNode;
+  dist: number[];
+  highlight?: boolean;
+}) {
+  return (
+    <tr className={`border-b border-[#1a1a2e] ${highlight ? 'bg-[#1a1506]' : ''}`}>
+      <td className={`py-1.5 font-semibold ${highlight ? 'text-[#C5A33E]' : 'text-gray-300'}`}>{label}</td>
+      <td className={`text-center py-1.5 px-3 font-bold ${highlight ? 'text-[#C5A33E]' : 'text-gray-200'}`}>{fmt(distMean(dist))}</td>
+      <td className="text-center py-1.5 text-gray-200 px-3">{percentile(dist, 0.5)}</td>
+      <td className="text-center py-1.5 text-gray-200 px-3">{percentile(dist, 0.75)}</td>
+      <td className="text-center py-1.5 text-gray-200 px-3">{distMax(dist)}</td>
+    </tr>
+  );
 }
 
 /** Format a probability as a fraction like "4/6" */

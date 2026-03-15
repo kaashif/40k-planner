@@ -518,6 +518,10 @@ function damageToModelsKilled(
 }
 
 export interface DistributionResult {
+  attacksDist: Distribution;
+  hitsDist: Distribution;
+  woundsDist: Distribution;
+  unsavedWoundsDist: Distribution;
   damageDist: Distribution;
   modelsKilledDist: Distribution;
 }
@@ -533,8 +537,14 @@ export function calculateDistribution(
   modifiers: ModifierToggles,
   combatResult: CombatResult,
 ): DistributionResult {
-  // Effective per-attack probability of causing an unsaved wound
+  // Derive per-attack probabilities from expected values
   const totalExpAttacks = combatResult.expectedAttacks;
+  const pHitsPerAttack = totalExpAttacks > 0
+    ? combatResult.expectedHits / totalExpAttacks
+    : 0;
+  const pWoundsPerAttack = totalExpAttacks > 0
+    ? combatResult.expectedWounds / totalExpAttacks
+    : 0;
   const pUnsavedPerAttack = totalExpAttacks > 0
     ? combatResult.expectedUnsavedWounds / totalExpAttacks
     : 0;
@@ -560,20 +570,26 @@ export function calculateDistribution(
   // Cap for performance
   const maxAttacks = Math.min(totalAttacksDist.length - 1, 120);
 
-  // For each possible total attack count N, unsaved wounds ~ Binomial(N, p)
-  // Marginalize over N to get unsaved wounds distribution
-  let unsavedWoundsDist: Distribution = [];
-  for (let n = 0; n <= maxAttacks; n++) {
-    const pN = totalAttacksDist[n] || 0;
-    if (pN < 1e-10) continue;
-    for (let k = 0; k <= n; k++) {
-      const pK = binomialPMF(n, pUnsavedPerAttack, k);
-      if (pK < 1e-12) continue;
-      while (unsavedWoundsDist.length <= k) unsavedWoundsDist.push(0);
-      unsavedWoundsDist[k] += pN * pK;
+  // Helper: marginalize binomial over attack count distribution
+  function marginalizeBinomial(pPerAttack: number): Distribution {
+    let dist: Distribution = [];
+    for (let n = 0; n <= maxAttacks; n++) {
+      const pN = totalAttacksDist[n] || 0;
+      if (pN < 1e-10) continue;
+      for (let k = 0; k <= n; k++) {
+        const pK = binomialPMF(n, pPerAttack, k);
+        if (pK < 1e-12) continue;
+        while (dist.length <= k) dist.push(0);
+        dist[k] += pN * pK;
+      }
     }
+    if (dist.length === 0) dist = [1];
+    return dist;
   }
-  if (unsavedWoundsDist.length === 0) unsavedWoundsDist = [1];
+
+  const hitsDist = marginalizeBinomial(pHitsPerAttack);
+  const woundsDist = marginalizeBinomial(pWoundsPerAttack);
+  const unsavedWoundsDist = marginalizeBinomial(pUnsavedPerAttack);
 
   // Damage per unsaved wound distribution
   let damagePerWoundDist = parseDiceDist(attacker.damage);
@@ -613,5 +629,12 @@ export function calculateDistribution(
   // Models killed distribution
   const modelsKilledDist = damageToModelsKilled(damageDist, defender.wounds, defender.modelCount);
 
-  return { damageDist, modelsKilledDist };
+  return {
+    attacksDist: totalAttacksDist,
+    hitsDist,
+    woundsDist,
+    unsavedWoundsDist,
+    damageDist,
+    modelsKilledDist,
+  };
 }
