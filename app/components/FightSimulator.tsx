@@ -180,16 +180,17 @@ export default function FightSimulator() {
   const [rerollAllWound, setRerollAllWound] = useState(false);
   const [apBonus1, setApBonus1] = useState(false);
   const [apBonus2, setApBonus2] = useState(false);
+  const [plusOneToWound, setPlusOneToWound] = useState(false);
 
   const modifiers: ModifierToggles = useMemo(() => ({
     stationary, charged, halfRange, cover, rapidFire,
     minusOneToWound, minusOneToWoundIfStrGtT,
     rerollOnesHit, rerollAllHit, rerollOnesWound, rerollAllWound,
-    apBonus1, apBonus2,
+    apBonus1, apBonus2, plusOneToWound,
   }), [stationary, charged, halfRange, cover, rapidFire,
     minusOneToWound, minusOneToWoundIfStrGtT,
     rerollOnesHit, rerollAllHit, rerollOnesWound, rerollAllWound,
-    apBonus1, apBonus2]);
+    apBonus1, apBonus2, plusOneToWound]);
 
   // Catalogue cache
   const catalogueCacheRef = useRef<Map<string, CatalogueData>>(new Map());
@@ -566,6 +567,7 @@ export default function FightSimulator() {
               <Toggle label="Reroll all hits" checked={rerollAllHit} onChange={v => { setRerollAllHit(v); if (v) setRerollOnesHit(false); }} />
               <Toggle label="Reroll 1s to wound" checked={rerollOnesWound} onChange={v => { setRerollOnesWound(v); if (v) setRerollAllWound(false); }} />
               <Toggle label="Reroll all wounds" checked={rerollAllWound} onChange={v => { setRerollAllWound(v); if (v) setRerollOnesWound(false); }} />
+              <Toggle label="+1 to wound" checked={plusOneToWound} onChange={setPlusOneToWound} />
               <Toggle label="AP +1" checked={apBonus1} onChange={setApBonus1} />
               <Toggle label="AP +2" checked={apBonus2} onChange={setApBonus2} />
             </div>

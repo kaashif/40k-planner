@@ -35,6 +35,7 @@ export interface ModifierToggles {
   rerollAllWound: boolean;        // reroll all failed wounds
   apBonus1: boolean;              // improve AP by 1
   apBonus2: boolean;              // improve AP by 2
+  plusOneToWound: boolean;        // attacker has +1 to wound
 }
 
 export interface CombatResult {
@@ -246,6 +247,11 @@ export function calculateResults(
     woundThreshold = Math.max(2, woundThreshold - 1);
   }
 
+  // Attacker +1 to wound
+  if (modifiers.plusOneToWound) {
+    woundThreshold = Math.max(2, woundThreshold - 1);
+  }
+
   // Defender -1 to wound modifiers
   if (modifiers.minusOneToWound) {
     woundThreshold = Math.min(6, woundThreshold + 1);
@@ -363,6 +369,7 @@ export function calculateResults(
     }
   }
   if (hasKeyword(weaponKw, 'Lance') && modifiers.charged) woundNotes.push('Lance + Charged: +1 to wound');
+  if (modifiers.plusOneToWound) woundNotes.push('+1 to wound');
   if (modifiers.minusOneToWound) woundNotes.push('-1 to wound rolls');
   if (modifiers.minusOneToWoundIfStrGtT && attacker.strength > defender.toughness) woundNotes.push('-1 to wound (S > T)');
   if (hasKeyword(weaponKw, 'Twin-linked')) woundNotes.push('Twin-linked: re-roll failed wounds');
