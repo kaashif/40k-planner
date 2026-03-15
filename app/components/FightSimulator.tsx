@@ -902,11 +902,11 @@ function DamageDistChart({ dist, expectedValue, woundsPerModel, label }: {
           );
         })}
       </div>
-      {/* X-axis labels (sparse) */}
-      <div className="flex gap-px text-xs text-gray-500">
+      {/* X-axis labels */}
+      <div className="flex gap-px text-xs text-gray-500 overflow-hidden">
         {bucketProbs.map((_, i) => (
-          <div key={i} className="flex-1 text-center">
-            {i === 0 || i === bucketProbs.length - 1 || i === expectedBucket ? bucketLabels[i] : ''}
+          <div key={i} className="flex-1 text-center truncate">
+            {bucketLabels[i]}
           </div>
         ))}
       </div>
