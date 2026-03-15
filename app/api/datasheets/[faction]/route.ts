@@ -126,9 +126,16 @@ function extractFromEntry(
     unit.keywords.push(cl['@_name']);
   }
 
+  // Track seen profiles to prevent duplicates
+  const seenProfiles = new Set<string>();
+
   // Process all profiles recursively
   function processProfiles(profiles: Profile[]) {
     for (const profile of profiles) {
+      const profileKey = `${profile['@_typeName']}::${profile['@_name']}`;
+      if (seenProfiles.has(profileKey)) continue;
+      seenProfiles.add(profileKey);
+
       const chars = extractCharacteristics(profile);
       switch (profile['@_typeName']) {
         case 'Unit':
