@@ -879,7 +879,7 @@ function ResultsSection({ result, distribution, weapon, isMelee, modelCount, def
             notes={result.saveNotes} />
           <PipelineStep step="5. Damage" result={`${fmt(result.expectedDamage)} total damage`}
             detail={`${fmt(result.expectedUnsavedWounds)} unsaved wounds x ${fmt(result.expectedDamagePerWound)} avg damage`}
-            notes={result.damageNotes} highlight />
+            notes={result.damageNotes} />
         </div>
 
         <StatsTable distribution={distribution} defenderUnit={defenderUnit} />
@@ -922,14 +922,14 @@ function StatsTable({ distribution, defenderUnit }: {
           </tr>
         </thead>
         <tbody>
-          <StatsRow label="Attacks" dist={distribution.attacksDist} />
+          <StatsRow label="Attacks" dist={distribution.attacksDist} odd />
           <StatsRow label="Hits" dist={distribution.hitsDist} />
-          <StatsRow label="Wounds" dist={distribution.woundsDist} />
+          <StatsRow label="Wounds" dist={distribution.woundsDist} odd />
           <StatsRow label="Unsaved wounds" dist={distribution.unsavedWoundsDist} />
-          <StatsRow label="Damage" dist={distribution.damageDist} highlight />
+          <StatsRow label="Damage" dist={distribution.damageDist} odd />
           <StatsRow
             label={<>Models killed{defenderUnit.stats[0] && <span className="text-gray-500 text-xs ml-1">({defenderUnit.stats[0].W}W)</span>}</>}
-            dist={distribution.modelsKilledDist} highlight />
+            dist={distribution.modelsKilledDist} />
         </tbody>
       </table>
     </div>
@@ -987,12 +987,10 @@ function CompareStatsTable({ left, right, leftLabel, rightLabel, leftColor, righ
         </thead>
         <tbody>
           {rows.map((row, ri) => {
-            const isHighlight = ri >= 4;
-            const rowCls = `border-b border-[#1a1a2e] ${isHighlight ? 'bg-[#1a1506]' : ''}`;
-            const labelCls = `py-1 pr-3 font-semibold ${isHighlight ? 'text-[#C5A33E]' : 'text-gray-300'}`;
+            const bg = ri % 2 === 0 ? 'bg-[#12122a]' : '';
             return (
-              <tr key={ri} className={rowCls}>
-                <td className={labelCls}>{row.label}</td>
+              <tr key={ri} className={`border-b border-[#1a1a2e] ${bg}`}>
+                <td className="py-1 pr-3 font-semibold text-gray-300">{row.label}</td>
                 {statCols.map(col => {
                   const lv = col.fn(row.leftDist);
                   const rv = col.fn(row.rightDist);
@@ -1000,8 +998,8 @@ function CompareStatsTable({ left, right, leftLabel, rightLabel, leftColor, righ
                   const diffColor = Math.abs(diff) < 0.005 ? 'text-gray-600' : diff > 0 ? 'text-green-400' : 'text-red-400';
                   return (
                     <React.Fragment key={col.label}>
-                      <td className={`py-1 pr-1 ${isHighlight ? 'text-[#C5A33E] font-bold' : 'text-gray-200'}`}>{fmt(lv)}</td>
-                      <td className={`py-1 pr-1 ${isHighlight ? 'text-[#C5A33E] font-bold' : 'text-gray-200'}`}>{fmt(rv)}</td>
+                      <td className="py-1 pr-1 text-gray-200">{fmt(lv)}</td>
+                      <td className="py-1 pr-1 text-gray-200">{fmt(rv)}</td>
                       <td className={`py-1 pr-4 font-bold ${diffColor}`}>{diff >= 0 ? '+' : ''}{fmt(diff)}</td>
                     </React.Fragment>
                   );
@@ -1122,15 +1120,16 @@ function distMean(dist: number[]): number {
   return sum;
 }
 
-function StatsRow({ label, dist, highlight }: {
+function StatsRow({ label, dist, odd }: {
   label: React.ReactNode;
   dist: number[];
-  highlight?: boolean;
+  odd?: boolean;
 }) {
+  const bg = odd ? 'bg-[#12122a]' : '';
   return (
-    <tr className={`border-b border-[#1a1a2e] ${highlight ? 'bg-[#1a1506]' : ''}`}>
-      <td className={`py-1 pr-3 font-semibold ${highlight ? 'text-[#C5A33E]' : 'text-gray-300'}`}>{label}</td>
-      <td className={`text-left py-1 pr-3 font-bold ${highlight ? 'text-[#C5A33E]' : 'text-gray-200'}`}>{distMean(dist).toFixed(2)}</td>
+    <tr className={`border-b border-[#1a1a2e] ${bg}`}>
+      <td className="py-1 pr-3 font-semibold text-gray-300">{label}</td>
+      <td className="text-left py-1 pr-3 font-bold text-gray-200">{distMean(dist).toFixed(2)}</td>
       <td className="text-left py-1 pr-3 text-gray-200">{percentile(dist, 0.5).toFixed(2)}</td>
       <td className="text-left py-1 pr-3 text-gray-200">{percentile(dist, 0.75).toFixed(2)}</td>
       <td className="text-left py-1 text-gray-200">{distMax(dist).toFixed(2)}</td>
@@ -1145,14 +1144,14 @@ function frac(p: number): string {
   return `${sixths}/6`;
 }
 
-function PipelineStep({ step, result, detail, notes, highlight }: {
-  step: string; result: string; detail: string; notes: string[]; highlight?: boolean;
+function PipelineStep({ step, result, detail, notes }: {
+  step: string; result: string; detail: string; notes: string[];
 }) {
   return (
-    <div className={`rounded-lg p-3 ${highlight ? 'bg-[#1a1506] border border-[#4a3a0f]' : 'bg-[#0a0a14] border border-[#1a1a2e]'}`}>
+    <div className="rounded-lg p-3 bg-[#0a0a14] border border-[#1a1a2e]">
       <div className="flex items-baseline justify-between gap-3">
-        <span className={`text-sm font-semibold ${highlight ? 'text-[#C5A33E]' : 'text-gray-300'}`}>{step}</span>
-        <span className={`text-sm font-bold ${highlight ? 'text-[#C5A33E]' : 'text-gray-200'}`}>{result}</span>
+        <span className="text-sm font-semibold text-gray-300">{step}</span>
+        <span className="text-sm font-bold text-gray-200">{result}</span>
       </div>
       <div className="text-xs text-gray-400 mt-0.5">{detail}</div>
       {notes.length > 0 && (
