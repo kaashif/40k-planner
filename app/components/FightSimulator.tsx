@@ -258,43 +258,19 @@ export default function FightSimulator() {
             />
           </div>
 
-          <div className="space-y-2">
-            <label className={labelClass}>Weapon</label>
-            <Combobox
-              options={availableWeapons.map(w => ({
-                value: w.name,
-                label: w.name,
-                detail: `A:${w.A} S:${w.S} AP:${w.AP} D:${w.D}`,
-              }))}
-              value={attackerWeapon}
-              onChange={setAttackerWeapon}
-              placeholder={
-                !selectedAttackerUnit ? 'Select a unit first...' :
-                availableWeapons.length === 0 ? `No ${combatMode} weapons` :
-                'Type to search weapons...'
-              }
-              disabled={!selectedAttackerUnit || availableWeapons.length === 0}
-            />
-          </div>
-
-          {selectedWeapon && (
-            <div className="bg-[#0a0a14] rounded p-3 space-y-1">
-              <div className="text-sm font-semibold text-gray-200">{selectedWeapon.name}</div>
-              <div className="flex gap-4 text-xs text-gray-400">
-                <span>A: {selectedWeapon.A}</span>
-                <span>{combatMode === 'shooting' ? 'BS' : 'WS'}: {combatMode === 'shooting' ? selectedWeapon.BS : selectedWeapon.WS}</span>
-                <span>S: {selectedWeapon.S}</span>
-                <span>AP: {selectedWeapon.AP}</span>
-                <span>D: {selectedWeapon.D}</span>
-              </div>
-              {selectedWeapon.keywords && selectedWeapon.keywords !== '-' && (
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {parseKeywords(selectedWeapon.keywords).map(kw => (
-                    <span key={kw} className="px-1.5 py-0.5 text-xs bg-[#4a3a0f] text-[#C5A33E] rounded">{kw}</span>
-                  ))}
-                </div>
-              )}
+          {availableWeapons.length > 0 && (
+            <div className="space-y-2">
+              <label className={labelClass}>Weapon</label>
+              <WeaponTable
+                weapons={availableWeapons}
+                selectedWeapon={attackerWeapon}
+                onSelect={setAttackerWeapon}
+                isMelee={combatMode === 'melee'}
+              />
             </div>
+          )}
+          {selectedAttackerUnit && availableWeapons.length === 0 && (
+            <div className="text-sm text-gray-500">No {combatMode} weapons</div>
           )}
 
           <div className="space-y-2">
@@ -479,6 +455,62 @@ function ResultCard({ label, value, sub, highlight }: { label: string; value: nu
       </div>
       <div className="text-xs text-gray-400">{label}</div>
       {sub && <div className="text-xs text-gray-500 mt-0.5">{sub}</div>}
+    </div>
+  );
+}
+
+function WeaponTable({ weapons, selectedWeapon, onSelect, isMelee }: {
+  weapons: Weapon[];
+  selectedWeapon: string;
+  onSelect: (name: string) => void;
+  isMelee: boolean;
+}) {
+  const skillLabel = isMelee ? 'WS' : 'BS';
+  return (
+    <div className="overflow-x-auto rounded-lg border-2 border-[#3a3a5e]">
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr className="bg-[#0a0a14] border-b-2 border-[#3a3a5e]">
+            <th className="text-left px-2 py-1.5 text-gray-300 font-semibold">Weapon</th>
+            <th className="text-center px-2 py-1.5 text-gray-300 font-semibold">A</th>
+            <th className="text-center px-2 py-1.5 text-gray-300 font-semibold">{skillLabel}</th>
+            <th className="text-center px-2 py-1.5 text-gray-300 font-semibold">S</th>
+            <th className="text-center px-2 py-1.5 text-gray-300 font-semibold">AP</th>
+            <th className="text-center px-2 py-1.5 text-gray-300 font-semibold">D</th>
+            <th className="text-left px-2 py-1.5 text-gray-300 font-semibold">Keywords</th>
+          </tr>
+        </thead>
+        <tbody>
+          {weapons.map((w) => {
+            const isSelected = w.name === selectedWeapon;
+            return (
+              <tr
+                key={w.name}
+                onClick={() => onSelect(w.name)}
+                className={`cursor-pointer border-b border-[#1a1a2e] transition-colors ${
+                  isSelected
+                    ? 'bg-[#4a3a0f] text-[#C5A33E]'
+                    : 'bg-[#0a0a14] text-gray-300 hover:bg-[#1e1e3a]'
+                }`}
+              >
+                <td className="px-2 py-1.5 font-medium whitespace-nowrap">{w.name}</td>
+                <td className="text-center px-2 py-1.5">{w.A}</td>
+                <td className="text-center px-2 py-1.5">{isMelee ? w.WS : w.BS}</td>
+                <td className="text-center px-2 py-1.5">{w.S}</td>
+                <td className="text-center px-2 py-1.5">{w.AP}</td>
+                <td className="text-center px-2 py-1.5">{w.D}</td>
+                <td className="px-2 py-1.5 text-xs">
+                  {w.keywords && w.keywords !== '-' && (
+                    <span className={isSelected ? 'text-[#C5A33E] opacity-80' : 'text-gray-500'}>
+                      {w.keywords}
+                    </span>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }
