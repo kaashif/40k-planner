@@ -86,16 +86,6 @@ export default function FightSimulator() {
   const [loadingAttacker, setLoadingAttacker] = useState(false);
   const [loadingDefender, setLoadingDefender] = useState(false);
 
-  // Fetch faction list and initial catalogues
-  useEffect(() => {
-    fetch('/api/datasheets')
-      .then(r => r.json())
-      .then(setFactions)
-      .catch(console.error);
-    fetchAttacker('chaos-thousand-sons');
-    fetchDefender('chaos-thousand-sons');
-  }, [fetchAttacker, fetchDefender]);
-
   // Fetch attacker catalogue
   const fetchAttacker = useCallback(async (faction: string) => {
     if (!faction) { setAttackerCatalogue(null); return; }
@@ -128,6 +118,16 @@ export default function FightSimulator() {
       setLoadingDefender(false);
     }
   }, []);
+
+  // Fetch faction list and initial catalogues
+  useEffect(() => {
+    fetch('/api/datasheets')
+      .then(r => r.json())
+      .then(setFactions)
+      .catch(console.error);
+    fetchAttacker('chaos-thousand-sons');
+    fetchDefender('chaos-thousand-sons');
+  }, [fetchAttacker, fetchDefender]);
 
   // Resolve selected units
   const selectedAttackerUnit = useMemo(
