@@ -65,6 +65,32 @@ interface ParsedUnit {
   rangedWeapons: { name: string; range: string; A: string; BS: string; S: string; AP: string; D: string; keywords: string }[];
   meleeWeapons: { name: string; range: string; A: string; WS: string; S: string; AP: string; D: string; keywords: string }[];
   abilities: { name: string; description: string }[];
+  invulnSave: string | null;
+  fnp: string | null;
+}
+
+function parseInvulnAndFnp(abilities: { name: string; description: string }[]): { invulnSave: string | null; fnp: string | null } {
+  let invulnSave: string | null = null;
+  let fnp: string | null = null;
+
+  for (const ability of abilities) {
+    // Invulnerable Save: look for "N+ invulnerable save"
+    if (ability.name === 'Invulnerable Save') {
+      const match = ability.description.match(/(\d)\+\s*invulnerable save/i);
+      if (match) invulnSave = match[1] + '+';
+    }
+    // Feel No Pain: look for "Feel No Pain N+" in description (unconditional ones)
+    // Skip conditional ones like "while within range of..." or "against mortal wounds"
+    const fnpMatch = ability.description.match(/Feel No Pain (\d)\+/i);
+    if (fnpMatch) {
+      const isConditional = /while|against|if|when/i.test(ability.description);
+      if (!isConditional) {
+        fnp = fnpMatch[1] + '+';
+      }
+    }
+  }
+
+  return { invulnSave, fnp };
 }
 
 function extractFromEntry(
@@ -84,6 +110,8 @@ function extractFromEntry(
     rangedWeapons: [],
     meleeWeapons: [],
     abilities: [],
+    invulnSave: null,
+    fnp: null,
   };
 
   // Extract points
@@ -226,6 +254,11 @@ function extractFromEntry(
   if (unit.stats.length === 0 && unit.rangedWeapons.length === 0 && unit.meleeWeapons.length === 0) {
     return null;
   }
+
+  // Parse invuln and FNP from abilities
+  const { invulnSave, fnp } = parseInvulnAndFnp(unit.abilities);
+  unit.invulnSave = invulnSave;
+  unit.fnp = fnp;
 
   return unit;
 }

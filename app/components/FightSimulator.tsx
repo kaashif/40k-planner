@@ -38,6 +38,11 @@ interface Weapon {
   keywords: string;
 }
 
+interface Ability {
+  name: string;
+  description: string;
+}
+
 interface Unit {
   name: string;
   points: number;
@@ -45,6 +50,9 @@ interface Unit {
   stats: UnitStats[];
   rangedWeapons: Weapon[];
   meleeWeapons: Weapon[];
+  abilities: Ability[];
+  invulnSave: string | null;
+  fnp: string | null;
 }
 
 interface CatalogueData {
@@ -139,6 +147,19 @@ export default function FightSimulator() {
     () => defenderCatalogue?.units.find(u => u.name === defenderUnit) ?? null,
     [defenderCatalogue, defenderUnit]
   );
+
+  // Auto-populate invuln/FNP from datasheet when defender unit changes
+  const handleDefenderUnitChange = useCallback((unitName: string) => {
+    setDefenderUnit(unitName);
+    const unit = defenderCatalogue?.units.find(u => u.name === unitName);
+    if (unit) {
+      setDefenderInvuln(unit.invulnSave ? unit.invulnSave.replace('+', '') : '');
+      setDefenderFnp(unit.fnp ? unit.fnp.replace('+', '') : '');
+    } else {
+      setDefenderInvuln('');
+      setDefenderFnp('');
+    }
+  }, [defenderCatalogue]);
 
   // Get available weapons based on combat mode
   const availableWeapons = useMemo(() => {
@@ -258,6 +279,10 @@ export default function FightSimulator() {
             />
           </div>
 
+          {selectedAttackerUnit && (
+            <UnitDatasheet unit={selectedAttackerUnit} />
+          )}
+
           {availableWeapons.length > 0 && (
             <div className="space-y-2">
               <label className={labelClass}>Weapon</label>
@@ -303,31 +328,14 @@ export default function FightSimulator() {
             <Combobox
               options={defenderUnits.map(u => ({ value: u.name, label: u.name }))}
               value={defenderUnit}
-              onChange={setDefenderUnit}
+              onChange={handleDefenderUnitChange}
               placeholder={loadingDefender ? 'Loading...' : 'Type to search units...'}
               disabled={loadingDefender || !defenderCatalogue}
             />
           </div>
 
-          {selectedDefenderUnit && selectedDefenderUnit.stats[0] && (
-            <div className="bg-[#0a0a14] rounded p-3 space-y-1">
-              <div className="text-sm font-semibold text-gray-200">{selectedDefenderUnit.stats[0].name}</div>
-              <div className="flex gap-4 text-xs text-gray-400">
-                <span>T: {selectedDefenderUnit.stats[0].T}</span>
-                <span>SV: {selectedDefenderUnit.stats[0].SV}</span>
-                <span>W: {selectedDefenderUnit.stats[0].W}</span>
-              </div>
-              {selectedDefenderUnit.keywords.length > 0 && (
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {selectedDefenderUnit.keywords.slice(0, 8).map(kw => (
-                    <span key={kw} className="px-1.5 py-0.5 text-xs bg-[#1a1a2e] text-gray-400 rounded">{kw}</span>
-                  ))}
-                  {selectedDefenderUnit.keywords.length > 8 && (
-                    <span className="text-xs text-gray-500">+{selectedDefenderUnit.keywords.length - 8} more</span>
-                  )}
-                </div>
-              )}
-            </div>
+          {selectedDefenderUnit && (
+            <UnitDatasheet unit={selectedDefenderUnit} />
           )}
 
           <div className="grid grid-cols-3 gap-3">
@@ -455,6 +463,81 @@ function ResultCard({ label, value, sub, highlight }: { label: string; value: nu
       </div>
       <div className="text-xs text-gray-400">{label}</div>
       {sub && <div className="text-xs text-gray-500 mt-0.5">{sub}</div>}
+    </div>
+  );
+}
+
+function UnitDatasheet({ unit }: { unit: Unit }) {
+  return (
+    <div className="bg-[#0a0a14] rounded-lg border border-[#1a1a2e] p-3 space-y-3">
+      {/* Unit Stats */}
+      {unit.stats.length > 0 && (
+        <div className="overflow-x-auto">
+          <table className="border-collapse w-full text-sm">
+            <thead>
+              <tr className="border-b border-[#C5A33E]">
+                <th className="text-left pr-3 py-1 text-gray-200 font-bold">Model</th>
+                <th className="text-center px-2 py-1 text-gray-200 font-bold">M</th>
+                <th className="text-center px-2 py-1 text-gray-200 font-bold">T</th>
+                <th className="text-center px-2 py-1 text-gray-200 font-bold">SV</th>
+                <th className="text-center px-2 py-1 text-gray-200 font-bold">W</th>
+                <th className="text-center px-2 py-1 text-gray-200 font-bold">LD</th>
+                <th className="text-center px-2 py-1 text-gray-200 font-bold">OC</th>
+              </tr>
+            </thead>
+            <tbody>
+              {unit.stats.map((s, i) => (
+                <tr key={i} className="border-b border-[#1a1a2e]">
+                  <td className="pr-3 py-1 text-gray-300">{s.name}</td>
+                  <td className="text-center px-2 py-1 text-gray-400">{s.M}</td>
+                  <td className="text-center px-2 py-1 text-gray-400">{s.T}</td>
+                  <td className="text-center px-2 py-1 text-gray-400">{s.SV}</td>
+                  <td className="text-center px-2 py-1 text-gray-400">{s.W}</td>
+                  <td className="text-center px-2 py-1 text-gray-400">{s.LD}</td>
+                  <td className="text-center px-2 py-1 text-gray-400">{s.OC}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Invuln / FNP badges */}
+      {(unit.invulnSave || unit.fnp) && (
+        <div className="flex gap-2">
+          {unit.invulnSave && (
+            <span className="px-2 py-0.5 text-xs font-semibold bg-purple-900 text-purple-200 rounded">
+              Invuln {unit.invulnSave}
+            </span>
+          )}
+          {unit.fnp && (
+            <span className="px-2 py-0.5 text-xs font-semibold bg-green-900 text-green-200 rounded">
+              FNP {unit.fnp}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Keywords */}
+      {unit.keywords.length > 0 && (
+        <div className="flex flex-wrap gap-1">
+          {unit.keywords.map(kw => (
+            <span key={kw} className="px-1.5 py-0.5 text-xs bg-[#1a1a2e] text-gray-400 rounded">{kw}</span>
+          ))}
+        </div>
+      )}
+
+      {/* Abilities */}
+      {unit.abilities.length > 0 && (
+        <div className="space-y-1">
+          {unit.abilities.filter(a => a.name !== 'Invulnerable Save').map((a, i) => (
+            <div key={i} className="text-xs">
+              <span className="text-gray-300 font-semibold">{a.name}: </span>
+              <span className="text-gray-500">{a.description}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
