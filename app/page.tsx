@@ -5,11 +5,12 @@ import ArmySidebar from './components/ArmySidebar';
 import DeploymentPlanner from './components/DeploymentPlanner';
 import DatasheetsBrowser from './components/DatasheetsBrowser';
 import ArmyBuilder from './components/ArmyBuilder';
+import FightSimulator from './components/FightSimulator';
 import ExportPDFButton from './components/ExportPDFButton';
 import { Model, SpawnedGroup, SpawnedUnit, SelectedModel } from './types';
 
 function MainContent() {
-  const [activeTab, setActiveTab] = useState<'deployment' | 'datasheets' | 'armybuilder'>('deployment');
+  const [activeTab, setActiveTab] = useState<'deployment' | 'datasheets' | 'armybuilder' | 'simulator'>('deployment');
 
   // Army data state
   const [armyUnits, setArmyUnits] = useState<{ name: string; stats?: Record<string, string>; invulnSave?: string }[]>([]);
@@ -364,6 +365,16 @@ function MainContent() {
             >
               Army Builder
             </button>
+            <button
+              onClick={() => setActiveTab('simulator')}
+              className={`px-6 py-3 font-semibold rounded-lg transition-colors ${
+                activeTab === 'simulator'
+                  ? 'bg-[#4a3a0f] text-[#C5A33E] border-2 border-[#C5A33E]'
+                  : 'bg-[#14142a] text-gray-400 border-2 border-[#1a1a2e] hover:border-[#C5A33E] hover:text-gray-200'
+              }`}
+            >
+              Fight Sim
+            </button>
           </div>
 
           <main className="bg-[#0a0a14] border border-[#1a1a2e] rounded-lg p-6">
@@ -395,6 +406,9 @@ function MainContent() {
             )}
             {activeTab === 'armybuilder' && (
               <ArmyBuilder />
+            )}
+            {activeTab === 'simulator' && (
+              <FightSimulator />
             )}
           </main>
         </div>
