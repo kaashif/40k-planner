@@ -11,9 +11,10 @@ import {
   CombatResult,
 } from '../utils/combatSimulator';
 
-interface Faction {
-  slug: string;
+interface GlobalUnit {
   name: string;
+  factionSlug: string;
+  factionName: string;
 }
 
 interface UnitStats {
@@ -65,23 +66,25 @@ const inputClass = "px-3 py-2 bg-[#0a0a14] text-gray-200 border-2 border-[#3a3a5
 const labelClass = "text-sm text-gray-300";
 
 export default function FightSimulator() {
-  const [factions, setFactions] = useState<Faction[]>([]);
+  // Global unit index
+  const [allGlobalUnits, setAllGlobalUnits] = useState<GlobalUnit[]>([]);
+  const [globalUnitsLoading, setGlobalUnitsLoading] = useState(true);
 
   // Attacker state
-  const [attackerFaction, setAttackerFaction] = useState('chaos-thousand-sons');
+  const [attackerUnitKey, setAttackerUnitKey] = useState(''); // "unitName||factionSlug"
   const [attackerCatalogue, setAttackerCatalogue] = useState<CatalogueData | null>(null);
-  const [attackerUnit, setAttackerUnit] = useState('');
   const [attackerWeapon, setAttackerWeapon] = useState('');
   const [attackerModels, setAttackerModels] = useState(1);
   const [combatMode, setCombatMode] = useState<'shooting' | 'melee'>('shooting');
+  const [loadingAttacker, setLoadingAttacker] = useState(false);
 
   // Defender state
-  const [defenderFaction, setDefenderFaction] = useState('chaos-thousand-sons');
+  const [defenderUnitKey, setDefenderUnitKey] = useState(''); // "unitName||factionSlug"
   const [defenderCatalogue, setDefenderCatalogue] = useState<CatalogueData | null>(null);
-  const [defenderUnit, setDefenderUnit] = useState('');
   const [defenderModels, setDefenderModels] = useState(1);
   const [defenderInvuln, setDefenderInvuln] = useState('');
   const [defenderFnp, setDefenderFnp] = useState('');
+  const [loadingDefender, setLoadingDefender] = useState(false);
 
   // Modifier toggles
   const [stationary, setStationary] = useState(false);
@@ -90,76 +93,83 @@ export default function FightSimulator() {
   const [cover, setCover] = useState(false);
   const [rapidFire, setRapidFire] = useState(false);
 
-  // Loading states
-  const [loadingAttacker, setLoadingAttacker] = useState(false);
-  const [loadingDefender, setLoadingDefender] = useState(false);
+  // Catalogue cache to avoid refetching
+  const catalogueCacheRef = useRef<Map<string, CatalogueData>>(new Map());
 
-  // Fetch attacker catalogue
-  const fetchAttacker = useCallback(async (faction: string) => {
-    if (!faction) { setAttackerCatalogue(null); return; }
-    setLoadingAttacker(true);
-    setAttackerUnit('');
-    setAttackerWeapon('');
-    try {
-      const r = await fetch(`/api/datasheets/${faction}`);
-      const data = await r.json();
-      setAttackerCatalogue(data);
-    } catch {
-      setAttackerCatalogue(null);
-    } finally {
-      setLoadingAttacker(false);
-    }
-  }, []);
-
-  // Fetch defender catalogue
-  const fetchDefender = useCallback(async (faction: string) => {
-    if (!faction) { setDefenderCatalogue(null); return; }
-    setLoadingDefender(true);
-    setDefenderUnit('');
-    try {
-      const r = await fetch(`/api/datasheets/${faction}`);
-      const data = await r.json();
-      setDefenderCatalogue(data);
-    } catch {
-      setDefenderCatalogue(null);
-    } finally {
-      setLoadingDefender(false);
-    }
-  }, []);
-
-  // Fetch faction list and initial catalogues
+  // Fetch global unit index
   useEffect(() => {
-    fetch('/api/datasheets')
+    fetch('/api/datasheets/all-units')
       .then(r => r.json())
-      .then(setFactions)
-      .catch(console.error);
-    fetchAttacker('chaos-thousand-sons');
-    fetchDefender('chaos-thousand-sons');
-  }, [fetchAttacker, fetchDefender]);
+      .then((units: GlobalUnit[]) => { setAllGlobalUnits(units); setGlobalUnitsLoading(false); })
+      .catch(() => setGlobalUnitsLoading(false));
+  }, []);
 
-  // Resolve selected units
-  const selectedAttackerUnit = useMemo(
-    () => attackerCatalogue?.units.find(u => u.name === attackerUnit) ?? null,
-    [attackerCatalogue, attackerUnit]
+  // Build combobox options from global units
+  const globalUnitOptions = useMemo(() =>
+    allGlobalUnits.map(u => ({
+      value: `${u.name}||${u.factionSlug}`,
+      label: u.name,
+      detail: u.factionName.replace(/^(Chaos|Imperium|Aeldari|Xenos) - /, ''),
+    })),
+    [allGlobalUnits]
   );
 
-  const selectedDefenderUnit = useMemo(
-    () => defenderCatalogue?.units.find(u => u.name === defenderUnit) ?? null,
-    [defenderCatalogue, defenderUnit]
-  );
+  // Fetch a catalogue (with caching)
+  const fetchCatalogue = useCallback(async (factionSlug: string): Promise<CatalogueData | null> => {
+    const cached = catalogueCacheRef.current.get(factionSlug);
+    if (cached) return cached;
+    try {
+      const r = await fetch(`/api/datasheets/${factionSlug}`);
+      const data = await r.json();
+      catalogueCacheRef.current.set(factionSlug, data);
+      return data;
+    } catch {
+      return null;
+    }
+  }, []);
 
-  // Auto-populate invuln/FNP from datasheet when defender unit changes
-  const handleDefenderUnitChange = useCallback((unitName: string) => {
-    setDefenderUnit(unitName);
-    const unit = defenderCatalogue?.units.find(u => u.name === unitName);
+  // Handle attacker unit selection
+  const handleAttackerUnitChange = useCallback(async (key: string) => {
+    setAttackerUnitKey(key);
+    setAttackerWeapon('');
+    if (!key) { setAttackerCatalogue(null); return; }
+    const [, factionSlug] = key.split('||');
+    setLoadingAttacker(true);
+    const data = await fetchCatalogue(factionSlug);
+    setAttackerCatalogue(data);
+    setLoadingAttacker(false);
+  }, [fetchCatalogue]);
+
+  // Handle defender unit selection
+  const handleDefenderUnitChange = useCallback(async (key: string) => {
+    setDefenderUnitKey(key);
+    if (!key) { setDefenderCatalogue(null); setDefenderInvuln(''); setDefenderFnp(''); return; }
+    const [unitName, factionSlug] = key.split('||');
+    setLoadingDefender(true);
+    const data = await fetchCatalogue(factionSlug);
+    setDefenderCatalogue(data);
+    setLoadingDefender(false);
+    // Auto-populate invuln/FNP
+    const unit = data?.units.find(u => u.name === unitName);
     if (unit) {
       setDefenderInvuln(unit.invulnSave ? unit.invulnSave.replace('+', '') : '');
       setDefenderFnp(unit.fnp ? unit.fnp.replace('+', '') : '');
-    } else {
-      setDefenderInvuln('');
-      setDefenderFnp('');
     }
-  }, [defenderCatalogue]);
+  }, [fetchCatalogue]);
+
+  // Resolve selected units from catalogues
+  const attackerUnitName = attackerUnitKey.split('||')[0] || '';
+  const defenderUnitName = defenderUnitKey.split('||')[0] || '';
+
+  const selectedAttackerUnit = useMemo(
+    () => attackerCatalogue?.units.find(u => u.name === attackerUnitName) ?? null,
+    [attackerCatalogue, attackerUnitName]
+  );
+
+  const selectedDefenderUnit = useMemo(
+    () => defenderCatalogue?.units.find(u => u.name === defenderUnitName) ?? null,
+    [defenderCatalogue, defenderUnitName]
+  );
 
   // Get available weapons based on combat mode
   const availableWeapons = useMemo(() => {
@@ -224,8 +234,7 @@ export default function FightSimulator() {
   const showMelta = weaponKeywords.some(k => k.toLowerCase().startsWith('melta'));
   const showRapidFire = weaponKeywords.some(k => k.toLowerCase().startsWith('rapid fire'));
 
-  const attackerUnits = attackerCatalogue?.units.filter(u => !u.name.includes('[Legends]')) ?? [];
-  const defenderUnits = defenderCatalogue?.units.filter(u => !u.name.includes('[Legends]')) ?? [];
+  const comboboxPlaceholder = globalUnitsLoading ? 'Loading units...' : 'Type to search all units...';
 
   return (
     <div className="space-y-6">
@@ -261,22 +270,15 @@ export default function FightSimulator() {
           <h3 className="text-lg font-bold text-red-400">Attacker</h3>
 
           <div className="space-y-2">
-            <label className={labelClass}>Faction</label>
-            <select value={attackerFaction} onChange={e => { setAttackerFaction(e.target.value); fetchAttacker(e.target.value); }} className={selectClass}>
-              <option value="">Select faction...</option>
-              {factions.map(f => <option key={f.slug} value={f.slug}>{f.name}</option>)}
-            </select>
-          </div>
-
-          <div className="space-y-2">
             <label className={labelClass}>Unit</label>
             <Combobox
-              options={attackerUnits.map(u => ({ value: u.name, label: u.name }))}
-              value={attackerUnit}
-              onChange={v => { setAttackerUnit(v); setAttackerWeapon(''); }}
-              placeholder={loadingAttacker ? 'Loading...' : 'Type to search units...'}
-              disabled={loadingAttacker || !attackerCatalogue}
+              options={globalUnitOptions}
+              value={attackerUnitKey}
+              onChange={handleAttackerUnitChange}
+              placeholder={comboboxPlaceholder}
+              disabled={globalUnitsLoading}
             />
+            {loadingAttacker && <div className="text-xs text-gray-500">Loading datasheet...</div>}
           </div>
 
           {selectedAttackerUnit && (
@@ -316,22 +318,15 @@ export default function FightSimulator() {
           <h3 className="text-lg font-bold text-blue-400">Defender</h3>
 
           <div className="space-y-2">
-            <label className={labelClass}>Faction</label>
-            <select value={defenderFaction} onChange={e => { setDefenderFaction(e.target.value); fetchDefender(e.target.value); }} className={selectClass}>
-              <option value="">Select faction...</option>
-              {factions.map(f => <option key={f.slug} value={f.slug}>{f.name}</option>)}
-            </select>
-          </div>
-
-          <div className="space-y-2">
             <label className={labelClass}>Unit</label>
             <Combobox
-              options={defenderUnits.map(u => ({ value: u.name, label: u.name }))}
-              value={defenderUnit}
+              options={globalUnitOptions}
+              value={defenderUnitKey}
               onChange={handleDefenderUnitChange}
-              placeholder={loadingDefender ? 'Loading...' : 'Type to search units...'}
-              disabled={loadingDefender || !defenderCatalogue}
+              placeholder={comboboxPlaceholder}
+              disabled={globalUnitsLoading}
             />
+            {loadingDefender && <div className="text-xs text-gray-500">Loading datasheet...</div>}
           </div>
 
           {selectedDefenderUnit && (
@@ -708,12 +703,16 @@ function Combobox({ options, value, onChange, placeholder, disabled }: {
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
-  const selectedLabel = options.find(o => o.value === value)?.label ?? '';
+  const selectedOption = options.find(o => o.value === value);
+  const selectedLabel = selectedOption ? (selectedOption.detail ? `${selectedOption.label} (${selectedOption.detail})` : selectedOption.label) : '';
 
   const filtered = useMemo(() => {
     if (!query) return options;
     const q = query.toLowerCase();
-    return options.filter(o => o.label.toLowerCase().includes(q));
+    return options.filter(o =>
+      o.label.toLowerCase().includes(q) ||
+      (o.detail && o.detail.toLowerCase().includes(q))
+    );
   }, [options, query]);
 
   // Clamp highlight index to filtered list bounds
