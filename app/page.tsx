@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense, useState, useEffect, useCallback } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import ArmySidebar from './components/ArmySidebar';
 import DeploymentPlanner from './components/DeploymentPlanner';
 import DatasheetsBrowser from './components/DatasheetsBrowser';
@@ -9,8 +10,22 @@ import FightSimulator from './components/FightSimulator';
 import ExportPDFButton from './components/ExportPDFButton';
 import { Model, SpawnedGroup, SpawnedUnit, SelectedModel } from './types';
 
+type Tab = 'deployment' | 'datasheets' | 'armybuilder' | 'simulator';
+const VALID_TABS: Tab[] = ['deployment', 'datasheets', 'armybuilder', 'simulator'];
+
 function MainContent() {
-  const [activeTab, setActiveTab] = useState<'deployment' | 'datasheets' | 'armybuilder' | 'simulator'>('deployment');
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const tabParam = searchParams.get('tab');
+  const initialTab: Tab = VALID_TABS.includes(tabParam as Tab) ? (tabParam as Tab) : 'deployment';
+  const [activeTab, setActiveTab] = useState<Tab>(initialTab);
+
+  // Sync tab state to URL
+  const handleTabChange = useCallback((tab: Tab) => {
+    setActiveTab(tab);
+    const url = tab === 'deployment' ? '/' : `/?tab=${tab}`;
+    router.replace(url, { scroll: false });
+  }, [router]);
 
   // Army data state
   const [armyUnits, setArmyUnits] = useState<{ name: string; stats?: Record<string, string>; invulnSave?: string }[]>([]);
@@ -336,7 +351,7 @@ function MainContent() {
           {/* Tab Navigation */}
           <div className="flex gap-3 mb-6">
             <button
-              onClick={() => setActiveTab('deployment')}
+              onClick={() => handleTabChange('deployment')}
               className={`px-6 py-3 font-semibold rounded-lg transition-colors ${
                 activeTab === 'deployment'
                   ? 'bg-[#4a3a0f] text-[#C5A33E] border-2 border-[#C5A33E]'
@@ -346,7 +361,7 @@ function MainContent() {
               Deployment
             </button>
             <button
-              onClick={() => setActiveTab('datasheets')}
+              onClick={() => handleTabChange('datasheets')}
               className={`px-6 py-3 font-semibold rounded-lg transition-colors ${
                 activeTab === 'datasheets'
                   ? 'bg-[#4a3a0f] text-[#C5A33E] border-2 border-[#C5A33E]'
@@ -356,7 +371,7 @@ function MainContent() {
               Datasheets
             </button>
             <button
-              onClick={() => setActiveTab('armybuilder')}
+              onClick={() => handleTabChange('armybuilder')}
               className={`px-6 py-3 font-semibold rounded-lg transition-colors ${
                 activeTab === 'armybuilder'
                   ? 'bg-[#4a3a0f] text-[#C5A33E] border-2 border-[#C5A33E]'
@@ -366,7 +381,7 @@ function MainContent() {
               Army Builder
             </button>
             <button
-              onClick={() => setActiveTab('simulator')}
+              onClick={() => handleTabChange('simulator')}
               className={`px-6 py-3 font-semibold rounded-lg transition-colors ${
                 activeTab === 'simulator'
                   ? 'bg-[#4a3a0f] text-[#C5A33E] border-2 border-[#C5A33E]'
