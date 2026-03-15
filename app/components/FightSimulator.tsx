@@ -72,6 +72,21 @@ const labelClass = "text-sm text-gray-300";
 
 type SimMode = 'single' | 'squad' | 'compare';
 
+interface AttackerModifiers {
+  rerollOnesHit: boolean;
+  rerollAllHit: boolean;
+  rerollOnesWound: boolean;
+  rerollAllWound: boolean;
+  plusOneToWound: boolean;
+  apBonus1: boolean;
+  apBonus2: boolean;
+}
+const defaultAttackerMods: AttackerModifiers = {
+  rerollOnesHit: false, rerollAllHit: false,
+  rerollOnesWound: false, rerollAllWound: false,
+  plusOneToWound: false, apBonus1: false, apBonus2: false,
+};
+
 // Shared computation: build attacker/defender inputs and compute results + distribution
 function computeForWeapon(
   weapon: Weapon,
@@ -153,9 +168,10 @@ export default function FightSimulator() {
     weaponName: string;
     modelCount: number;
     loading: boolean;
+    mods: AttackerModifiers;
   }
   const [compareEntries, setCompareEntries] = useState<CompareEntry[]>([
-    { id: '1', unitKey: '', catalogue: null, weaponName: '', modelCount: 1, loading: false },
+    { id: '1', unitKey: '', catalogue: null, weaponName: '', modelCount: 1, loading: false, mods: { ...defaultAttackerMods } },
   ]);
 
   // Defender state (shared across all modes)
@@ -319,7 +335,7 @@ export default function FightSimulator() {
   const handleAddCompareEntry = useCallback(() => {
     setCompareEntries(prev => [...prev, {
       id: String(nextIdRef.current++),
-      unitKey: '', catalogue: null, weaponName: '', modelCount: 1, loading: false,
+      unitKey: '', catalogue: null, weaponName: '', modelCount: 1, loading: false, mods: { ...defaultAttackerMods },
     }]);
   }, []);
 
@@ -353,6 +369,12 @@ export default function FightSimulator() {
   const handleCompareModelsChange = useCallback((id: string, n: number) => {
     setCompareEntries(prev => prev.map(e =>
       e.id === id ? { ...e, modelCount: n } : e
+    ));
+  }, []);
+
+  const handleCompareModsChange = useCallback((id: string, mods: AttackerModifiers) => {
+    setCompareEntries(prev => prev.map(e =>
+      e.id === id ? { ...e, mods } : e
     ));
   }, []);
 
@@ -435,8 +457,13 @@ export default function FightSimulator() {
       const weapon = [...unit.rangedWeapons, ...unit.meleeWeapons].find(w => w.name === entry.weaponName);
       if (!weapon) return { entry, computed: null, weapon: null, isMelee: false };
       const isMelee = unit.meleeWeapons.some(w => w.name === entry.weaponName);
+      // Merge shared modifiers with per-entry attacker modifiers
+      const entryModifiers: ModifierToggles = {
+        ...modifiers,
+        ...entry.mods,
+      };
       const computed = computeForWeapon(weapon, isMelee, entry.modelCount,
-        selectedDefenderUnit, defenderModels, defenderInvuln, defenderFnp, modifiers);
+        selectedDefenderUnit, defenderModels, defenderInvuln, defenderFnp, entryModifiers);
       return { entry, computed, weapon, isMelee };
     });
   }, [mode, compareEntries, selectedDefenderUnit, defenderModels,
@@ -588,6 +615,7 @@ export default function FightSimulator() {
                 onUnitChange={(key) => handleCompareUnitChange(entry.id, key)}
                 onWeaponChange={(name) => handleCompareWeaponChange(entry.id, name)}
                 onModelsChange={(n) => handleCompareModelsChange(entry.id, n)}
+                onModsChange={(mods) => handleCompareModsChange(entry.id, mods)}
                 onRemove={() => handleRemoveCompareEntry(entry.id)}
                 canRemove={compareEntries.length > 1}
               />
@@ -915,14 +943,15 @@ function StatsTable({ distribution, defenderUnit }: {
 // ============================================================
 
 function CompareAttackerCard({ entry, globalUnitOptions, comboboxPlaceholder, globalUnitsLoading,
-  onUnitChange, onWeaponChange, onModelsChange, onRemove, canRemove }: {
-  entry: { id: string; unitKey: string; catalogue: CatalogueData | null; weaponName: string; modelCount: number; loading: boolean };
+  onUnitChange, onWeaponChange, onModelsChange, onModsChange, onRemove, canRemove }: {
+  entry: { id: string; unitKey: string; catalogue: CatalogueData | null; weaponName: string; modelCount: number; loading: boolean; mods: { rerollOnesHit: boolean; rerollAllHit: boolean; rerollOnesWound: boolean; rerollAllWound: boolean; plusOneToWound: boolean; apBonus1: boolean; apBonus2: boolean } };
   globalUnitOptions: { value: string; label: string; detail?: string }[];
   comboboxPlaceholder: string;
   globalUnitsLoading: boolean;
   onUnitChange: (key: string) => void;
   onWeaponChange: (name: string) => void;
   onModelsChange: (n: number) => void;
+  onModsChange: (mods: { rerollOnesHit: boolean; rerollAllHit: boolean; rerollOnesWound: boolean; rerollAllWound: boolean; plusOneToWound: boolean; apBonus1: boolean; apBonus2: boolean }) => void;
   onRemove: () => void;
   canRemove: boolean;
 }) {
@@ -930,6 +959,16 @@ function CompareAttackerCard({ entry, globalUnitOptions, comboboxPlaceholder, gl
   const unit = entry.catalogue?.units.find(u => u.name === unitName) ?? null;
   const ranged = unit?.rangedWeapons || [];
   const melee = unit?.meleeWeapons || [];
+  const mods = entry.mods;
+  const setMod = (key: string, val: boolean) => {
+    const next = { ...mods, [key]: val };
+    // Mutual exclusivity for rerolls
+    if (key === 'rerollOnesHit' && val) next.rerollAllHit = false;
+    if (key === 'rerollAllHit' && val) next.rerollOnesHit = false;
+    if (key === 'rerollOnesWound' && val) next.rerollAllWound = false;
+    if (key === 'rerollAllWound' && val) next.rerollOnesWound = false;
+    onModsChange(next);
+  };
 
   return (
     <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-3 space-y-2">
@@ -954,6 +993,15 @@ function CompareAttackerCard({ entry, globalUnitOptions, comboboxPlaceholder, gl
         <input type="number" min={1} max={30} value={entry.modelCount}
           onChange={e => onModelsChange(Math.max(1, parseInt(e.target.value) || 1))}
           className={inputClass} />
+      </div>
+      <div className="flex flex-wrap gap-2 pt-1">
+        <Toggle label="Reroll 1s hit" checked={mods.rerollOnesHit} onChange={v => setMod('rerollOnesHit', v)} />
+        <Toggle label="Reroll all hits" checked={mods.rerollAllHit} onChange={v => setMod('rerollAllHit', v)} />
+        <Toggle label="Reroll 1s wound" checked={mods.rerollOnesWound} onChange={v => setMod('rerollOnesWound', v)} />
+        <Toggle label="Reroll all wounds" checked={mods.rerollAllWound} onChange={v => setMod('rerollAllWound', v)} />
+        <Toggle label="+1 to wound" checked={mods.plusOneToWound} onChange={v => setMod('plusOneToWound', v)} />
+        <Toggle label="AP +1" checked={mods.apBonus1} onChange={v => setMod('apBonus1', v)} />
+        <Toggle label="AP +2" checked={mods.apBonus2} onChange={v => setMod('apBonus2', v)} />
       </div>
     </div>
   );
