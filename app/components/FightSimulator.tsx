@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {
   calculateResults,
@@ -749,73 +749,38 @@ export default function FightSimulator() {
       {/* ===== COMPARE MODE RESULTS ===== */}
       {mode === 'compare' && compareResults && selectedDefenderUnit && (
         <div className="space-y-6">
-          {/* Side-by-side comparison table (pairs of entries) */}
-          {compareResults.filter(r => r.computed).length >= 2 && (() => {
-            const computed = compareResults.filter(r => r.computed);
-            // Show pairwise comparisons for each consecutive pair
-            const pairs: [number, number][] = [];
-            for (let i = 0; i < computed.length - 1; i++) {
-              pairs.push([i, i + 1]);
-            }
-            return pairs.map(([li, ri]) => {
-              const left = computed[li];
-              const right = computed[ri];
-              const leftLabel = left.weapon ? `${left.entry.unitKey.split('||')[0]} - ${left.weapon.name} x${left.entry.modelCount}` : `Attacker ${li + 1}`;
-              const rightLabel = right.weapon ? `${right.entry.unitKey.split('||')[0]} - ${right.weapon.name} x${right.entry.modelCount}` : `Attacker ${ri + 1}`;
-              const rows: { label: string; valFn: (r: typeof left) => number; fmtFn?: (n: number) => string }[] = [
-                { label: 'Avg Hits', valFn: r => r.computed!.result.expectedHits },
-                { label: 'Avg Wounds', valFn: r => r.computed!.result.expectedWounds },
-                { label: 'Avg Unsaved', valFn: r => r.computed!.result.expectedUnsavedWounds },
-                { label: 'Avg Damage', valFn: r => r.computed!.result.expectedDamage },
-                { label: 'Median Damage', valFn: r => percentile(r.computed!.distribution.damageDist, 0.5) },
-                { label: 'Avg Models Killed', valFn: r => distMean(r.computed!.distribution.modelsKilledDist) },
-                { label: 'P(kill 1+)', valFn: r => 1 - (r.computed!.distribution.modelsKilledDist[0] || 0), fmtFn: n => `${fmtPct(n)}%` },
-                { label: 'Max Damage', valFn: r => distMax(r.computed!.distribution.damageDist) },
-              ];
-              return (
-                <div key={`${left.entry.id}-${right.entry.id}`} className="bg-[#14142a] border border-[#C5A33E] rounded-lg p-5 overflow-x-auto">
-                  <h3 className="text-lg font-bold text-[#C5A33E] mb-3">Comparison</h3>
-                  <table className="w-full text-sm border-collapse">
-                    <thead>
-                      <tr className="border-b border-[#3a3a5e]">
-                        <th className="text-left py-1.5 text-gray-400"></th>
-                        <th className="text-center py-1.5 px-3 font-semibold" style={{ color: COMPARE_COLORS[li % COMPARE_COLORS.length] }}>{leftLabel}</th>
-                        <th className="text-center py-1.5 px-3 font-semibold" style={{ color: COMPARE_COLORS[ri % COMPARE_COLORS.length] }}>{rightLabel}</th>
-                        <th className="text-center py-1.5 px-3 font-semibold text-gray-400">Diff</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {rows.map(row => {
-                        const lv = row.valFn(left);
-                        const rv = row.valFn(right);
-                        const diff = lv - rv;
-                        const display = row.fmtFn || fmt;
-                        const diffDisplay = row.fmtFn
-                          ? `${diff >= 0 ? '+' : ''}${row.fmtFn(Math.abs(diff)).replace('%', '')}%`
-                          : `${diff >= 0 ? '+' : ''}${fmt(diff)}`;
-                        const diffColor = Math.abs(diff) < 0.005 ? 'text-gray-500' : diff > 0 ? 'text-green-400' : 'text-red-400';
-                        return (
-                          <tr key={row.label} className="border-b border-[#1a1a2e]">
-                            <td className="py-1.5 text-gray-300 font-semibold">{row.label}</td>
-                            <td className="text-center py-1.5 text-gray-200 px-3">{display(lv)}</td>
-                            <td className="text-center py-1.5 text-gray-200 px-3">{display(rv)}</td>
-                            <td className={`text-center py-1.5 px-3 font-bold ${diffColor}`}>{diffDisplay}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              );
-            });
-          })()}
+          {/* Pairwise comparison stats tables */}
           {compareResults.filter(r => r.computed).length === 1 && (
             <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-5 text-sm text-gray-400">
               Add a second attacker to see a comparison.
             </div>
           )}
+          {(() => {
+            const computed = compareResults.filter(r => r.computed);
+            if (computed.length < 2) return null;
+            const pairs: [number, number][] = [];
+            for (let i = 0; i < computed.length - 1; i++) pairs.push([i, i + 1]);
+            return pairs.map(([li, ri]) => {
+              const left = computed[li];
+              const right = computed[ri];
+              const leftName = left.weapon ? `${left.entry.unitKey.split('||')[0]} - ${left.weapon.name}` : `Attacker ${li + 1}`;
+              const rightName = right.weapon ? `${right.entry.unitKey.split('||')[0]} - ${right.weapon.name}` : `Attacker ${ri + 1}`;
+              return (
+                <CompareStatsTable
+                  key={`stats-${left.entry.id}-${right.entry.id}`}
+                  left={left.computed!.distribution}
+                  right={right.computed!.distribution}
+                  leftLabel={leftName}
+                  rightLabel={rightName}
+                  leftColor={COMPARE_COLORS[li % COMPARE_COLORS.length]}
+                  rightColor={COMPARE_COLORS[ri % COMPARE_COLORS.length]}
+                  defenderUnit={selectedDefenderUnit}
+                />
+              );
+            });
+          })()}
 
-          {/* Side-by-side charts */}
+          {/* Per-entry charts */}
           <div className={`grid gap-6 ${compareResults.filter(r => r.computed).length > 1 ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
             {compareResults.map((r, i) => {
               if (!r.computed || !r.weapon) return null;
@@ -826,7 +791,6 @@ export default function FightSimulator() {
                   <div className="text-sm font-bold" style={{ color }}>
                     {unitName} - {r.weapon.name} x{r.entry.modelCount}
                   </div>
-                  <StatsTable distribution={r.computed.distribution} defenderUnit={selectedDefenderUnit} />
                   <DamageDistChart dist={r.computed.distribution.damageDist}
                     expectedValue={r.computed.result.expectedDamage}
                     woundsPerModel={parseStatValue(selectedDefenderUnit.stats[0]?.W || '1')}
@@ -944,14 +908,14 @@ function StatsTable({ distribution, defenderUnit }: {
 }) {
   return (
     <div className="border-t border-[#C5A33E] pt-3">
-      <table className="w-full text-sm border-collapse">
+      <table className="text-sm border-collapse">
         <thead>
           <tr className="border-b border-[#3a3a5e]">
-            <th className="text-left py-1.5 text-gray-400 font-normal"></th>
-            <th className="text-center py-1.5 text-gray-300 font-semibold px-3">Mean</th>
-            <th className="text-center py-1.5 text-gray-300 font-semibold px-3">Median</th>
-            <th className="text-center py-1.5 text-gray-300 font-semibold px-3">75th %ile</th>
-            <th className="text-center py-1.5 text-gray-300 font-semibold px-3">Max</th>
+            <th className="text-left py-1 text-gray-400 font-normal pr-3"></th>
+            <th className="text-left py-1 text-gray-300 font-semibold pr-3">Mean</th>
+            <th className="text-left py-1 text-gray-300 font-semibold pr-3">Median</th>
+            <th className="text-left py-1 text-gray-300 font-semibold pr-3">75th %ile</th>
+            <th className="text-left py-1 text-gray-300 font-semibold">Max</th>
           </tr>
         </thead>
         <tbody>
@@ -963,6 +927,85 @@ function StatsTable({ distribution, defenderUnit }: {
           <StatsRow
             label={<>Models killed{defenderUnit.stats[0] && <span className="text-gray-500 text-xs ml-1">({defenderUnit.stats[0].W}W)</span>}</>}
             dist={distribution.modelsKilledDist} highlight />
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function CompareStatsTable({ left, right, leftLabel, rightLabel, leftColor, rightColor, defenderUnit }: {
+  left: DistributionResult;
+  right: DistributionResult;
+  leftLabel: string;
+  rightLabel: string;
+  leftColor: string;
+  rightColor: string;
+  defenderUnit: Unit;
+}) {
+  const rows: { label: React.ReactNode; leftDist: number[]; rightDist: number[] }[] = [
+    { label: 'Attacks', leftDist: left.attacksDist, rightDist: right.attacksDist },
+    { label: 'Hits', leftDist: left.hitsDist, rightDist: right.hitsDist },
+    { label: 'Wounds', leftDist: left.woundsDist, rightDist: right.woundsDist },
+    { label: 'Unsaved wounds', leftDist: left.unsavedWoundsDist, rightDist: right.unsavedWoundsDist },
+    { label: 'Damage', leftDist: left.damageDist, rightDist: right.damageDist },
+    {
+      label: <>Models killed{defenderUnit.stats[0] && <span className="text-gray-500 text-xs ml-1">({defenderUnit.stats[0].W}W)</span>}</>,
+      leftDist: left.modelsKilledDist,
+      rightDist: right.modelsKilledDist,
+    },
+  ];
+  const statCols: { label: string; fn: (dist: number[]) => number }[] = [
+    { label: 'Mean', fn: d => distMean(d) },
+    { label: 'Median', fn: d => percentile(d, 0.5) },
+    { label: '75th', fn: d => percentile(d, 0.75) },
+    { label: 'Max', fn: d => distMax(d) },
+  ];
+
+  return (
+    <div className="border-t border-[#C5A33E] pt-3 overflow-x-auto">
+      <table className="text-sm border-collapse">
+        <thead>
+          <tr className="border-b border-[#3a3a5e]">
+            <th className="text-left py-1 text-gray-400 font-normal pr-3"></th>
+            {statCols.map(col => (
+              <th key={col.label} colSpan={3} className="text-left py-1 text-gray-300 font-semibold pr-4">{col.label}</th>
+            ))}
+          </tr>
+          <tr className="border-b border-[#3a3a5e]">
+            <th className="py-0.5 pr-3"></th>
+            {statCols.map(col => (
+              <React.Fragment key={col.label}>
+                <th className="text-left py-0.5 pr-1 text-xs font-normal truncate max-w-[60px]" style={{ color: leftColor }}>{leftLabel}</th>
+                <th className="text-left py-0.5 pr-1 text-xs font-normal truncate max-w-[60px]" style={{ color: rightColor }}>{rightLabel}</th>
+                <th className="text-left py-0.5 pr-4 text-xs font-normal text-gray-500">+/-</th>
+              </React.Fragment>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, ri) => {
+            const isHighlight = ri >= 4;
+            const rowCls = `border-b border-[#1a1a2e] ${isHighlight ? 'bg-[#1a1506]' : ''}`;
+            const labelCls = `py-1 pr-3 font-semibold ${isHighlight ? 'text-[#C5A33E]' : 'text-gray-300'}`;
+            return (
+              <tr key={ri} className={rowCls}>
+                <td className={labelCls}>{row.label}</td>
+                {statCols.map(col => {
+                  const lv = col.fn(row.leftDist);
+                  const rv = col.fn(row.rightDist);
+                  const diff = lv - rv;
+                  const diffColor = Math.abs(diff) < 0.005 ? 'text-gray-600' : diff > 0 ? 'text-green-400' : 'text-red-400';
+                  return (
+                    <React.Fragment key={col.label}>
+                      <td className={`py-1 pr-1 ${isHighlight ? 'text-[#C5A33E] font-bold' : 'text-gray-200'}`}>{fmt(lv)}</td>
+                      <td className={`py-1 pr-1 ${isHighlight ? 'text-[#C5A33E] font-bold' : 'text-gray-200'}`}>{fmt(rv)}</td>
+                      <td className={`py-1 pr-4 font-bold ${diffColor}`}>{diff >= 0 ? '+' : ''}{fmt(diff)}</td>
+                    </React.Fragment>
+                  );
+                })}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
@@ -1083,11 +1126,11 @@ function StatsRow({ label, dist, highlight }: {
 }) {
   return (
     <tr className={`border-b border-[#1a1a2e] ${highlight ? 'bg-[#1a1506]' : ''}`}>
-      <td className={`py-1.5 font-semibold ${highlight ? 'text-[#C5A33E]' : 'text-gray-300'}`}>{label}</td>
-      <td className={`text-center py-1.5 px-3 font-bold ${highlight ? 'text-[#C5A33E]' : 'text-gray-200'}`}>{distMean(dist).toFixed(2)}</td>
-      <td className="text-center py-1.5 text-gray-200 px-3">{percentile(dist, 0.5).toFixed(2)}</td>
-      <td className="text-center py-1.5 text-gray-200 px-3">{percentile(dist, 0.75).toFixed(2)}</td>
-      <td className="text-center py-1.5 text-gray-200 px-3">{distMax(dist).toFixed(2)}</td>
+      <td className={`py-1 pr-3 font-semibold ${highlight ? 'text-[#C5A33E]' : 'text-gray-300'}`}>{label}</td>
+      <td className={`text-left py-1 pr-3 font-bold ${highlight ? 'text-[#C5A33E]' : 'text-gray-200'}`}>{distMean(dist).toFixed(2)}</td>
+      <td className="text-left py-1 pr-3 text-gray-200">{percentile(dist, 0.5).toFixed(2)}</td>
+      <td className="text-left py-1 pr-3 text-gray-200">{percentile(dist, 0.75).toFixed(2)}</td>
+      <td className="text-left py-1 text-gray-200">{distMax(dist).toFixed(2)}</td>
     </tr>
   );
 }
