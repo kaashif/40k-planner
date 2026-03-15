@@ -28,7 +28,7 @@ function MainContent() {
   }, [router]);
 
   // Army data state
-  const [armyUnits, setArmyUnits] = useState<{ name: string; stats?: Record<string, string>; invulnSave?: string }[]>([]);
+  const [armyUnits, setArmyUnits] = useState<{ name: string; stats?: { M: string; T: string; SV: string; W: string; LD: string; OC: string }; invulnSave?: string }[]>([]);
   const [auras, setAuras] = useState<{ [unitName: string]: number }>({});
 
   // Per-round and per-turn state
