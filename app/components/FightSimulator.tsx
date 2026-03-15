@@ -749,38 +749,69 @@ export default function FightSimulator() {
       {/* ===== COMPARE MODE RESULTS ===== */}
       {mode === 'compare' && compareResults && selectedDefenderUnit && (
         <div className="space-y-6">
-          {/* Side-by-side comparison table */}
-          {compareResults.some(r => r.computed) && (
-            <div className="bg-[#14142a] border border-[#C5A33E] rounded-lg p-5 overflow-x-auto">
-              <h3 className="text-lg font-bold text-[#C5A33E] mb-3">Comparison</h3>
-              <table className="w-full text-sm border-collapse">
-                <thead>
-                  <tr className="border-b border-[#3a3a5e]">
-                    <th className="text-left py-1.5 text-gray-400"></th>
-                    {compareResults.map((r, i) => (
-                      <th key={r.entry.id} className="text-center py-1.5 px-3 font-semibold" style={{ color: COMPARE_COLORS[i % COMPARE_COLORS.length] }}>
-                        {r.weapon ? `${r.weapon.name} x${r.entry.modelCount}` : `Attacker ${i + 1}`}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { label: 'Avg Damage', fn: (r: typeof compareResults[0]) => r.computed ? fmt(r.computed.result.expectedDamage) : '-' },
-                    { label: 'Median Damage', fn: (r: typeof compareResults[0]) => r.computed ? percentile(r.computed.distribution.damageDist, 0.5).toFixed(0) : '-' },
-                    { label: 'Avg Models Killed', fn: (r: typeof compareResults[0]) => r.computed ? fmt(distMean(r.computed.distribution.modelsKilledDist)) : '-' },
-                    { label: 'P(kill 1+)', fn: (r: typeof compareResults[0]) => r.computed ? `${fmtPct(1 - (r.computed.distribution.modelsKilledDist[0] || 0))}%` : '-' },
-                    { label: 'Max Damage', fn: (r: typeof compareResults[0]) => r.computed ? distMax(r.computed.distribution.damageDist).toString() : '-' },
-                  ].map(row => (
-                    <tr key={row.label} className="border-b border-[#1a1a2e]">
-                      <td className="py-1.5 text-gray-300 font-semibold">{row.label}</td>
-                      {compareResults.map(r => (
-                        <td key={r.entry.id} className="text-center py-1.5 text-gray-200 px-3">{row.fn(r)}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          {/* Side-by-side comparison table (pairs of entries) */}
+          {compareResults.filter(r => r.computed).length >= 2 && (() => {
+            const computed = compareResults.filter(r => r.computed);
+            // Show pairwise comparisons for each consecutive pair
+            const pairs: [number, number][] = [];
+            for (let i = 0; i < computed.length - 1; i++) {
+              pairs.push([i, i + 1]);
+            }
+            return pairs.map(([li, ri]) => {
+              const left = computed[li];
+              const right = computed[ri];
+              const leftLabel = left.weapon ? `${left.entry.unitKey.split('||')[0]} - ${left.weapon.name} x${left.entry.modelCount}` : `Attacker ${li + 1}`;
+              const rightLabel = right.weapon ? `${right.entry.unitKey.split('||')[0]} - ${right.weapon.name} x${right.entry.modelCount}` : `Attacker ${ri + 1}`;
+              const rows: { label: string; valFn: (r: typeof left) => number; fmtFn?: (n: number) => string }[] = [
+                { label: 'Avg Hits', valFn: r => r.computed!.result.expectedHits },
+                { label: 'Avg Wounds', valFn: r => r.computed!.result.expectedWounds },
+                { label: 'Avg Unsaved', valFn: r => r.computed!.result.expectedUnsavedWounds },
+                { label: 'Avg Damage', valFn: r => r.computed!.result.expectedDamage },
+                { label: 'Median Damage', valFn: r => percentile(r.computed!.distribution.damageDist, 0.5) },
+                { label: 'Avg Models Killed', valFn: r => distMean(r.computed!.distribution.modelsKilledDist) },
+                { label: 'P(kill 1+)', valFn: r => 1 - (r.computed!.distribution.modelsKilledDist[0] || 0), fmtFn: n => `${fmtPct(n)}%` },
+                { label: 'Max Damage', valFn: r => distMax(r.computed!.distribution.damageDist) },
+              ];
+              return (
+                <div key={`${left.entry.id}-${right.entry.id}`} className="bg-[#14142a] border border-[#C5A33E] rounded-lg p-5 overflow-x-auto">
+                  <h3 className="text-lg font-bold text-[#C5A33E] mb-3">Comparison</h3>
+                  <table className="w-full text-sm border-collapse">
+                    <thead>
+                      <tr className="border-b border-[#3a3a5e]">
+                        <th className="text-left py-1.5 text-gray-400"></th>
+                        <th className="text-center py-1.5 px-3 font-semibold" style={{ color: COMPARE_COLORS[li % COMPARE_COLORS.length] }}>{leftLabel}</th>
+                        <th className="text-center py-1.5 px-3 font-semibold" style={{ color: COMPARE_COLORS[ri % COMPARE_COLORS.length] }}>{rightLabel}</th>
+                        <th className="text-center py-1.5 px-3 font-semibold text-gray-400">Diff</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rows.map(row => {
+                        const lv = row.valFn(left);
+                        const rv = row.valFn(right);
+                        const diff = lv - rv;
+                        const display = row.fmtFn || fmt;
+                        const diffDisplay = row.fmtFn
+                          ? `${diff >= 0 ? '+' : ''}${row.fmtFn(Math.abs(diff)).replace('%', '')}%`
+                          : `${diff >= 0 ? '+' : ''}${fmt(diff)}`;
+                        const diffColor = Math.abs(diff) < 0.005 ? 'text-gray-500' : diff > 0 ? 'text-green-400' : 'text-red-400';
+                        return (
+                          <tr key={row.label} className="border-b border-[#1a1a2e]">
+                            <td className="py-1.5 text-gray-300 font-semibold">{row.label}</td>
+                            <td className="text-center py-1.5 text-gray-200 px-3">{display(lv)}</td>
+                            <td className="text-center py-1.5 text-gray-200 px-3">{display(rv)}</td>
+                            <td className={`text-center py-1.5 px-3 font-bold ${diffColor}`}>{diffDisplay}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              );
+            });
+          })()}
+          {compareResults.filter(r => r.computed).length === 1 && (
+            <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-5 text-sm text-gray-400">
+              Add a second attacker to see a comparison.
             </div>
           )}
 
