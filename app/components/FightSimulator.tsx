@@ -498,20 +498,55 @@ export default function FightSimulator() {
             />
           </div>
 
-          {/* Final summary */}
-          <div className="border-t border-[#C5A33E] pt-3 flex items-center justify-between">
-            <div>
-              <span className="text-2xl font-bold text-[#C5A33E]">{fmt(result.expectedDamage)}</span>
-              <span className="text-gray-400 ml-2">expected damage</span>
+          {/* Summary stats table */}
+          {distribution && (
+            <div className="border-t border-[#C5A33E] pt-3">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="border-b border-[#3a3a5e]">
+                    <th className="text-left py-1.5 text-gray-400 font-normal"></th>
+                    <th className="text-center py-1.5 text-gray-300 font-semibold px-3">Mean</th>
+                    <th className="text-center py-1.5 text-gray-300 font-semibold px-3">Median</th>
+                    <th className="text-center py-1.5 text-gray-300 font-semibold px-3">75th %ile</th>
+                    <th className="text-center py-1.5 text-gray-300 font-semibold px-3">Max</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-[#1a1a2e]">
+                    <td className="py-1.5 text-gray-300 font-semibold">Damage</td>
+                    <td className="text-center py-1.5 text-[#C5A33E] font-bold px-3">{fmt(distMean(distribution.damageDist))}</td>
+                    <td className="text-center py-1.5 text-gray-200 px-3">{percentile(distribution.damageDist, 0.5)}</td>
+                    <td className="text-center py-1.5 text-gray-200 px-3">{percentile(distribution.damageDist, 0.75)}</td>
+                    <td className="text-center py-1.5 text-gray-200 px-3">{distMax(distribution.damageDist)}</td>
+                  </tr>
+                  <tr>
+                    <td className="py-1.5 text-gray-300 font-semibold">
+                      Models killed
+                      {selectedDefenderUnit && selectedDefenderUnit.stats[0] && (
+                        <span className="text-gray-500 text-xs ml-1">({selectedDefenderUnit.stats[0].W}W each)</span>
+                      )}
+                    </td>
+                    <td className="text-center py-1.5 text-[#C5A33E] font-bold px-3">{fmt(distMean(distribution.modelsKilledDist))}</td>
+                    <td className="text-center py-1.5 text-gray-200 px-3">{percentile(distribution.modelsKilledDist, 0.5)}</td>
+                    <td className="text-center py-1.5 text-gray-200 px-3">{percentile(distribution.modelsKilledDist, 0.75)}</td>
+                    <td className="text-center py-1.5 text-gray-200 px-3">{distMax(distribution.modelsKilledDist)}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div>
-              <span className="text-2xl font-bold text-[#C5A33E]">{result.expectedModelsKilled}</span>
-              <span className="text-gray-400 ml-2">models killed</span>
-              {selectedDefenderUnit && selectedDefenderUnit.stats[0] && (
-                <span className="text-gray-500 text-sm ml-1">({selectedDefenderUnit.stats[0].W}W each)</span>
-              )}
+          )}
+          {!distribution && (
+            <div className="border-t border-[#C5A33E] pt-3 flex items-center justify-between">
+              <div>
+                <span className="text-2xl font-bold text-[#C5A33E]">{fmt(result.expectedDamage)}</span>
+                <span className="text-gray-400 ml-2">expected damage</span>
+              </div>
+              <div>
+                <span className="text-2xl font-bold text-[#C5A33E]">{result.expectedModelsKilled}</span>
+                <span className="text-gray-400 ml-2">models killed</span>
+              </div>
             </div>
-          </div>
+          )}
 
           {result.expectedSelfMortals > 0 && (
             <div className="text-sm text-yellow-400">
@@ -556,6 +591,31 @@ export default function FightSimulator() {
 /** Format a number: integers as-is, decimals to 2 places */
 function fmt(n: number): string {
   return Number.isInteger(n) ? n.toString() : n.toFixed(2);
+}
+
+/** Compute percentile from a distribution: smallest k where CDF >= p */
+function percentile(dist: number[], p: number): number {
+  let cumulative = 0;
+  for (let i = 0; i < dist.length; i++) {
+    cumulative += dist[i];
+    if (cumulative >= p - 1e-9) return i;
+  }
+  return dist.length - 1;
+}
+
+/** Get max non-zero value from distribution */
+function distMax(dist: number[]): number {
+  for (let i = dist.length - 1; i >= 0; i--) {
+    if (dist[i] > 1e-9) return i;
+  }
+  return 0;
+}
+
+/** Compute mean of a distribution */
+function distMean(dist: number[]): number {
+  let sum = 0;
+  for (let i = 0; i < dist.length; i++) sum += i * dist[i];
+  return sum;
 }
 
 /** Format a probability as a fraction like "4/6" */
