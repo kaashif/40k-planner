@@ -144,6 +144,17 @@ function MainContent() {
     }));
   };
 
+  const handleClearAll = useCallback(() => {
+    setSpawnedGroupsByRoundAndTurn(prev => ({
+      ...prev,
+      [stateKey]: []
+    }));
+    setSelectedModelsByRoundAndTurn(prev => ({
+      ...prev,
+      [stateKey]: []
+    }));
+  }, [stateKey]);
+
   const handleUpdateGroups = (groups: SpawnedGroup[]) => {
     setSpawnedGroupsByRoundAndTurn(prev => ({
       ...prev,
@@ -279,6 +290,7 @@ function MainContent() {
           <ArmySidebar
             onSpawn={handleSpawn}
             onDelete={handleDelete}
+            onClearAll={handleClearAll}
             spawnedUnits={spawnedUnitIds}
             spawnedGroups={spawnedGroups}
             onSelectAll={handleSelectionChange}

@@ -56,6 +56,7 @@ interface ArmyUnit {
 interface ArmySidebarProps {
   onSpawn: (unit: SpawnedUnit) => void;
   onDelete: (unitId: string) => void;
+  onClearAll: () => void;
   spawnedUnits: Set<string>;
   spawnedGroups: SpawnedGroup[];
   onSelectAll: (models: { groupId: string; modelId: string }[]) => void;
@@ -67,7 +68,7 @@ interface ArmySidebarProps {
   auras: { [unitName: string]: number };
 }
 
-export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGroups, onSelectAll, onArmyDataUpdate, reserveUnits, onReserveChange, onUnitIdsUpdate, onAuraChange, auras }: ArmySidebarProps) {
+export default function ArmySidebar({ onSpawn, onDelete, onClearAll, spawnedUnits, spawnedGroups, onSelectAll, onArmyDataUpdate, reserveUnits, onReserveChange, onUnitIdsUpdate, onAuraChange, auras }: ArmySidebarProps) {
   const [units, setUnits] = useState<UnitWithBase[]>([]);
   const [baseSizes, setBaseSizes] = useState<{ [key: string]: string }>({});
   const [flyDimensions, setFlyDimensions] = useState<{ [key: string]: { width: string; length: string } }>({});
@@ -567,6 +568,9 @@ export default function ArmySidebar({ onSpawn, onDelete, spawnedUnits, spawnedGr
   const handleLoadSavedList = (listId: string) => {
     const list = mySavedLists.find(l => l.id === listId);
     if (!list) return;
+
+    // Clear all currently spawned units from the map
+    onClearAll();
 
     let modelIndex = 0;
     const models: UnitWithBase[] = list.entries.map(entry => ({
