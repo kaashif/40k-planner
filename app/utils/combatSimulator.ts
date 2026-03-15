@@ -129,7 +129,7 @@ export function calculateWoundThreshold(strength: number, toughness: number): nu
 /**
  * Probability of rolling N+ on a D6, with nat 1 always failing and nat 6 always succeeding
  */
-function probOfNPlus(n: number): number {
+export function probOfNPlus(n: number): number {
   if (n <= 1) return 1;
   if (n >= 7) return 0;
   // Nat 1 always fails, nat 6 always succeeds
@@ -374,4 +374,244 @@ export function calculateResults(
 export function parseKeywords(keywordsStr: string): string[] {
   if (!keywordsStr || keywordsStr === '-') return [];
   return keywordsStr.split(',').map(k => k.trim()).filter(Boolean);
+}
+
+// ============================================================
+// Full probability distribution computation
+// ============================================================
+
+/** Distribution where dist[i] = P(X = i) */
+export type Distribution = number[];
+
+/** Convolve two distributions (sum of two independent random variables) */
+export function convolve(a: Distribution, b: Distribution): Distribution {
+  if (a.length === 0 || b.length === 0) return [1];
+  const result = new Array(a.length + b.length - 1).fill(0);
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] < 1e-15) continue;
+    for (let j = 0; j < b.length; j++) {
+      result[i + j] += a[i] * b[j];
+    }
+  }
+  return result;
+}
+
+/** Convolve a distribution with itself n times using doubling trick */
+export function nFoldConvolve(base: Distribution, n: number): Distribution {
+  if (n === 0) return [1];
+  if (n === 1) return [...base];
+  let result: Distribution = [1];
+  let power = [...base];
+  let remaining = n;
+  while (remaining > 0) {
+    if (remaining & 1) {
+      result = convolve(result, power);
+    }
+    remaining >>= 1;
+    if (remaining > 0) {
+      power = convolve(power, power);
+    }
+  }
+  return result;
+}
+
+/** Shift a distribution by a constant (add constant to random variable) */
+function shiftDist(dist: Distribution, shift: number): Distribution {
+  const result: Distribution = [];
+  for (let i = 0; i < dist.length; i++) {
+    const newIdx = i + shift;
+    if (newIdx >= 0) {
+      while (result.length <= newIdx) result.push(0);
+      result[newIdx] += dist[i];
+    } else {
+      // Clamp negative values to 0
+      if (result.length === 0) result.push(0);
+      result[0] += dist[i];
+    }
+  }
+  return result;
+}
+
+/** Parse a dice expression into its full probability distribution */
+export function parseDiceDist(expr: string): Distribution {
+  if (!expr || expr === '-' || expr === 'N/A') return [1]; // P(X=0) = 1
+
+  const s = expr.trim().toUpperCase();
+
+  const diceMatch = s.match(/^(\d*)D(\d+)([+-]\d+)?$/);
+  if (diceMatch) {
+    const count = diceMatch[1] ? parseInt(diceMatch[1]) : 1;
+    const sides = parseInt(diceMatch[2]);
+    const modifier = diceMatch[3] ? parseInt(diceMatch[3]) : 0;
+
+    // Single die: uniform over 1..sides
+    const singleDie: Distribution = new Array(sides + 1).fill(0);
+    for (let i = 1; i <= sides; i++) {
+      singleDie[i] = 1 / sides;
+    }
+
+    let dist = nFoldConvolve(singleDie, count);
+    if (modifier !== 0) {
+      dist = shiftDist(dist, modifier);
+    }
+    return dist;
+  }
+
+  // Plain number
+  const num = parseInt(s);
+  if (!isNaN(num) && num >= 0) {
+    const dist = new Array(num + 1).fill(0);
+    dist[num] = 1;
+    return dist;
+  }
+
+  return [1];
+}
+
+/** Binomial PMF: P(X = k) where X ~ Bin(n, p) */
+function binomialPMF(n: number, p: number, k: number): number {
+  if (k < 0 || k > n) return 0;
+  if (p === 0) return k === 0 ? 1 : 0;
+  if (p >= 1) return k === n ? 1 : 0;
+
+  // Use log to avoid overflow for large n
+  let logProb = 0;
+  for (let i = 0; i < k; i++) {
+    logProb += Math.log(n - i) - Math.log(i + 1);
+  }
+  logProb += k * Math.log(p) + (n - k) * Math.log(1 - p);
+  return Math.exp(logProb);
+}
+
+/** Apply FNP: each damage point independently ignored with probability pFnp */
+function applyFNP(damageDist: Distribution, pFnp: number): Distribution {
+  if (pFnp <= 0) return damageDist;
+  const pTake = 1 - pFnp;
+  const result: Distribution = [];
+
+  for (let d = 0; d < damageDist.length; d++) {
+    const pD = damageDist[d];
+    if (pD < 1e-12) continue;
+    for (let k = 0; k <= d; k++) {
+      const pK = binomialPMF(d, pTake, k);
+      while (result.length <= k) result.push(0);
+      result[k] += pD * pK;
+    }
+  }
+  return result;
+}
+
+/** Convert damage distribution to models killed distribution */
+function damageToModelsKilled(
+  damageDist: Distribution,
+  woundsPerModel: number,
+  maxModels: number,
+): Distribution {
+  const result: Distribution = new Array(maxModels + 1).fill(0);
+  for (let d = 0; d < damageDist.length; d++) {
+    const pD = damageDist[d];
+    if (pD < 1e-12) continue;
+    const killed = Math.min(Math.floor(d / woundsPerModel), maxModels);
+    result[killed] += pD;
+  }
+  return result;
+}
+
+export interface DistributionResult {
+  damageDist: Distribution;
+  modelsKilledDist: Distribution;
+}
+
+/**
+ * Compute the full probability distribution of total damage and models killed.
+ * Uses the per-attack unsaved wound probability derived from the expected value calculation,
+ * then builds the full distribution via convolution.
+ */
+export function calculateDistribution(
+  attacker: AttackerInput,
+  defender: DefenderInput,
+  modifiers: ModifierToggles,
+  combatResult: CombatResult,
+): DistributionResult {
+  // Effective per-attack probability of causing an unsaved wound
+  const totalExpAttacks = combatResult.expectedAttacks;
+  const pUnsavedPerAttack = totalExpAttacks > 0
+    ? combatResult.expectedUnsavedWounds / totalExpAttacks
+    : 0;
+
+  // Distribution of attacks per model (accounting for Blast / Rapid Fire)
+  let attacksPerModelDist = parseDiceDist(attacker.attacks);
+  const weaponKw = attacker.keywords;
+  let extraAttacks = 0;
+  if (hasKeyword(weaponKw, 'Blast')) {
+    extraAttacks += Math.floor(defender.modelCount / 5);
+  }
+  if (modifiers.rapidFire) {
+    const rfVal = getKeywordParam(weaponKw, 'Rapid Fire');
+    if (rfVal !== null) extraAttacks += rfVal;
+  }
+  if (extraAttacks > 0) {
+    attacksPerModelDist = shiftDist(attacksPerModelDist, extraAttacks);
+  }
+
+  // Total attacks = sum over all models
+  const totalAttacksDist = nFoldConvolve(attacksPerModelDist, attacker.modelCount);
+
+  // Cap for performance
+  const maxAttacks = Math.min(totalAttacksDist.length - 1, 120);
+
+  // For each possible total attack count N, unsaved wounds ~ Binomial(N, p)
+  // Marginalize over N to get unsaved wounds distribution
+  let unsavedWoundsDist: Distribution = [];
+  for (let n = 0; n <= maxAttacks; n++) {
+    const pN = totalAttacksDist[n] || 0;
+    if (pN < 1e-10) continue;
+    for (let k = 0; k <= n; k++) {
+      const pK = binomialPMF(n, pUnsavedPerAttack, k);
+      if (pK < 1e-12) continue;
+      while (unsavedWoundsDist.length <= k) unsavedWoundsDist.push(0);
+      unsavedWoundsDist[k] += pN * pK;
+    }
+  }
+  if (unsavedWoundsDist.length === 0) unsavedWoundsDist = [1];
+
+  // Damage per unsaved wound distribution
+  let damagePerWoundDist = parseDiceDist(attacker.damage);
+  if (modifiers.halfRange) {
+    const meltaX = getKeywordParam(weaponKw, 'Melta');
+    if (meltaX !== null) {
+      damagePerWoundDist = shiftDist(damagePerWoundDist, meltaX);
+    }
+  }
+
+  // Total damage = random sum: sum of N copies of damagePerWound where N ~ unsavedWoundsDist
+  // P(S=s) = sum_n P(N=n) * P(X1+...+Xn = s)
+  const maxUnsaved = Math.min(unsavedWoundsDist.length - 1, 60);
+  let damageDist: Distribution = [];
+  let damageConvPower: Distribution = [1]; // damagePerWound^0 = delta(0)
+
+  for (let n = 0; n <= maxUnsaved; n++) {
+    const pN = unsavedWoundsDist[n] || 0;
+    if (pN > 1e-10) {
+      while (damageDist.length < damageConvPower.length) damageDist.push(0);
+      for (let i = 0; i < damageConvPower.length; i++) {
+        damageDist[i] += pN * damageConvPower[i];
+      }
+    }
+    if (n < maxUnsaved) {
+      damageConvPower = convolve(damageConvPower, damagePerWoundDist);
+    }
+  }
+  if (damageDist.length === 0) damageDist = [1];
+
+  // Apply FNP
+  if (defender.fnp !== null) {
+    const pFnp = probOfNPlus(defender.fnp);
+    damageDist = applyFNP(damageDist, pFnp);
+  }
+
+  // Models killed distribution
+  const modelsKilledDist = damageToModelsKilled(damageDist, defender.wounds, defender.modelCount);
+
+  return { damageDist, modelsKilledDist };
 }

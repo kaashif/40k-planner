@@ -3,12 +3,14 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import {
   calculateResults,
+  calculateDistribution,
   parseKeywords,
   parseStatValue,
   AttackerInput,
   DefenderInput,
   ModifierToggles,
   CombatResult,
+  DistributionResult,
 } from '../utils/combatSimulator';
 
 interface GlobalUnit {
@@ -224,6 +226,43 @@ export default function FightSimulator() {
 
     return calculateResults(attacker, defender, modifiers);
   }, [selectedWeapon, selectedDefenderUnit, attackerModels, defenderModels,
+      defenderInvuln, defenderFnp, stationary, charged, halfRange, cover,
+      rapidFire, combatMode]);
+
+  // Compute full probability distribution
+  const distribution: DistributionResult | null = useMemo(() => {
+    if (!selectedWeapon || !selectedDefenderUnit || !result) return null;
+
+    const defStats = selectedDefenderUnit.stats[0];
+    if (!defStats) return null;
+
+    const skill = parseStatValue(combatMode === 'shooting' ? (selectedWeapon.BS || '4+') : (selectedWeapon.WS || '4+'));
+    const weaponKw = parseKeywords(selectedWeapon.keywords);
+
+    const attacker: AttackerInput = {
+      attacks: selectedWeapon.A,
+      skill,
+      strength: parseStatValue(selectedWeapon.S),
+      ap: Math.abs(parseStatValue(selectedWeapon.AP)),
+      damage: selectedWeapon.D,
+      keywords: weaponKw,
+      modelCount: attackerModels,
+    };
+
+    const defender: DefenderInput = {
+      toughness: parseStatValue(defStats.T),
+      save: parseStatValue(defStats.SV),
+      invuln: defenderInvuln ? parseInt(defenderInvuln) : null,
+      wounds: parseStatValue(defStats.W),
+      modelCount: defenderModels,
+      fnp: defenderFnp ? parseInt(defenderFnp) : null,
+      keywords: selectedDefenderUnit.keywords,
+    };
+
+    const modifiers: ModifierToggles = { stationary, charged, halfRange, cover, rapidFire };
+
+    return calculateDistribution(attacker, defender, modifiers, result);
+  }, [selectedWeapon, selectedDefenderUnit, result, attackerModels, defenderModels,
       defenderInvuln, defenderFnp, stationary, charged, halfRange, cover,
       rapidFire, combatMode]);
 
@@ -482,6 +521,23 @@ export default function FightSimulator() {
         </div>
       )}
 
+      {/* Distribution Charts */}
+      {distribution && result && selectedDefenderUnit && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <DamageDistChart
+            dist={distribution.damageDist}
+            expectedValue={result.expectedDamage}
+            woundsPerModel={parseStatValue(selectedDefenderUnit.stats[0]?.W || '1')}
+            label="Damage Distribution"
+          />
+          <ModelsKilledChart
+            dist={distribution.modelsKilledDist}
+            expectedValue={result.expectedModelsKilled}
+            label="Models Killed Distribution"
+          />
+        </div>
+      )}
+
       {!result && selectedWeapon && selectedDefenderUnit && (
         <div className="text-gray-500 text-center py-4">
           Unable to calculate — missing defender stats.
@@ -679,6 +735,157 @@ function WeaponTable({ weapons, selectedWeapon, onSelect, isMelee }: {
           })}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+function DamageDistChart({ dist, expectedValue, woundsPerModel, label }: {
+  dist: number[];
+  expectedValue: number;
+  woundsPerModel: number;
+  label: string;
+}) {
+  // Trim trailing near-zero entries and bucket if too many bars
+  const trimmed = [...dist];
+  while (trimmed.length > 1 && trimmed[trimmed.length - 1] < 1e-6) trimmed.pop();
+
+  // Bucket into groups if distribution is wide
+  const MAX_BARS = 30;
+  let bucketSize = 1;
+  let bucketLabels: string[] = [];
+  let bucketProbs: number[] = [];
+
+  if (trimmed.length > MAX_BARS) {
+    bucketSize = Math.ceil(trimmed.length / MAX_BARS);
+    for (let i = 0; i < trimmed.length; i += bucketSize) {
+      let sum = 0;
+      const end = Math.min(i + bucketSize, trimmed.length);
+      for (let j = i; j < end; j++) sum += trimmed[j];
+      bucketProbs.push(sum);
+      bucketLabels.push(bucketSize === 1 ? `${i}` : `${i}-${end - 1}`);
+    }
+  } else {
+    bucketProbs = trimmed;
+    bucketLabels = trimmed.map((_, i) => `${i}`);
+  }
+
+  const maxProb = Math.max(...bucketProbs, 0.01);
+
+  // Cumulative probabilities
+  let cumulative = 0;
+  const cumulativeAtLeast: number[] = [];
+  for (let i = bucketProbs.length - 1; i >= 0; i--) {
+    cumulative += bucketProbs[i];
+    cumulativeAtLeast[i] = cumulative;
+  }
+
+  // Find which bucket the expected value falls in
+  const expectedBucket = bucketSize === 1 ? Math.round(expectedValue) : Math.floor(expectedValue / bucketSize);
+
+  // Model kill thresholds
+  const killThresholds: number[] = [];
+  for (let k = 1; k <= 5; k++) {
+    const dmgNeeded = k * woundsPerModel;
+    const bucket = bucketSize === 1 ? dmgNeeded : Math.floor(dmgNeeded / bucketSize);
+    if (bucket > 0 && bucket < bucketProbs.length && !killThresholds.includes(bucket)) {
+      killThresholds.push(bucket);
+    }
+  }
+
+  return (
+    <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-4 space-y-3">
+      <h4 className="text-sm font-bold text-[#C5A33E]">{label}</h4>
+      <div className="flex items-end gap-px h-40">
+        {bucketProbs.map((p, i) => {
+          const height = maxProb > 0 ? (p / maxProb) * 100 : 0;
+          const isExpected = i === expectedBucket;
+          const isKillThreshold = killThresholds.includes(i);
+          return (
+            <div key={i} className="flex-1 flex flex-col items-center justify-end h-full group relative">
+              <div
+                className={`w-full rounded-t transition-all ${
+                  isExpected ? 'bg-[#C5A33E]' : isKillThreshold ? 'bg-red-500' : 'bg-[#4a3a7f]'
+                } group-hover:opacity-80`}
+                style={{ height: `${Math.max(height, 0.5)}%` }}
+              />
+              {/* Tooltip */}
+              <div className="absolute bottom-full mb-1 hidden group-hover:block z-10 bg-[#0a0a14] border border-[#3a3a5e] rounded px-2 py-1 text-xs whitespace-nowrap pointer-events-none">
+                <div className="text-gray-200">{bucketLabels[i]} damage</div>
+                <div className="text-[#C5A33E]">{(p * 100).toFixed(1)}% chance</div>
+                <div className="text-gray-400">{(cumulativeAtLeast[i] * 100).toFixed(1)}% chance of {bucketLabels[i]}+</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {/* X-axis labels (sparse) */}
+      <div className="flex gap-px text-xs text-gray-500">
+        {bucketProbs.map((_, i) => (
+          <div key={i} className="flex-1 text-center">
+            {i === 0 || i === bucketProbs.length - 1 || i === expectedBucket ? bucketLabels[i] : ''}
+          </div>
+        ))}
+      </div>
+      <div className="flex gap-3 text-xs text-gray-400">
+        <span><span className="inline-block w-2 h-2 rounded-sm bg-[#C5A33E] mr-1" />Expected ({fmt(expectedValue)})</span>
+        {killThresholds.length > 0 && (
+          <span><span className="inline-block w-2 h-2 rounded-sm bg-red-500 mr-1" />Model kill threshold</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ModelsKilledChart({ dist, expectedValue, label }: {
+  dist: number[];
+  expectedValue: number;
+  label: string;
+}) {
+  const maxProb = Math.max(...dist, 0.01);
+
+  // Cumulative: P(killed >= k)
+  let cumulative = 0;
+  const cumulativeAtLeast: number[] = [];
+  for (let i = dist.length - 1; i >= 0; i--) {
+    cumulative += dist[i];
+    cumulativeAtLeast[i] = cumulative;
+  }
+
+  return (
+    <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-4 space-y-3">
+      <h4 className="text-sm font-bold text-[#C5A33E]">{label}</h4>
+      <div className="flex items-end gap-1 h-40">
+        {dist.map((p, i) => {
+          const height = maxProb > 0 ? (p / maxProb) * 100 : 0;
+          const isExpected = i === expectedValue;
+          return (
+            <div key={i} className="flex-1 flex flex-col items-center justify-end h-full group relative">
+              <div className="text-xs text-gray-400 mb-1 opacity-0 group-hover:opacity-100">{(p * 100).toFixed(1)}%</div>
+              <div
+                className={`w-full rounded-t transition-all ${
+                  isExpected ? 'bg-[#C5A33E]' : 'bg-red-700'
+                } group-hover:opacity-80`}
+                style={{ height: `${Math.max(height, 1)}%` }}
+              />
+              {/* Tooltip */}
+              <div className="absolute bottom-full mb-6 hidden group-hover:block z-10 bg-[#0a0a14] border border-[#3a3a5e] rounded px-2 py-1 text-xs whitespace-nowrap pointer-events-none">
+                <div className="text-gray-200">{i} model{i !== 1 ? 's' : ''} killed</div>
+                <div className="text-[#C5A33E]">{(p * 100).toFixed(1)}% chance exactly</div>
+                <div className="text-gray-400">{(cumulativeAtLeast[i] * 100).toFixed(1)}% chance of {i}+</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {/* X-axis labels */}
+      <div className="flex gap-1 text-xs text-gray-400">
+        {dist.map((_, i) => (
+          <div key={i} className="flex-1 text-center">{i}</div>
+        ))}
+      </div>
+      <div className="text-xs text-gray-400">
+        <span className="inline-block w-2 h-2 rounded-sm bg-[#C5A33E] mr-1" />Expected ({expectedValue})
+      </div>
     </div>
   );
 }
