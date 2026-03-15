@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import {
   calculateResults,
   parseKeywords,
@@ -249,36 +249,32 @@ export default function FightSimulator() {
 
           <div className="space-y-2">
             <label className={labelClass}>Unit</label>
-            <select
+            <Combobox
+              options={attackerUnits.map(u => ({ value: u.name, label: u.name }))}
               value={attackerUnit}
-              onChange={e => { setAttackerUnit(e.target.value); setAttackerWeapon(''); }}
-              className={selectClass}
+              onChange={v => { setAttackerUnit(v); setAttackerWeapon(''); }}
+              placeholder={loadingAttacker ? 'Loading...' : 'Type to search units...'}
               disabled={loadingAttacker || !attackerCatalogue}
-            >
-              <option value="">{loadingAttacker ? 'Loading...' : 'Select unit...'}</option>
-              {attackerUnits.map(u => <option key={u.name} value={u.name}>{u.name}</option>)}
-            </select>
+            />
           </div>
 
           <div className="space-y-2">
             <label className={labelClass}>Weapon</label>
-            <select
+            <Combobox
+              options={availableWeapons.map(w => ({
+                value: w.name,
+                label: w.name,
+                detail: `A:${w.A} S:${w.S} AP:${w.AP} D:${w.D}`,
+              }))}
               value={attackerWeapon}
-              onChange={e => setAttackerWeapon(e.target.value)}
-              className={selectClass}
+              onChange={setAttackerWeapon}
+              placeholder={
+                !selectedAttackerUnit ? 'Select a unit first...' :
+                availableWeapons.length === 0 ? `No ${combatMode} weapons` :
+                'Type to search weapons...'
+              }
               disabled={!selectedAttackerUnit || availableWeapons.length === 0}
-            >
-              <option value="">
-                {!selectedAttackerUnit ? 'Select a unit first...' :
-                 availableWeapons.length === 0 ? `No ${combatMode} weapons` :
-                 'Select weapon...'}
-              </option>
-              {availableWeapons.map(w => (
-                <option key={w.name} value={w.name}>
-                  {w.name} (A:{w.A} S:{w.S} AP:{w.AP} D:{w.D})
-                </option>
-              ))}
-            </select>
+            />
           </div>
 
           {selectedWeapon && (
@@ -328,15 +324,13 @@ export default function FightSimulator() {
 
           <div className="space-y-2">
             <label className={labelClass}>Unit</label>
-            <select
+            <Combobox
+              options={defenderUnits.map(u => ({ value: u.name, label: u.name }))}
               value={defenderUnit}
-              onChange={e => setDefenderUnit(e.target.value)}
-              className={selectClass}
+              onChange={setDefenderUnit}
+              placeholder={loadingDefender ? 'Loading...' : 'Type to search units...'}
               disabled={loadingDefender || !defenderCatalogue}
-            >
-              <option value="">{loadingDefender ? 'Loading...' : 'Select unit...'}</option>
-              {defenderUnits.map(u => <option key={u.name} value={u.name}>{u.name}</option>)}
-            </select>
+            />
           </div>
 
           {selectedDefenderUnit && selectedDefenderUnit.stats[0] && (
@@ -485,6 +479,135 @@ function ResultCard({ label, value, sub, highlight }: { label: string; value: nu
       </div>
       <div className="text-xs text-gray-400">{label}</div>
       {sub && <div className="text-xs text-gray-500 mt-0.5">{sub}</div>}
+    </div>
+  );
+}
+
+interface ComboboxOption {
+  value: string;
+  label: string;
+  detail?: string;
+}
+
+function Combobox({ options, value, onChange, placeholder, disabled }: {
+  options: ComboboxOption[];
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  disabled?: boolean;
+}) {
+  const [query, setQuery] = useState('');
+  const [open, setOpen] = useState(false);
+  const [highlightIndex, setHighlightIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+
+  const selectedLabel = options.find(o => o.value === value)?.label ?? '';
+
+  const filtered = useMemo(() => {
+    if (!query) return options;
+    const q = query.toLowerCase();
+    return options.filter(o => o.label.toLowerCase().includes(q));
+  }, [options, query]);
+
+  // Clamp highlight index to filtered list bounds
+  const clampedHighlight = filtered.length > 0 ? Math.min(highlightIndex, filtered.length - 1) : 0;
+
+  // Close on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+        setQuery('');
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  // Scroll highlighted item into view
+  useEffect(() => {
+    if (!open || !listRef.current) return;
+    const item = listRef.current.children[clampedHighlight] as HTMLElement | undefined;
+    item?.scrollIntoView({ block: 'nearest' });
+  }, [clampedHighlight, open]);
+
+  const handleSelect = (val: string) => {
+    onChange(val);
+    setOpen(false);
+    setQuery('');
+    inputRef.current?.blur();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!open) {
+      if (e.key === 'ArrowDown' || e.key === 'Enter') {
+        setOpen(true);
+        e.preventDefault();
+      }
+      return;
+    }
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setHighlightIndex(i => Math.min(i + 1, filtered.length - 1));
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setHighlightIndex(i => Math.max(i - 1, 0));
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (filtered[clampedHighlight]) handleSelect(filtered[clampedHighlight].value);
+        break;
+      case 'Escape':
+        setOpen(false);
+        setQuery('');
+        break;
+    }
+  };
+
+  return (
+    <div ref={containerRef} className="relative w-full">
+      <input
+        ref={inputRef}
+        type="text"
+        className={selectClass}
+        placeholder={disabled ? placeholder : (value ? selectedLabel : placeholder)}
+        value={open ? query : (value ? selectedLabel : '')}
+        disabled={disabled}
+        onChange={e => { setQuery(e.target.value); setOpen(true); }}
+        onFocus={() => { setOpen(true); setQuery(''); }}
+        onKeyDown={handleKeyDown}
+      />
+      {open && filtered.length > 0 && (
+        <ul
+          ref={listRef}
+          className="absolute z-50 w-full mt-1 max-h-60 overflow-y-auto bg-[#14142a] border-2 border-[#3a3a5e] rounded-lg shadow-lg"
+        >
+          {filtered.map((opt, i) => (
+            <li
+              key={opt.value}
+              className={`px-3 py-2 cursor-pointer text-sm ${
+                i === clampedHighlight
+                  ? 'bg-[#4a3a0f] text-[#C5A33E]'
+                  : 'text-gray-200 hover:bg-[#1e1e3a]'
+              }`}
+              onMouseEnter={() => setHighlightIndex(i)}
+              onMouseDown={e => { e.preventDefault(); handleSelect(opt.value); }}
+            >
+              <span>{opt.label}</span>
+              {opt.detail && <span className="ml-2 text-xs text-gray-500">{opt.detail}</span>}
+            </li>
+          ))}
+        </ul>
+      )}
+      {open && filtered.length === 0 && query && (
+        <div className="absolute z-50 w-full mt-1 px-3 py-2 bg-[#14142a] border-2 border-[#3a3a5e] rounded-lg text-sm text-gray-500">
+          No matches
+        </div>
+      )}
     </div>
   );
 }
