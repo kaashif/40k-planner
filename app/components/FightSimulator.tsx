@@ -174,10 +174,22 @@ export default function FightSimulator() {
   const [rapidFire, setRapidFire] = useState(false);
   const [minusOneToWound, setMinusOneToWound] = useState(false);
   const [minusOneToWoundIfStrGtT, setMinusOneToWoundIfStrGtT] = useState(false);
+  const [rerollOnesHit, setRerollOnesHit] = useState(false);
+  const [rerollAllHit, setRerollAllHit] = useState(false);
+  const [rerollOnesWound, setRerollOnesWound] = useState(false);
+  const [rerollAllWound, setRerollAllWound] = useState(false);
+  const [apBonus1, setApBonus1] = useState(false);
+  const [apBonus2, setApBonus2] = useState(false);
 
   const modifiers: ModifierToggles = useMemo(() => ({
-    stationary, charged, halfRange, cover, rapidFire, minusOneToWound, minusOneToWoundIfStrGtT,
-  }), [stationary, charged, halfRange, cover, rapidFire, minusOneToWound, minusOneToWoundIfStrGtT]);
+    stationary, charged, halfRange, cover, rapidFire,
+    minusOneToWound, minusOneToWoundIfStrGtT,
+    rerollOnesHit, rerollAllHit, rerollOnesWound, rerollAllWound,
+    apBonus1, apBonus2,
+  }), [stationary, charged, halfRange, cover, rapidFire,
+    minusOneToWound, minusOneToWoundIfStrGtT,
+    rerollOnesHit, rerollAllHit, rerollOnesWound, rerollAllWound,
+    apBonus1, apBonus2]);
 
   // Catalogue cache
   const catalogueCacheRef = useRef<Map<string, CatalogueData>>(new Map());
@@ -549,6 +561,14 @@ export default function FightSimulator() {
                 Total models: {Array.from(squadWeapons.values()).reduce((a, b) => a + b, 0)}
               </div>
             )}
+            <div className="flex flex-wrap gap-3 pt-1">
+              <Toggle label="Reroll 1s to hit" checked={rerollOnesHit} onChange={v => { setRerollOnesHit(v); if (v) setRerollAllHit(false); }} />
+              <Toggle label="Reroll all hits" checked={rerollAllHit} onChange={v => { setRerollAllHit(v); if (v) setRerollOnesHit(false); }} />
+              <Toggle label="Reroll 1s to wound" checked={rerollOnesWound} onChange={v => { setRerollOnesWound(v); if (v) setRerollAllWound(false); }} />
+              <Toggle label="Reroll all wounds" checked={rerollAllWound} onChange={v => { setRerollAllWound(v); if (v) setRerollOnesWound(false); }} />
+              <Toggle label="AP +1" checked={apBonus1} onChange={setApBonus1} />
+              <Toggle label="AP +2" checked={apBonus2} onChange={setApBonus2} />
+            </div>
           </div>
         )}
 

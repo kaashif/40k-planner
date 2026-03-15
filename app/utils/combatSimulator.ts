@@ -29,6 +29,12 @@ export interface ModifierToggles {
   rapidFire: boolean;    // for Rapid Fire
   minusOneToWound: boolean;       // defender has -1 to wound rolls
   minusOneToWoundIfStrGtT: boolean; // defender has -1 to wound if S > T
+  rerollOnesHit: boolean;         // reroll 1s to hit
+  rerollAllHit: boolean;          // reroll all failed hits
+  rerollOnesWound: boolean;       // reroll 1s to wound
+  rerollAllWound: boolean;        // reroll all failed wounds
+  apBonus1: boolean;              // improve AP by 1
+  apBonus2: boolean;              // improve AP by 2
 }
 
 export interface CombatResult {
@@ -179,7 +185,18 @@ export function calculateResults(
     effectiveSkill -= 1; // better to hit
   }
 
-  const hitProb = isTorrent ? 1.0 : probOfNPlus(effectiveSkill);
+  let hitProb = isTorrent ? 1.0 : probOfNPlus(effectiveSkill);
+
+  // Rerolls to hit (applied before sustained/lethal which trigger on nat 6)
+  if (!isTorrent) {
+    if (modifiers.rerollAllHit) {
+      // Reroll all misses: P = P + (1-P)*P
+      hitProb = hitProb + (1 - hitProb) * hitProb;
+    } else if (modifiers.rerollOnesHit) {
+      // Reroll 1s only: 1/6 of attacks are 1s, reroll them with same probability
+      hitProb = hitProb + (1 / 6) * hitProb;
+    }
+  }
 
   // Sustained Hits X: nat 6 generates X extra hits
   const sustainedX = getKeywordParam(weaponKw, 'Sustained Hits');
@@ -240,9 +257,12 @@ export function calculateResults(
   let woundProb = probOfNPlus(woundThreshold);
 
   // Twin-linked: re-roll failed wounds
-  if (hasKeyword(weaponKw, 'Twin-linked')) {
+  if (hasKeyword(weaponKw, 'Twin-linked') || modifiers.rerollAllWound) {
     const failProb = 1 - woundProb;
     woundProb = woundProb + failProb * woundProb;
+  } else if (modifiers.rerollOnesWound) {
+    // Reroll 1s only: 1/6 of wound rolls are 1s, reroll them
+    woundProb = woundProb + (1 / 6) * woundProb;
   }
 
   // Devastating Wounds: nat 6 to wound = mortal wound (bypass saves)
@@ -260,7 +280,10 @@ export function calculateResults(
   const totalExpectedWounds = normalWounds + lethalHits + mortalWoundsFromDev;
 
   // --- Save calculation ---
-  let effectiveSave = defender.save + attacker.ap; // AP makes save worse
+  let totalAp = attacker.ap;
+  if (modifiers.apBonus1) totalAp += 1;
+  if (modifiers.apBonus2) totalAp += 2;
+  let effectiveSave = defender.save + totalAp; // AP makes save worse
 
   // Cover: improves save by 1 (unless Ignores Cover)
   const ignoresCover = hasKeyword(weaponKw, 'Ignores Cover');
@@ -328,6 +351,8 @@ export function calculateResults(
   if (sustainedX !== null) hitNotes.push(`Sustained Hits ${sustainedX}: 6s generate ${sustainedX} extra hit${sustainedX > 1 ? 's' : ''}`);
   if (isLethalHits) hitNotes.push('Lethal Hits: 6s auto-wound');
   if (isHazardous) hitNotes.push('Hazardous: 1/6 chance mortal to self per attack');
+  if (modifiers.rerollAllHit) hitNotes.push('Full rerolls to hit');
+  else if (modifiers.rerollOnesHit) hitNotes.push('Reroll 1s to hit');
 
   const woundNotes: string[] = [];
   woundNotes.push(`S${attacker.strength} vs T${defender.toughness}`);
@@ -341,10 +366,16 @@ export function calculateResults(
   if (modifiers.minusOneToWound) woundNotes.push('-1 to wound rolls');
   if (modifiers.minusOneToWoundIfStrGtT && attacker.strength > defender.toughness) woundNotes.push('-1 to wound (S > T)');
   if (hasKeyword(weaponKw, 'Twin-linked')) woundNotes.push('Twin-linked: re-roll failed wounds');
+  if (modifiers.rerollAllWound && !hasKeyword(weaponKw, 'Twin-linked')) woundNotes.push('Full rerolls to wound');
+  else if (modifiers.rerollOnesWound) woundNotes.push('Reroll 1s to wound');
   if (isDevastatingWounds) woundNotes.push('Devastating Wounds: 6s bypass saves');
 
   const saveNotes: string[] = [];
-  saveNotes.push(`${defender.save}+ save, AP -${attacker.ap}`);
+  saveNotes.push(`${defender.save}+ save, AP -${totalAp}`);
+  if (modifiers.apBonus1 || modifiers.apBonus2) {
+    const bonus = (modifiers.apBonus1 ? 1 : 0) + (modifiers.apBonus2 ? 2 : 0);
+    saveNotes.push(`AP improved by ${bonus} (base -${attacker.ap})`);
+  }
   if (modifiers.cover && !ignoresCover) saveNotes.push('Cover: +1 to save');
   if (isIndirectFire && !ignoresCover) saveNotes.push('Indirect Fire: target gets cover');
   if (ignoresCover) saveNotes.push('Ignores Cover');
