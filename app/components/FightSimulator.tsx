@@ -5,6 +5,8 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import {
   calculateResults,
   calculateDistribution,
+  combineCombatResults,
+  combineDistributions,
   parseKeywords,
   parseStatValue,
   AttackerInput,
@@ -68,6 +70,50 @@ const selectClass = "px-3 py-2 bg-[#0a0a14] text-gray-200 border-2 border-[#3a3a
 const inputClass = "px-3 py-2 bg-[#0a0a14] text-gray-200 border-2 border-[#3a3a5e] rounded-lg focus:border-[#C5A33E] focus:outline-none w-20 text-center";
 const labelClass = "text-sm text-gray-300";
 
+type SimMode = 'single' | 'squad' | 'compare';
+
+// Shared computation: build attacker/defender inputs and compute results + distribution
+function computeForWeapon(
+  weapon: Weapon,
+  isMelee: boolean,
+  modelCount: number,
+  defenderUnit: Unit,
+  defenderModels: number,
+  defenderInvuln: string,
+  defenderFnp: string,
+  modifiers: ModifierToggles,
+): { result: CombatResult; distribution: DistributionResult } | null {
+  const defStats = defenderUnit.stats[0];
+  if (!defStats) return null;
+
+  const skill = parseStatValue(isMelee ? (weapon.WS || '4+') : (weapon.BS || '4+'));
+  const weaponKw = parseKeywords(weapon.keywords);
+
+  const attacker: AttackerInput = {
+    attacks: weapon.A,
+    skill,
+    strength: parseStatValue(weapon.S),
+    ap: Math.abs(parseStatValue(weapon.AP)),
+    damage: weapon.D,
+    keywords: weaponKw,
+    modelCount,
+  };
+
+  const defender: DefenderInput = {
+    toughness: parseStatValue(defStats.T),
+    save: parseStatValue(defStats.SV),
+    invuln: defenderInvuln ? parseInt(defenderInvuln) : null,
+    wounds: parseStatValue(defStats.W),
+    modelCount: defenderModels,
+    fnp: defenderFnp ? parseInt(defenderFnp) : null,
+    keywords: defenderUnit.keywords,
+  };
+
+  const result = calculateResults(attacker, defender, modifiers);
+  const distribution = calculateDistribution(attacker, defender, modifiers, result);
+  return { result, distribution };
+}
+
 export default function FightSimulator() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -76,21 +122,43 @@ export default function FightSimulator() {
   const [allGlobalUnits, setAllGlobalUnits] = useState<GlobalUnit[]>([]);
   const [globalUnitsLoading, setGlobalUnitsLoading] = useState(true);
 
+  // Mode
+  const urlMode = searchParams.get('mode') as SimMode | null;
+  const [mode, setMode] = useState<SimMode>(
+    urlMode && ['single', 'squad', 'compare'].includes(urlMode) ? urlMode : 'single'
+  );
+
   // Read initial state from URL params
-  const urlAtk = searchParams.get('atk') || ''; // "unitName||factionSlug"
+  const urlAtk = searchParams.get('atk') || '';
   const urlDef = searchParams.get('def') || '';
   const urlWep = searchParams.get('wep') || '';
   const urlAtkModels = searchParams.get('atkn') || '';
   const urlDefModels = searchParams.get('defn') || '';
 
-  // Attacker state
+  // Attacker state (Single + Squad modes share this)
   const [attackerUnitKey, setAttackerUnitKey] = useState(urlAtk);
   const [attackerCatalogue, setAttackerCatalogue] = useState<CatalogueData | null>(null);
   const [attackerWeapon, setAttackerWeapon] = useState(urlWep);
   const [attackerModels, setAttackerModels] = useState(urlAtkModels ? parseInt(urlAtkModels) || 1 : 1);
   const [loadingAttacker, setLoadingAttacker] = useState(false);
 
-  // Defender state
+  // Squad mode: weapon entries with model counts
+  const [squadWeapons, setSquadWeapons] = useState<Map<string, number>>(new Map());
+
+  // Compare mode: multiple attacker entries
+  interface CompareEntry {
+    id: string;
+    unitKey: string;
+    catalogue: CatalogueData | null;
+    weaponName: string;
+    modelCount: number;
+    loading: boolean;
+  }
+  const [compareEntries, setCompareEntries] = useState<CompareEntry[]>([
+    { id: '1', unitKey: '', catalogue: null, weaponName: '', modelCount: 1, loading: false },
+  ]);
+
+  // Defender state (shared across all modes)
   const [defenderUnitKey, setDefenderUnitKey] = useState(urlDef);
   const [defenderCatalogue, setDefenderCatalogue] = useState<CatalogueData | null>(null);
   const [defenderModels, setDefenderModels] = useState(urlDefModels ? parseInt(urlDefModels) || 1 : 1);
@@ -105,33 +173,31 @@ export default function FightSimulator() {
   const [cover, setCover] = useState(false);
   const [rapidFire, setRapidFire] = useState(false);
 
-  // Catalogue cache to avoid refetching
+  const modifiers: ModifierToggles = useMemo(() => ({
+    stationary, charged, halfRange, cover, rapidFire,
+  }), [stationary, charged, halfRange, cover, rapidFire]);
+
+  // Catalogue cache
   const catalogueCacheRef = useRef<Map<string, CatalogueData>>(new Map());
 
-  // Update URL with current selections
+  // URL sync
   const updateUrl = useCallback((overrides: Record<string, string>) => {
     const params = new URLSearchParams(searchParams.toString());
-    // Always keep tab=simulator
     params.set('tab', 'simulator');
     for (const [key, value] of Object.entries(overrides)) {
-      if (value) {
-        params.set(key, value);
-      } else {
-        params.delete(key);
-      }
+      if (value) params.set(key, value);
+      else params.delete(key);
     }
     router.replace(`/?${params.toString()}`, { scroll: false });
   }, [searchParams, router]);
 
-  // Fetch global unit index, then load catalogues for URL-specified units
+  // Fetch global unit index
   useEffect(() => {
     fetch('/api/datasheets/all-units')
       .then(r => r.json())
       .then(async (units: GlobalUnit[]) => {
         setAllGlobalUnits(units);
         setGlobalUnitsLoading(false);
-
-        // Load attacker catalogue from URL
         if (urlAtk) {
           const [, atkFaction] = urlAtk.split('||');
           if (atkFaction) {
@@ -141,7 +207,6 @@ export default function FightSimulator() {
             setLoadingAttacker(false);
           }
         }
-        // Load defender catalogue from URL
         if (urlDef) {
           const [defName, defFaction] = urlDef.split('||');
           if (defFaction) {
@@ -149,7 +214,6 @@ export default function FightSimulator() {
             const data = await fetchCatalogue(defFaction);
             setDefenderCatalogue(data);
             setLoadingDefender(false);
-            // Auto-populate invuln/FNP
             const unit = data?.units.find(u => u.name === defName);
             if (unit) {
               setDefenderInvuln(unit.invulnSave ? unit.invulnSave.replace('+', '') : '');
@@ -162,7 +226,6 @@ export default function FightSimulator() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Build combobox options from global units
   const globalUnitOptions = useMemo(() =>
     allGlobalUnits.map(u => ({
       value: `${u.name}||${u.factionSlug}`,
@@ -172,7 +235,6 @@ export default function FightSimulator() {
     [allGlobalUnits]
   );
 
-  // Fetch a catalogue (with caching)
   const fetchCatalogue = useCallback(async (factionSlug: string): Promise<CatalogueData | null> => {
     const cached = catalogueCacheRef.current.get(factionSlug);
     if (cached) return cached;
@@ -186,10 +248,16 @@ export default function FightSimulator() {
     }
   }, []);
 
-  // Handle attacker unit selection
+  const handleModeChange = useCallback((m: SimMode) => {
+    setMode(m);
+    updateUrl({ mode: m === 'single' ? '' : m });
+  }, [updateUrl]);
+
+  // --- Attacker handlers (Single + Squad) ---
   const handleAttackerUnitChange = useCallback(async (key: string) => {
     setAttackerUnitKey(key);
     setAttackerWeapon('');
+    setSquadWeapons(new Map());
     updateUrl({ atk: key, wep: '' });
     if (!key) { setAttackerCatalogue(null); return; }
     const [, factionSlug] = key.split('||');
@@ -199,13 +267,12 @@ export default function FightSimulator() {
     setLoadingAttacker(false);
   }, [fetchCatalogue, updateUrl]);
 
-  // Handle attacker weapon selection
   const handleWeaponSelect = useCallback((name: string) => {
     setAttackerWeapon(name);
     updateUrl({ wep: name });
   }, [updateUrl]);
 
-  // Handle defender unit selection
+  // --- Defender handlers (shared) ---
   const handleDefenderUnitChange = useCallback(async (key: string) => {
     setDefenderUnitKey(key);
     updateUrl({ def: key });
@@ -215,7 +282,6 @@ export default function FightSimulator() {
     const data = await fetchCatalogue(factionSlug);
     setDefenderCatalogue(data);
     setLoadingDefender(false);
-    // Auto-populate invuln/FNP
     const unit = data?.units.find(u => u.name === unitName);
     if (unit) {
       setDefenderInvuln(unit.invulnSave ? unit.invulnSave.replace('+', '') : '');
@@ -223,7 +289,6 @@ export default function FightSimulator() {
     }
   }, [fetchCatalogue, updateUrl]);
 
-  // Handle model count changes with URL sync
   const handleAttackerModelsChange = useCallback((n: number) => {
     setAttackerModels(n);
     updateUrl({ atkn: n > 1 ? n.toString() : '' });
@@ -234,7 +299,49 @@ export default function FightSimulator() {
     updateUrl({ defn: n > 1 ? n.toString() : '' });
   }, [updateUrl]);
 
-  // Resolve selected units from catalogues
+  // --- Compare mode handlers ---
+  const nextIdRef = useRef(2);
+  const handleAddCompareEntry = useCallback(() => {
+    setCompareEntries(prev => [...prev, {
+      id: String(nextIdRef.current++),
+      unitKey: '', catalogue: null, weaponName: '', modelCount: 1, loading: false,
+    }]);
+  }, []);
+
+  const handleRemoveCompareEntry = useCallback((id: string) => {
+    setCompareEntries(prev => prev.length > 1 ? prev.filter(e => e.id !== id) : prev);
+  }, []);
+
+  const handleCompareUnitChange = useCallback(async (id: string, key: string) => {
+    setCompareEntries(prev => prev.map(e =>
+      e.id === id ? { ...e, unitKey: key, weaponName: '', loading: !!key } : e
+    ));
+    if (!key) {
+      setCompareEntries(prev => prev.map(e =>
+        e.id === id ? { ...e, catalogue: null, loading: false } : e
+      ));
+      return;
+    }
+    const [, factionSlug] = key.split('||');
+    const data = await fetchCatalogue(factionSlug);
+    setCompareEntries(prev => prev.map(e =>
+      e.id === id ? { ...e, catalogue: data, loading: false } : e
+    ));
+  }, [fetchCatalogue]);
+
+  const handleCompareWeaponChange = useCallback((id: string, weaponName: string) => {
+    setCompareEntries(prev => prev.map(e =>
+      e.id === id ? { ...e, weaponName } : e
+    ));
+  }, []);
+
+  const handleCompareModelsChange = useCallback((id: string, n: number) => {
+    setCompareEntries(prev => prev.map(e =>
+      e.id === id ? { ...e, modelCount: n } : e
+    ));
+  }, []);
+
+  // --- Resolve units ---
   const attackerUnitName = attackerUnitKey.split('||')[0] || '';
   const defenderUnitName = defenderUnitKey.split('||')[0] || '';
 
@@ -248,13 +355,9 @@ export default function FightSimulator() {
     [defenderCatalogue, defenderUnitName]
   );
 
-  // All weapons combined: ranged then melee
   const allWeapons = useMemo(() => {
     if (!selectedAttackerUnit) return { ranged: [] as Weapon[], melee: [] as Weapon[] };
-    return {
-      ranged: selectedAttackerUnit.rangedWeapons,
-      melee: selectedAttackerUnit.meleeWeapons,
-    };
+    return { ranged: selectedAttackerUnit.rangedWeapons, melee: selectedAttackerUnit.meleeWeapons };
   }, [selectedAttackerUnit]);
 
   const selectedWeapon = useMemo(
@@ -269,217 +372,244 @@ export default function FightSimulator() {
     [allWeapons.melee, attackerWeapon]
   );
 
-  // Compute results
-  const result: CombatResult | null = useMemo(() => {
-    if (!selectedWeapon || !selectedDefenderUnit) return null;
+  // --- Single mode results ---
+  const singleResult = useMemo(() => {
+    if (mode !== 'single' || !selectedWeapon || !selectedDefenderUnit) return null;
+    return computeForWeapon(selectedWeapon, isMeleeWeapon, attackerModels,
+      selectedDefenderUnit, defenderModels, defenderInvuln, defenderFnp, modifiers);
+  }, [mode, selectedWeapon, selectedDefenderUnit, attackerModels, defenderModels,
+      defenderInvuln, defenderFnp, modifiers, isMeleeWeapon]);
 
+  // --- Squad mode results ---
+  const squadResults = useMemo(() => {
+    if (mode !== 'squad' || !selectedDefenderUnit || squadWeapons.size === 0) return null;
+    const allWeps = [...allWeapons.ranged, ...allWeapons.melee];
+    const perWeapon: { weapon: Weapon; isMelee: boolean; models: number; result: CombatResult; distribution: DistributionResult }[] = [];
+
+    for (const [wepName, models] of squadWeapons) {
+      if (models <= 0) continue;
+      const weapon = allWeps.find(w => w.name === wepName);
+      if (!weapon) continue;
+      const isMelee = allWeapons.melee.some(w => w.name === wepName);
+      const computed = computeForWeapon(weapon, isMelee, models,
+        selectedDefenderUnit, defenderModels, defenderInvuln, defenderFnp, modifiers);
+      if (computed) perWeapon.push({ weapon, isMelee, models, ...computed });
+    }
+
+    if (perWeapon.length === 0) return null;
+
+    const combinedResult = combineCombatResults(perWeapon.map(p => p.result));
     const defStats = selectedDefenderUnit.stats[0];
-    if (!defStats) return null;
+    const combinedDist = combineDistributions(
+      perWeapon.map(p => p.distribution),
+      parseStatValue(defStats?.W || '1'),
+      defenderModels,
+    );
 
-    const skill = parseStatValue(isMeleeWeapon ? (selectedWeapon.WS || '4+') : (selectedWeapon.BS || '4+'));
-    const weaponKeywords = parseKeywords(selectedWeapon.keywords);
+    return { perWeapon, combinedResult, combinedDist };
+  }, [mode, selectedDefenderUnit, squadWeapons, allWeapons, defenderModels,
+      defenderInvuln, defenderFnp, modifiers]);
 
-    const attacker: AttackerInput = {
-      attacks: selectedWeapon.A,
-      skill,
-      strength: parseStatValue(selectedWeapon.S),
-      ap: Math.abs(parseStatValue(selectedWeapon.AP)),
-      damage: selectedWeapon.D,
-      keywords: weaponKeywords,
-      modelCount: attackerModels,
-    };
+  // --- Compare mode results ---
+  const compareResults = useMemo(() => {
+    if (mode !== 'compare' || !selectedDefenderUnit) return null;
+    return compareEntries.map(entry => {
+      const unitName = entry.unitKey.split('||')[0] || '';
+      const unit = entry.catalogue?.units.find(u => u.name === unitName);
+      if (!unit || !entry.weaponName) return { entry, computed: null, weapon: null, isMelee: false };
+      const weapon = [...unit.rangedWeapons, ...unit.meleeWeapons].find(w => w.name === entry.weaponName);
+      if (!weapon) return { entry, computed: null, weapon: null, isMelee: false };
+      const isMelee = unit.meleeWeapons.some(w => w.name === entry.weaponName);
+      const computed = computeForWeapon(weapon, isMelee, entry.modelCount,
+        selectedDefenderUnit, defenderModels, defenderInvuln, defenderFnp, modifiers);
+      return { entry, computed, weapon, isMelee };
+    });
+  }, [mode, compareEntries, selectedDefenderUnit, defenderModels,
+      defenderInvuln, defenderFnp, modifiers]);
 
-    const defender: DefenderInput = {
-      toughness: parseStatValue(defStats.T),
-      save: parseStatValue(defStats.SV),
-      invuln: defenderInvuln ? parseInt(defenderInvuln) : null,
-      wounds: parseStatValue(defStats.W),
-      modelCount: defenderModels,
-      fnp: defenderFnp ? parseInt(defenderFnp) : null,
-      keywords: selectedDefenderUnit.keywords,
-    };
+  // Modifier toggle visibility (based on selected weapons in current mode)
+  const activeKeywords = useMemo(() => {
+    if (mode === 'single' && selectedWeapon) return parseKeywords(selectedWeapon.keywords);
+    if (mode === 'squad') {
+      const allWeps = [...allWeapons.ranged, ...allWeapons.melee];
+      const kws: string[] = [];
+      for (const [wepName] of squadWeapons) {
+        const w = allWeps.find(wp => wp.name === wepName);
+        if (w) kws.push(...parseKeywords(w.keywords));
+      }
+      return kws;
+    }
+    return [];
+  }, [mode, selectedWeapon, squadWeapons, allWeapons]);
 
-    const modifiers: ModifierToggles = {
-      stationary,
-      charged,
-      halfRange,
-      cover,
-      rapidFire,
-    };
-
-    return calculateResults(attacker, defender, modifiers);
-  }, [selectedWeapon, selectedDefenderUnit, attackerModels, defenderModels,
-      defenderInvuln, defenderFnp, stationary, charged, halfRange, cover,
-      rapidFire, isMeleeWeapon]);
-
-  // Compute full probability distribution
-  const distribution: DistributionResult | null = useMemo(() => {
-    if (!selectedWeapon || !selectedDefenderUnit || !result) return null;
-
-    const defStats = selectedDefenderUnit.stats[0];
-    if (!defStats) return null;
-
-    const skill = parseStatValue(isMeleeWeapon ? (selectedWeapon.WS || '4+') : (selectedWeapon.BS || '4+'));
-    const weaponKw = parseKeywords(selectedWeapon.keywords);
-
-    const attacker: AttackerInput = {
-      attacks: selectedWeapon.A,
-      skill,
-      strength: parseStatValue(selectedWeapon.S),
-      ap: Math.abs(parseStatValue(selectedWeapon.AP)),
-      damage: selectedWeapon.D,
-      keywords: weaponKw,
-      modelCount: attackerModels,
-    };
-
-    const defender: DefenderInput = {
-      toughness: parseStatValue(defStats.T),
-      save: parseStatValue(defStats.SV),
-      invuln: defenderInvuln ? parseInt(defenderInvuln) : null,
-      wounds: parseStatValue(defStats.W),
-      modelCount: defenderModels,
-      fnp: defenderFnp ? parseInt(defenderFnp) : null,
-      keywords: selectedDefenderUnit.keywords,
-    };
-
-    const modifiers: ModifierToggles = { stationary, charged, halfRange, cover, rapidFire };
-
-    return calculateDistribution(attacker, defender, modifiers, result);
-  }, [selectedWeapon, selectedDefenderUnit, result, attackerModels, defenderModels,
-      defenderInvuln, defenderFnp, stationary, charged, halfRange, cover,
-      rapidFire, isMeleeWeapon]);
-
-  // Check which modifier toggles are relevant
-  const weaponKeywords = selectedWeapon ? parseKeywords(selectedWeapon.keywords) : [];
-  const showHeavy = weaponKeywords.some(k => k.toLowerCase() === 'heavy');
-  const showLance = weaponKeywords.some(k => k.toLowerCase() === 'lance');
-  const showMelta = weaponKeywords.some(k => k.toLowerCase().startsWith('melta'));
-  const showRapidFire = weaponKeywords.some(k => k.toLowerCase().startsWith('rapid fire'));
+  const showHeavy = activeKeywords.some(k => k.toLowerCase() === 'heavy');
+  const showLance = activeKeywords.some(k => k.toLowerCase() === 'lance');
+  const showMelta = activeKeywords.some(k => k.toLowerCase().startsWith('melta'));
+  const showRapidFire = activeKeywords.some(k => k.toLowerCase().startsWith('rapid fire'));
 
   const comboboxPlaceholder = globalUnitsLoading ? 'Loading units...' : 'Type to search all units...';
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-[#C5A33E]">Fight Simulator</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-[#C5A33E]">Fight Simulator</h2>
+        <div className="flex bg-[#14142a] rounded-lg border border-[#1a1a2e] overflow-hidden">
+          {(['single', 'squad', 'compare'] as const).map(m => (
+            <button
+              key={m}
+              onClick={() => handleModeChange(m)}
+              className={`px-4 py-2 text-sm font-semibold transition-colors ${
+                mode === m ? 'bg-[#4a3a0f] text-[#C5A33E]' : 'text-gray-400 hover:text-gray-200'
+              }`}
+            >
+              {m === 'single' ? 'Single' : m === 'squad' ? 'Squad' : 'Compare'}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Attacker Panel */}
-        <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-4 space-y-3">
-          <h3 className="text-lg font-bold text-red-400">Attacker</h3>
-
-          <div className="space-y-2">
-            <label className={labelClass}>Unit</label>
-            <Combobox
-              options={globalUnitOptions}
-              value={attackerUnitKey}
-              onChange={handleAttackerUnitChange}
-              placeholder={comboboxPlaceholder}
-              disabled={globalUnitsLoading}
-            />
-            {loadingAttacker && <div className="text-xs text-gray-500">Loading datasheet...</div>}
-          </div>
-
-          {selectedAttackerUnit && (
-            <UnitDatasheet unit={selectedAttackerUnit} />
-          )}
-
-          {(allWeapons.ranged.length > 0 || allWeapons.melee.length > 0) && (
+        {/* Attacker Panel (Single + Squad modes) */}
+        {mode !== 'compare' && (
+          <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-4 space-y-3">
+            <h3 className="text-lg font-bold text-red-400">Attacker</h3>
             <div className="space-y-2">
-              <label className={labelClass}>Weapon</label>
-              {allWeapons.ranged.length > 0 && (
-                <WeaponTable
-                  weapons={allWeapons.ranged}
-                  selectedWeapon={attackerWeapon}
-                  onSelect={handleWeaponSelect}
-                  isMelee={false}
-                  label="Ranged"
-                />
-              )}
-              {allWeapons.melee.length > 0 && (
-                <WeaponTable
-                  weapons={allWeapons.melee}
-                  selectedWeapon={attackerWeapon}
-                  onSelect={handleWeaponSelect}
-                  isMelee={true}
-                  label="Melee"
-                />
-              )}
+              <label className={labelClass}>Unit</label>
+              <Combobox
+                options={globalUnitOptions}
+                value={attackerUnitKey}
+                onChange={handleAttackerUnitChange}
+                placeholder={comboboxPlaceholder}
+                disabled={globalUnitsLoading}
+              />
+              {loadingAttacker && <div className="text-xs text-gray-500">Loading datasheet...</div>}
             </div>
-          )}
-          {selectedAttackerUnit && allWeapons.ranged.length === 0 && allWeapons.melee.length === 0 && (
-            <div className="text-sm text-gray-500">No weapons</div>
-          )}
 
-          <div className="space-y-2">
-            <label className={labelClass}>Number of models attacking</label>
-            <input
-              type="number"
-              min={1}
-              max={30}
-              value={attackerModels}
-              onChange={e => handleAttackerModelsChange(Math.max(1, parseInt(e.target.value) || 1))}
-              className={inputClass}
-            />
+            {selectedAttackerUnit && <UnitDatasheet unit={selectedAttackerUnit} />}
+
+            {(allWeapons.ranged.length > 0 || allWeapons.melee.length > 0) && (
+              <div className="space-y-2">
+                <label className={labelClass}>
+                  {mode === 'single' ? 'Weapon' : 'Weapons (set models per weapon)'}
+                </label>
+                {mode === 'single' ? (
+                  <>
+                    {allWeapons.ranged.length > 0 && (
+                      <WeaponTable weapons={allWeapons.ranged} selectedWeapon={attackerWeapon}
+                        onSelect={handleWeaponSelect} isMelee={false} label="Ranged" />
+                    )}
+                    {allWeapons.melee.length > 0 && (
+                      <WeaponTable weapons={allWeapons.melee} selectedWeapon={attackerWeapon}
+                        onSelect={handleWeaponSelect} isMelee={true} label="Melee" />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {allWeapons.ranged.length > 0 && (
+                      <SquadWeaponTable weapons={allWeapons.ranged} squadWeapons={squadWeapons}
+                        onToggle={(name, count) => {
+                          setSquadWeapons(prev => {
+                            const next = new Map(prev);
+                            if (count <= 0) next.delete(name);
+                            else next.set(name, count);
+                            return next;
+                          });
+                        }}
+                        isMelee={false} label="Ranged" />
+                    )}
+                    {allWeapons.melee.length > 0 && (
+                      <SquadWeaponTable weapons={allWeapons.melee} squadWeapons={squadWeapons}
+                        onToggle={(name, count) => {
+                          setSquadWeapons(prev => {
+                            const next = new Map(prev);
+                            if (count <= 0) next.delete(name);
+                            else next.set(name, count);
+                            return next;
+                          });
+                        }}
+                        isMelee={true} label="Melee" />
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+
+            {mode === 'single' && (
+              <div className="space-y-2">
+                <label className={labelClass}>Number of models attacking</label>
+                <input type="number" min={1} max={30} value={attackerModels}
+                  onChange={e => handleAttackerModelsChange(Math.max(1, parseInt(e.target.value) || 1))}
+                  className={inputClass} />
+              </div>
+            )}
+            {mode === 'squad' && squadWeapons.size > 0 && (
+              <div className="text-sm text-gray-400">
+                Total models: {Array.from(squadWeapons.values()).reduce((a, b) => a + b, 0)}
+              </div>
+            )}
           </div>
-        </div>
+        )}
 
-        {/* Defender Panel */}
+        {/* Compare mode: multiple attacker cards */}
+        {mode === 'compare' && (
+          <div className="space-y-3">
+            <h3 className="text-lg font-bold text-red-400">Attackers</h3>
+            {compareEntries.map((entry) => (
+              <CompareAttackerCard
+                key={entry.id}
+                entry={entry}
+                globalUnitOptions={globalUnitOptions}
+                comboboxPlaceholder={comboboxPlaceholder}
+                globalUnitsLoading={globalUnitsLoading}
+                onUnitChange={(key) => handleCompareUnitChange(entry.id, key)}
+                onWeaponChange={(name) => handleCompareWeaponChange(entry.id, name)}
+                onModelsChange={(n) => handleCompareModelsChange(entry.id, n)}
+                onRemove={() => handleRemoveCompareEntry(entry.id)}
+                canRemove={compareEntries.length > 1}
+              />
+            ))}
+            {compareEntries.length < 6 && (
+              <button onClick={handleAddCompareEntry}
+                className="w-full py-2 text-sm font-semibold text-gray-400 border-2 border-dashed border-[#3a3a5e] rounded-lg hover:border-[#C5A33E] hover:text-[#C5A33E] transition-colors">
+                + Add Attacker
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Defender Panel (all modes) */}
         <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-4 space-y-3">
           <h3 className="text-lg font-bold text-blue-400">Defender</h3>
-
           <div className="space-y-2">
             <label className={labelClass}>Unit</label>
-            <Combobox
-              options={globalUnitOptions}
-              value={defenderUnitKey}
-              onChange={handleDefenderUnitChange}
-              placeholder={comboboxPlaceholder}
-              disabled={globalUnitsLoading}
-            />
+            <Combobox options={globalUnitOptions} value={defenderUnitKey}
+              onChange={handleDefenderUnitChange} placeholder={comboboxPlaceholder}
+              disabled={globalUnitsLoading} />
             {loadingDefender && <div className="text-xs text-gray-500">Loading datasheet...</div>}
           </div>
-
-          {selectedDefenderUnit && (
-            <UnitDatasheet unit={selectedDefenderUnit} />
-          )}
-
+          {selectedDefenderUnit && <UnitDatasheet unit={selectedDefenderUnit} />}
           <div className="grid grid-cols-3 gap-3">
             <div className="space-y-2">
               <label className={labelClass}>Models</label>
-              <input
-                type="number"
-                min={1}
-                max={30}
-                value={defenderModels}
+              <input type="number" min={1} max={30} value={defenderModels}
                 onChange={e => handleDefenderModelsChange(Math.max(1, parseInt(e.target.value) || 1))}
-                className={inputClass}
-              />
+                className={inputClass} />
             </div>
             <div className="space-y-2">
               <label className={labelClass}>Invuln</label>
-              <select
-                value={defenderInvuln}
-                onChange={e => setDefenderInvuln(e.target.value)}
-                className={selectClass + ' !w-20'}
-              >
+              <select value={defenderInvuln} onChange={e => setDefenderInvuln(e.target.value)}
+                className={selectClass + ' !w-20'}>
                 <option value="">None</option>
-                <option value="3">3+</option>
-                <option value="4">4+</option>
-                <option value="5">5+</option>
-                <option value="6">6+</option>
+                <option value="3">3+</option><option value="4">4+</option>
+                <option value="5">5+</option><option value="6">6+</option>
               </select>
             </div>
             <div className="space-y-2">
               <label className={labelClass}>FNP</label>
-              <select
-                value={defenderFnp}
-                onChange={e => setDefenderFnp(e.target.value)}
-                className={selectClass + ' !w-20'}
-              >
+              <select value={defenderFnp} onChange={e => setDefenderFnp(e.target.value)}
+                className={selectClass + ' !w-20'}>
                 <option value="">None</option>
-                <option value="4">4+</option>
-                <option value="5">5+</option>
-                <option value="6">6+</option>
+                <option value="4">4+</option><option value="5">5+</option><option value="6">6+</option>
               </select>
             </div>
           </div>
@@ -488,191 +618,335 @@ export default function FightSimulator() {
 
       {/* Modifier Toggles */}
       <div className="flex flex-wrap gap-3">
-        {showHeavy && (
-          <Toggle label="Stationary (Heavy)" checked={stationary} onChange={setStationary} />
-        )}
-        {showLance && (
-          <Toggle label="Charged (Lance)" checked={charged} onChange={setCharged} />
-        )}
-        {showMelta && (
-          <Toggle label="Half Range (Melta)" checked={halfRange} onChange={setHalfRange} />
-        )}
-        {showRapidFire && (
-          <Toggle label="Rapid Fire" checked={rapidFire} onChange={setRapidFire} />
-        )}
+        {showHeavy && <Toggle label="Stationary (Heavy)" checked={stationary} onChange={setStationary} />}
+        {showLance && <Toggle label="Charged (Lance)" checked={charged} onChange={setCharged} />}
+        {showMelta && <Toggle label="Half Range (Melta)" checked={halfRange} onChange={setHalfRange} />}
+        {showRapidFire && <Toggle label="Rapid Fire" checked={rapidFire} onChange={setRapidFire} />}
         <Toggle label="Target in Cover" checked={cover} onChange={setCover} />
       </div>
 
-      {/* Results */}
-      {result && selectedWeapon && (
-        <div className="bg-[#14142a] border border-[#C5A33E] rounded-lg p-5 space-y-4">
-          <h3 className="text-lg font-bold text-[#C5A33E]">Attack Breakdown</h3>
+      {/* ===== SINGLE MODE RESULTS ===== */}
+      {mode === 'single' && singleResult && selectedWeapon && selectedDefenderUnit && (
+        <ResultsSection
+          result={singleResult.result}
+          distribution={singleResult.distribution}
+          weapon={selectedWeapon}
+          isMelee={isMeleeWeapon}
+          modelCount={attackerModels}
+          defenderUnit={selectedDefenderUnit}
+        />
+      )}
 
-          {/* Weapon profile reminder */}
-          <div className="bg-[#0a0a14] rounded-lg border border-[#1a1a2e] p-3">
-            <div className="text-sm font-semibold text-gray-200 mb-1">{selectedWeapon.name}</div>
-            <div className="flex gap-4 text-sm text-gray-400">
-              <span>A: {selectedWeapon.A}</span>
-              <span>{isMeleeWeapon ? 'WS' : 'BS'}: {isMeleeWeapon ? selectedWeapon.WS : selectedWeapon.BS}</span>
-              <span>S: {selectedWeapon.S}</span>
-              <span>AP: {selectedWeapon.AP}</span>
-              <span>D: {selectedWeapon.D}</span>
-            </div>
-            {selectedWeapon.keywords && selectedWeapon.keywords !== '-' && (
-              <div className="flex flex-wrap gap-1 mt-1.5">
-                {parseKeywords(selectedWeapon.keywords).map(kw => (
-                  <span key={kw} className="px-1.5 py-0.5 text-xs bg-[#4a3a0f] text-[#C5A33E] rounded">{kw}</span>
+      {/* ===== SQUAD MODE RESULTS ===== */}
+      {mode === 'squad' && squadResults && selectedDefenderUnit && (
+        <div className="space-y-6">
+          {/* Per-weapon summaries */}
+          <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-4 space-y-2">
+            <h3 className="text-sm font-bold text-gray-300">Per-Weapon Breakdown</h3>
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-[#3a3a5e]">
+                  <th className="text-left py-1 text-gray-400">Weapon</th>
+                  <th className="text-center py-1 text-gray-400 px-2">Models</th>
+                  <th className="text-center py-1 text-gray-400 px-2">Avg Damage</th>
+                  <th className="text-center py-1 text-gray-400 px-2">Avg Kills</th>
+                </tr>
+              </thead>
+              <tbody>
+                {squadResults.perWeapon.map(pw => (
+                  <tr key={pw.weapon.name} className="border-b border-[#1a1a2e]">
+                    <td className="py-1 text-gray-200">{pw.weapon.name}</td>
+                    <td className="text-center py-1 text-gray-400 px-2">{pw.models}</td>
+                    <td className="text-center py-1 text-[#C5A33E] font-bold px-2">{fmt(pw.result.expectedDamage)}</td>
+                    <td className="text-center py-1 text-gray-200 px-2">{pw.result.expectedModelsKilled}</td>
+                  </tr>
                 ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Combined stats table */}
+          <div className="bg-[#14142a] border border-[#C5A33E] rounded-lg p-5 space-y-4">
+            <h3 className="text-lg font-bold text-[#C5A33E]">Combined Results</h3>
+            <StatsTable distribution={squadResults.combinedDist} defenderUnit={selectedDefenderUnit} />
+
+            {squadResults.combinedResult.expectedSelfMortals > 0 && (
+              <div className="text-sm text-yellow-400">
+                Hazardous: ~{fmt(squadResults.combinedResult.expectedSelfMortals)} expected mortal wounds to self
               </div>
             )}
           </div>
 
-          {/* Pipeline steps */}
-          <div className="space-y-3">
-            <PipelineStep
-              step="1. Attacks"
-              result={fmt(result.expectedAttacks)}
-              detail={`${attackerModels} model${attackerModels > 1 ? 's' : ''} x ${selectedWeapon.A} attacks`}
-              notes={[
-                ...(result.expectedAttacks !== attackerModels * parseStatValue(selectedWeapon.A) ?
-                  [`Modified to ${fmt(result.expectedAttacks)} total`] : []),
-              ]}
-            />
-            <PipelineStep
-              step="2. Hit Roll"
-              result={`${fmt(result.expectedHits)} hits`}
-              detail={result.hitRollNeeded === null
-                ? 'Auto-hit (Torrent)'
-                : `${result.hitRollNeeded}+ needed (${frac(result.hitProbability)})`}
-              notes={result.hitNotes}
-            />
-            <PipelineStep
-              step="3. Wound Roll"
-              result={`${fmt(result.expectedWounds)} wounds`}
-              detail={`${result.woundRollNeeded}+ needed (${frac(result.woundProbability)})`}
-              notes={result.woundNotes}
-            />
-            <PipelineStep
-              step="4. Save Roll"
-              result={`${fmt(result.expectedUnsavedWounds)} unsaved`}
-              detail={result.saveRollNeeded <= 7
-                ? `Defender needs ${result.saveRollNeeded}+ to save (${frac(1 - result.saveFailProbability)} chance), fails ${(result.saveFailProbability * 100).toFixed(0)}%`
-                : 'No save possible'}
-              notes={result.saveNotes}
-            />
-            <PipelineStep
-              step="5. Damage"
-              result={`${fmt(result.expectedDamage)} total damage`}
-              detail={`${fmt(result.expectedUnsavedWounds)} unsaved wounds x ${fmt(result.expectedDamagePerWound)} avg damage`}
-              notes={result.damageNotes}
-              highlight
-            />
+          {/* Combined distribution charts */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <DamageDistChart dist={squadResults.combinedDist.damageDist}
+              expectedValue={distMean(squadResults.combinedDist.damageDist)}
+              woundsPerModel={parseStatValue(selectedDefenderUnit.stats[0]?.W || '1')}
+              label="Combined Damage Distribution" />
+            <ModelsKilledChart dist={squadResults.combinedDist.modelsKilledDist}
+              expectedValue={Math.round(distMean(squadResults.combinedDist.modelsKilledDist))}
+              label="Models Killed Distribution" />
           </div>
+        </div>
+      )}
 
-          {/* Summary stats table */}
-          {distribution && (
-            <div className="border-t border-[#C5A33E] pt-3">
+      {/* ===== COMPARE MODE RESULTS ===== */}
+      {mode === 'compare' && compareResults && selectedDefenderUnit && (
+        <div className="space-y-6">
+          {/* Side-by-side comparison table */}
+          {compareResults.some(r => r.computed) && (
+            <div className="bg-[#14142a] border border-[#C5A33E] rounded-lg p-5 overflow-x-auto">
+              <h3 className="text-lg font-bold text-[#C5A33E] mb-3">Comparison</h3>
               <table className="w-full text-sm border-collapse">
                 <thead>
                   <tr className="border-b border-[#3a3a5e]">
-                    <th className="text-left py-1.5 text-gray-400 font-normal"></th>
-                    <th className="text-center py-1.5 text-gray-300 font-semibold px-3">Mean</th>
-                    <th className="text-center py-1.5 text-gray-300 font-semibold px-3">Median</th>
-                    <th className="text-center py-1.5 text-gray-300 font-semibold px-3">75th %ile</th>
-                    <th className="text-center py-1.5 text-gray-300 font-semibold px-3">Max</th>
+                    <th className="text-left py-1.5 text-gray-400"></th>
+                    {compareResults.map((r, i) => (
+                      <th key={r.entry.id} className="text-center py-1.5 px-3 font-semibold" style={{ color: COMPARE_COLORS[i % COMPARE_COLORS.length] }}>
+                        {r.weapon ? `${r.weapon.name} x${r.entry.modelCount}` : `Attacker ${i + 1}`}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
-                  <StatsRow label="Attacks" dist={distribution.attacksDist} />
-                  <StatsRow label="Hits" dist={distribution.hitsDist} />
-                  <StatsRow label="Wounds" dist={distribution.woundsDist} />
-                  <StatsRow label="Unsaved wounds" dist={distribution.unsavedWoundsDist} />
-                  <StatsRow label="Damage" dist={distribution.damageDist} highlight />
-                  <StatsRow
-                    label={
-                      <>
-                        Models killed
-                        {selectedDefenderUnit && selectedDefenderUnit.stats[0] && (
-                          <span className="text-gray-500 text-xs ml-1">({selectedDefenderUnit.stats[0].W}W)</span>
-                        )}
-                      </>
-                    }
-                    dist={distribution.modelsKilledDist}
-                    highlight
-                  />
+                  {[
+                    { label: 'Avg Damage', fn: (r: typeof compareResults[0]) => r.computed ? fmt(r.computed.result.expectedDamage) : '-' },
+                    { label: 'Median Damage', fn: (r: typeof compareResults[0]) => r.computed ? percentile(r.computed.distribution.damageDist, 0.5).toFixed(0) : '-' },
+                    { label: 'Avg Models Killed', fn: (r: typeof compareResults[0]) => r.computed ? fmt(distMean(r.computed.distribution.modelsKilledDist)) : '-' },
+                    { label: 'P(kill 1+)', fn: (r: typeof compareResults[0]) => r.computed ? `${fmtPct(1 - (r.computed.distribution.modelsKilledDist[0] || 0))}%` : '-' },
+                    { label: 'Max Damage', fn: (r: typeof compareResults[0]) => r.computed ? distMax(r.computed.distribution.damageDist).toString() : '-' },
+                  ].map(row => (
+                    <tr key={row.label} className="border-b border-[#1a1a2e]">
+                      <td className="py-1.5 text-gray-300 font-semibold">{row.label}</td>
+                      {compareResults.map(r => (
+                        <td key={r.entry.id} className="text-center py-1.5 text-gray-200 px-3">{row.fn(r)}</td>
+                      ))}
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
           )}
-          {!distribution && (
-            <div className="border-t border-[#C5A33E] pt-3 flex items-center justify-between">
-              <div>
-                <span className="text-2xl font-bold text-[#C5A33E]">{fmt(result.expectedDamage)}</span>
-                <span className="text-gray-400 ml-2">expected damage</span>
-              </div>
-              <div>
-                <span className="text-2xl font-bold text-[#C5A33E]">{result.expectedModelsKilled}</span>
-                <span className="text-gray-400 ml-2">models killed</span>
-              </div>
-            </div>
-          )}
 
-          {result.expectedSelfMortals > 0 && (
-            <div className="text-sm text-yellow-400">
-              Hazardous: ~{fmt(result.expectedSelfMortals)} expected mortal wounds to self
-            </div>
-          )}
+          {/* Side-by-side charts */}
+          <div className={`grid gap-6 ${compareResults.filter(r => r.computed).length > 1 ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
+            {compareResults.map((r, i) => {
+              if (!r.computed || !r.weapon) return null;
+              const color = COMPARE_COLORS[i % COMPARE_COLORS.length];
+              const unitName = r.entry.unitKey.split('||')[0] || '';
+              return (
+                <div key={r.entry.id} className="space-y-3">
+                  <div className="text-sm font-bold" style={{ color }}>
+                    {unitName} - {r.weapon.name} x{r.entry.modelCount}
+                  </div>
+                  <StatsTable distribution={r.computed.distribution} defenderUnit={selectedDefenderUnit} />
+                  <DamageDistChart dist={r.computed.distribution.damageDist}
+                    expectedValue={r.computed.result.expectedDamage}
+                    woundsPerModel={parseStatValue(selectedDefenderUnit.stats[0]?.W || '1')}
+                    label="Damage" />
+                  <ModelsKilledChart dist={r.computed.distribution.modelsKilledDist}
+                    expectedValue={r.computed.result.expectedModelsKilled}
+                    label="Models Killed" />
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
-      {/* Distribution Charts */}
-      {distribution && result && selectedDefenderUnit && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <DamageDistChart
-            dist={distribution.damageDist}
-            expectedValue={result.expectedDamage}
-            woundsPerModel={parseStatValue(selectedDefenderUnit.stats[0]?.W || '1')}
-            label="Damage Distribution"
-          />
-          <ModelsKilledChart
-            dist={distribution.modelsKilledDist}
-            expectedValue={result.expectedModelsKilled}
-            label="Models Killed Distribution"
-          />
-        </div>
-      )}
-
-      {!result && selectedWeapon && selectedDefenderUnit && (
-        <div className="text-gray-500 text-center py-4">
-          Unable to calculate — missing defender stats.
-        </div>
-      )}
-
-      {!selectedWeapon && (
+      {/* Empty state */}
+      {mode === 'single' && !singleResult && (
         <div className="text-gray-500 text-center py-8">
           Select an attacker weapon and defender unit to see expected results.
+        </div>
+      )}
+      {mode === 'squad' && !squadResults && selectedAttackerUnit && selectedDefenderUnit && (
+        <div className="text-gray-500 text-center py-8">
+          Check weapons and set model counts to see combined results.
         </div>
       )}
     </div>
   );
 }
 
-/** Format a percentage with enough decimals to show the first non-zero digit */
+const COMPARE_COLORS = ['#C5A33E', '#ef4444', '#60a5fa', '#34d399', '#a78bfa', '#f472b6'];
+
+// ============================================================
+// Results section (used by Single mode)
+// ============================================================
+
+function ResultsSection({ result, distribution, weapon, isMelee, modelCount, defenderUnit }: {
+  result: CombatResult;
+  distribution: DistributionResult;
+  weapon: Weapon;
+  isMelee: boolean;
+  modelCount: number;
+  defenderUnit: Unit;
+}) {
+  return (
+    <>
+      <div className="bg-[#14142a] border border-[#C5A33E] rounded-lg p-5 space-y-4">
+        <h3 className="text-lg font-bold text-[#C5A33E]">Attack Breakdown</h3>
+
+        <div className="bg-[#0a0a14] rounded-lg border border-[#1a1a2e] p-3">
+          <div className="text-sm font-semibold text-gray-200 mb-1">{weapon.name}</div>
+          <div className="flex gap-4 text-sm text-gray-400">
+            <span>A: {weapon.A}</span>
+            <span>{isMelee ? 'WS' : 'BS'}: {isMelee ? weapon.WS : weapon.BS}</span>
+            <span>S: {weapon.S}</span>
+            <span>AP: {weapon.AP}</span>
+            <span>D: {weapon.D}</span>
+          </div>
+          {weapon.keywords && weapon.keywords !== '-' && (
+            <div className="flex flex-wrap gap-1 mt-1.5">
+              {parseKeywords(weapon.keywords).map(kw => (
+                <span key={kw} className="px-1.5 py-0.5 text-xs bg-[#4a3a0f] text-[#C5A33E] rounded">{kw}</span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-3">
+          <PipelineStep step="1. Attacks" result={fmt(result.expectedAttacks)}
+            detail={`${modelCount} model${modelCount > 1 ? 's' : ''} x ${weapon.A} attacks`}
+            notes={result.expectedAttacks !== modelCount * parseStatValue(weapon.A)
+              ? [`Modified to ${fmt(result.expectedAttacks)} total`] : []} />
+          <PipelineStep step="2. Hit Roll" result={`${fmt(result.expectedHits)} hits`}
+            detail={result.hitRollNeeded === null ? 'Auto-hit (Torrent)'
+              : `${result.hitRollNeeded}+ needed (${frac(result.hitProbability)})`}
+            notes={result.hitNotes} />
+          <PipelineStep step="3. Wound Roll" result={`${fmt(result.expectedWounds)} wounds`}
+            detail={`${result.woundRollNeeded}+ needed (${frac(result.woundProbability)})`}
+            notes={result.woundNotes} />
+          <PipelineStep step="4. Save Roll" result={`${fmt(result.expectedUnsavedWounds)} unsaved`}
+            detail={result.saveRollNeeded <= 7
+              ? `Defender needs ${result.saveRollNeeded}+ to save (${frac(1 - result.saveFailProbability)} chance), fails ${(result.saveFailProbability * 100).toFixed(0)}%`
+              : 'No save possible'}
+            notes={result.saveNotes} />
+          <PipelineStep step="5. Damage" result={`${fmt(result.expectedDamage)} total damage`}
+            detail={`${fmt(result.expectedUnsavedWounds)} unsaved wounds x ${fmt(result.expectedDamagePerWound)} avg damage`}
+            notes={result.damageNotes} highlight />
+        </div>
+
+        <StatsTable distribution={distribution} defenderUnit={defenderUnit} />
+
+        {result.expectedSelfMortals > 0 && (
+          <div className="text-sm text-yellow-400">
+            Hazardous: ~{fmt(result.expectedSelfMortals)} expected mortal wounds to self
+          </div>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <DamageDistChart dist={distribution.damageDist} expectedValue={result.expectedDamage}
+          woundsPerModel={parseStatValue(defenderUnit.stats[0]?.W || '1')} label="Damage Distribution" />
+        <ModelsKilledChart dist={distribution.modelsKilledDist} expectedValue={result.expectedModelsKilled}
+          label="Models Killed Distribution" />
+      </div>
+    </>
+  );
+}
+
+// ============================================================
+// Stats table (reused in all modes)
+// ============================================================
+
+function StatsTable({ distribution, defenderUnit }: {
+  distribution: DistributionResult;
+  defenderUnit: Unit;
+}) {
+  return (
+    <div className="border-t border-[#C5A33E] pt-3">
+      <table className="w-full text-sm border-collapse">
+        <thead>
+          <tr className="border-b border-[#3a3a5e]">
+            <th className="text-left py-1.5 text-gray-400 font-normal"></th>
+            <th className="text-center py-1.5 text-gray-300 font-semibold px-3">Mean</th>
+            <th className="text-center py-1.5 text-gray-300 font-semibold px-3">Median</th>
+            <th className="text-center py-1.5 text-gray-300 font-semibold px-3">75th %ile</th>
+            <th className="text-center py-1.5 text-gray-300 font-semibold px-3">Max</th>
+          </tr>
+        </thead>
+        <tbody>
+          <StatsRow label="Attacks" dist={distribution.attacksDist} />
+          <StatsRow label="Hits" dist={distribution.hitsDist} />
+          <StatsRow label="Wounds" dist={distribution.woundsDist} />
+          <StatsRow label="Unsaved wounds" dist={distribution.unsavedWoundsDist} />
+          <StatsRow label="Damage" dist={distribution.damageDist} highlight />
+          <StatsRow
+            label={<>Models killed{defenderUnit.stats[0] && <span className="text-gray-500 text-xs ml-1">({defenderUnit.stats[0].W}W)</span>}</>}
+            dist={distribution.modelsKilledDist} highlight />
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// ============================================================
+// Compare mode attacker card
+// ============================================================
+
+function CompareAttackerCard({ entry, globalUnitOptions, comboboxPlaceholder, globalUnitsLoading,
+  onUnitChange, onWeaponChange, onModelsChange, onRemove, canRemove }: {
+  entry: { id: string; unitKey: string; catalogue: CatalogueData | null; weaponName: string; modelCount: number; loading: boolean };
+  globalUnitOptions: { value: string; label: string; detail?: string }[];
+  comboboxPlaceholder: string;
+  globalUnitsLoading: boolean;
+  onUnitChange: (key: string) => void;
+  onWeaponChange: (name: string) => void;
+  onModelsChange: (n: number) => void;
+  onRemove: () => void;
+  canRemove: boolean;
+}) {
+  const unitName = entry.unitKey.split('||')[0] || '';
+  const unit = entry.catalogue?.units.find(u => u.name === unitName) ?? null;
+  const ranged = unit?.rangedWeapons || [];
+  const melee = unit?.meleeWeapons || [];
+
+  return (
+    <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-3 space-y-2">
+      <div className="flex items-center justify-between">
+        <Combobox options={globalUnitOptions} value={entry.unitKey} onChange={onUnitChange}
+          placeholder={comboboxPlaceholder} disabled={globalUnitsLoading} />
+        {canRemove && (
+          <button onClick={onRemove} className="ml-2 text-gray-500 hover:text-red-400 text-lg font-bold px-2">x</button>
+        )}
+      </div>
+      {entry.loading && <div className="text-xs text-gray-500">Loading...</div>}
+      {unit && (ranged.length > 0 || melee.length > 0) && (
+        <>
+          {ranged.length > 0 && <WeaponTable weapons={ranged} selectedWeapon={entry.weaponName}
+            onSelect={onWeaponChange} isMelee={false} label="Ranged" />}
+          {melee.length > 0 && <WeaponTable weapons={melee} selectedWeapon={entry.weaponName}
+            onSelect={onWeaponChange} isMelee={true} label="Melee" />}
+        </>
+      )}
+      <div className="flex items-center gap-2">
+        <label className={labelClass}>Models:</label>
+        <input type="number" min={1} max={30} value={entry.modelCount}
+          onChange={e => onModelsChange(Math.max(1, parseInt(e.target.value) || 1))}
+          className={inputClass} />
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// Helper functions
+// ============================================================
+
 function fmtPct(p: number): string {
   const pct = p * 100;
   if (pct === 0) return '0';
   if (pct >= 1) return pct.toFixed(1);
-  // Find how many decimals needed to show first non-zero digit
   const digits = Math.max(1, Math.ceil(-Math.log10(pct)) + 1);
   return pct.toFixed(digits);
 }
 
-/** Format a number: integers as-is, decimals to 2 places */
 function fmt(n: number): string {
   return Number.isInteger(n) ? n.toString() : n.toFixed(2);
 }
 
-/** Compute percentile from a distribution: smallest k where CDF >= p */
 function percentile(dist: number[], p: number): number {
   let cumulative = 0;
   for (let i = 0; i < dist.length; i++) {
@@ -682,7 +956,6 @@ function percentile(dist: number[], p: number): number {
   return dist.length - 1;
 }
 
-/** Get max non-zero value from distribution */
 function distMax(dist: number[]): number {
   for (let i = dist.length - 1; i >= 0; i--) {
     if (dist[i] > 1e-9) return i;
@@ -690,7 +963,6 @@ function distMax(dist: number[]): number {
   return 0;
 }
 
-/** Compute mean of a distribution */
 function distMean(dist: number[]): number {
   let sum = 0;
   for (let i = 0; i < dist.length; i++) sum += i * dist[i];
@@ -713,9 +985,7 @@ function StatsRow({ label, dist, highlight }: {
   );
 }
 
-/** Format a probability as a fraction like "4/6" */
 function frac(p: number): string {
-  // Find the closest N/6
   const sixths = Math.round(p * 6);
   if (sixths === 6) return '6/6';
   if (sixths === 0) return '0/6';
@@ -723,11 +993,7 @@ function frac(p: number): string {
 }
 
 function PipelineStep({ step, result, detail, notes, highlight }: {
-  step: string;
-  result: string;
-  detail: string;
-  notes: string[];
-  highlight?: boolean;
+  step: string; result: string; detail: string; notes: string[]; highlight?: boolean;
 }) {
   return (
     <div className={`rounded-lg p-3 ${highlight ? 'bg-[#1a1506] border border-[#4a3a0f]' : 'bg-[#0a0a14] border border-[#1a1a2e]'}`}>
@@ -738,11 +1004,7 @@ function PipelineStep({ step, result, detail, notes, highlight }: {
       <div className="text-xs text-gray-400 mt-0.5">{detail}</div>
       {notes.length > 0 && (
         <div className="mt-1 space-y-0.5">
-          {notes.map((note, i) => (
-            <div key={i} className="text-xs text-gray-500">
-              {note}
-            </div>
-          ))}
+          {notes.map((note, i) => <div key={i} className="text-xs text-gray-500">{note}</div>)}
         </div>
       )}
     </div>
@@ -752,21 +1014,19 @@ function PipelineStep({ step, result, detail, notes, highlight }: {
 function Toggle({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
   return (
     <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer select-none bg-[#14142a] border border-[#1a1a2e] rounded-lg px-3 py-2 hover:border-[#C5A33E] transition-colors">
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={e => onChange(e.target.checked)}
-        className="accent-[#C5A33E]"
-      />
+      <input type="checkbox" checked={checked} onChange={e => onChange(e.target.checked)} className="accent-[#C5A33E]" />
       {label}
     </label>
   );
 }
 
+// ============================================================
+// Unit datasheet
+// ============================================================
+
 function UnitDatasheet({ unit }: { unit: Unit }) {
   return (
     <div className="bg-[#0a0a14] rounded-lg border border-[#1a1a2e] p-3 space-y-3">
-      {/* Unit Stats */}
       {unit.stats.length > 0 && (
         <div className="overflow-x-auto">
           <table className="border-collapse w-full text-sm">
@@ -797,33 +1057,17 @@ function UnitDatasheet({ unit }: { unit: Unit }) {
           </table>
         </div>
       )}
-
-      {/* Invuln / FNP badges */}
       {(unit.invulnSave || unit.fnp) && (
         <div className="flex gap-2">
-          {unit.invulnSave && (
-            <span className="px-2 py-0.5 text-xs font-semibold bg-purple-900 text-purple-200 rounded">
-              Invuln {unit.invulnSave}
-            </span>
-          )}
-          {unit.fnp && (
-            <span className="px-2 py-0.5 text-xs font-semibold bg-green-900 text-green-200 rounded">
-              FNP {unit.fnp}
-            </span>
-          )}
+          {unit.invulnSave && <span className="px-2 py-0.5 text-xs font-semibold bg-purple-900 text-purple-200 rounded">Invuln {unit.invulnSave}</span>}
+          {unit.fnp && <span className="px-2 py-0.5 text-xs font-semibold bg-green-900 text-green-200 rounded">FNP {unit.fnp}</span>}
         </div>
       )}
-
-      {/* Keywords */}
       {unit.keywords.length > 0 && (
         <div className="flex flex-wrap gap-1">
-          {unit.keywords.map(kw => (
-            <span key={kw} className="px-1.5 py-0.5 text-xs bg-[#1a1a2e] text-gray-400 rounded">{kw}</span>
-          ))}
+          {unit.keywords.map(kw => <span key={kw} className="px-1.5 py-0.5 text-xs bg-[#1a1a2e] text-gray-400 rounded">{kw}</span>)}
         </div>
       )}
-
-      {/* Abilities */}
       {unit.abilities.length > 0 && (
         <div className="space-y-1">
           {unit.abilities.filter(a => a.name !== 'Invulnerable Save').map((a, i) => (
@@ -838,19 +1082,18 @@ function UnitDatasheet({ unit }: { unit: Unit }) {
   );
 }
 
+// ============================================================
+// Weapon tables
+// ============================================================
+
 function WeaponTable({ weapons, selectedWeapon, onSelect, isMelee, label }: {
-  weapons: Weapon[];
-  selectedWeapon: string;
-  onSelect: (name: string) => void;
-  isMelee: boolean;
-  label?: string;
+  weapons: Weapon[]; selectedWeapon: string; onSelect: (name: string) => void;
+  isMelee: boolean; label?: string;
 }) {
   const skillLabel = isMelee ? 'WS' : 'BS';
   return (
     <div className="overflow-x-auto rounded-lg border-2 border-[#3a3a5e]">
-      {label && (
-        <div className="bg-[#0a0a14] px-2 py-1 text-xs font-semibold text-gray-400 border-b border-[#3a3a5e]">{label}</div>
-      )}
+      {label && <div className="bg-[#0a0a14] px-2 py-1 text-xs font-semibold text-gray-400 border-b border-[#3a3a5e]">{label}</div>}
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr className="bg-[#0a0a14] border-b-2 border-[#3a3a5e]">
@@ -867,15 +1110,10 @@ function WeaponTable({ weapons, selectedWeapon, onSelect, isMelee, label }: {
           {weapons.map((w) => {
             const isSelected = w.name === selectedWeapon;
             return (
-              <tr
-                key={w.name}
-                onClick={() => onSelect(w.name)}
+              <tr key={w.name} onClick={() => onSelect(w.name)}
                 className={`cursor-pointer border-b border-[#1a1a2e] transition-colors ${
-                  isSelected
-                    ? 'bg-[#4a3a0f] text-[#C5A33E]'
-                    : 'bg-[#0a0a14] text-gray-300 hover:bg-[#1e1e3a]'
-                }`}
-              >
+                  isSelected ? 'bg-[#4a3a0f] text-[#C5A33E]' : 'bg-[#0a0a14] text-gray-300 hover:bg-[#1e1e3a]'
+                }`}>
                 <td className="px-2 py-1.5 font-medium whitespace-nowrap">{w.name}</td>
                 <td className="text-center px-2 py-1.5">{w.A}</td>
                 <td className="text-center px-2 py-1.5">{isMelee ? w.WS : w.BS}</td>
@@ -884,9 +1122,7 @@ function WeaponTable({ weapons, selectedWeapon, onSelect, isMelee, label }: {
                 <td className="text-center px-2 py-1.5">{w.D}</td>
                 <td className="px-2 py-1.5 text-xs">
                   {w.keywords && w.keywords !== '-' && (
-                    <span className={isSelected ? 'text-[#C5A33E] opacity-80' : 'text-gray-500'}>
-                      {w.keywords}
-                    </span>
+                    <span className={isSelected ? 'text-[#C5A33E] opacity-80' : 'text-gray-500'}>{w.keywords}</span>
                   )}
                 </td>
               </tr>
@@ -898,17 +1134,80 @@ function WeaponTable({ weapons, selectedWeapon, onSelect, isMelee, label }: {
   );
 }
 
-function DamageDistChart({ dist, expectedValue, woundsPerModel, label }: {
-  dist: number[];
-  expectedValue: number;
-  woundsPerModel: number;
-  label: string;
+function SquadWeaponTable({ weapons, squadWeapons, onToggle, isMelee, label }: {
+  weapons: Weapon[];
+  squadWeapons: Map<string, number>;
+  onToggle: (name: string, count: number) => void;
+  isMelee: boolean;
+  label?: string;
 }) {
-  // Trim trailing near-zero entries and bucket if too many bars
+  const skillLabel = isMelee ? 'WS' : 'BS';
+  return (
+    <div className="overflow-x-auto rounded-lg border-2 border-[#3a3a5e]">
+      {label && <div className="bg-[#0a0a14] px-2 py-1 text-xs font-semibold text-gray-400 border-b border-[#3a3a5e]">{label}</div>}
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr className="bg-[#0a0a14] border-b-2 border-[#3a3a5e]">
+            <th className="text-center px-2 py-1.5 text-gray-300 font-semibold w-8"></th>
+            <th className="text-left px-2 py-1.5 text-gray-300 font-semibold">Weapon</th>
+            <th className="text-center px-2 py-1.5 text-gray-300 font-semibold">A</th>
+            <th className="text-center px-2 py-1.5 text-gray-300 font-semibold">{skillLabel}</th>
+            <th className="text-center px-2 py-1.5 text-gray-300 font-semibold">S</th>
+            <th className="text-center px-2 py-1.5 text-gray-300 font-semibold">AP</th>
+            <th className="text-center px-2 py-1.5 text-gray-300 font-semibold">D</th>
+            <th className="text-center px-2 py-1.5 text-gray-300 font-semibold">Models</th>
+          </tr>
+        </thead>
+        <tbody>
+          {weapons.map((w) => {
+            const count = squadWeapons.get(w.name) || 0;
+            const isActive = count > 0;
+            return (
+              <tr key={w.name}
+                className={`border-b border-[#1a1a2e] transition-colors ${
+                  isActive ? 'bg-[#4a3a0f] text-[#C5A33E]' : 'bg-[#0a0a14] text-gray-300'
+                }`}>
+                <td className="text-center px-2 py-1.5">
+                  <input type="checkbox" checked={isActive}
+                    onChange={e => onToggle(w.name, e.target.checked ? 1 : 0)}
+                    className="accent-[#C5A33E]" />
+                </td>
+                <td className="px-2 py-1.5 font-medium whitespace-nowrap cursor-pointer"
+                  onClick={() => onToggle(w.name, isActive ? 0 : 1)}>
+                  {w.name}
+                </td>
+                <td className="text-center px-2 py-1.5">{w.A}</td>
+                <td className="text-center px-2 py-1.5">{isMelee ? w.WS : w.BS}</td>
+                <td className="text-center px-2 py-1.5">{w.S}</td>
+                <td className="text-center px-2 py-1.5">{w.AP}</td>
+                <td className="text-center px-2 py-1.5">{w.D}</td>
+                <td className="text-center px-2 py-1.5">
+                  {isActive && (
+                    <input type="number" min={1} max={30} value={count}
+                      onChange={e => onToggle(w.name, Math.max(1, parseInt(e.target.value) || 1))}
+                      className="w-14 px-1 py-0.5 text-center bg-[#0a0a14] border border-[#3a3a5e] rounded text-[#C5A33E] text-sm"
+                      onClick={e => e.stopPropagation()} />
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// ============================================================
+// Distribution charts
+// ============================================================
+
+function DamageDistChart({ dist, expectedValue, woundsPerModel, label }: {
+  dist: number[]; expectedValue: number; woundsPerModel: number; label: string;
+}) {
   const trimmed = [...dist];
   while (trimmed.length > 1 && trimmed[trimmed.length - 1] < 1e-6) trimmed.pop();
 
-  // Bucket into groups if distribution is wide
   const MAX_BARS = 30;
   let bucketSize = 1;
   let bucketLabels: string[] = [];
@@ -930,7 +1229,6 @@ function DamageDistChart({ dist, expectedValue, woundsPerModel, label }: {
 
   const maxProb = Math.max(...bucketProbs, 0.01);
 
-  // Cumulative probabilities
   let cumulative = 0;
   const cumulativeAtLeast: number[] = [];
   for (let i = bucketProbs.length - 1; i >= 0; i--) {
@@ -938,10 +1236,8 @@ function DamageDistChart({ dist, expectedValue, woundsPerModel, label }: {
     cumulativeAtLeast[i] = cumulative;
   }
 
-  // Find which bucket the expected value falls in
   const expectedBucket = bucketSize === 1 ? Math.round(expectedValue) : Math.floor(expectedValue / bucketSize);
 
-  // Model kill thresholds
   const killThresholds: number[] = [];
   for (let k = 1; k <= 5; k++) {
     const dmgNeeded = k * woundsPerModel;
@@ -961,13 +1257,9 @@ function DamageDistChart({ dist, expectedValue, woundsPerModel, label }: {
           const isKillThreshold = killThresholds.includes(i);
           return (
             <div key={i} className="flex-1 flex flex-col items-center justify-end h-full group relative">
-              <div
-                className={`w-full rounded-t transition-all ${
-                  isExpected ? 'bg-[#C5A33E]' : isKillThreshold ? 'bg-red-500' : 'bg-[#4a3a7f]'
-                } group-hover:opacity-80`}
-                style={{ height: `${Math.max(height, 0.5)}%` }}
-              />
-              {/* Tooltip */}
+              <div className={`w-full rounded-t transition-all ${
+                isExpected ? 'bg-[#C5A33E]' : isKillThreshold ? 'bg-red-500' : 'bg-[#4a3a7f]'
+              } group-hover:opacity-80`} style={{ height: `${Math.max(height, 0.5)}%` }} />
               <div className="absolute bottom-full mb-1 hidden group-hover:block z-10 bg-[#0a0a14] border border-[#3a3a5e] rounded px-2 py-1 text-xs whitespace-nowrap pointer-events-none">
                 <div className="text-gray-200">{bucketLabels[i]} damage</div>
                 <div className="text-[#C5A33E]">{fmtPct(p)}% chance</div>
@@ -977,12 +1269,9 @@ function DamageDistChart({ dist, expectedValue, woundsPerModel, label }: {
           );
         })}
       </div>
-      {/* X-axis labels */}
       <div className="flex gap-px text-xs text-gray-500 overflow-hidden">
         {bucketProbs.map((_, i) => (
-          <div key={i} className="flex-1 text-center truncate">
-            {bucketLabels[i]}
-          </div>
+          <div key={i} className="flex-1 text-center truncate">{bucketLabels[i]}</div>
         ))}
       </div>
       <div className="flex gap-3 text-xs text-gray-400">
@@ -996,13 +1285,9 @@ function DamageDistChart({ dist, expectedValue, woundsPerModel, label }: {
 }
 
 function ModelsKilledChart({ dist, expectedValue, label }: {
-  dist: number[];
-  expectedValue: number;
-  label: string;
+  dist: number[]; expectedValue: number; label: string;
 }) {
   const maxProb = Math.max(...dist, 0.01);
-
-  // Cumulative: P(killed >= k)
   let cumulative = 0;
   const cumulativeAtLeast: number[] = [];
   for (let i = dist.length - 1; i >= 0; i--) {
@@ -1020,13 +1305,8 @@ function ModelsKilledChart({ dist, expectedValue, label }: {
           return (
             <div key={i} className="flex-1 flex flex-col items-center justify-end h-full group relative">
               <div className="text-xs text-gray-400 mb-1 opacity-0 group-hover:opacity-100">{fmtPct(p)}%</div>
-              <div
-                className={`w-full rounded-t transition-all ${
-                  isExpected ? 'bg-[#C5A33E]' : 'bg-red-700'
-                } group-hover:opacity-80`}
-                style={{ height: `${Math.max(height, 1)}%` }}
-              />
-              {/* Tooltip */}
+              <div className={`w-full rounded-t transition-all ${isExpected ? 'bg-[#C5A33E]' : 'bg-red-700'} group-hover:opacity-80`}
+                style={{ height: `${Math.max(height, 1)}%` }} />
               <div className="absolute bottom-full mb-6 hidden group-hover:block z-10 bg-[#0a0a14] border border-[#3a3a5e] rounded px-2 py-1 text-xs whitespace-nowrap pointer-events-none">
                 <div className="text-gray-200">{i} model{i !== 1 ? 's' : ''} killed</div>
                 <div className="text-[#C5A33E]">{fmtPct(p)}% chance exactly</div>
@@ -1036,11 +1316,8 @@ function ModelsKilledChart({ dist, expectedValue, label }: {
           );
         })}
       </div>
-      {/* X-axis labels */}
       <div className="flex gap-1 text-xs text-gray-400">
-        {dist.map((_, i) => (
-          <div key={i} className="flex-1 text-center">{i}</div>
-        ))}
+        {dist.map((_, i) => <div key={i} className="flex-1 text-center">{i}</div>)}
       </div>
       <div className="text-xs text-gray-400">
         <span className="inline-block w-2 h-2 rounded-sm bg-[#C5A33E] mr-1" />Expected ({expectedValue})
@@ -1049,6 +1326,10 @@ function ModelsKilledChart({ dist, expectedValue, label }: {
   );
 }
 
+// ============================================================
+// Combobox
+// ============================================================
+
 interface ComboboxOption {
   value: string;
   label: string;
@@ -1056,11 +1337,8 @@ interface ComboboxOption {
 }
 
 function Combobox({ options, value, onChange, placeholder, disabled }: {
-  options: ComboboxOption[];
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-  disabled?: boolean;
+  options: ComboboxOption[]; value: string; onChange: (value: string) => void;
+  placeholder?: string; disabled?: boolean;
 }) {
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
@@ -1075,98 +1353,58 @@ function Combobox({ options, value, onChange, placeholder, disabled }: {
   const filtered = useMemo(() => {
     if (!query) return options;
     const q = query.toLowerCase();
-    return options.filter(o =>
-      o.label.toLowerCase().includes(q) ||
-      (o.detail && o.detail.toLowerCase().includes(q))
-    );
+    return options.filter(o => o.label.toLowerCase().includes(q) || (o.detail && o.detail.toLowerCase().includes(q)));
   }, [options, query]);
 
-  // Clamp highlight index to filtered list bounds
   const clampedHighlight = filtered.length > 0 ? Math.min(highlightIndex, filtered.length - 1) : 0;
 
-  // Close on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setOpen(false);
-        setQuery('');
+        setOpen(false); setQuery('');
       }
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  // Scroll highlighted item into view
   useEffect(() => {
     if (!open || !listRef.current) return;
     const item = listRef.current.children[clampedHighlight] as HTMLElement | undefined;
     item?.scrollIntoView({ block: 'nearest' });
   }, [clampedHighlight, open]);
 
-  const handleSelect = (val: string) => {
-    onChange(val);
-    setOpen(false);
-    setQuery('');
-    inputRef.current?.blur();
-  };
+  const handleSelect = (val: string) => { onChange(val); setOpen(false); setQuery(''); inputRef.current?.blur(); };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!open) {
-      if (e.key === 'ArrowDown' || e.key === 'Enter') {
-        setOpen(true);
-        e.preventDefault();
-      }
+      if (e.key === 'ArrowDown' || e.key === 'Enter') { setOpen(true); e.preventDefault(); }
       return;
     }
     switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        setHighlightIndex(i => Math.min(i + 1, filtered.length - 1));
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        setHighlightIndex(i => Math.max(i - 1, 0));
-        break;
-      case 'Enter':
-        e.preventDefault();
-        if (filtered[clampedHighlight]) handleSelect(filtered[clampedHighlight].value);
-        break;
-      case 'Escape':
-        setOpen(false);
-        setQuery('');
-        break;
+      case 'ArrowDown': e.preventDefault(); setHighlightIndex(i => Math.min(i + 1, filtered.length - 1)); break;
+      case 'ArrowUp': e.preventDefault(); setHighlightIndex(i => Math.max(i - 1, 0)); break;
+      case 'Enter': e.preventDefault(); if (filtered[clampedHighlight]) handleSelect(filtered[clampedHighlight].value); break;
+      case 'Escape': setOpen(false); setQuery(''); break;
     }
   };
 
   return (
     <div ref={containerRef} className="relative w-full">
-      <input
-        ref={inputRef}
-        type="text"
-        className={selectClass}
+      <input ref={inputRef} type="text" className={selectClass}
         placeholder={disabled ? placeholder : (value ? selectedLabel : placeholder)}
         value={open ? query : (value ? selectedLabel : '')}
         disabled={disabled}
         onChange={e => { setQuery(e.target.value); setOpen(true); }}
         onFocus={() => { setOpen(true); setQuery(''); }}
-        onKeyDown={handleKeyDown}
-      />
+        onKeyDown={handleKeyDown} />
       {open && filtered.length > 0 && (
-        <ul
-          ref={listRef}
-          className="absolute z-50 w-full mt-1 max-h-60 overflow-y-auto bg-[#14142a] border-2 border-[#3a3a5e] rounded-lg shadow-lg"
-        >
+        <ul ref={listRef} className="absolute z-50 w-full mt-1 max-h-60 overflow-y-auto bg-[#14142a] border-2 border-[#3a3a5e] rounded-lg shadow-lg">
           {filtered.map((opt, i) => (
-            <li
-              key={opt.value}
-              className={`px-3 py-2 cursor-pointer text-sm ${
-                i === clampedHighlight
-                  ? 'bg-[#4a3a0f] text-[#C5A33E]'
-                  : 'text-gray-200 hover:bg-[#1e1e3a]'
-              }`}
+            <li key={opt.value}
+              className={`px-3 py-2 cursor-pointer text-sm ${i === clampedHighlight ? 'bg-[#4a3a0f] text-[#C5A33E]' : 'text-gray-200 hover:bg-[#1e1e3a]'}`}
               onMouseEnter={() => setHighlightIndex(i)}
-              onMouseDown={e => { e.preventDefault(); handleSelect(opt.value); }}
-            >
+              onMouseDown={e => { e.preventDefault(); handleSelect(opt.value); }}>
               <span>{opt.label}</span>
               {opt.detail && <span className="ml-2 text-xs text-gray-500">{opt.detail}</span>}
             </li>
@@ -1174,9 +1412,7 @@ function Combobox({ options, value, onChange, placeholder, disabled }: {
         </ul>
       )}
       {open && filtered.length === 0 && query && (
-        <div className="absolute z-50 w-full mt-1 px-3 py-2 bg-[#14142a] border-2 border-[#3a3a5e] rounded-lg text-sm text-gray-500">
-          No matches
-        </div>
+        <div className="absolute z-50 w-full mt-1 px-3 py-2 bg-[#14142a] border-2 border-[#3a3a5e] rounded-lg text-sm text-gray-500">No matches</div>
       )}
     </div>
   );

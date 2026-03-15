@@ -502,7 +502,7 @@ function applyFNP(damageDist: Distribution, pFnp: number): Distribution {
 }
 
 /** Convert damage distribution to models killed distribution */
-function damageToModelsKilled(
+export function damageToModelsKilled(
   damageDist: Distribution,
   woundsPerModel: number,
   maxModels: number,
@@ -637,4 +637,84 @@ export function calculateDistribution(
     damageDist,
     modelsKilledDist,
   };
+}
+
+/**
+ * Combine multiple CombatResults by summing expected values.
+ * Used in Squad mode to show combined results from multiple weapons.
+ */
+export function combineCombatResults(results: CombatResult[]): CombatResult {
+  if (results.length === 0) throw new Error('No results to combine');
+  if (results.length === 1) return results[0];
+
+  const combined: CombatResult = {
+    expectedAttacks: 0,
+    expectedHits: 0,
+    expectedWounds: 0,
+    expectedUnsavedWounds: 0,
+    expectedDamage: 0,
+    expectedModelsKilled: 0,
+    expectedSelfMortals: 0,
+    mortalWoundDamage: 0,
+    expectedDamagePerWound: 0,
+    hitProbability: 0,
+    woundProbability: 0,
+    saveFailProbability: 0,
+    hitRollNeeded: null,
+    woundRollNeeded: 0,
+    saveRollNeeded: 0,
+    hitNotes: [],
+    woundNotes: [],
+    saveNotes: [],
+    damageNotes: [],
+  };
+
+  for (const r of results) {
+    combined.expectedAttacks += r.expectedAttacks;
+    combined.expectedHits += r.expectedHits;
+    combined.expectedWounds += r.expectedWounds;
+    combined.expectedUnsavedWounds += r.expectedUnsavedWounds;
+    combined.expectedDamage += r.expectedDamage;
+    combined.expectedSelfMortals += r.expectedSelfMortals;
+    combined.mortalWoundDamage += r.mortalWoundDamage;
+  }
+
+  // Weighted average for per-wound damage
+  if (combined.expectedUnsavedWounds > 0) {
+    combined.expectedDamagePerWound = combined.expectedDamage / combined.expectedUnsavedWounds;
+  }
+
+  return combined;
+}
+
+/**
+ * Combine multiple DistributionResults by convolving independent distributions.
+ * Recomputes models killed from the combined damage distribution.
+ */
+export function combineDistributions(
+  results: DistributionResult[],
+  defenderWounds: number,
+  defenderModelCount: number,
+): DistributionResult {
+  if (results.length === 0) throw new Error('No distributions to combine');
+  if (results.length === 1) return results[0];
+
+  let attacksDist = results[0].attacksDist;
+  let hitsDist = results[0].hitsDist;
+  let woundsDist = results[0].woundsDist;
+  let unsavedWoundsDist = results[0].unsavedWoundsDist;
+  let damageDist = results[0].damageDist;
+
+  for (let i = 1; i < results.length; i++) {
+    attacksDist = convolve(attacksDist, results[i].attacksDist);
+    hitsDist = convolve(hitsDist, results[i].hitsDist);
+    woundsDist = convolve(woundsDist, results[i].woundsDist);
+    unsavedWoundsDist = convolve(unsavedWoundsDist, results[i].unsavedWoundsDist);
+    damageDist = convolve(damageDist, results[i].damageDist);
+  }
+
+  // Recompute models killed from combined damage (not convolved individually)
+  const modelsKilledDist = damageToModelsKilled(damageDist, defenderWounds, defenderModelCount);
+
+  return { attacksDist, hitsDist, woundsDist, unsavedWoundsDist, damageDist, modelsKilledDist };
 }
