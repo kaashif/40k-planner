@@ -586,6 +586,16 @@ export default function FightSimulator() {
   );
 }
 
+/** Format a percentage with enough decimals to show the first non-zero digit */
+function fmtPct(p: number): string {
+  const pct = p * 100;
+  if (pct === 0) return '0';
+  if (pct >= 1) return pct.toFixed(1);
+  // Find how many decimals needed to show first non-zero digit
+  const digits = Math.max(1, Math.ceil(-Math.log10(pct)) + 1);
+  return pct.toFixed(digits);
+}
+
 /** Format a number: integers as-is, decimals to 2 places */
 function fmt(n: number): string {
   return Number.isInteger(n) ? n.toString() : n.toFixed(2);
@@ -885,8 +895,8 @@ function DamageDistChart({ dist, expectedValue, woundsPerModel, label }: {
               {/* Tooltip */}
               <div className="absolute bottom-full mb-1 hidden group-hover:block z-10 bg-[#0a0a14] border border-[#3a3a5e] rounded px-2 py-1 text-xs whitespace-nowrap pointer-events-none">
                 <div className="text-gray-200">{bucketLabels[i]} damage</div>
-                <div className="text-[#C5A33E]">{(p * 100).toFixed(1)}% chance</div>
-                <div className="text-gray-400">{(cumulativeAtLeast[i] * 100).toFixed(1)}% chance of {bucketLabels[i]}+</div>
+                <div className="text-[#C5A33E]">{fmtPct(p)}% chance</div>
+                <div className="text-gray-400">{fmtPct(cumulativeAtLeast[i])}% chance of {bucketLabels[i]}+</div>
               </div>
             </div>
           );
@@ -934,7 +944,7 @@ function ModelsKilledChart({ dist, expectedValue, label }: {
           const isExpected = i === expectedValue;
           return (
             <div key={i} className="flex-1 flex flex-col items-center justify-end h-full group relative">
-              <div className="text-xs text-gray-400 mb-1 opacity-0 group-hover:opacity-100">{(p * 100).toFixed(1)}%</div>
+              <div className="text-xs text-gray-400 mb-1 opacity-0 group-hover:opacity-100">{fmtPct(p)}%</div>
               <div
                 className={`w-full rounded-t transition-all ${
                   isExpected ? 'bg-[#C5A33E]' : 'bg-red-700'
@@ -944,8 +954,8 @@ function ModelsKilledChart({ dist, expectedValue, label }: {
               {/* Tooltip */}
               <div className="absolute bottom-full mb-6 hidden group-hover:block z-10 bg-[#0a0a14] border border-[#3a3a5e] rounded px-2 py-1 text-xs whitespace-nowrap pointer-events-none">
                 <div className="text-gray-200">{i} model{i !== 1 ? 's' : ''} killed</div>
-                <div className="text-[#C5A33E]">{(p * 100).toFixed(1)}% chance exactly</div>
-                <div className="text-gray-400">{(cumulativeAtLeast[i] * 100).toFixed(1)}% chance of {i}+</div>
+                <div className="text-[#C5A33E]">{fmtPct(p)}% chance exactly</div>
+                <div className="text-gray-400">{fmtPct(cumulativeAtLeast[i])}% chance of {i}+</div>
               </div>
             </div>
           );
