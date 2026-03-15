@@ -74,9 +74,9 @@ function parseInvulnAndFnp(abilities: { name: string; description: string }[]): 
   let fnp: string | null = null;
 
   for (const ability of abilities) {
-    // Invulnerable Save: look for "N+ invulnerable save"
+    // Invulnerable Save: description is either "4+" or "Models in this unit have a 4+ invulnerable save."
     if (ability.name === 'Invulnerable Save') {
-      const match = ability.description.match(/(\d)\+\s*invulnerable save/i);
+      const match = ability.description.match(/(\d)\+/);
       if (match) invulnSave = match[1] + '+';
     }
     // Feel No Pain: look for "Feel No Pain N+" in description (unconditional ones)
