@@ -624,10 +624,10 @@ function StatsRow({ label, dist, highlight }: {
   return (
     <tr className={`border-b border-[#1a1a2e] ${highlight ? 'bg-[#1a1506]' : ''}`}>
       <td className={`py-1.5 font-semibold ${highlight ? 'text-[#C5A33E]' : 'text-gray-300'}`}>{label}</td>
-      <td className={`text-center py-1.5 px-3 font-bold ${highlight ? 'text-[#C5A33E]' : 'text-gray-200'}`}>{fmt(distMean(dist))}</td>
-      <td className="text-center py-1.5 text-gray-200 px-3">{percentile(dist, 0.5)}</td>
-      <td className="text-center py-1.5 text-gray-200 px-3">{percentile(dist, 0.75)}</td>
-      <td className="text-center py-1.5 text-gray-200 px-3">{distMax(dist)}</td>
+      <td className={`text-center py-1.5 px-3 font-bold ${highlight ? 'text-[#C5A33E]' : 'text-gray-200'}`}>{distMean(dist).toFixed(2)}</td>
+      <td className="text-center py-1.5 text-gray-200 px-3">{percentile(dist, 0.5).toFixed(2)}</td>
+      <td className="text-center py-1.5 text-gray-200 px-3">{percentile(dist, 0.75).toFixed(2)}</td>
+      <td className="text-center py-1.5 text-gray-200 px-3">{distMax(dist).toFixed(2)}</td>
     </tr>
   );
 }
