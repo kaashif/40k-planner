@@ -425,12 +425,77 @@ export default function ArmySidebar({ onSpawn, onDelete, onClearAll, spawnedUnit
       }
     };
 
-    if (!hasLoadedExampleArmy.current &&
+    const isWaitingForNewRecruitImport = new URLSearchParams(window.location.search).has('nrImport');
+
+    if (!isWaitingForNewRecruitImport &&
+        !hasLoadedExampleArmy.current &&
         Object.keys(mergedBaseSizes).length > 0 &&
         Object.keys(leaderAssignments).length > 0) {
       hasLoadedExampleArmy.current = true;
       loadExampleArmy();
     }
+  }, [mergedBaseSizes, leaderAssignments]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const importRosterData = (data: any) => {
+    // Extract all selections from the force
+    const selections = data.roster?.forces?.[0]?.selections || [];
+
+    // Extract models from all selections (including nested)
+    let models = extractModels(selections);
+    models = applyLeaderAssignments(models);
+
+    setUnits(models);
+
+    // Extract and update army unit stats
+    const armyUnits = extractArmyUnits(selections);
+    onArmyDataUpdate(armyUnits);
+
+    // Pre-populate base sizes from merged data (defaults + overrides)
+    const initialBaseSizes: { [key: string]: string } = {};
+    const initialFlyDimensions: { [key: string]: { width: string; length: string } } = {};
+    const initialIsRectangular: { [key: string]: boolean } = {};
+
+    models.forEach(model => {
+      const saved = mergedBaseSizes[model.name];
+      if (saved) {
+        if (typeof saved === 'object' && 'width' in saved && 'length' in saved) {
+          initialFlyDimensions[model.id] = saved as { width: string; length: string };
+          initialIsRectangular[model.id] = true;
+        } else if (typeof saved === 'string') {
+          initialBaseSizes[model.id] = saved;
+          initialIsRectangular[model.id] = false;
+        }
+      }
+    });
+
+    setBaseSizes(initialBaseSizes);
+    setFlyDimensions(initialFlyDimensions);
+    setIsRectangular(initialIsRectangular);
+  };
+
+  useEffect(() => {
+    const storageKey = 'newRecruitRosterImport';
+
+    const importFromStorage = () => {
+      if (Object.keys(mergedBaseSizes).length === 0 || Object.keys(leaderAssignments).length === 0) return;
+
+      const raw = localStorage.getItem(storageKey);
+      if (!raw) return;
+
+      try {
+        const data = JSON.parse(raw);
+        importRosterData(data);
+        hasLoadedExampleArmy.current = true;
+        localStorage.removeItem(storageKey);
+      } catch (error) {
+        console.error('Error importing New Recruit roster:', error);
+        setUnits([{ name: 'Error parsing New Recruit roster', type: 'error', number: 1, id: 'error' }]);
+      }
+    };
+
+    importFromStorage();
+    window.addEventListener('newRecruitRosterImport', importFromStorage);
+    return () => window.removeEventListener('newRecruitRosterImport', importFromStorage);
   }, [mergedBaseSizes, leaderAssignments]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleJsonImport = () => {
@@ -443,41 +508,7 @@ export default function ArmySidebar({ onSpawn, onDelete, onClearAll, spawnedUnit
       try {
         const text = await file.text();
         const data = JSON.parse(text);
-
-        // Extract all selections from the force
-        const selections = data.roster?.forces?.[0]?.selections || [];
-
-        // Extract models from all selections (including nested)
-        let models = extractModels(selections);
-        models = applyLeaderAssignments(models);
-
-        setUnits(models);
-
-        // Extract and update army unit stats
-        const armyUnits = extractArmyUnits(selections);
-        onArmyDataUpdate(armyUnits);
-
-        // Pre-populate base sizes from merged data (defaults + overrides)
-        const initialBaseSizes: { [key: string]: string } = {};
-        const initialFlyDimensions: { [key: string]: { width: string; length: string } } = {};
-        const initialIsRectangular: { [key: string]: boolean } = {};
-
-        models.forEach(model => {
-          const saved = mergedBaseSizes[model.name];
-          if (saved) {
-            if (typeof saved === 'object' && 'width' in saved && 'length' in saved) {
-              initialFlyDimensions[model.id] = saved as { width: string; length: string };
-              initialIsRectangular[model.id] = true;
-            } else if (typeof saved === 'string') {
-              initialBaseSizes[model.id] = saved;
-              initialIsRectangular[model.id] = false;
-            }
-          }
-        });
-
-        setBaseSizes(initialBaseSizes);
-        setFlyDimensions(initialFlyDimensions);
-        setIsRectangular(initialIsRectangular);
+        importRosterData(data);
       } catch (error) {
         console.error('Error parsing JSON:', error);
         setUnits([{ name: 'Error parsing JSON', type: 'error', number: 1, id: 'error' }]);
