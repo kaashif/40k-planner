@@ -16,9 +16,9 @@ Violentmonkey userscript:
 
 ### Use
 
-1. Start the planner:
-   `npm run dev`
-2. Open a New Recruit JSON export page.
-3. Click `Open in 40k Planner`.
+1. Open a New Recruit JSON export page.
+2. Click `Open in 40k Planner`.
 
-The script stores the roster JSON in Violentmonkey storage, opens `http://localhost:3000/?nrImport=1`, and the planner imports the roster through `localStorage`.
+The script stores the roster JSON in Violentmonkey storage, opens `https://40k-planner.vercel.app/?nrImport=1`, and the planner imports the roster through `localStorage`.
+
+The script still matches `localhost:3000` for local development, but the button opens the deployed Vercel app.

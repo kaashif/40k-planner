@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         New Recruit to 40k Planner
 // @namespace    https://github.com/kaashif/40k-planner
-// @version      0.1.0
+// @version      0.2.0
 // @description  Adds an Open in 40k Planner button to New Recruit JSON exports.
 // @updateURL    https://raw.githubusercontent.com/kaashif/40k-planner/main/userscripts/newrecruit-to-40k-planner.user.js
 // @downloadURL  https://raw.githubusercontent.com/kaashif/40k-planner/main/userscripts/newrecruit-to-40k-planner.user.js
 // @match        https://www.newrecruit.eu/*
 // @match        https://newrecruit.eu/*
+// @match        https://40k-planner.vercel.app/*
 // @match        http://localhost:3000/*
 // @match        http://127.0.0.1:3000/*
 // @grant        GM_getValue
@@ -18,7 +19,7 @@
 (function () {
   'use strict';
 
-  const PLANNER_URL = 'http://localhost:3000/?nrImport=1';
+  const PLANNER_URL = 'https://40k-planner.vercel.app/?nrImport=1';
   const STORAGE_KEY = 'newRecruitRosterJson';
   const BUTTON_ID = 'nr-to-40k-planner-button';
 
@@ -153,7 +154,11 @@
     await GM_deleteValue(STORAGE_KEY);
   }
 
-  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+  if (
+    location.hostname === '40k-planner.vercel.app' ||
+    location.hostname === 'localhost' ||
+    location.hostname === '127.0.0.1'
+  ) {
     importPendingRosterIntoPlanner();
     return;
   }
