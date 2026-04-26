@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import Image from 'next/image';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { SpawnedGroup, SelectedModel } from '../types';
 import { deleteSelectedOperation } from '../utils/selectionOperations';
 import { checkCoherency, findNearestModels, checkParentUnitCoherency } from '../utils/coherencyChecker';
@@ -12,6 +13,23 @@ interface Layout {
   title: string;
   image: string;
   overlay?: string;
+}
+
+interface ThreatUnitOption {
+  name: string;
+  factionSlug: string;
+  factionName: string;
+}
+
+interface ThreatUnitDetails {
+  name: string;
+  stats: { M: string }[];
+  abilities: { name: string; description: string }[];
+  keywords: string[];
+}
+
+interface ThreatCatalogue {
+  units: ThreatUnitDetails[];
 }
 
 interface ArmyUnit {
@@ -57,6 +75,98 @@ const layouts: Layout[] = [
   { id: 'take', title: 'Round 5: Take and Hold', image: '/round5_take.png' },
 ];
 
+const INCH_TO_MM = 25.4;
+
+function parseInches(value: string | undefined): number {
+  const match = value?.match(/(\d+(?:\.\d+)?)/);
+  return match ? Number(match[1]) : 0;
+}
+
+function parseUrlNumber(value: string | null): number | null {
+  if (value === null) return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function formatUrlNumber(value: number): string {
+  return Number(value.toFixed(2)).toString();
+}
+
+function detectScoutMove(unit: ThreatUnitDetails | null): number {
+  if (!unit) return 0;
+  const fields = [
+    ...unit.keywords,
+    ...unit.abilities.flatMap(ability => [ability.name, ability.description]),
+  ];
+
+  for (const field of fields) {
+    const match = field.match(/Scouts?\s+(\d+(?:\.\d+)?)["”]?/i);
+    if (match) return Number(match[1]);
+  }
+
+  return 0;
+}
+
+function diceDistribution(dice: number, sides: number): Map<number, number> {
+  let dist = new Map<number, number>([[0, 1]]);
+  for (let i = 0; i < dice; i++) {
+    const next = new Map<number, number>();
+    for (const [sum, probability] of dist) {
+      for (let face = 1; face <= sides; face++) {
+        next.set(sum + face, (next.get(sum + face) || 0) + probability / sides);
+      }
+    }
+    dist = next;
+  }
+  return dist;
+}
+
+const d6Distribution = diceDistribution(1, 6);
+const chargeDistribution = diceDistribution(2, 6);
+
+function convolve(a: Map<number, number>, b: Map<number, number>): Map<number, number> {
+  const result = new Map<number, number>();
+  for (const [aValue, aProbability] of a) {
+    for (const [bValue, bProbability] of b) {
+      result.set(aValue + bValue, (result.get(aValue + bValue) || 0) + aProbability * bProbability);
+    }
+  }
+  return result;
+}
+
+function probabilityAtLeast(dist: Map<number, number>, target: number): number {
+  let probability = 0;
+  for (const [value, valueProbability] of dist) {
+    if (value >= target) probability += valueProbability;
+  }
+  return probability;
+}
+
+function threatReachProbability(randomDist: Map<number, number>, randomNeeded: number, chargeReroll: boolean, includeAdvance: boolean): number {
+  if (!chargeReroll) return probabilityAtLeast(randomDist, randomNeeded);
+
+  // For a charge reroll, assume the player rerolls only when the first charge roll cannot reach the target.
+  // Advance is not rerolled here; it is the ordinary D6 advance roll.
+  if (!includeAdvance) {
+    const singleChargeProbability = probabilityAtLeast(chargeDistribution, randomNeeded);
+    return 1 - Math.pow(1 - singleChargeProbability, 2);
+  }
+
+  let probability = 0;
+  for (const [advance, advanceProbability] of d6Distribution) {
+    const chargeNeeded = randomNeeded - advance;
+    if (chargeNeeded <= 2) {
+      probability += advanceProbability;
+      continue;
+    }
+    if (chargeNeeded > 12) continue;
+
+    const singleChargeProbability = probabilityAtLeast(chargeDistribution, chargeNeeded);
+    probability += advanceProbability * (1 - Math.pow(1 - singleChargeProbability, 2));
+  }
+  return probability;
+}
+
 export default function DeploymentPlanner({
   spawnedGroups,
   deploymentGroups,
@@ -78,8 +188,13 @@ export default function DeploymentPlanner({
   onTurnChange,
   onResetToDeployment
 }: DeploymentPlannerProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const hasLoadedThreatUrl = useRef(false);
+  const hasManualThreatScout = useRef(false);
   const [selectedLayout, setSelectedLayout] = useState(layouts[0]);
-  const [toolMode, setToolMode] = useState<'selection' | 'ruler'>('selection');
+  const [toolMode, setToolMode] = useState<'selection' | 'ruler' | 'threat'>('selection');
   const [rulerPoints, setRulerPoints] = useState<{ x: number; y: number }[]>([]);
   const [showDeepStrikeZones, setShowDeepStrikeZones] = useState(false);
   const [showMovement, setShowMovement] = useState(false);
@@ -100,6 +215,16 @@ export default function DeploymentPlanner({
   const [lastRotationAngle, setLastRotationAngle] = useState<number>(0);
   const [currentRotationDelta, setCurrentRotationDelta] = useState<number>(0);
   const [imageOffset, setImageOffset] = useState({ x: 0, y: 0 });
+  const [threatUnits, setThreatUnits] = useState<ThreatUnitOption[]>([]);
+  const [threatUnitKey, setThreatUnitKey] = useState('');
+  const [threatUnitSearch, setThreatUnitSearch] = useState('');
+  const [threatUnit, setThreatUnit] = useState<ThreatUnitDetails | null>(null);
+  const [threatLoading, setThreatLoading] = useState(false);
+  const [threatOriginMm, setThreatOriginMm] = useState<{ x: number; y: number } | null>(null);
+  const [threatScoutOverride, setThreatScoutOverride] = useState('');
+  const [threatAdvanceAndCharge, setThreatAdvanceAndCharge] = useState(false);
+  const [threatChargeReroll, setThreatChargeReroll] = useState(false);
+  const [threatArrowAngle, setThreatArrowAngle] = useState(-90);
   const canvasRef = useRef<HTMLDivElement>(null);
   const justCompletedBoxSelection = useRef(false);
   const justCompletedModelInteraction = useRef(false);
@@ -285,6 +410,200 @@ export default function DeploymentPlanner({
   useEffect(() => {
     onRoundChange(selectedLayout.id);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (hasLoadedThreatUrl.current) return;
+    hasLoadedThreatUrl.current = true;
+
+    if (searchParams.get('tool') !== 'threat') return;
+
+    setToolMode('threat');
+
+    const mapParam = searchParams.get('map');
+    if (mapParam) {
+      const layout = layouts.find(l => l.id === mapParam);
+      if (layout) {
+        setSelectedLayout(layout);
+        onRoundChange(layout.id);
+      }
+    }
+
+    const unitParam = searchParams.get('unit');
+    if (unitParam) {
+      setThreatUnitKey(unitParam);
+    }
+
+    const xInches = parseUrlNumber(searchParams.get('x'));
+    const yInches = parseUrlNumber(searchParams.get('y'));
+    if (xInches !== null && yInches !== null) {
+      setThreatOriginMm({
+        x: Math.max(0, Math.min(MAP_WIDTH_MM, xInches * INCH_TO_MM)),
+        y: Math.max(0, Math.min(MAP_HEIGHT_MM, yInches * INCH_TO_MM)),
+      });
+    }
+
+    const scoutParam = searchParams.get('scout');
+    if (scoutParam !== null) {
+      hasManualThreatScout.current = true;
+      setThreatScoutOverride(scoutParam);
+    }
+
+    setThreatAdvanceAndCharge(searchParams.get('advance') === '1');
+    setThreatChargeReroll(searchParams.get('reroll') === '1');
+
+    const angleParam = parseUrlNumber(searchParams.get('angle'));
+    if (angleParam !== null) {
+      setThreatArrowAngle(angleParam);
+    }
+  }, [searchParams, onRoundChange]);
+
+  useEffect(() => {
+    fetch('/api/datasheets/all-units')
+      .then(r => r.json())
+      .then((units: ThreatUnitOption[]) => setThreatUnits(units))
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    if (!threatUnitKey) {
+      setThreatUnit(null);
+      hasManualThreatScout.current = false;
+      setThreatScoutOverride('');
+      return;
+    }
+
+    const [unitName, factionSlug] = threatUnitKey.split('||');
+    if (!unitName || !factionSlug) return;
+
+    let cancelled = false;
+    setThreatLoading(true);
+    fetch(`/api/datasheets/${factionSlug}`)
+      .then(r => r.json())
+      .then((catalogue: ThreatCatalogue) => {
+        if (cancelled) return;
+        const unit = catalogue.units.find(u => u.name === unitName) || null;
+        setThreatUnit(unit);
+        if (!hasManualThreatScout.current) {
+          setThreatScoutOverride(unit ? String(detectScoutMove(unit) || 0) : '');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        if (!cancelled) setThreatUnit(null);
+      })
+      .finally(() => {
+        if (!cancelled) setThreatLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [threatUnitKey]);
+
+  const threatData = useMemo(() => {
+    const moveInches = threatUnit ? parseInches(threatUnit.stats[0]?.M) || 6 : 6;
+    const scoutInches = Math.max(0, Number(threatScoutOverride) || 0);
+    const fixedInches = scoutInches + moveInches;
+    const randomDist = threatAdvanceAndCharge
+      ? convolve(d6Distribution, chargeDistribution)
+      : chargeDistribution;
+    const minRandom = Math.min(...Array.from(randomDist.keys()));
+    const maxRandom = Math.max(...Array.from(randomDist.keys()));
+    const minTotal = fixedInches + minRandom;
+    const maxTotal = fixedInches + maxRandom;
+    const table: Array<{ total: number; probability: number }> = [];
+
+    for (let total = Math.ceil(minTotal); total <= Math.floor(maxTotal); total++) {
+      const randomNeeded = total - fixedInches;
+      table.push({
+        total,
+        probability: threatReachProbability(randomDist, randomNeeded, threatChargeReroll, threatAdvanceAndCharge),
+      });
+    }
+
+    const distanceAtProbability = (threshold: number) => {
+      const eligible = table.filter(row => row.probability >= threshold);
+      return eligible.length > 0 ? eligible[eligible.length - 1].total : minTotal;
+    };
+
+    return {
+      moveInches,
+      scoutInches,
+      fixedInches,
+      normalMoveTotal: scoutInches + moveInches,
+      advanceMaxTotal: scoutInches + moveInches + (threatAdvanceAndCharge ? 6 : 0),
+      maxTotal,
+      p50Total: distanceAtProbability(0.5),
+      p80Total: distanceAtProbability(0.8),
+      table,
+    };
+  }, [threatUnit, threatScoutOverride, threatAdvanceAndCharge, threatChargeReroll]);
+
+  const threatSearchResults = useMemo(() => {
+    const query = threatUnitSearch.trim().toLowerCase();
+    if (query.length < 2) return [];
+
+    const terms = query.split(/\s+/).filter(Boolean);
+    return threatUnits
+      .filter(unit => {
+        const haystack = `${unit.name} ${unit.factionName}`.toLowerCase();
+        return terms.every(term => haystack.includes(term));
+      })
+      .slice(0, 12);
+  }, [threatUnitSearch, threatUnits]);
+
+  const selectedThreatUnitOption = useMemo(() => {
+    if (!threatUnitKey) return null;
+    return threatUnits.find(unit => `${unit.name}||${unit.factionSlug}` === threatUnitKey) || null;
+  }, [threatUnitKey, threatUnits]);
+
+  useEffect(() => {
+    if (!hasLoadedThreatUrl.current || toolMode !== 'threat') return;
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('tool', 'threat');
+    params.set('map', selectedLayout.id);
+    if (threatUnitKey) {
+      params.set('unit', threatUnitKey);
+    } else {
+      params.delete('unit');
+    }
+
+    if (threatOriginMm) {
+      params.set('x', formatUrlNumber(threatOriginMm.x / INCH_TO_MM));
+      params.set('y', formatUrlNumber(threatOriginMm.y / INCH_TO_MM));
+    } else {
+      params.delete('x');
+      params.delete('y');
+    }
+
+    if (threatScoutOverride) {
+      params.set('scout', threatScoutOverride);
+    } else {
+      params.delete('scout');
+    }
+    params.set('advance', threatAdvanceAndCharge ? '1' : '0');
+    params.set('reroll', threatChargeReroll ? '1' : '0');
+    params.set('angle', formatUrlNumber(threatArrowAngle));
+
+    const nextQuery = params.toString();
+    const currentQuery = searchParams.toString();
+    if (nextQuery !== currentQuery) {
+      router.replace(`${pathname}?${nextQuery}`, { scroll: false });
+    }
+  }, [
+    toolMode,
+    selectedLayout.id,
+    threatUnitKey,
+    threatOriginMm,
+    threatScoutOverride,
+    threatAdvanceAndCharge,
+    threatChargeReroll,
+    threatArrowAngle,
+    searchParams,
+    router,
+    pathname,
+  ]);
 
   // Calculate scale and image offset when image loads or container resizes
   useEffect(() => {
@@ -587,6 +906,16 @@ export default function DeploymentPlanner({
 
   // Handle canvas click to deselect (but not during box selection)
   const handleCanvasClick = (e: React.MouseEvent) => {
+    if (toolMode === 'threat') {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (!rect) return;
+
+      const x = Math.max(0, Math.min(MAP_WIDTH_MM, (e.clientX - rect.left - imageOffset.x) / scale));
+      const y = Math.max(0, Math.min(MAP_HEIGHT_MM, (e.clientY - rect.top - imageOffset.y) / scale));
+      setThreatOriginMm({ x, y });
+      return;
+    }
+
     // Ruler mode - add measurement points
     if (toolMode === 'ruler') {
       const rect = canvasRef.current?.getBoundingClientRect();
@@ -625,8 +954,8 @@ export default function DeploymentPlanner({
   };
 
   const handleMouseDown = (e: React.MouseEvent, groupId: string, modelId: string | null) => {
-    // Disable model interaction in ruler mode
-    if (toolMode === 'ruler') return;
+    // Disable model interaction in non-selection modes
+    if (toolMode !== 'selection') return;
 
     e.preventDefault();
     const rect = canvasRef.current?.getBoundingClientRect();
@@ -917,8 +1246,8 @@ export default function DeploymentPlanner({
 
   // Handle canvas mousedown for box selection
   const handleCanvasMouseDown = (e: React.MouseEvent) => {
-    // Disable box selection in ruler mode
-    if (toolMode === 'ruler') return;
+    // Disable box selection outside selection mode
+    if (toolMode !== 'selection') return;
 
     // Allow box selection on canvas or image (but not on models - they stop propagation)
     if (!canvasRef.current) return;
@@ -962,6 +1291,20 @@ export default function DeploymentPlanner({
             }`}
           >
             Ruler
+          </button>
+          <button
+            onClick={() => {
+              setToolMode('threat');
+              setRulerPoints([]);
+              onSelectionChange([]);
+            }}
+            className={`px-3 py-1 font-semibold rounded transition-colors ${
+              toolMode === 'threat'
+                ? 'bg-[#C5A33E] text-black'
+                : 'bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white'
+            }`}
+          >
+            Threat
           </button>
         </div>
 
@@ -1032,6 +1375,22 @@ export default function DeploymentPlanner({
                 className="px-3 py-1 font-semibold rounded transition-colors bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white"
               >
                 Clear Measurement
+              </button>
+            )}
+          </>
+        )}
+
+        {toolMode === 'threat' && (
+          <>
+            <span className="font-semibold text-gray-200">
+              Click the map to place threat origin
+            </span>
+            {threatOriginMm && (
+              <button
+                onClick={() => setThreatOriginMm(null)}
+                className="px-3 py-1 font-semibold rounded transition-colors bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white"
+              >
+                Clear Origin
               </button>
             )}
           </>
@@ -1201,6 +1560,172 @@ export default function DeploymentPlanner({
         )}
       </div>
 
+      {toolMode === 'threat' && (
+        <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-4 space-y-4">
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,2fr)_repeat(5,minmax(0,1fr))]">
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-200">
+                Threat Unit
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={threatUnitSearch}
+                  onChange={(e) => setThreatUnitSearch(e.target.value)}
+                  placeholder="Type unit or faction..."
+                  className="w-full p-2 bg-[#0a0a14] border border-[#1a1a2e] rounded text-gray-200 focus:outline-none focus:border-[#C5A33E]"
+                />
+                {selectedThreatUnitOption && (
+                  <div className="mt-2 flex items-center justify-between gap-2 rounded border border-[#1a1a2e] bg-[#0a0a14] px-3 py-2 text-sm">
+                    <span className="min-w-0 truncate">
+                      {selectedThreatUnitOption.name} - {selectedThreatUnitOption.factionName}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setThreatUnitKey('');
+                        setThreatUnitSearch('');
+                        hasManualThreatScout.current = false;
+                      }}
+                      className="shrink-0 text-gray-400 hover:text-[#C5A33E]"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                )}
+                {threatUnitSearch.trim().length >= 2 && threatSearchResults.length > 0 && (
+                  <div className="absolute z-[120] mt-1 max-h-72 w-full overflow-auto rounded border border-[#1a1a2e] bg-[#0a0a14] shadow-xl">
+                    {threatSearchResults.map(unit => {
+                      const key = `${unit.name}||${unit.factionSlug}`;
+                      return (
+                        <button
+                          key={key}
+                          type="button"
+                          onClick={() => {
+                            hasManualThreatScout.current = false;
+                            setThreatUnitKey(key);
+                            setThreatUnitSearch('');
+                          }}
+                          className="block w-full px-3 py-2 text-left text-sm text-gray-200 hover:bg-[#4a3a0f]"
+                        >
+                          <span className="block font-semibold">{unit.name}</span>
+                          <span className="block text-xs text-gray-400">{unit.factionName}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+                {threatUnitSearch.trim().length >= 2 && threatSearchResults.length === 0 && (
+                  <div className="absolute z-[120] mt-1 w-full rounded border border-[#1a1a2e] bg-[#0a0a14] px-3 py-2 text-sm text-gray-400 shadow-xl">
+                    No matching units
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-200">
+                Move
+              </label>
+              <div className="p-2 rounded border border-[#1a1a2e] bg-[#0a0a14] text-gray-200">
+                {threatLoading ? 'Loading...' : `${threatData.moveInches}"`}
+              </div>
+            </div>
+
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-200">
+                Scout
+              </label>
+              <input
+                type="number"
+                min="0"
+                step="1"
+                value={threatScoutOverride}
+                onChange={(e) => {
+                  hasManualThreatScout.current = true;
+                  setThreatScoutOverride(e.target.value);
+                }}
+                className="w-full p-2 bg-[#0a0a14] border border-[#1a1a2e] rounded text-gray-200 focus:outline-none focus:border-[#C5A33E]"
+              />
+            </div>
+
+            <label className="flex items-end gap-2 pb-2 text-sm font-semibold text-gray-200">
+              <input
+                type="checkbox"
+                checked={threatAdvanceAndCharge}
+                onChange={(e) => setThreatAdvanceAndCharge(e.target.checked)}
+                className="accent-[#C5A33E]"
+              />
+              Advance and charge
+            </label>
+
+            <label className="flex items-end gap-2 pb-2 text-sm font-semibold text-gray-200">
+              <input
+                type="checkbox"
+                checked={threatChargeReroll}
+                onChange={(e) => setThreatChargeReroll(e.target.checked)}
+                className="accent-[#C5A33E]"
+              />
+              Charge reroll
+            </label>
+
+            <div>
+              <label className="block mb-2 text-sm font-semibold text-gray-200">
+                Arrow angle
+              </label>
+              <input
+                type="number"
+                min="-180"
+                max="180"
+                step="5"
+                value={threatArrowAngle}
+                onChange={(e) => setThreatArrowAngle(Number(e.target.value) || 0)}
+                className="w-full p-2 bg-[#0a0a14] border border-[#1a1a2e] rounded text-gray-200 focus:outline-none focus:border-[#C5A33E]"
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_420px]">
+            <div className="text-sm text-gray-300 leading-relaxed">
+              <p>
+                Probabilities are shown as the chance to reach at least a final distance from the origin.
+                The fixed part is Scout + Move. If Advance and charge is on, add D6 advance and 2D6 charge.
+                If it is off, there is no advance roll and only 2D6 charge is random.
+              </p>
+              <p className="mt-2">
+                With Charge reroll on, the table assumes you reroll the charge only when the first 2D6 roll
+                cannot reach the target distance. The advance roll is not rerolled.
+              </p>
+              <div className="mt-3 flex flex-wrap gap-3">
+                <span className="text-gray-400">Origin: {threatOriginMm ? `${(threatOriginMm.x / INCH_TO_MM).toFixed(1)}", ${(threatOriginMm.y / INCH_TO_MM).toFixed(1)}"` : 'click the map'}</span>
+                <span className="text-gray-400">Max: {threatData.maxTotal}"</span>
+                <span className="text-gray-400">50%: {threatData.p50Total}"</span>
+                <span className="text-gray-400">80%: {threatData.p80Total}"</span>
+              </div>
+            </div>
+
+            <div className="max-h-48 overflow-auto rounded border border-[#1a1a2e] bg-[#0a0a14]">
+              <table className="w-full text-sm">
+                <thead className="sticky top-0 bg-[#14142a]">
+                  <tr>
+                    <th className="px-3 py-2 text-left text-[#C5A33E]">Final total</th>
+                    <th className="px-3 py-2 text-right text-[#C5A33E]">Reach chance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {threatData.table.map(row => (
+                    <tr key={row.total} className="border-t border-[#1a1a2e]">
+                      <td className="px-3 py-1.5">{row.total}&quot;</td>
+                      <td className="px-3 py-1.5 text-right">{(row.probability * 100).toFixed(1)}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="bg-[#14142a] border border-[#1a1a2e] rounded-lg p-6">
         <h3 className="text-xl font-bold mb-4 text-[#C5A33E] text-center">
           {selectedLayout.title}
@@ -1261,6 +1786,212 @@ export default function DeploymentPlanner({
               imageOffset={imageOffset}
               isDragging={draggedModel !== null || isRotating || isBoxSelecting}
             />
+          )}
+
+          {/* Threat Range Tracker */}
+          {toolMode === 'threat' && threatOriginMm && (
+            <svg
+              className="absolute pointer-events-none"
+              style={{
+                left: 0,
+                top: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: 30
+              }}
+            >
+              {(() => {
+                const originX = imageOffset.x + threatOriginMm.x * scale;
+                const originY = imageOffset.y + threatOriginMm.y * scale;
+                const scout = threatData.scoutInches;
+                const move = threatData.moveInches;
+                const advance = threatAdvanceAndCharge ? 6 : 0;
+                const p80Charge = Math.max(0, threatData.p80Total - threatData.normalMoveTotal - advance);
+                const p50Charge = Math.max(0, threatData.p50Total - threatData.normalMoveTotal - advance);
+                const maxCharge = Math.max(0, threatData.maxTotal - threatData.normalMoveTotal - advance);
+                const rings = [
+                  {
+                    id: 'scout',
+                    radius: scout,
+                    stroke: '#a3a3a3',
+                    dash: '5,5',
+                    show: scout > 0,
+                  },
+                  {
+                    id: 'move',
+                    radius: threatData.normalMoveTotal,
+                    stroke: '#22c55e',
+                    dash: '',
+                    show: true,
+                  },
+                  {
+                    id: 'advance',
+                    radius: threatData.advanceMaxTotal,
+                    stroke: '#38bdf8',
+                    dash: '8,4',
+                    show: threatAdvanceAndCharge,
+                  },
+                  {
+                    id: 'p80',
+                    radius: threatData.p80Total,
+                    stroke: '#facc15',
+                    dash: '3,5',
+                    show: true,
+                  },
+                  {
+                    id: 'p50',
+                    radius: threatData.p50Total,
+                    stroke: '#fb923c',
+                    dash: '10,5',
+                    show: true,
+                  },
+                  {
+                    id: 'max',
+                    radius: threatData.maxTotal,
+                    stroke: '#ef4444',
+                    dash: '',
+                    show: true,
+                  },
+                ].filter(ring => ring.show && ring.radius > 0);
+                const cumulativeSegments = [
+                  {
+                    id: 'scout',
+                    label: `Scout ${scout}"`,
+                    from: 0,
+                    to: scout,
+                    stroke: '#a3a3a3',
+                    show: scout > 0,
+                  },
+                  {
+                    id: 'move',
+                    label: `Move ${move}"`,
+                    from: scout,
+                    to: threatData.normalMoveTotal,
+                    stroke: '#22c55e',
+                    show: move > 0,
+                  },
+                  {
+                    id: 'advance',
+                    label: 'Advance 6"',
+                    from: threatData.normalMoveTotal,
+                    to: threatData.advanceMaxTotal,
+                    stroke: '#38bdf8',
+                    show: threatAdvanceAndCharge,
+                  },
+                  {
+                    id: 'p80-charge',
+                    label: `80% charge +${p80Charge}"`,
+                    from: threatData.advanceMaxTotal,
+                    to: threatData.p80Total,
+                    stroke: '#facc15',
+                    show: p80Charge > 0,
+                  },
+                  {
+                    id: 'p50-charge',
+                    label: `50% charge +${p50Charge}"`,
+                    from: threatData.p80Total,
+                    to: threatData.p50Total,
+                    stroke: '#fb923c',
+                    show: p50Charge > p80Charge,
+                  },
+                  {
+                    id: 'max-charge',
+                    label: `Max charge +${maxCharge}"`,
+                    from: threatData.p50Total,
+                    to: threatData.maxTotal,
+                    stroke: '#ef4444',
+                    show: maxCharge > p50Charge,
+                  },
+                ].filter(segment => segment.show && segment.to > segment.from);
+                const radialAngle = threatArrowAngle;
+                const radialRadians = radialAngle * Math.PI / 180;
+                const labelOffsetX = 10 * Math.cos((radialAngle - 90) * Math.PI / 180);
+                const labelOffsetY = 10 * Math.sin((radialAngle - 90) * Math.PI / 180);
+
+                return (
+                  <g>
+                    <defs>
+                      {cumulativeSegments.map(segment => (
+                        <marker
+                          key={`arrowhead-${segment.id}`}
+                          id={`threat-arrowhead-${segment.id}`}
+                          markerWidth="8"
+                          markerHeight="8"
+                          refX="7"
+                          refY="4"
+                          orient="auto"
+                        >
+                          <path d="M 0 0 L 8 4 L 0 8 Z" fill={segment.stroke} />
+                        </marker>
+                      ))}
+                    </defs>
+                    <circle
+                      cx={originX}
+                      cy={originY}
+                      r="5"
+                      fill="#C5A33E"
+                      stroke="black"
+                      strokeWidth="2"
+                    />
+                    {rings.map((ring) => {
+                      const radiusPx = ring.radius * INCH_TO_MM * scale;
+
+                      return (
+                        <g key={ring.id}>
+                          <circle
+                            cx={originX}
+                            cy={originY}
+                            r={radiusPx}
+                            fill="none"
+                            stroke={ring.stroke}
+                            strokeWidth="2.5"
+                            strokeDasharray={ring.dash}
+                          />
+                        </g>
+                      );
+                    })}
+                    {cumulativeSegments.map(segment => {
+                      const startRadiusPx = segment.from * INCH_TO_MM * scale;
+                      const endRadiusPx = segment.to * INCH_TO_MM * scale;
+                      const startX = originX + startRadiusPx * Math.cos(radialRadians);
+                      const startY = originY + startRadiusPx * Math.sin(radialRadians);
+                      const endX = originX + endRadiusPx * Math.cos(radialRadians);
+                      const endY = originY + endRadiusPx * Math.sin(radialRadians);
+                      const labelRadiusPx = (startRadiusPx + endRadiusPx) / 2;
+                      const labelX = originX + labelRadiusPx * Math.cos(radialRadians) + labelOffsetX;
+                      const labelY = originY + labelRadiusPx * Math.sin(radialRadians) + labelOffsetY;
+
+                      return (
+                        <g key={`segment-${segment.id}`}>
+                          <line
+                            x1={startX}
+                            y1={startY}
+                            x2={endX}
+                            y2={endY}
+                            stroke={segment.stroke}
+                            strokeWidth="3"
+                            markerEnd={`url(#threat-arrowhead-${segment.id})`}
+                          />
+                          <text
+                            x={labelX}
+                            y={labelY}
+                            fill={segment.stroke}
+                            fontSize="12"
+                            fontWeight="bold"
+                            stroke="black"
+                            strokeWidth="4"
+                            paintOrder="stroke"
+                            textAnchor="middle"
+                          >
+                            {segment.label}
+                          </text>
+                        </g>
+                      );
+                    })}
+                  </g>
+                );
+              })()}
+            </svg>
           )}
 
           {/* Diff View - Ghost models from deployment and movement arrows */}
