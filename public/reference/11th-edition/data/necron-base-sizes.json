@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "edition": 11,
+  "faction": "Necrons",
+  "retrieved": "2026-08-02",
+  "source": "https://wahapedia.ru/wh40k11ed/factions/necrons/datasheets.html",
+  "notes": [
+    "Includes current Necrons and Necrons Warhammer Legends datasheets shown by the source.",
+    "Units whose source entry says 'Use model' are omitted because they have no fixed base footprint."
+  ],
+  "presets": [
+    {
+      "widthMm": 25,
+      "heightMm": 25,
+      "units": ["Trazyn The Infinite", "Anrakyr The Traveller", "Nemesor Zahndrekh", "Vargard Obyron"]
+    },
+    {
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "units": ["Canoptek Macrocytes", "Flayed Ones"]
+    },
+    {
+      "widthMm": 32,
+      "heightMm": 32,
+      "units": ["Plasmancer", "Royal Warden", "Lord", "Immortals", "Necron Warriors", "Cryptothralls", "Deathmarks", "Lychguard", "Triarch Praetorians", "Tomb Blades"]
+    },
+    {
+      "widthMm": 40,
+      "heightMm": 40,
+      "units": ["Imotekh The Stormlord", "Orikan The Diviner", "C’tan Shard of the Deceiver", "Chronomancer", "Psychomancer", "Canoptek Acanthrites", "Canoptek Scarab Swarms"]
+    },
+    {
+      "widthMm": 50,
+      "heightMm": 50,
+      "units": ["Geomancer", "Hexmark Destroyer", "Technomancer", "Canoptek Tomb Crawlers", "Canoptek Wraiths", "Ophydian Destroyers", "Skorpekh Destroyers"]
+    },
+    {
+      "widthMm": 60,
+      "heightMm": 60,
+      "units": ["Skorpekh Lord", "Transcendent C’tan", "Lokhust Lord", "Catacomb Command Barge", "Ghost Ark", "Lokhust Destroyers", "Lokhust Heavy Destroyers", "Canoptek Spyders", "Doomsday Ark", "Tesseract Ark", "Canoptek Reanimator"]
+    },
+    {
+      "widthMm": 80,
+      "heightMm": 80,
+      "units": ["Illuminor Szeras", "Nekrosor Ammentar", "C’tan Shard of the Void Dragon"]
+    },
+    {
+      "widthMm": 90,
+      "heightMm": 90,
+      "units": ["C’tan Shard of the Nightbringer", "Canoptek Doomstalker"]
+    },
+    {
+      "widthMm": 120,
+      "heightMm": 92,
+      "units": ["Doom Scythe", "Night Shroud", "Canoptek Tomb Sentinel", "Canoptek Tomb Stalker", "Obelisk", "Tesseract Vault", "Night Scythe"]
+    },
+    {
+      "widthMm": 160,
+      "heightMm": 160,
+      "units": ["Monolith"]
+    }
+  ]
+}

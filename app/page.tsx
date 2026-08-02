@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Link from 'next/link';
 import missionsData from '../public/reference/11th-edition/data/missions.json';
 import layoutsData from '../public/reference/11th-edition/data/event-layouts.json';
 
@@ -153,13 +154,14 @@ export default function Home() {
                     PDF page {layout.pdfPage} ↗
                   </a>
                 </div>
-                <a href={`${referenceRoot}/official/event-companion.pdf#page=${layout.pdfPage}`} target="_blank">
+                <Link className="layout-planner-link" href={`/planner/?layout=${layout.id}`}>
                   {/* The generated JPEG is a direct preview of the authoritative Event Companion page. */}
                   <img
                     src={`${referenceRoot}/layouts/layout-${page}.jpg`}
                     alt={`${playerDisposition.name} versus ${opponentDisposition.name}, layout ${layout.layout}`}
                   />
-                </a>
+                  <span>Open deployment planner</span>
+                </Link>
               </article>
             );
           })}
