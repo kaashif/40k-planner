@@ -22,6 +22,6 @@ The Chapter Approved Mission Deck 2026–27 is a separately sold 88-card product
 From the repository root:
 
 ```sh
-pdftotext -layout reference/11th-edition/official/event-companion.pdf reference/11th-edition/extracted/event-companion.txt
+pdftotext -layout public/reference/11th-edition/official/event-companion.pdf public/reference/11th-edition/extracted/event-companion.txt
 node scripts/extract-11e-layouts.mjs
 ```

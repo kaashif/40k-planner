@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Warhammer 40k Tournament Planner",
-  description: "Plan your Warhammer 40k tournament strategy with army importing, deployment planning, and flashcards",
+  title: "Mission Control — Warhammer 40,000 11th Edition",
+  description: "An 11th-edition mission, matchup, and official event layout reference.",
 };
 
 export default function RootLayout({

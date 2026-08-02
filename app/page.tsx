@@ -1,441 +1,231 @@
-'use client';
+import missionsData from '../public/reference/11th-edition/data/missions.json';
+import layoutsData from '../public/reference/11th-edition/data/event-layouts.json';
 
-import { Suspense, useState, useEffect, useCallback } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import ArmySidebar from './components/ArmySidebar';
-import DeploymentPlanner from './components/DeploymentPlanner';
-import DatasheetsBrowser from './components/DatasheetsBrowser';
-import ArmyBuilder from './components/ArmyBuilder';
-import FightSimulator from './components/FightSimulator';
-import ExportPDFButton from './components/ExportPDFButton';
-import { Model, SpawnedGroup, SpawnedUnit, SelectedModel } from './types';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+const referenceRoot = `${basePath}/reference/11th-edition`;
 
-type Tab = 'deployment' | 'datasheets' | 'armybuilder' | 'simulator';
-const VALID_TABS: Tab[] = ['deployment', 'datasheets', 'armybuilder', 'simulator'];
+type Layout = (typeof layoutsData.layouts)[number];
 
-function MainContent() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const tabParam = searchParams.get('tab');
-  const initialTab: Tab = VALID_TABS.includes(tabParam as Tab) ? (tabParam as Tab) : 'deployment';
-  const [activeTab, setActiveTab] = useState<Tab>(initialTab);
+function sourceUrl(path: string) {
+  return `${referenceRoot}/${path}`;
+}
 
-  // Sync tab state to URL
-  const handleTabChange = useCallback((tab: Tab) => {
-    setActiveTab(tab);
-    const url = tab === 'deployment' ? '/' : `/?tab=${tab}`;
-    router.replace(url, { scroll: false });
-  }, [router]);
+function groupLayouts(layouts: Layout[]) {
+  const groups = new Map<string, Layout[]>();
+  for (const layout of layouts) {
+    const key = [layout.attacker.forceDisposition, layout.defender.forceDisposition].join(' vs ');
+    groups.set(key, [...(groups.get(key) ?? []), layout]);
+  }
+  return [...groups.entries()];
+}
 
-  // Army data state
-  const [armyUnits, setArmyUnits] = useState<{ name: string; stats?: { M: string; T: string; SV: string; W: string; LD: string; OC: string }; invulnSave?: string }[]>([]);
-  const [auras, setAuras] = useState<{ [unitName: string]: number }>({});
-
-  // Per-round and per-turn state
-  const [currentRound, setCurrentRound] = useState<string>('terraform');
-  const [currentTurn, setCurrentTurn] = useState<string>('deployment');
-  const [spawnedGroupsByRoundAndTurn, setSpawnedGroupsByRoundAndTurn] = useState<{ [key: string]: SpawnedGroup[] }>({});
-  const [reserveUnits, setReserveUnits] = useState<Set<string>>(new Set());
-  const [allUnitIds, setAllUnitIds] = useState<string[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // Selection state (per-round and per-turn)
-  const [selectedModelsByRoundAndTurn, setSelectedModelsByRoundAndTurn] = useState<{ [key: string]: SelectedModel[] }>({});
-  const [isBoxSelecting, setIsBoxSelecting] = useState(false);
-  const [boxSelectStart, setBoxSelectStart] = useState<{ x: number; y: number } | null>(null);
-  const [boxSelectEnd, setBoxSelectEnd] = useState<{ x: number; y: number } | null>(null);
-
-  // Derived state for current round and turn
-  const stateKey = `${currentRound}-${currentTurn}`;
-  const deploymentKey = `${currentRound}-deployment`;
-  const spawnedGroups = spawnedGroupsByRoundAndTurn[stateKey] || [];
-  const deploymentGroups = spawnedGroupsByRoundAndTurn[deploymentKey] || [];
-  const spawnedUnitIds = new Set(spawnedGroups.map(g => g.unitId));
-  const selectedModels = selectedModelsByRoundAndTurn[stateKey] || [];
-
-  // Load state from localStorage on mount
-  useEffect(() => {
-    try {
-      const savedGroups = localStorage.getItem('spawnedGroupsByRoundAndTurn');
-      if (savedGroups) {
-        setSpawnedGroupsByRoundAndTurn(JSON.parse(savedGroups));
-      } else {
-        // Migration: try loading old format
-        const oldSavedGroups = localStorage.getItem('spawnedGroupsByRound');
-        if (oldSavedGroups) {
-          const oldGroups = JSON.parse(oldSavedGroups);
-          // Convert old format to new format (treat old data as deployment state)
-          const newGroups: { [key: string]: SpawnedGroup[] } = {};
-          for (const [roundId, groups] of Object.entries(oldGroups)) {
-            newGroups[`${roundId}-deployment`] = groups as SpawnedGroup[];
-          }
-          setSpawnedGroupsByRoundAndTurn(newGroups);
-        }
-      }
-    } catch (error) {
-      console.error('Error loading spawned groups from localStorage:', error);
-    }
-    setIsLoaded(true);
-  }, []);
-
-  // Save state to localStorage whenever spawnedGroupsByRoundAndTurn changes
-  useEffect(() => {
-    if (!isLoaded) return; // Don't save on initial load
-
-    try {
-      localStorage.setItem('spawnedGroupsByRoundAndTurn', JSON.stringify(spawnedGroupsByRoundAndTurn));
-    } catch (error) {
-      console.error('Error saving spawned groups to localStorage:', error);
-    }
-  }, [spawnedGroupsByRoundAndTurn, isLoaded]);
-
-  const handleSpawn = (unit: SpawnedUnit) => {
-    // Create models in a grid formation
-    // Note: We'll scale these in the DeploymentPlanner component
-    const models: Model[] = [];
-    const spacing = 5; // spacing in mm between models
-    const modelsPerRow = Math.ceil(Math.sqrt(unit.modelCount));
-    const modelSize = unit.isRectangular
-      ? Math.max(unit.width || 25, unit.length || 25)
-      : (unit.baseSize || 25);
-
-    for (let i = 0; i < unit.modelCount; i++) {
-      const row = Math.floor(i / modelsPerRow);
-      const col = i % modelsPerRow;
-
-      models.push({
-        id: `model-${i}`,
-        x: col * (modelSize + spacing), // Store in mm
-        y: row * (modelSize + spacing)  // Store in mm
-      });
-    }
-
-    setSpawnedGroupsByRoundAndTurn(prev => {
-      const currentGroups = prev[stateKey] || [];
-
-      // Map dimensions in mm (60" x 44")
-      const MAP_WIDTH_MM = 60 * 25.4;  // 1524mm
-      const MAP_HEIGHT_MM = 44 * 25.4; // 1117.6mm
-
-      // Calculate the size of the unit's formation
-      const formationWidth = modelsPerRow * (modelSize + spacing);
-      const formationRows = Math.ceil(unit.modelCount / modelsPerRow);
-      const formationHeight = formationRows * (modelSize + spacing);
-
-      // Spawn in the center of the map
-      const groupX = (MAP_WIDTH_MM - formationWidth) / 2;
-      const groupY = (MAP_HEIGHT_MM - formationHeight) / 2;
-
-      const newGroup: SpawnedGroup = {
-        unitId: unit.unitId,
-        unitName: unit.unitName,
-        parentUnitId: unit.parentUnitId,
-        parentUnitName: unit.parentUnitName,
-        isRectangular: unit.isRectangular,
-        baseSize: unit.baseSize,
-        width: unit.width,
-        length: unit.length,
-        models,
-        groupX,
-        groupY
-      };
-
-      return {
-        ...prev,
-        [stateKey]: [...currentGroups, newGroup]
-      };
-    });
-  };
-
-  const handleDelete = (unitId: string) => {
-    setSpawnedGroupsByRoundAndTurn(prev => ({
-      ...prev,
-      [stateKey]: (prev[stateKey] || []).filter(group => group.unitId !== unitId)
-    }));
-
-    // Remove deleted models from selection
-    setSelectedModelsByRoundAndTurn(prev => ({
-      ...prev,
-      [stateKey]: (prev[stateKey] || []).filter(sel => sel.groupId !== unitId)
-    }));
-  };
-
-  const handleClearAll = useCallback(() => {
-    setSpawnedGroupsByRoundAndTurn(prev => ({
-      ...prev,
-      [stateKey]: []
-    }));
-    setSelectedModelsByRoundAndTurn(prev => ({
-      ...prev,
-      [stateKey]: []
-    }));
-  }, [stateKey]);
-
-  const handleUpdateGroups = (groups: SpawnedGroup[]) => {
-    setSpawnedGroupsByRoundAndTurn(prev => ({
-      ...prev,
-      [stateKey]: groups
-    }));
-  };
-
-  const handleSelectionChange = (models: SelectedModel[]) => {
-    setSelectedModelsByRoundAndTurn(prev => ({
-      ...prev,
-      [stateKey]: models
-    }));
-  };
-
-  const handleReserveChange = (unitId: string, isReserve: boolean) => {
-    setReserveUnits(prev => {
-      const next = new Set(prev);
-      if (isReserve) {
-        next.add(unitId);
-      } else {
-        next.delete(unitId);
-      }
-      return next;
-    });
-  };
-
-  const handleUnitIdsUpdate = useCallback((unitIds: string[]) => {
-    setAllUnitIds(unitIds);
-  }, []);
-
-  const handleAuraChange = useCallback((unitName: string, auraInches: number) => {
-    setAuras(prev => ({
-      ...prev,
-      [unitName]: auraInches
-    }));
-  }, []);
-
-  const handleTurnChange = useCallback((turn: string) => {
-    setCurrentTurn(turn);
-  }, []);
-
-  const handleResetToDeployment = useCallback(() => {
-    const deploymentKey = `${currentRound}-deployment`;
-    const deploymentState = spawnedGroupsByRoundAndTurn[deploymentKey] || [];
-
-    // Deep copy the deployment state to the current turn
-    const copiedState = JSON.parse(JSON.stringify(deploymentState));
-
-    setSpawnedGroupsByRoundAndTurn(prev => ({
-      ...prev,
-      [stateKey]: copiedState
-    }));
-
-    // Clear selection
-    setSelectedModelsByRoundAndTurn(prev => ({
-      ...prev,
-      [stateKey]: []
-    }));
-  }, [currentRound, stateKey, spawnedGroupsByRoundAndTurn]);
-
-  const handleClearLocalStorage = () => {
-    if (confirm('Are you sure you want to clear all saved data? This will reset spawned models and base size overrides.')) {
-      localStorage.removeItem('spawnedGroupsByRoundAndTurn');
-      localStorage.removeItem('spawnedGroupsByRound'); // Old format
-      localStorage.removeItem('baseSizeOverrides');
-      window.location.reload();
-    }
-  };
-
-  const handleExportData = () => {
-    try {
-      const exportData = {
-        spawnedGroupsByRoundAndTurn: JSON.parse(localStorage.getItem('spawnedGroupsByRoundAndTurn') || '{}'),
-        baseSizeOverrides: JSON.parse(localStorage.getItem('baseSizeOverrides') || '{}'),
-        exportDate: new Date().toISOString()
-      };
-
-      const dataStr = JSON.stringify(exportData, null, 2);
-      const dataBlob = new Blob([dataStr], { type: 'application/json' });
-      const url = URL.createObjectURL(dataBlob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `40k-planner-export-${new Date().toISOString().split('T')[0]}.json`;
-      link.click();
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Error exporting data:', error);
-      alert('Failed to export data. See console for details.');
-    }
-  };
-
-  const handleImportData = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
-    input.onchange = async (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (!file) return;
-
-      try {
-        const text = await file.text();
-        const importData = JSON.parse(text);
-
-        if (importData.spawnedGroupsByRoundAndTurn) {
-          localStorage.setItem('spawnedGroupsByRoundAndTurn', JSON.stringify(importData.spawnedGroupsByRoundAndTurn));
-        } else if (importData.spawnedGroupsByRound) {
-          // Handle old format - convert to new format
-          const newGroups: { [key: string]: SpawnedGroup[] } = {};
-          for (const [roundId, groups] of Object.entries(importData.spawnedGroupsByRound)) {
-            newGroups[`${roundId}-deployment`] = groups as SpawnedGroup[];
-          }
-          localStorage.setItem('spawnedGroupsByRoundAndTurn', JSON.stringify(newGroups));
-        }
-        if (importData.baseSizeOverrides) {
-          localStorage.setItem('baseSizeOverrides', JSON.stringify(importData.baseSizeOverrides));
-        }
-
-        alert('Data imported successfully! The page will now reload.');
-        window.location.reload();
-      } catch (error) {
-        console.error('Error importing data:', error);
-        alert('Failed to import data. Please ensure the file is a valid export file.');
-      }
-    };
-    input.click();
-  };
+export default function Home() {
+  const layoutGroups = groupLayouts(layoutsData.layouts);
+  const primaryCount = missionsData.forceDispositions.reduce(
+    (total, disposition) => total + Object.keys(disposition.primaryMissionsByOpponent).length,
+    0,
+  );
 
   return (
-    <div className="min-h-screen bg-[#0a0a14]">
-      <div className="flex">
-        {/* Army Sidebar - only shown on deployment tab */}
-        {activeTab === 'deployment' && (
-          <ArmySidebar
-            onSpawn={handleSpawn}
-            onDelete={handleDelete}
-            onClearAll={handleClearAll}
-            spawnedUnits={spawnedUnitIds}
-            spawnedGroups={spawnedGroups}
-            onSelectAll={handleSelectionChange}
-            onArmyDataUpdate={setArmyUnits}
-            reserveUnits={reserveUnits}
-            onReserveChange={handleReserveChange}
-            onUnitIdsUpdate={handleUnitIdsUpdate}
-            onAuraChange={handleAuraChange}
-            auras={auras}
-          />
-        )}
-
-        {/* Main Content */}
-        <div className="flex-1 p-8">
-          <header className="mb-8">
-            <h1 className="text-4xl font-bold text-[#C5A33E] mb-4">
-              Warhammer 40k Tournament Planner
-            </h1>
-            <div className="flex gap-3">
-              <ExportPDFButton spawnedGroupsByRoundAndTurn={spawnedGroupsByRoundAndTurn} />
-              <button
-                onClick={handleImportData}
-                className="px-4 py-2 bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white font-semibold rounded-lg transition-colors"
-              >
-                Load Saved Data
-              </button>
-              <button
-                onClick={handleExportData}
-                className="px-4 py-2 bg-[#4a3a0f] hover:bg-[#C5A33E] hover:text-black text-white font-semibold rounded-lg transition-colors"
-              >
-                Export Saved Data
-              </button>
-              <button
-                onClick={handleClearLocalStorage}
-                className="px-4 py-2 bg-red-900 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors"
-              >
-                Clear Saved Data
-              </button>
-            </div>
-          </header>
-
-          {/* Tab Navigation */}
-          <div className="flex gap-3 mb-6">
-            <button
-              onClick={() => handleTabChange('deployment')}
-              className={`px-6 py-3 font-semibold rounded-lg transition-colors ${
-                activeTab === 'deployment'
-                  ? 'bg-[#4a3a0f] text-[#C5A33E] border-2 border-[#C5A33E]'
-                  : 'bg-[#14142a] text-gray-400 border-2 border-[#1a1a2e] hover:border-[#C5A33E] hover:text-gray-200'
-              }`}
-            >
-              Deployment
-            </button>
-            <button
-              onClick={() => handleTabChange('datasheets')}
-              className={`px-6 py-3 font-semibold rounded-lg transition-colors ${
-                activeTab === 'datasheets'
-                  ? 'bg-[#4a3a0f] text-[#C5A33E] border-2 border-[#C5A33E]'
-                  : 'bg-[#14142a] text-gray-400 border-2 border-[#1a1a2e] hover:border-[#C5A33E] hover:text-gray-200'
-              }`}
-            >
-              Datasheets
-            </button>
-            <button
-              onClick={() => handleTabChange('armybuilder')}
-              className={`px-6 py-3 font-semibold rounded-lg transition-colors ${
-                activeTab === 'armybuilder'
-                  ? 'bg-[#4a3a0f] text-[#C5A33E] border-2 border-[#C5A33E]'
-                  : 'bg-[#14142a] text-gray-400 border-2 border-[#1a1a2e] hover:border-[#C5A33E] hover:text-gray-200'
-              }`}
-            >
-              Army Builder
-            </button>
-            <button
-              onClick={() => handleTabChange('simulator')}
-              className={`px-6 py-3 font-semibold rounded-lg transition-colors ${
-                activeTab === 'simulator'
-                  ? 'bg-[#4a3a0f] text-[#C5A33E] border-2 border-[#C5A33E]'
-                  : 'bg-[#14142a] text-gray-400 border-2 border-[#1a1a2e] hover:border-[#C5A33E] hover:text-gray-200'
-              }`}
-            >
-              Fight Sim
-            </button>
+    <main>
+      <header className="hero">
+        <nav className="nav shell" aria-label="Primary navigation">
+          <a className="brand" href="#top" aria-label="Mission Control home">
+            <span className="brand-mark">XI</span>
+            <span>Mission Control</span>
+          </a>
+          <div className="nav-links">
+            <a href="#missions">Missions</a>
+            <a href="#layouts">Layouts</a>
+            <a href="#secondaries">Secondaries</a>
+            <a href="#sources">Sources</a>
           </div>
+        </nav>
 
-          <main className="bg-[#0a0a14] border border-[#1a1a2e] rounded-lg p-6">
-            {activeTab === 'deployment' && (
-              <DeploymentPlanner
-                spawnedGroups={spawnedGroups}
-                deploymentGroups={deploymentGroups}
-                onUpdateGroups={handleUpdateGroups}
-                selectedModels={selectedModels}
-                onSelectionChange={handleSelectionChange}
-                isBoxSelecting={isBoxSelecting}
-                setIsBoxSelecting={setIsBoxSelecting}
-                boxSelectStart={boxSelectStart}
-                setBoxSelectStart={setBoxSelectStart}
-                boxSelectEnd={boxSelectEnd}
-                setBoxSelectEnd={setBoxSelectEnd}
-                onRoundChange={setCurrentRound}
-                allUnitIds={allUnitIds}
-                reserveUnits={reserveUnits}
-                armyUnits={armyUnits}
-                auras={auras}
-                currentTurn={currentTurn}
-                onTurnChange={handleTurnChange}
-                onResetToDeployment={handleResetToDeployment}
-              />
-            )}
-            {activeTab === 'datasheets' && (
-              <DatasheetsBrowser />
-            )}
-            {activeTab === 'armybuilder' && (
-              <ArmyBuilder />
-            )}
-            {activeTab === 'simulator' && (
-              <FightSimulator />
-            )}
-          </main>
+        <div className="hero-content shell" id="top">
+          <p className="eyebrow">Warhammer 40,000 · 11th Edition · 2026–27</p>
+          <h1>Know the mission.<br /><span>Own the table.</span></h1>
+          <p className="lede">
+            Every Force Disposition matchup, primary mission and official event layout—indexed from the current rules in one field reference.
+          </p>
+          <div className="hero-actions">
+            <a className="button primary" href="#missions">Explore missions</a>
+            <a className="button secondary" href={sourceUrl('official/event-companion.pdf')}>Open Event Companion ↗</a>
+          </div>
         </div>
-      </div>
+
+        <div className="stats shell" aria-label="Reference totals">
+          <Stat value={missionsData.forceDispositions.length} label="Force dispositions" />
+          <Stat value={primaryCount} label="Primary missions" />
+          <Stat value={layoutsData.layouts.length} label="Measured layouts" />
+          <Stat value={missionsData.secondaryMissions.length} label="Secondary cards" />
+        </div>
+      </header>
+
+      <section className="section shell" id="missions">
+        <SectionHeading
+          index="01"
+          title="Mission matrix"
+          description="Your Force Disposition and your opponent’s disposition determine a different primary mission for each player."
+        />
+
+        <div className="disposition-grid">
+          {missionsData.forceDispositions.map((disposition) => (
+            <article className="disposition-card" key={disposition.id}>
+              <span className="card-code">{String(missionsData.forceDispositions.indexOf(disposition) + 1).padStart(2, '0')}</span>
+              <h3>{disposition.name}</h3>
+              <p>{disposition.summary}</p>
+              <a href={disposition.referenceUrl}>Community card reference ↗</a>
+            </article>
+          ))}
+        </div>
+
+        <div className="matrix-wrap">
+          <table className="matrix">
+            <caption>Your primary mission (rows) against the opponent’s disposition (columns)</caption>
+            <thead>
+              <tr>
+                <th scope="col">You play ↓ / Opponent →</th>
+                {missionsData.forceDispositions.map((disposition) => (
+                  <th scope="col" key={disposition.id}>{disposition.name}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {missionsData.forceDispositions.map((disposition) => (
+                <tr key={disposition.id}>
+                  <th scope="row">{disposition.name}</th>
+                  {missionsData.forceDispositions.map((opponent) => (
+                    <td key={opponent.id}>
+                      {disposition.primaryMissionsByOpponent[opponent.id as keyof typeof disposition.primaryMissionsByOpponent]}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="section section-dark" id="layouts">
+        <div className="shell">
+          <SectionHeading
+            index="02"
+            title="Official event layouts"
+            description="All 15 disposition matchups have three measured layouts. Each entry links directly to its authoritative page in the Event Companion."
+            inverted
+          />
+
+          <div className="layout-groups">
+            {layoutGroups.map(([matchup, layouts], groupIndex) => (
+              <article className="layout-group" key={matchup}>
+                <div className="layout-group-heading">
+                  <span>{String(groupIndex + 1).padStart(2, '0')}</span>
+                  <h3>{matchup}</h3>
+                </div>
+                <div className="layout-cards">
+                  {layouts.map((layout) => (
+                    <a
+                      className="layout-card"
+                      href={`${sourceUrl('official/event-companion.pdf')}#page=${layout.pdfPage}`}
+                      key={layout.id}
+                    >
+                      <div className="layout-card-top">
+                        <strong>Layout {layout.layout}</strong>
+                        <span>PDF p.{layout.printedPage} ↗</span>
+                      </div>
+                      <div className="mission-pair">
+                        <p><small>{layout.attacker.forceDisposition}</small>{layout.attacker.primaryMission}</p>
+                        <span>VS</span>
+                        <p><small>{layout.defender.forceDisposition}</small>{layout.defender.primaryMission}</p>
+                      </div>
+                      <div className="measurement-row">
+                        {layout.measurementsInches.slice(0, 7).map((measurement) => (
+                          <span key={measurement}>{measurement}&quot;</span>
+                        ))}
+                        {layout.measurementsInches.length > 7 && <span>+{layout.measurementsInches.length - 7}</span>}
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section shell" id="secondaries">
+        <SectionHeading
+          index="03"
+          title="Secondary missions"
+          description="The complete 18-card name index for the Chapter Approved 2026–27 secondary deck. Fixed-capable cards are marked."
+        />
+        <div className="secondary-grid">
+          {missionsData.secondaryMissions.map((mission, index) => (
+            <a
+              className="secondary-card"
+              href={missionsData.secondaryMissionReferenceUrl}
+              key={mission.id}
+            >
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <strong>{mission.name}</strong>
+              {mission.fixed && <em>Fixed</em>}
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="section sources-section" id="sources">
+        <div className="shell">
+          <SectionHeading
+            index="04"
+            title="Source library"
+            description="Original official PDFs, searchable text extractions, and normalized JSON are included with the site."
+            inverted
+          />
+          <div className="source-grid">
+            <SourceCard title="Core Rules" meta="Official · PDF · 88 pages" href={sourceUrl('official/core-rules.pdf')} />
+            <SourceCard title="Event Companion" meta="Official · PDF · 93 pages" href={sourceUrl('official/event-companion.pdf')} />
+            <SourceCard title="Terrain Footprints" meta="Official · PDF · 3 pages" href={sourceUrl('official/terrain-area-footprints.pdf')} />
+            <SourceCard title="Mission data" meta="Normalized · JSON" href={sourceUrl('data/missions.json')} />
+            <SourceCard title="Layout data" meta="45 entries · JSON" href={sourceUrl('data/event-layouts.json')} />
+            <SourceCard title="Source manifest" meta="URLs · checksums · JSON" href={sourceUrl('data/sources.json')} />
+            <SourceCard title="Core Rules text" meta="Searchable · plain text" href={sourceUrl('extracted/core-rules.txt')} />
+            <SourceCard title="Event Companion text" meta="Searchable · plain text" href={sourceUrl('extracted/event-companion.txt')} />
+          </div>
+        </div>
+      </section>
+
+      <footer className="footer shell">
+        <span>Mission Control · 11th Edition</span>
+        <p>Unofficial fan reference. Warhammer 40,000 and associated marks belong to Games Workshop.</p>
+      </footer>
+    </main>
+  );
+}
+
+function Stat({ value, label }: { value: number; label: string }) {
+  return <div className="stat"><strong>{value}</strong><span>{label}</span></div>;
+}
+
+function SectionHeading({ index, title, description, inverted = false }: {
+  index: string;
+  title: string;
+  description: string;
+  inverted?: boolean;
+}) {
+  return (
+    <div className={`section-heading${inverted ? ' inverted' : ''}`}>
+      <span>{index}</span>
+      <div><h2>{title}</h2><p>{description}</p></div>
     </div>
   );
 }
 
-export default function Home() {
+function SourceCard({ title, meta, href }: { title: string; meta: string; href: string }) {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#0a0a14]" />}>
-      <MainContent />
-    </Suspense>
+    <a className="source-card" href={href}>
+      <span>↗</span><strong>{title}</strong><small>{meta}</small>
+    </a>
   );
 }

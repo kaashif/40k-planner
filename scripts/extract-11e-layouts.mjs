@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 
-const input = new URL('../reference/11th-edition/extracted/event-companion.txt', import.meta.url);
-const output = new URL('../reference/11th-edition/data/event-layouts.json', import.meta.url);
+const input = new URL('../public/reference/11th-edition/extracted/event-companion.txt', import.meta.url);
+const output = new URL('../public/reference/11th-edition/data/event-layouts.json', import.meta.url);
 
 const text = await readFile(input, 'utf8');
 const pages = text.split('\f');
