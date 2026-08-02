@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "edition": 11,
+  "retrievedOn": "2026-08-02",
+  "sources": [
+    {
+      "id": "core-rules",
+      "publisher": "Games Workshop",
+      "title": "Warhammer 40,000 Core Rules",
+      "kind": "official-pdf",
+      "url": "https://assets.warhammer-community.com/eng_01-06_warhammer40k_new40k_core_rules-was6fbu1ix-hfewhmxyiy.pdf",
+      "localFile": "official/core-rules.pdf",
+      "extractedText": "extracted/core-rules.txt",
+      "pages": 88,
+      "bytes": 32214071,
+      "sha256": "f6a2443a44627ac5f0ef08407d29aa5ec7e97339998f05bc35f3ae37bf276833"
+    },
+    {
+      "id": "event-companion",
+      "publisher": "Games Workshop",
+      "title": "Warhammer 40,000 Event Companion, Version 1.0",
+      "kind": "official-pdf",
+      "url": "https://assets.warhammer-community.com/eng_12-06_warhammer40000_event_companion-s3bfb5f9s1-ivswuij3fo.pdf",
+      "localFile": "official/event-companion.pdf",
+      "extractedText": "extracted/event-companion.txt",
+      "pages": 93,
+      "bytes": 9713890,
+      "sha256": "0e26f6586929e7ec4c50c6a17d240ed794bb7b6c654d1d9664fb908abc606a19"
+    },
+    {
+      "id": "terrain-area-footprints",
+      "publisher": "Games Workshop",
+      "title": "Warhammer 40,000 Terrain Area Footprints",
+      "kind": "official-pdf",
+      "url": "https://assets.warhammer-community.com/eng_12-06_warhammer40000_terrainareafootprints-biavo5zf9f-gxdahkydbj.pdf",
+      "localFile": "official/terrain-area-footprints.pdf",
+      "extractedText": "extracted/terrain-area-footprints.txt",
+      "pages": 3,
+      "bytes": 11493369,
+      "sha256": "abda484efe1e3031a92079053594a8b933a6ac429b899151f39ce8d51cbb9189"
+    },
+    {
+      "id": "chapter-approved-overview",
+      "publisher": "Games Workshop",
+      "title": "The Chapter Approved deck – What is it and how does it work?",
+      "kind": "official-web-page",
+      "url": "https://www.warhammer-community.com/en-gb/articles/p3i6aa3h/the-chapter-approved-deck-what-is-it-and-how-does-it-work/"
+    },
+    {
+      "id": "gdm-2026",
+      "publisher": "GDM 2026",
+      "title": "11th Edition Mission Reference",
+      "kind": "community-web-reference",
+      "url": "https://gdmissions.app/11th",
+      "notes": "Community-maintained reference used to cross-check card names and the directed Force Disposition matrix. It is not an official Games Workshop source."
+    }
+  ]
+}

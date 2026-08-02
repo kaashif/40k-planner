@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "edition": 11,
+  "season": "2026-27",
+  "forceDispositions": [
+    {
+      "id": "take-and-hold",
+      "name": "Take and Hold",
+      "summary": "Control objectives and maintain battlefield presence.",
+      "referenceUrl": "https://gdmissions.app/11th/primary-missions/take-and-hold",
+      "primaryMissionsByOpponent": {
+        "take-and-hold": "Battlefield Dominance",
+        "purge-the-foe": "Immovable Object",
+        "disruption": "Determined Acquisition",
+        "reconnaissance": "Purge and Secure",
+        "priority-assets": "Inescapable Dominion"
+      }
+    },
+    {
+      "id": "purge-the-foe",
+      "name": "Purge the Foe",
+      "summary": "Destroy enemy forces and gain ground through aggression.",
+      "referenceUrl": "https://gdmissions.app/11th/primary-missions/purge-the-foe",
+      "primaryMissionsByOpponent": {
+        "take-and-hold": "Unstoppable Force",
+        "purge-the-foe": "Meatgrinder",
+        "disruption": "Punishment",
+        "reconnaissance": "Consecrate",
+        "priority-assets": "Destroyer's Wrath"
+      }
+    },
+    {
+      "id": "disruption",
+      "name": "Disruption",
+      "summary": "Interfere with the opposing battle plan and deny territory.",
+      "referenceUrl": "https://gdmissions.app/11th/primary-missions/disruption",
+      "primaryMissionsByOpponent": {
+        "take-and-hold": "Death Trap",
+        "purge-the-foe": "Delaying Action",
+        "disruption": "Outmanoeuvre",
+        "reconnaissance": "Smoke and Mirrors",
+        "priority-assets": "Locate and Deny"
+      }
+    },
+    {
+      "id": "reconnaissance",
+      "name": "Reconnaissance",
+      "summary": "Explore the battlefield and gather operational intelligence.",
+      "referenceUrl": "https://gdmissions.app/11th/primary-missions/reconnaissance",
+      "primaryMissionsByOpponent": {
+        "take-and-hold": "Reconnaissance Sweep",
+        "purge-the-foe": "Triangulation",
+        "disruption": "Surveil the Foe",
+        "reconnaissance": "Gather Intel",
+        "priority-assets": "Search and Scour"
+      }
+    },
+    {
+      "id": "priority-assets",
+      "name": "Priority Assets",
+      "summary": "Secure, exploit, or protect high-value battlefield assets.",
+      "referenceUrl": "https://gdmissions.app/11th/primary-missions/priority-assets",
+      "primaryMissionsByOpponent": {
+        "take-and-hold": "Secure Asset",
+        "purge-the-foe": "Vital Link",
+        "disruption": "Extract Relic",
+        "reconnaissance": "Vanguard Operation",
+        "priority-assets": "Sabotage"
+      }
+    }
+  ],
+  "secondaryMissions": [
+    { "id": "a-grievous-blow", "name": "A Grievous Blow", "fixed": true },
+    { "id": "a-tempting-target", "name": "A Tempting Target", "fixed": false },
+    { "id": "assassination", "name": "Assassination", "fixed": true },
+    { "id": "beacon", "name": "Beacon", "fixed": false },
+    { "id": "behind-enemy-lines", "name": "Behind Enemy Lines", "fixed": false },
+    { "id": "bring-it-down", "name": "Bring It Down", "fixed": true },
+    { "id": "burden-of-trust", "name": "Burden of Trust", "fixed": false },
+    { "id": "centre-ground", "name": "Centre Ground", "fixed": false },
+    { "id": "cleanse", "name": "Cleanse", "fixed": false },
+    { "id": "defend-stronghold", "name": "Defend Stronghold", "fixed": false },
+    { "id": "display-of-might", "name": "Display of Might", "fixed": false },
+    { "id": "engage-on-all-fronts", "name": "Engage on All Fronts", "fixed": true },
+    { "id": "forward-position", "name": "Forward Position", "fixed": false },
+    { "id": "no-prisoners", "name": "No Prisoners", "fixed": false },
+    { "id": "outflank", "name": "Outflank", "fixed": false },
+    { "id": "overwhelming-force", "name": "Overwhelming Force", "fixed": false },
+    { "id": "plunder", "name": "Plunder", "fixed": false },
+    { "id": "secure-no-mans-land", "name": "Secure No Man's Land", "fixed": false }
+  ],
+  "secondaryMissionReferenceUrl": "https://gdmissions.app/11th/secondary-missions",
+  "notes": [
+    "Primary mission names and matchup relationships are indexed here as factual reference data.",
+    "The scoring and action wording on the Chapter Approved cards is not reproduced here; follow the per-category reference URLs or consult the physical deck or official app."
+  ]
+}

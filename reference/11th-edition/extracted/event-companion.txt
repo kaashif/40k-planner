@@ -1,0 +1,3883 @@
+           WARHAMMER EVENT
+              COMPANION
+                 VERSION 1.0
+INTRODUCTION                                                              WARHAMMER EVENT
+Welcome to the Warhammer Event Companion!
+This document is designed to help you run and                             MISSION SEQUENCE
+play in organised events, from local leagues to                           Before attending a Warhammer Event, each player
+the world championships. It uses the most recent                          completes the following step:
+Chapter Approved Mission Deck to create the best
+experiences for all hobbyists.                                              1    MUSTER ARMIES
+                                                                                 Muster armies as described in the Warhammer
+Within this companion, you’ll find a ready-made                                   40,000 app, with the following exception: once
+framework for levelling the playing field and getting                             they have mustered their army, a player selects
+games underway quickly. Its recommendations will be                               one Force Disposition card available to them and
+followed in full at most Games Workshop Warhammer                                 records that on their roster.
+Events, and are considered the official way to play
+Warhammer 40,000 in an event setting, but can be                          A Warhammer Event battle is then waged by completing
+adapted to suit your own circumstances.                                   the remaining steps below:
+
+The recommendations are presented as follows:                               2    DETERMINE MISSION
+                                                                                 Each player finds their opponent’s Force
+▪ Warhammer Event Mission Sequence: Adjustments                                  Disposition symbol on their Force Disposition
+   to the steps players would normally follow to                                  card. The Primary Mission that is listed below
+   generate a mission and prepare the battlefield.                                that symbol is that player’s Primary Mission,
+▪ Chapter Approved Mission Deck Errata & FAQs:                                   which describes how to score VP.
+   Updates to certain cards and answers to frequently
+   asked questions.                                                         3    DETERMINE A LAYOUT
+▪ Pairings and Rankings: Advice for fairly pairing                              Each combination of Primary Missions has three
+   players and determining rankings.                                              recommended layouts, labelled A, B and C. These
+▪ Terrain Layouts: A suite of carefully designed terrain                         can be found in the Warhammer 40,000 app
+   setups to be used in conjunction with the Chapter                              and at the end of this companion. As directed
+   Approved Mission Deck.                                                         by the Warhammer Event organiser, the players
+▪ Base Size Guide: The most up-to-date base sizes                                either use the layout specified or randomly
+   appropriate for all Warhammer 40,000 models that                               determine which of these layouts to use.
+   can be used in Warhammer Events.
+Designer’s Note: This companion does not use the full contents of           4    CREATE THE BATTLEFIELD
+the Chapter Approved Mission Deck; it has been written to provide                Missions are played on rectangular battlefields
+the best experience in a Warhammer Event. For this reason we                      44" by 60" in size. Players set up the terrain
+have not included the Deployment or Twist cards, which are left for
+pick-up-and-play games.                                                           areas as shown in the selected layout, then set
+                                                                                  up terrain features on those terrain areas as
+This companion does not include rules and                                         shown in the selected layout.
+recommendations for doubles, teams or Dominatus
+Warhammer Events. These can be found                                        5    DETERMINE ATTACKER AND DEFENDER
+on warhammer-community.com.                                                      Players look at the selected layout and agree
+                                                                                  which edges of the battlefield the players have
+                                                                                  set up correspond with the Attacker’s and
+                                                                                  Defender’s battlefield edges labelled on the card.
+
+                                                                                 Roll off: the winner decides who will be the
+                                                                                 Attacker and who will be the Defender.
+
+
+
+                                                                      1
+  6     SELECT SECONDARY MISSIONS                                 9    REDEPLOY UNITS
+        Secondary Mission cards detail additional                     Some rules let you redeploy certain units after
+         ways to score VP. Players now secretly note                    both armies are deployed. Unless otherwise
+         down whether they will use Tactical or Fixed                   stated, you resolve those rules in this step.
+         Secondary Missions. If using Fixed Missions,                   Players alternate resolving any such rules,
+         they also note down which two Fixed Missions                   starting with the Attacker. Units placed in
+         they will use (see below). Players then reveal                 strategic reserves in this step do not count
+         these decisions.                                               towards the combined points value of your
+                                                                        strategic reserves units.
+FIXED MISSIONS
+      Fixed Missions are those marked with the symbol            10   DETERMINE FIRST TURN
+       shown on the left. If you are using Fixed Missions,             Roll off: the winner takes the first turn.
+       display your selected Fixed Mission cards face-up.
+       Fixed Missions cannot be discarded and are active          11   RESOLVE PRE-BATTLE RULES
+       for you throughout the battle.                                  Players alternate resolving any pre-battle rules
+                                                                        units from their army may have, starting with
+TACTICAL MISSIONS                                                       the player who will take the first turn.
+If you are using Tactical Missions, shuffle your Secondary
+Mission deck face-down.                                           12   BEGIN THE BATTLE
+▪ At the start of your Command phase, draw two                        The first battle round begins.
+    Secondary Missions face-up from your Secondary
+    Missions deck; these Secondary Missions are active            13   END THE BATTLE
+    for you.                                                           The battle ends after five battle rounds have
+▪ (Once per battle) At the end of your Command                         been completed. Even if you have no models
+    phase, you can spend 1CP to discard one of your                     remaining in your army at the start of your turn,
+    active Secondary Mission cards and draw one new                     players continue to play out their turns until the
+    Secondary Mission card.                                             battle ends.
+
+ACHIEVING SECONDARY MISSIONS                                      14   DETERMINE VICTOR
+At the end of each player’s turn, each player does the                 Each player scores 10VP if their army is painted
+following, starting with the player whose turn it is:                   to a Battle Ready standard. At the end of the
+▪ First, if you met the conditions on one or more                      battle, the player with the most VP is the victor.
+   Secondary Missions, you can gain the VP specified                    If the players are tied, the battle is a draw. The
+   on that card. If you do, and if you are using Tactical               maximum VP that can be scored from each
+   Secondary Missions, discard that Secondary Mission –                 source of VP is listed below. Any VP you score in
+   it is achieved.                                                      excess of these maximums are ignored.
+▪ Then, if it is your turn and you are using Tactical
+   Secondary Missions, you can discard one or more of                         VP SOURCE                  MAXIMUM VP
+   your active Secondary Missions. If you do, you gain 1CP.
+                                                                           PRIMARY MISSION                45VP
+        DECLARE BATTLE FORMATIONS                                                               Up to 15VP per battle round
+  7
+         Players secretly note down, in order:                                                            45VP
+                                                                         SECONDARY MISSIONS
+▪ Which of their units will start the battle embarked                                          Up to 15VP per battle round*
+   within which TRANSPORTS.                                               BATTLE READY ARMY                 10VP
+▪ Which of their units will start the battle in
+   strategic reserves.                                                  * In addition, you can gain a maximum of 20VP per
+                                                                           Fixed Secondary Mission card.
+Players then reveal these decisions.
+
+  8     DEPLOY ARMIES
+        Players take it in turns to set up their units
+         (excluding those in strategic reserves) one at
+         a time, wholly within their deployment zone,
+         starting with the Defender. If you set up a
+         TITANIC unit when it is your turn to set up a
+         unit, skip your next turn to set up a unit. Once
+         you have finished setting up your units, if your
+         opponent has any units that have not been set
+         up, they set up those units.
+
+
+
+
+                                                              2
+DESIGNER’S NOTES   ‘CUMULATIVE’ AND
+                   ‘OR’ CONDITIONS
+                   Some cards include a condition marked as ‘cumulative’
+                   that follows a normal condition. If a player achieves the
+                   cumulative condition, they gain the VP for both that and
+                   the normal condition.
+
+                   Some cards include one or more conditions marked ‘or’
+                   that follow a normal condition. A player can only gain VP
+                   for one of these conditions or the normal condition.
+
+
+                   LEAVES THE BATTELEFIELD
+                   Some cards refer to a unit or units leaving the battlefield.
+                   A unit leaves the battlefield if it is destroyed, if it
+                   embarks on a TRANSPORT, or if a rule removes that unit
+                   from the battlefield (e.g. to place it in strategic reserves).
+
+
+                   ONE
+                   When a card states ‘one’, underlined, it means exactly
+                   one, not one or more.
+
+
+                   VP UP TO A LIMIT
+                   Some cards award VP up to a limit, e.g. (up to 5VP).
+                   In such cases, any VP you score in excess of this limit
+                   are ignored.
+
+
+                   WHEN DRAWN
+                   Some Secondary Mission cards begin with a ‘When
+                   Drawn’ section. Note that this section only applies if you
+                   are using Tactical Secondary Missions.
+
+
+
+
+                                                                 3
+ERRATA AND FAQS
+           CHAPTER APPROVED MISSION DECK   When playing in a Warhammer Event Mission, the
+                                           following amendments to cards in the Chapter
+                                           Approved Mission Deck are used.
+
+                                           None.
+
+                                           Questions about the Chapter Approved Mission Deck
+                                           will be reviewed periodically and answered below.
+                                           Newly added entries are marked in red.
+
+                                           Q: Some Primary Mission cards let a player place
+                                           operation markers on the battlefield. Can I remove these?
+                                           A: Your Primary Mission card will specify how and when
+                                           you can remove operation markers from the battlefield.
+                                           If it doesn’t, you cannot remove operation markers.
+
+                                           Q: For the Death Trap Primary Mission, one objective
+                                           reads ‘One or more enemy units that started the turn
+                                           within a terrain area were destroyed, if that terrain area
+                                           is trapped.’ Does that terrain area have to have been
+                                           trapped at the point that enemy unit was destroyed?
+                                           A: No.
+
+                                           Q: For the Surveil the Foe Primary Mission, one objective
+                                           reads ‘One or more enemy units were surveilled this turn,
+                                           unless each of those units is within range of one or more
+                                           objectives that have one or more operation markers
+                                           within range of them.’ For an enemy unit within range
+                                           of an objective with an operation marker, can I achieve
+                                           this objective if I remove the operation marker after
+                                           surveilling that unit, as long as it is within the same turn?
+                                           A: Yes.
+
+                                           Q: For the Vital Link Primary Mission, if there is more
+                                           than one central objective, can I score the cumulative VP
+                                           for my operation markers regardless of which central
+                                           objective(s) they are within?
+                                           A: Yes, as long as you control the objective(s) those
+                                           operation markers are within.
+
+
+
+
+                                                                                         4
+PAIRINGS AND RANKINGS   There are countless different ways in which a               RANKING PLAYERS
+                        Warhammer Event can be run. While broad-stroke              In many tournaments, the overall Best General will be
+                        concepts like pairing off players with the same record      the single remaining undefeated player at the end of
+                        are straightforward enough, the nuance of running a         the event. Sometimes, however, there are not enough
+                        successful Warhammer tournament is the subject of           rounds available to determine a single undefeated
+                        continuous conversation and evolution. The following        player, and players often wish to know their ranking
+                        recommendations are followed at most official Games         regardless of whether they won the whole event. To
+                        Workshop events, and are designed to create the             help break ties between players who end an event with
+                        fairest, most fun experience possible for every attendee,   the same record, we recommend ranking players by the
+                        regardless of standing.                                     following criteria:
+
+                                                                                    ▪ First – by overall record (wins, losses and draws)
+                        PAIRING PLAYERS                                             ▪ Second – by their opponents’ win records (i.e. those
+                        While the first round of most tournaments is randomly          with more wins against opponents with better win
+                        paired, subsequent round pairing can be done in a              records would place higher)
+                        number of ways. The first pairing metric will almost        ▪ Third – by total Victory points (VP)
+                        always be player record, e.g pairing a player with a win/
+                        loss record of 3-1 with another player with the same        Designer’s Note: Traditionally, many organisers use total
+                        win/loss record, and so on. Given that most rounds          VP or VP differential to determine ranking. However,
+                        will include numerous players with the same record,         the number of VP scored within any one game of
+                        however, deciding pairings beyond this metric can be        Warhammer 40,000 rarely tells a clear story about how
+                        quite nuanced, and the different methods available can      close that game actually was. Often, a more challenging
+                        have significant impacts on the experience of players       opponent will be harder to score against (and thus yield
+                        at an event. We recommend pairing players by the            a lower score despite the victory being all the more
+                        following criteria:                                         hard-earned), or the nature of how the two armies
+                                                                                    match up may dictate a risky strategy that doesn’t pay
+                        ▪ First – by record (i.e. the number of wins, losses and   off (and thus yield a wide score disparity despite almost
+                           draws)                                                   working out).
+                        ▪ Second – by win path (i.e. the timing of the rounds in
+                           which a player won or lost their games)                  As such, we do not recommend using VP as a pairing
+                        ▪ Third – randomly within players of the same ranking       metric, nor as a ranking metric until all other metrics
+                                                                                    have been exhausted, or when further tie-breaking is
+                                                                                    required (e.g. in larger events where identical rankings
+                          WIN PATH                                                  become more likely). By contrast, opponent win record
+                          A player’s ‘win path’ refers not to their number          is an ideal metric, because when two players end up
+                          of wins and losses, but to the timing of those            with the same record, the overall skill of their opponents
+                          wins and losses. While pairing by win path has            is a better indicator of which player had the more
+                          an incidental tendency to pair people by strength         challenging path along the way.
+                          of schedule, its greatest impact is on the overall
+                          enjoyment experienced by all players, as it tends to
+                          pair players based upon shared experience.                  THE RULES APPENDIX, ERRATA AND FAQS
+                                                                                      There are myriad ways to enjoy the Warhammer
+                          For example, let’s take two 3-1 players. One of             hobby, and these all manifest themselves at a
+                          them lost their first game; they likely lowered             tournament: gifted hobbyists with beautiful
+                          their expectations for winning the whole event              armies, skilled competitors aiming for Best General,
+                          after this, but are probably in a great mood after          casual players looking to face new opponents and
+                          three consecutive victories. The other won their            make new friends (by far the most common type
+                          first three games then lost their fourth – a sharp          of attendee), and even practitioners of the niche
+                          disappointment after a 3-0 start. Should these              hobby of Rules Lawyer! These particular hobbyists
+                          players face off, their shared enjoyment may be at          often find unusual rules interactions at the very
+                          odds as they are in very different emotional places.        fringes of Warhammer 40,000, which can create
+                          Win path ensures players enter their match with             interesting challenges for tournament organisers
+                          recent common experiences upon which to build a             looking to provide clear answers and an easy
+                          friendship during their next game of Warhammer.             gaming experience for their attendees.
+
+                                                                                      To address any such uncertainties, the Warhammer
+                                                                                      40,000 app contains a comprehensive Rules
+                                                                                      Appendix, along with faction-specific errata and
+                                                                                      FAQ entries. Should an odd rules interaction come
+                                                                                      up during your event and the Core Rules do not
+                                                                                      provide a clear answer, we recommend consulting
+                                                                                      these resources.
+
+
+
+
+                                                                   5
+         AFTERWORD  What is the Point of a
+                    Warhammer Event?
+
+Warhammer is more popular than ever, and this popularity
+has extended to the tournament scene. Over the last
+few years, more than one million games of Warhammer
+40,000 were played in tournaments around the world,
+and that growth will only continue in the future. With so
+many Warhammer hobbyists participating in the game
+within growing communities, it’s important to ruminate
+on the point of a tournament. First and foremost, it is not
+about celebrating the ultimate victor; someone who goes
+undefeated and wins Best General needs very little acclaim
+beyond the outcome itself (after all, they won!). Instead, it is
+the experience of every single attendee that truly matters,
+and the recognition that, for most people who attend a
+tournament, community and friendship are both the purpose
+and the outcome.
+
+Before you roll a single dice against an opponent to start
+your tournament experience, remember two things:
+
+1) The person across the table from you shares your love
+    of Warhammer.
+
+2) By the time the dust settles on the event, almost everyone
+    will have lost a game (typically, at most, only one or two
+    people will manage to leave the event without a loss).
+
+While any game often yields winners and losers on the
+tabletop, the magic of Warhammer in an event setting is
+the opportunity it provides every participant to become
+a bigger part of the Warhammer community, and to build
+friendships with fellow hobbyists that can last a lifetime. As
+an organiser or a player, if you focus on this inalienable truth,
+then while most of you will have lost a game or two, you’ll
+all share victory in your experience of what it is to attend a
+Warhammer Event.
+
+
+              - The Warhammer Design Studio and
+                     the Warhammer Events Team
+
+
+
+
+                                                                    6
+TERRAIN LAYOUTS   The following layouts are presented for Warhammer
+                  Event organisers and players to use in all of their games
+                  of Warhammer 40,000 using the most recent Chapter
+                  Approved Mission Deck. These are the layouts that are
+                  used at Games Workshop events and are designed for the
+                  best experience by the Warhammer Studio team, to reflect
+                  battlefields that create risk-and-reward decisions with each
+                  player's objectives in mind.
+
+                  Each combination of Primary Missions has three
+                  recommended layouts, labelled A, B and C. As directed by
+                  the Warhammer Event organiser, the players either use
+                  the layout specified or randomly determine which of these
+                  layouts to use.
+
+                  RECOMMENDED TERRAIN AREA FOOTPRINTS
+                  We have listed the terrain area footprints these
+                  recommended layouts use. You can find a PDF
+                  with these footprints ready for you to print
+                  on warhammer-community.com.
+
+                          TERRAIN AREA                      QUANTITY
+                         FOOTPRINT SIZE
+                               6" x 4"                           4
+
+                              10" x 2.5"                         2
+
+                               6" x 2"                           4
+
+                              7" x 11.5"                         4
+
+                         8" x 11.5" Polygon                      2
+
+
+                  TERRAIN FEATURES
+                  Each layout is shown with the terrain features from the
+                  Battlefields: Armageddon box using the 'Warhammer
+                  recommended' build configuration from the construction
+                  booklet. We’ve denoted each terrain feature from that set
+                  as either a dense or light terrain feature in these layouts.
+                  The configurations of the terrain features and terrain areas
+                  are designed to create the best experience with the Hidden
+                  rule and movement rules for various units, and to create
+                  plenty of interesting decisions during a battle. We’ve also
+                  purposely left space between a terrain feature and the
+                  edge of the terrain area to allow a line of models to be on
+                  the terrain area from the ‘outside’.
+
+                  If you do not have the Battlefields: Armageddon terrain, it
+                  is possible to recreate these layouts with your own terrain
+                  that is close to the same size of the various terrain features
+                  by denoting for all players if they are dense or light
+                  terrain features.
+
+
+
+
+                                                                  7
+                  LAYOUTS KEY
+                                                                                GH
+    Dense Terrain                      Light Terrain            The letters marking
+  (coloured green)                  (coloured yellow)           each terrain feature
+                                                                correspond with the
+                                                                component markings on the
+                                                                Battlefields: Armageddon
+                                                                terrain set.
+
+Separate Terrain Areas             Single Terrain Area
+
+
+
+                             ATTACKER’S DEPLOYMENT ZONE
+                             The Attacker sets up their units wholly within
+                             this area.
+
+
+
+                             DEFENDER’S DEPLOYMENT ZONE
+                             The Defender sets up their units wholly within
+                             this area.
+
+
+
+                             NO MAN’S LAND
+                             The region of the battlefield that is not within
+                             either player’s deployment zone.
+
+
+
+                             ATTACKER’S TERRITORY
+                             The half of the battlefield that includes the
+                             Attacker’s deployment zone.
+
+
+
+                             DEFENDER’S TERRITORY
+                             The half of the battlefield that includes the
+                             Defender’s deployment zone.
+
+
+
+                         ATTACKER’S BATTLEFIELD EDGE
+
+
+
+                         DEFENDER’S BATTLEFIELD EDGE
+
+
+
+              OBJECTIVE POINTS
+              The type, quantity and locations of objectives are shown with
+               these icons:
+
+
+
+
+           Home Objective          Central Objective      Expansion Objective
+
+
+
+
+                                            8
+        FORCE DISPOSITION                                     FORCE DISPOSITION
+      TAKE AND HOLD                    VS                   TAKE AND HOLD
+               MISSION                                                   MISSION
+  BATTLEFIELD DOMINANCE                                BATTLEFIELD DOMINANCE
+
+                                   LAYOUT A
+
+
+
+                                                                                    12"
+
+      20"
+
+                                                                                              26"
+                                                                              GH
+                            CD
+
+
+
+
+                                                                         EF
+                                                       16.25"
+                                  AB
+                                                                              30"
+
+                                                 AB                                 4"
+         4"                                            16.25"
+                    EF                           25"
+
+                            17"                                      22"
+
+                                                                                         2"
+                                                       CD
+               GH
+        4"                                                         14"             14"
+26"           13"
+                                                                                     20"
+                                  9"
+                                                             14"
+       12"                                  6"          6"
+
+
+
+
+                                       9
+    FORCE DISPOSITION                                      FORCE DISPOSITION
+  TAKE AND HOLD                       VS               TAKE AND HOLD
+        MISSION                                                  MISSION
+BATTLEFIELD DOMINANCE                                BATTLEFIELD DOMINANCE
+
+                                 LAYOUT B
+
+
+         12"
+
+                                                      7" 13"            7"
+                                      EF
+                                                                             10"
+                                                                                   3"
+                                                      GH
+                                14"
+
+                    14"
+                                                                             5"
+
+                                                                        24"
+                          17"    AB                              CD               4"
+
+
+
+               CD                               AB
+                          17"                                                    4"
+                                24.25"
+                                                                            6"
+
+
+
+                        GH
+                                                                      10"
+                                           EF              10"
+                                                                             5"
+
+                                                                       12"
+
+
+
+
+                                         10
+    FORCE DISPOSITION                                         FORCE DISPOSITION
+  TAKE AND HOLD                               VS            TAKE AND HOLD
+        MISSION                                                        MISSION
+BATTLEFIELD DOMINANCE                                     BATTLEFIELD DOMINANCE
+
+                                       LAYOUT C
+
+
+
+                        GH
+
+
+
+
+                  CD                                              EF
+
+
+
+
+                                                                               22"
+                                              9"
+                                                                                     5"
+                            16.25"    AB                                  9"
+
+
+                                                     AB
+                            16.25"
+                                                                                     5"
+                             25"                                               23"
+                                                                    11"
+        6"                                          18"
+                       EF
+                                                                         CD
+                                     18"
+                                        12"                                           4"
+
+
+        6"                                                    GH
+             5"                                                    12"
+                                                             3"
+
+
+
+
+                                               11
+  FORCE DISPOSITION                                             FORCE DISPOSITION
+TAKE AND HOLD                           VS                     PURGE THE FOE
+        MISSION                                                        MISSION
+IMMOVABLE OBJECT                                           UNSTOPPABLE FORCE
+
+                                 LAYOUT A
+                                                                     19"
+
+         14"                                                                    8"
+                                                     5"           5"
+                                                          EF
+                                                                       10"
+
+
+
+
+                                                                GH
+                  CD                                                                  4"
+
+
+
+                                                                                     5"
+                          17"
+                                               AB
+
+
+
+                                                                       10"
+                                 AB                             28"
+                          17"
+                                24.25"
+
+                                                                           9"
+                                                          16"                        5"
+                     GH           16"               17"           CD
+
+
+
+
+                                              10"
+                          EF                                                         5"
+                                                                                6"
+   8"                                                                  14"
+
+               19"
+
+
+                                         12
+  FORCE DISPOSITION                                                FORCE DISPOSITION
+TAKE AND HOLD                        VS                       PURGE THE FOE
+      MISSION                                                             MISSION
+IMMOVABLE OBJECT                                             UNSTOPPABLE FORCE
+
+                                LAYOUT B
+
+
+
+                                                             7"
+                                                                                GH     4"
+
+                                                              EF
+                                                                                       4"
+              CD
+
+
+
+                                                                                21"
+                                                                                      5"
+                                           24.25"
+                           9"   AB                     17"
+                                                              14"
+
+
+                                                                                       4"
+                                                 AB
+                                                       17"                       26"
+
+                                                                          10"
+                                                                    20"
+                                                            16"      CD
+                                                                                      5"
+                                                      15"
+                      EF
+
+       GH                                  22"
+                                     9"
+                                                                                      5"
+                                                                                5"
+
+
+
+
+                                      13
+     FORCE DISPOSITION                                          FORCE DISPOSITION
+TAKE AND HOLD                               VS               PURGE THE FOE
+           MISSION                                                  MISSION
+IMMOVABLE OBJECT                                            UNSTOPPABLE FORCE
+
+                                       LAYOUT C
+
+
+
+
+                                                                                   18"
+                             CD
+
+
+
+
+                                                                                  GH
+
+
+                                                       16.25" EF
+                                      AB
+
+
+
+                                                                                  4"
+2"                                               AB
+                                                       16.25"               27"
+                      EF    25"
+      GH                                                               8"
+2"
+     19"                                               17"
+                                      16"        16"                          5"
+                                                         CD
+                12"
+       5"
+                           15"                                                     18"
+                                 8"
+                                                       7"                     7"
+
+
+
+
+                                            14
+    FORCE DISPOSITION                                           FORCE DISPOSITION
+  TAKE AND HOLD                      VS                         DISRUPTION
+        MISSION                                                       MISSION
+DETERMINED ACQUISITION                                           DEATH TRAP
+
+                               LAYOUT A
+
+
+                                               5"                5"
+                                                                      10"
+                                                                GH
+
+                                                                                 11"
+                                                                       9"
+              CD                                     EF
+                                                                                       3"
+
+
+
+                         17"                                          24"
+                                                                            7"
+                                              AB                                  5"
+
+
+                                AB
+                         17"
+                               24.25"                                       7"
+
+                                                                                      4"
+                                        22"               15"
+                        EF                          15"               CD
+
+
+
+                                                    17"
+                   GH                          8"
+                                                                                      4"
+                                                                                 5"
+
+
+
+
+                                     15
+       FORCE DISPOSITION                                              FORCE DISPOSITION
+      TAKE AND HOLD                           VS                     DISRUPTION
+            MISSION                                                            MISSION
+  DETERMINED ACQUISITION                                                  DEATH TRAP
+
+                                        LAYOUT B
+
+
+
+
+                                                                                GH
+                                                                                                 15"
+
+
+                        CD
+
+                                                                    EF
+
+
+
+
+                                  17"                                                24"
+                                                                                           5"
+                                         AB
+
+
+                                                                                9"
+                                                   AB
+                                  17"
+                                                                                            4"
+                                        24.25"                                        23"
+                                                                    14"
+                             EF
+                                                                                            5"
+                                                              16"         CD
+       4"                                               14"
+
+                  GH
+15"          8"                   17"
+                   7"
+                                                                                            5"
+                                                                                     3"
+
+
+
+
+                                              16
+        FORCE DISPOSITION                                            FORCE DISPOSITION
+  TAKE AND HOLD                             VS                       DISRUPTION
+               MISSION                                                      MISSION
+DETERMINED ACQUISITION                                                 DEATH TRAP
+
+                                       LAYOUT C
+
+
+
+
+                                                                                              18"
+
+
+                                      CD
+
+
+
+                                                                                         GH
+
+                                17"                                   EF
+                                       AB
+
+
+
+
+   2"                                               AB
+                         EF     17"                                                      5"
+                                      24.25"                                       24"
+         GH                                                                11"
+   2"
+                                                                     20"
+        19"
+                                                     CD
+                                                               16"
+        4"
+                                                                                          4"
+              11"         11"                                                    11"
+                                  10"                    10"                                  18"
+
+                                                                            10"
+
+
+
+
+                                               17
+        FORCE DISPOSITION                                               FORCE DISPOSITION
+      TAKE AND HOLD                               VS             RECONNAISSANCE
+                  MISSION                                                    MISSION
+      PURGE AND SECURE                                       RECONNAISSANCE SWEEP
+
+                                             LAYOUT A
+
+
+
+                                                                                           12"
+
+       20"                              CD
+
+                                                                                                 26"
+                                                                                   GH
+
+
+                                                                   EF
+
+
+
+                                                             17"
+                        9"                   AB
+
+
+
+
+             5"                                        AB
+                  26"                                        17"
+                                   24.25"
+         4"                                                                               4"
+                                   EF                                               19"
+                                                                       14"
+                  GH
+         4"                                                      15"
+26"
+                             13"
+                                                            CD
+                                                                                          20"
+                                                  9"
+       12"                                                                         7"
+                                                       5"                     5"
+
+
+
+
+                                                  18
+  FORCE DISPOSITION                                              FORCE DISPOSITION
+TAKE AND HOLD                         VS                   RECONNAISSANCE
+      MISSION                                                           MISSION
+PURGE AND SECURE                                          RECONNAISSANCE SWEEP
+
+                                  LAYOUT B
+
+
+       12"
+                                               5"           5"
+                                                     EF          13"
+                                                                                          4"
+
+
+
+                                                           GH
+                                                                                         4"
+             CD
+                                                                             19"
+                                                                                   7"
+
+                           17"                                          24"
+                                                     AB
+
+                                                                       11"
+
+
+                                 AB
+                                                                                   7"
+                       17"                                                  26"
+                                 24.25"
+
+                                                                                         4.5"
+                                                                14"    CD
+                      GH
+                                                          17"
+
+
+
+                                                                                         4.5"
+                                 EF                 8"                              7"
+
+                                                                                  12"
+
+
+
+
+                                          19
+  FORCE DISPOSITION                                                FORCE DISPOSITION
+TAKE AND HOLD                          VS                   RECONNAISSANCE
+      MISSION                                                                MISSION
+PURGE AND SECURE                                        RECONNAISSANCE SWEEP
+
+                                 LAYOUT C
+
+
+
+                                                             6"                    6"
+                                                                               GH
+
+
+
+
+                EF                                                     CD
+                                                                                        6"
+
+                                                                                   22"
+                                      9"                                                     5"
+                          17"
+                                 AB
+                                                                              9"
+
+
+                                                 AB                                      5"
+                          17"
+                                24.25"                                             25"
+
+                                                                  13"
+                                                                                         5"
+                     CD                                     16"         EF
+                                                      15"
+
+                                           22"
+         GH                           9"
+                                                                                         5"
+                                                                  7"
+
+
+
+
+                                       20
+          FORCE DISPOSITION                                               FORCE DISPOSITION
+        TAKE AND HOLD                             VS                PRIORITY ASSETS
+                 MISSION                                                       MISSION
+      INESCAPABLE DOMINION                                                SECURE ASSET
+
+                                           LAYOUT A
+
+
+
+
+                                                                                                 15"
+                                EF
+                                                                                 GH
+
+
+
+
+                                                                          CD
+
+
+
+                                                       AB
+
+
+
+
+                      8"
+           4"                                AB
+                                                                        25"
+                24"                                                                         4"
+                                                                                      22"
+                                     18"
+                           CD              19"                    16"
+
+         3"
+
+                      GH
+                                                            19"
+                 7"                                                 EF
+
+15"                   9"             17"
+                                        7"                                                 5"
+                                                             5"                       5"
+
+
+
+
+                                                  21
+    FORCE DISPOSITION                                          FORCE DISPOSITION
+  TAKE AND HOLD                                 VS           PRIORITY ASSETS
+              MISSION                                                    MISSION
+INESCAPABLE DOMINION                                           SECURE ASSET
+
+                                          LAYOUT B
+
+
+
+
+                                                                                        18"
+                                    EF
+
+
+
+
+                                                                                   GH
+                                     AB
+
+
+
+
+   3"                                                                     CD
+                  CD
+                                                                   12"
+                                                             27"
+                        12"               26"
+                                                       AB
+                                                                                        4"
+                                                                                23"
+   3"
+        GH              12"
+                                    20"                                    8"
+        19"
+                        12"
+                              15"                15"                            6"
+          6"                                            EF
+
+
+                                                                                        18"
+                                                                                6"
+                                                       7"
+
+
+
+
+                                                22
+    FORCE DISPOSITION                                        FORCE DISPOSITION
+  TAKE AND HOLD                          VS         PRIORITY ASSETS
+        MISSION                                                      MISSION
+INESCAPABLE DOMINION                                         SECURE ASSET
+
+                                    LAYOUT C
+
+
+         12"
+                                         4"         4"
+                                                         14"                  5"
+                                              CD
+                                                                                             3"
+
+                                                                                   7"
+                                                   GH
+
+                                                                                        5"
+
+
+                                                                               7"
+                                              AB
+                              25"
+               EF       15"
+                                                    15"
+
+                                                                                             3"
+                                                                         EF
+                                    AB
+
+
+
+
+                                                                                             3"
+                          GH                                       11"              16"
+                                                             14"
+
+
+                                                             13"
+                                    CD
+                                                        7"
+
+                                                                              12"
+
+
+
+
+                                         23
+ FORCE DISPOSITION                                          FORCE DISPOSITION
+PURGE THE FOE                           VS                 PURGE THE FOE
+     MISSION                                                         MISSION
+ MEATGRINDER                                                MEATGRINDER
+
+                                  LAYOUT A
+
+
+
+
+                                             AB
+
+
+
+                 EF                                                         15"
+                                                                                  4"
+                                             GH
+
+
+
+
+                             9"                                        8"
+                                                     CD
+
+                            31"
+                      14"    CD
+                                                                 27"              4"
+                                                                            26"
+
+
+                                  GH
+                                                    17"
+                                              19"
+                      14"                                                        5"
+                                                     14"        EF
+
+
+       7"                          AB
+
+
+            5"          5"        21"
+                                        3"                 4"               4"
+
+
+
+
+                                        24
+           FORCE DISPOSITION                                          FORCE DISPOSITION
+      PURGE THE FOE                            VS                  PURGE THE FOE
+                 MISSION                                                    MISSION
+           MEATGRINDER                                                MEATGRINDER
+
+                                            LAYOUT B
+
+
+
+                                                                                          12"
+
+       20"
+
+                                  AB                                                            26"
+
+
+                                                                      EF
+
+
+
+                                                     26"                         26"
+                                                                                 GH
+                                       CD
+
+                                                            CD
+                       GH
+                                                           18"
+                                                                                           3"
+      2"                                                     22"
+                            EF
+                                   19" 20"                                 19"             3"
+                                              17"
+      2"                                                         AB
+26"        14"
+                  7"                                                                  11" 20"
+                                 10"           10"         18"
+                                                     8"
+       12"
+
+
+
+
+                                               25
+ FORCE DISPOSITION                                              FORCE DISPOSITION
+PURGE THE FOE                            VS                PURGE THE FOE
+       MISSION                                                         MISSION
+ MEATGRINDER                                                    MEATGRINDER
+
+                                    LAYOUT C
+                                                                   19"
+
+        14"                                                                         8"
+
+
+
+
+                 EF
+                                                           17"     AB
+
+
+                                                                              21"
+                                                                                    5"
+                                                   CD
+                                                                        25"
+                                    GH
+                                                                              7"
+                                                                                    5"
+
+                                                    23"
+                               CD             GH
+
+                                                                         8"
+                                                    23"
+                         20"
+
+              AB
+                                                                                    5"
+                                                          15"     EF
+                                                    14"
+                  12"
+                                                    17"
+                 12"                           7"                                   5"
+                        4"                                  4"
+  8"                                                                     14"
+
+              19"
+
+
+                                         26
+ FORCE DISPOSITION                                                FORCE DISPOSITION
+PURGE THE FOE                            VS                       DISRUPTION
+     MISSION                                                          MISSION
+ PUNISHMENT                                                      DELAYING ACTION
+
+                                   LAYOUT A
+
+
+
+
+                                                                          GH
+
+
+
+         CD
+
+                                                                     EF
+
+
+
+                                                      17"                       25"
+                                 9" AB                                                5"
+
+                                                                           9"
+                                                AB
+                                                       17"
+                                  24.25"                                                    3"
+
+                      20"                                                                   3"
+                 EF                                        16"                        19"
+                                                     18"
+                                                                           CD
+
+
+
+            GH
+                            9"                22"
+       8"                                8"
+            7"                                                                      6"
+                                                             5"                5"
+
+
+
+
+                                          27
+       FORCE DISPOSITION                                           FORCE DISPOSITION
+      PURGE THE FOE                    VS                         DISRUPTION
+             MISSION                                                    MISSION
+       PUNISHMENT                                                DELAYING ACTION
+
+                                 LAYOUT B
+
+
+
+                                                                                            12"
+
+      20"
+                                                                                                  26"
+                                                                                  GH
+                                  EF
+
+                                                             CD
+
+
+                                                           16.25"
+                                 AB                                              28"
+
+                                                                                       5"
+                                                     AB
+                                                           16.25"
+                                                     25"
+                                                                            9"
+       4"
+                            CD
+                                                                                            3"
+                                                EF
+            GH
+       4"
+26"         14"                                                             14"
+                  9"
+                                                                                        20"
+                                                                            9"
+                       8"             8"                         14"
+      12"                                                   7"         8"
+                                           7"
+
+
+
+
+                                           28
+ FORCE DISPOSITION                                                FORCE DISPOSITION
+PURGE THE FOE                         VS                          DISRUPTION
+       MISSION                                                           MISSION
+ PUNISHMENT                                                      DELAYING ACTION
+
+                                 LAYOUT C
+                                                                     19"
+
+        14"                                                                           8"
+
+                                                                                 6"
+                                     GH
+                                                            EF
+
+
+               CD
+                                                                                 17"
+                                                                                       4"
+
+                                                                                 6"
+                                24.25"
+                                                                   25"
+                          17"                       AB
+                                                                           27"
+                                                                                 6"
+
+
+                                AB                                                     4"
+                          17"
+                                                                   12"
+                                                             22"
+
+                                                                                   5"
+                                                    20"             CD
+
+
+                     EF
+                                               GH     10"
+
+                                                                                   5"
+                                               22"                           5"
+                                     4"
+  8"                                                                 14"
+
+              19"
+
+
+                                          29
+ FORCE DISPOSITION                                        FORCE DISPOSITION
+PURGE THE FOE                     VS                    RECONNAISSANCE
+           MISSION                                              MISSION
+  CONSECRATE                                              TRIANGULATION
+
+                            LAYOUT A
+
+
+
+
+                                                                                 18"
+                                       EF
+
+
+
+
+                                                                            GH
+                                 AB
+
+
+
+
+ 3"                                                              CD
+                 CD
+                                                  18"
+                                            29"
+
+                                            AB                                   4"
+                                                    23"                23"
+ 3" GH                21"
+    19"
+                                                          13"
+                                  EF
+                                                                                  3"
+      5"              12"
+           10"                                                                   18"
+                            8"                            8"           7"
+                                                                  7"
+
+
+
+
+                                      30
+ FORCE DISPOSITION                                       FORCE DISPOSITION
+PURGE THE FOE                    VS               RECONNAISSANCE
+     MISSION                                                   MISSION
+ CONSECRATE                                              TRIANGULATION
+
+                          LAYOUT B
+
+
+     12"                         4"               4"
+                                                        14"
+                                       CD
+                                                                                4"
+
+                                                               9"
+                                              EF
+                                                                                4"
+           GH
+                                                                    18"
+                                            21"
+                                                  16"
+                                                                        7"
+                            AB
+                          29"
+
+                                                                                    3"
+                                      AB
+
+
+
+
+                                                                   GH
+                                                                                    3"
+                     EF                           15"                         15"
+
+                                            18"
+                           CD                                      9"
+                                                              5"
+                                                                        12"
+
+
+
+
+                                 31
+       FORCE DISPOSITION                                        FORCE DISPOSITION
+      PURGE THE FOE                       VS             RECONNAISSANCE
+            MISSION                                                    MISSION
+        CONSECRATE                                             TRIANGULATION
+
+                                        LAYOUT C
+
+
+
+
+                                                                                            15"
+                                   EF
+                                                                           GH
+
+
+
+
+                                                               CD
+
+                                          AB
+                                                                           24"
+                                                                                 6"
+
+
+                            15"
+                                                                       10"
+                                                         16"
+                                           AB      24"               23"
+                       CD
+                                                   17"                                 4"
+       3"
+                                                                                 16"
+
+                 GH
+            7"                                      EF
+                  9"        15"
+15"                               8"       8"
+                                                                                7"
+                                                5"                         5"
+                                                               10"
+
+
+
+
+                                           32
+  FORCE DISPOSITION                                              FORCE DISPOSITION
+PURGE THE FOE                    VS                        PRIORITY ASSETS
+      MISSION                                                           MISSION
+DESTROYER’S WRATH                                                  VITAL LINK
+
+                           LAYOUT A
+
+
+       12"
+                                      4"                         13"
+                                               EF                           6"
+                                                                                 6"
+
+
+
+                                                           GH
+                                                                 13"             6"
+
+
+             CD                       21"
+                                               20"                23"
+                                          AB                                      5"
+
+                                                       30"         11"
+
+                                                                                 6"
+
+                                AB
+                                                                                      4.5"
+                                                                       CD
+
+
+                                                           15"
+                      GH
+                                                     16"
+                                                                                      4.5"
+                                                                 13"         11"
+                                                            9"
+                           EF
+
+                                                                            12"
+
+
+
+
+                                     33
+  FORCE DISPOSITION                                         FORCE DISPOSITION
+PURGE THE FOE                        VS               PRIORITY ASSETS
+       MISSION                                                     MISSION
+DESTROYER’S WRATH                                             VITAL LINK
+
+                                 LAYOUT B
+
+
+
+
+                 CD
+                                                                                   GH
+
+
+                                                        EF
+                                          22"
+
+                                                      29"
+                                9"                           13"
+                                                AB
+                           AB
+                                                                                        4"
+                                                                              28"
+
+                                                                   10"
+  3"                                                         22"
+                      EF
+                                                      15"
+                                                17"                                5"
+  3" GH
+    14"                                                       CD
+
+
+
+                                          21"                            9"
+           10"                       7"
+                 6"        6"                                                      5"
+                                                                              4"
+
+
+
+
+                                     34
+      FORCE DISPOSITION                                          FORCE DISPOSITION
+PURGE THE FOE                              VS              PRIORITY ASSETS
+            MISSION                                                     MISSION
+DESTROYER’S WRATH                                                     VITAL LINK
+
+                                      LAYOUT C
+
+
+
+
+                                                                                   18"
+
+
+                                      CD
+
+
+
+
+                                                                                  GH
+
+                                                 19"             EF
+                             AB
+
+
+
+
+ 2"                                                    AB        13"
+                                                                                   4"
+                      EF                                   26"               25"
+       GH
+2"
+      19"                                                              19"
+                           15"
+                                                        15"
+                                                CD
+                                                                                       3"
+      4"                                             13"
+            11"        11"                                                         18"
+                                 9"             9"                     9"
+
+
+
+
+                                           35
+      FORCE DISPOSITION                                     FORCE DISPOSITION
+      DISRUPTION                    VS                      DISRUPTION
+            MISSION                                             MISSION
+      OUTMANOEUVRE                                      OUTMANOEUVRE
+
+                                LAYOUT A
+
+
+
+
+                                                                                       15"
+                                                                     GH
+
+
+                     EF
+
+
+                                                       CD
+
+
+                                         21"
+                                                                           23"
+
+                                                                                 5"
+                               AB
+                                                                     9"
+                                               AB     15"
+                                                28"
+
+
+                                                                                  4"
+                                                                            20"
+                          CD
+                                                       14"           16"
+       4"                                                       EF
+
+                                                                                 5"
+15"             GH                  10"                                    10"
+             8" 7"
+
+
+
+
+                                    36
+       FORCE DISPOSITION                                           FORCE DISPOSITION
+      DISRUPTION                           VS                      DISRUPTION
+             MISSION                                                   MISSION
+      OUTMANOEUVRE                                              OUTMANOEUVRE
+
+                                      LAYOUT B
+
+
+
+                                                                                         12"
+
+      20"                        EF
+
+                                                                                               26"
+                                                                                GH
+
+                                                                CD
+
+
+
+
+                                                                               27"
+                                      AB
+                                                                                        5"
+                                                                         9"
+                                                      AB
+                                                          16.25"
+                                                       25"
+        4"                                                  16"
+                           CD                   20"
+                                                                               7"
+                                                                         17"
+        4" GH
+26"        14"                                  22"
+                                                           EF                            20"
+                       14"
+                                8"         8"
+      12"                                                                          6"
+                                                      5"                      5"
+
+
+
+
+                                            37
+FORCE DISPOSITION                                   FORCE DISPOSITION
+DISRUPTION                          VS              DISRUPTION
+      MISSION                                              MISSION
+OUTMANOEUVRE                                        OUTMANOEUVRE
+
+                              LAYOUT C
+
+
+       14"                                                            8"
+                                         5"                5"
+                                   22"    EF
+                                                                8"         4"
+                                                     GH
+                        12"
+             CD
+                                                                           4"
+
+                                                                     6"
+
+                                                    23"
+                       17"
+                                               AB
+                                                                28"
+                                                                          5"
+
+                              AB                                8"
+                       17"
+                                         24.25"
+
+
+                                                                      5"
+                                                          CD
+
+
+                  GH
+
+                               EF
+                                                                      5"
+                                                                 5"
+ 8"                                                       14"
+
+
+
+
+                                    38
+         FORCE DISPOSITION                                 FORCE DISPOSITION
+        DISRUPTION                      VS            RECONNAISSANCE
+                   MISSION                                      MISSION
+      SMOKE AND MIRRORS                                   SURVEIL THE FOE
+
+                             LAYOUT A
+
+
+
+                                                                                 12"
+
+        20"
+                                                                                       26"
+                              EF                                            GH
+
+
+
+
+                                              AB                 CD
+
+
+
+                                                                      29"
+                                                    17"                      5"
+
+        3"
+                       CD                                        9"
+                                   AB
+                             20"
+                                    20"
+                                              21"
+              GH
+                                        17"    EF                                 3"
+        3"                                                       14"
+26"
+             13"       10"
+                                                                                 20"
+                                                                 9"
+        12"                                               14"
+
+
+
+
+                                        39
+  FORCE DISPOSITION                                           FORCE DISPOSITION
+  DISRUPTION                          VS               RECONNAISSANCE
+      MISSION                                                           MISSION
+SMOKE AND MIRRORS                                            SURVEIL THE FOE
+
+                                   LAYOUT B
+
+
+       12"
+
+                                                                           7"
+                                     GH
+                                                                                10"
+                                                       EF
+                                                                                      4"
+
+
+
+
+             CD
+                                           21"          21"                    7"
+                                                       AB
+
+                                                            27"
+                                                                  12"
+                                                                         22"
+                                                              13"
+                                                       16"
+                                                 26"
+                          AB                                                          4"
+                                                                    CD
+
+
+
+
+                                           16"
+                  13"                                                                 4"
+                              EF
+                                                                                12"
+                        12"
+                                           GH
+
+                                                                    6"
+                                      3"                                   12"
+
+
+
+
+                                      40
+      FORCE DISPOSITION                                           FORCE DISPOSITION
+      DISRUPTION                          VS               RECONNAISSANCE
+          MISSION                                                       MISSION
+SMOKE AND MIRRORS                                               SURVEIL THE FOE
+
+                                    LAYOUT C
+
+
+
+                                                                            GH
+
+
+
+
+                                                                      EF
+
+
+
+                    CD
+
+
+                                                                                 25"
+                                               AB                                          3"
+                                                     9"
+
+                              28"    AB                         14"             7"
+                                                          26"
+
+                     10"
+                                                                           CD
+
+
+                                                            15"
+                         EF
+
+                                                                                           3"
+ 2"                                                               10"                10"
+
+               GH
+                                               21"
+          7"                        5"
+                    3"
+
+
+
+
+                                          41
+ FORCE DISPOSITION                                               FORCE DISPOSITION
+ DISRUPTION                           VS                    PRIORITY ASSETS
+       MISSION                                                          MISSION
+LOCATE AND DENY                                                  EXTRACT RELIC
+
+                               LAYOUT A
+                                                                       19"
+
+        14"                                                                       8"
+                                                 5"                5"
+                                                       EF
+
+                                                                            10"
+                                                                                   5"
+              CD
+                                                                 GH
+                                                                        10"
+
+                                                                                   5"
+
+               AB
+                                                            25"
+                              19"                                 12"
+
+                                                                  12"
+                                                                                        3"
+                              19"
+                                    26"
+                                                                 13"
+                                                                       AB
+                                                           23"
+
+                                                           15"
+                    GH
+                                    14"                                                4"
+                                                                        CD
+                                                     18"
+                                               10"
+                         EF
+
+                                                                                       4"
+  8"                                                                        14"   3"
+
+              19"
+
+
+                                          42
+       FORCE DISPOSITION                                                FORCE DISPOSITION
+       DISRUPTION                                VS               PRIORITY ASSETS
+              MISSION                                                          MISSION
+      LOCATE AND DENY                                                   EXTRACT RELIC
+
+                                          LAYOUT B
+
+
+
+                                                                                                12"
+
+      20"
+                                                                                                      26"
+                                                                                          GH
+                                          EF
+
+
+
+
+                                                                              CD
+
+                              AB    18"
+                                                                                          29"
+
+                                    18"                           15"
+                                           27"              28"     AB
+
+        4"              CD
+
+
+                                               21"
+                                                                        13"
+                                                       EF
+             GH                                                                                  3"
+        4"
+26"          14"             13"
+                                                                                    13"
+                                   11"                                                          20"
+                   9"        9"                                                    9"
+      12"                                             7"          7"          7"
+
+
+
+
+                                                 43
+ FORCE DISPOSITION                                       FORCE DISPOSITION
+ DISRUPTION                       VS                PRIORITY ASSETS
+        MISSION                                                  MISSION
+LOCATE AND DENY                                          EXTRACT RELIC
+
+                            LAYOUT C
+
+
+
+
+                                                                      GH
+
+
+                                                    CD
+             EF
+
+
+
+
+                                                                   21"
+                                                                         6"
+
+                  AB                      18"
+                            9"                               10"
+
+                                              18"
+                            27"                             AB
+                                                                              4"
+                                                                      24"
+
+                                        19"
+                                                                              4"
+  4"                                                  14"    EF
+                       CD                       14"
+
+       GH
+  4"
+       7"                               20"
+                                                                              4"
+                                   4"                       4"
+
+
+
+
+                                  44
+  FORCE DISPOSITION                                       FORCE DISPOSITION
+RECONNAISSANCE                          VS              RECONNAISSANCE
+         MISSION                                                 MISSION
+  GATHER INTEL                                            GATHER INTEL
+
+                                  LAYOUT A
+                                                                19"
+
+          14"                                                               8"
+                                             5"                 5"
+                                       22"    EF
+                                                                      8"         4"
+                                                          GH
+                            12"
+                 CD
+                                                                                 4"
+
+                                                                           6"
+
+                                                         23"
+                           17"
+                                                   AB
+                                                                      28"
+                                                                                5"
+
+                                  AB                                  8"
+                           17"
+                                             24.25"
+
+
+                                                                            5"
+                                                               CD
+
+
+                      GH
+
+                                   EF
+                                                                            5"
+                                                                       5"
+    8"                                                         14"
+
+                19"
+
+
+                                        45
+        FORCE DISPOSITION                                     FORCE DISPOSITION
+      RECONNAISSANCE                  VS              RECONNAISSANCE
+              MISSION                                             MISSION
+        GATHER INTEL                                          GATHER INTEL
+
+                                  LAYOUT B
+
+
+
+
+                                                                                         15"
+                                                                       GH
+
+
+                       EF
+
+
+                                                         CD
+
+
+                                           21"
+                                                                             23"
+
+                                                                                   5"
+                                 AB
+                                                                       9"
+                                                 AB     15"
+                                                  28"
+
+
+                                                                                    4"
+                                                                              20"
+                            CD
+                                                         14"           16"
+         4"                                                       EF
+
+                                                                                   5"
+15"
+                  GH                  10"                                    10"
+               8" 7"
+
+
+
+
+                                      46
+         FORCE DISPOSITION                                           FORCE DISPOSITION
+      RECONNAISSANCE                         VS                RECONNAISSANCE
+               MISSION                                                     MISSION
+         GATHER INTEL                                                   GATHER INTEL
+
+                                        LAYOUT C
+
+
+
+                                                                                            12"
+
+        20"                        EF
+
+                                                                                                  26"
+                                                                                   GH
+
+                                                                   CD
+
+
+
+
+                                                                                  27"
+                                        AB
+                                                                                           5"
+                                                                            9"
+                                                        AB
+                                                            16.25"
+                                                         25"
+          4"                                                  16"
+                             CD                    20"
+                                                                                  7"
+                                                                            17"
+          4" GH
+26"          14"                                  22"
+                                                              EF                            20"
+                         14"
+                                  8"         8"
+        12"                                                                           6"
+                                                         5"                      5"
+
+
+
+
+                                              47
+        FORCE DISPOSITION                                FORCE DISPOSITION
+      RECONNAISSANCE                   VS              PRIORITY ASSETS
+              MISSION                                              MISSION
+      SEARCH AND SCOUR                             VANGUARD OPERATION
+
+                                 LAYOUT A
+
+
+
+
+                                                                    GH
+                                                                                         15"
+
+
+                           CD
+                                                        EF
+
+
+
+
+                                                 17"
+                                 AB
+
+
+                     10"
+
+                                            AB
+                                                 17"                                2"
+             6"                         24.25"                                24"
+                   23"
+
+                                                             12"
+                            EF
+                                                        CD
+        4"
+             12"
+15"                 GH           20"
+                   8"                                                    7"
+                                                   4"               4"
+
+
+
+
+                                       48
+         FORCE DISPOSITION                                               FORCE DISPOSITION
+      RECONNAISSANCE                           VS                   PRIORITY ASSETS
+                   MISSION                                                   MISSION
+      SEARCH AND SCOUR                                          VANGUARD OPERATION
+
+                                           LAYOUT B
+
+
+
+                                                                                               12"
+
+        20"
+                                    CD
+                                                                                                     26"
+                                                                                    GH
+
+                                                                    EF
+
+
+
+
+                               16.25"
+                                                          AB                        27"
+
+                                                                                          5"
+                                          AB
+                               16.25"                                          9"
+                                         25"
+              5"                                                                           4"
+                                    EF                         20"                   20"
+
+                    GH                                                                    5"
+              5"                                    14"
+26"                13"                                          CD
+
+                                                                                           20"
+                             13"
+        12"                        7"     7"                   7"                    7"
+
+
+
+
+                                               49
+  FORCE DISPOSITION                                         FORCE DISPOSITION
+RECONNAISSANCE                         VS             PRIORITY ASSETS
+        MISSION                                                    MISSION
+SEARCH AND SCOUR                                      VANGUARD OPERATION
+
+                                LAYOUT C
+                                                                  19"
+
+         14"                                                                     8"
+                                                 4"               4"
+                                                      EF
+                                                                       9"
+
+
+
+
+                                                             GH
+                  CD
+                                                                                 5"
+
+
+                                                  17"
+                                            AB
+                                                                        26"
+
+                                                                                  4"
+                                                            13"
+                                AB
+                                                  17"
+                       24.25"
+                                                                            7"
+
+                                                                                 5"
+                                                  16"             CD
+                  GH
+                                20"
+                                      12"
+                                             9"
+                        EF
+                                                                                 5"
+                                                                            6"
+   8"                                                      14"
+
+               19"
+
+
+                                       50
+  FORCE DISPOSITION                                                FORCE DISPOSITION
+PRIORITY ASSETS                         VS                    PRIORITY ASSETS
+        MISSION                                                           MISSION
+    SABOTAGE                                                            SABOTAGE
+
+                                 LAYOUT A
+                                                                         19"
+
+         14"                                      4"                4"                8"
+                                                        EF               11"
+                                                                                7"
+                                                                                      5"
+
+
+               CD
+                                                                   GH
+
+
+                                                         19"                          5"
+                                                                          10"
+
+                     AB                                                   10"
+                                19"
+                                                                               28"
+                                                                                     6"
+
+                                19"
+                                      26"
+                                                                   AB
+
+
+                                                             16"
+                                            22"                           19"
+
+                      GH                                                                  4"
+                                                                          CD
+                                       14"
+                                                       18"
+
+                           EF
+                                                                                          4"
+                                                                                     4"
+   8"                                                                          14"
+
+               19"
+
+
+                                            51
+        FORCE DISPOSITION                                                FORCE DISPOSITION
+      PRIORITY ASSETS                            VS            PRIORITY ASSETS
+               MISSION                                                       MISSION
+             SABOTAGE                                                      SABOTAGE
+
+                                           LAYOUT B
+
+
+
+
+                                                                                                       15"
+                                                                                 GH
+                               CD
+
+
+
+
+                                                                    EF
+
+
+                               AB
+                                                                                      25"
+                                     18"
+                                                                                            5"
+
+                                     18"                                          9"
+                                           27"
+                                                                                                  2"
+                                                               AB
+                                                                                            24"
+                                                                                       7"
+                                                                                 9"
+                         EF                                                19"
+        3"                                       16"
+
+             14"                                        21"    CD
+                    GH
+                                                  11"
+15"                7"                                                                       5"
+                              15"                             6"                       6"
+                                    5"
+
+
+
+
+                                                  52
+        FORCE DISPOSITION                                          FORCE DISPOSITION
+      PRIORITY ASSETS                            VS           PRIORITY ASSETS
+              MISSION                                                     MISSION
+             SABOTAGE                                                   SABOTAGE
+
+                                           LAYOUT C
+
+
+
+                                                                                             12"
+
+       20"                                                         AB
+                              EF
+                                                                                                   26"
+                                                                                   GH
+
+
+
+
+                                                                          CD
+                                     18"
+
+
+                                     18"
+         4"                                27"                                          5"
+                  CD
+                                                                              9"
+                                                                        21"
+                              15"
+                                    18"
+        4" GH                                           15"                              4"
+26"       14"                                                 EF
+                         AB                                                              20"
+                                                  10"
+       12"                                              7"                          7"
+                  10"
+                        4"
+
+
+
+
+                                                 53
+                                BASE SIZE GUIDE
+                                                         LAST UPDATED: JUNE 2026
+Welcome to the Warhammer 40,000 Base Size Guide. This document contains the most up-to-date base sizes appropriate
+for all Warhammer 40,000 models that can be used in matched play.
+
+Warhammer events bring together people from all over the                                                        Designer’s Note: A few of the very largest models listed in this
+world to enjoy a shared hobby, to play the game we love using                                                   document are marked as Unique. Such models do not fit on
+armies we have spent many hours building and painting.                                                          any Citadel base of standard size, so if you intend to use any of
+Many players enjoy converting and customising their models                                                      these models at an event, we recommend you speak to the event
+to make them unique and personal to them, and we actively                                                       organiser to agree with them what base size is appropriate.
+encourage this.
+
+One of the key goals of a Warhammer event is to provide
+a shared fair play experience for all, while celebrating the
+hobby. To support event organisers in achieving this, this
+document gathers a list of appropriate base sizes for all players
+to check. This information is not a requirement for all games of
+Warhammer 40,000, but is intended to avoid any uncertainty
+that may arise in matched play settings.
+
+
+
+
+CONTENTS
+Adepta Sororitas���������������������������������������������������������������������������� 55                Emperor’s Children������������������������������������������������������������������������� 75
+Adeptus Custodes��������������������������������������������������������������������������� 56                 Genestealer Cults���������������������������������������������������������������������������� 76
+Adeptus Mechanicus���������������������������������������������������������������������� 57                    Grey Knights����������������������������������������������������������������������������������� 77
+Adeptus Titanicus�������������������������������������������������������������������������� 58                 Imperial Agents������������������������������������������������������������������������������ 78
+Aeldari��������������������������������������������������������������������������������������������� 59        Imperial Knights����������������������������������������������������������������������������� 79
+Astra Militarum������������������������������������������������������������������������������ 61               Leagues of Votann�������������������������������������������������������������������������� 80
+Black Templars������������������������������������������������������������������������������� 63               Necrons������������������������������������������������������������������������������������������� 81
+Blood Angels����������������������������������������������������������������������������������� 65             Orks������������������������������������������������������������������������������������������������� 83
+Chaos Daemons������������������������������������������������������������������������������ 66                 Space Marines��������������������������������������������������������������������������������� 85
+Chaos Knights��������������������������������������������������������������������������������� 68              Space Wolves��������������������������������������������������������������������������������� 88
+Chaos Space Marines��������������������������������������������������������������������� 69                    T’au Empire������������������������������������������������������������������������������������� 89
+Dark Angels������������������������������������������������������������������������������������ 71             Thousand Sons������������������������������������������������������������������������������� 91
+Death Guard������������������������������������������������������������������������������������ 72             Tyranids������������������������������������������������������������������������������������������� 92
+Deathwatch������������������������������������������������������������������������������������� 73             World Eaters����������������������������������������������������������������������������������� 94
+Drukhari������������������������������������������������������������������������������������������ 74
+
+
+
+
+                                        PRODUCED BY THE WARHAMMER DESIGN STUDIO
+                                                                      Base Size Guide © Copyright Games Workshop Limited 2026.
+
+
+
+
+                                                                                                           54
+ADEPTA SORORITAS
+UNIT                                                    BASE SIZE
+Aestred Thurga and Agathae Dolan: Aestred Thurga        32mm
+Aestred Thurga and Agathae Dolan: Agathae Dolan         25mm
+Arco-flagellants                                        25mm
+Battle Sisters Squad                                    32mm
+Canoness                                                32mm
+Canoness with Jump Pack                                 32mm
+Castigator                                              Hull
+Celestian Insidiants                                    32mm
+Celestian Sacresants                                    32mm
+Daemonifuge                                             32mm
+Dialogus                                                40mm
+Dogmata                                                 32mm
+Dominion Squad                                          32mm
+Exorcist                                                Hull
+Hospitaller                                             50mm
+Imagifier                                               32mm
+Immolator [Adepta_Sororitas]                            Hull
+Junith Eruita                                           50mm
+Intranzia Fraye                                         60mm
+Ministorum Priest                                       32mm
+Mortifiers                                              50mm
+Morvenn Vahl                                            60mm
+Palatine                                                32mm
+Paragon Warsuits                                        50mm
+Penitent Engines                                        50mm
+Repentia Squad: Repentia Superior                       32mm
+Repentia Squad: Sister Repentia                         28.5mm
+Retributor Squad                                        32mm
+Saint Celestine                                         40mm
+Saint Celestine: Geminae Superia                        32mm
+Sanctifiers                                             25mm
+Seraphim Squad                                          32mm
+Sisters Novitiate Squad: Novitiate Superior             32mm
+Sisters Novitiate Squad: Sister Novitiate               28.5mm
+Sororitas Rhino                                         Hull
+Triumph of Saint Katherine                              120x92mm Oval Base
+Zephyrim Squad                                          32mm
+
+
+
+
+                                                   55
+ADEPTUS CUSTODES
+UNIT                                                      BASE SIZE
+Aleya                                                     32mm
+Allarus Custodians                                        40mm
+Anathema Psykana Rhino                                    Hull
+Blade Champion                                            40mm
+Custodian Guard                                           40mm
+Custodian Wardens                                         40mm
+Knight-Centura                                            32mm
+Prosecutors                                               32mm
+Shield-Captain                                            40mm
+Shield-Captain in Allarus Terminator Armour               40mm
+Shield-Captain on Dawneagle Jetbike                       75x42mm Oval Base
+Trajann Valoris                                           40mm
+Valerian                                                  40mm
+Venerable Contemptor Dreadnought                          60mm
+Venerable Land Raider                                     Hull
+Vertus Praetors                                           75x42mm Oval Base
+Vigilators                                                32mm
+Witchseekers                                              32mm
+IMPERIAL ARMOUR
+Agamatus Custodians                                       75x42mm Oval Base
+Aquilon Custodians                                        50mm
+Ares Gunship                                              160mm
+Caladius Grav-tank                                        170x109mm Oval Base
+Contemptor-Achillus Dreadnought                           60mm
+Contemptor-Galatus Dreadnought                            60mm
+Coronus Grav-carrier                                      170x109mm Oval Base
+Custodian Guard with Adrasite and Pyrithite Spears        40mm
+Orion Assault Dropship                                    160mm
+Pallas Grav-attack                                        105x70mm Oval Base
+Sagittarum Custodians                                     40mm
+Telemon Heavy Dreadnought                                 100mm
+Venatari Custodians                                       40mm
+
+
+
+
+                                                     56
+ADEPTUS MECHANICUS
+UNIT                                                            BASE SIZE
+Archaeopter Fusilave                                            170x109mm Oval Base
+Archaeopter Stratoraptor                                        170x109mm Oval Base
+Archaeopter Transvector                                         170x109mm Oval Base
+Belisarius Cawl                                                 105x70mm Oval Base
+Corpuscarii Electro-Priests                                     32mm
+Cybernetica Datasmith                                           32mm
+Fulgurite Electro-Priests                                       32mm
+Hastarii Exterminators                                          32mm
+Hastarii Fusiliers                                              32mm
+Ironstrider Ballistarii                                         105x70mm Oval Base
+Kastelan Robots                                                 60mm
+Kataphron Breachers                                             60mm
+Kataphron Destroyers                                            60mm
+Onager Dunecrawler                                              130mm
+Pteraxii Skystalkers                                            40mm
+Pteraxii Sterylizors                                            40mm
+Serberys Raiders                                                60x35.5mm Oval Base
+Serberys Sulphurhounds                                          60x35.5mm Oval Base
+Servitor Battleclade: Servitor Underseer / Gun Servitors        32mm
+Servitor Battleclade: Combat Servitors                          25mm
+Sicarian Infiltrators                                           40mm
+Sicarian Ruststalkers                                           40mm
+Skitarii Marshal                                                32mm
+Skitarii Rangers                                                25mm
+Skitarii Rangers/Skitarii Vanguard: Transuranic Arquebus        60x35.5mm Oval Base
+Skitarii Vanguard                                               25mm
+Skorpius Disintegrator                                          Hull
+Skorpius Dunerider                                              Hull
+Sydonian Dragoons with Radium Jezzails                          105x70mm Oval Base
+Sydonian Dragoons with Taser Lances                             105x70mm Oval Base
+Sydonian Skatros                                                40mm
+Tech-Priest Dominus                                             50mm
+Tech-Priest Enginseer                                           32mm
+Tech-Priest Manipulus                                           50mm
+Technoarcheologist                                              32mm
+Thulia Ghuld                                                    80mm
+
+
+
+
+                                                           57
+ADEPTUS TITANICUS
+UNIT                            BASE SIZE
+Reaver Titan                    Hull
+Warbringer Nemesis Titan        Hull
+Warhound Titan                  Hull
+Warlord Titan                   Hull
+
+
+
+
+                           58
+AELDARI
+UNIT                                             BASE SIZE
+Asurmen                                          40mm
+Autarch                                          32mm
+Autarch wayleaper                                32mm
+Avatar of Khaine                                 80mm
+Baharroth                                        40mm
+Corsair Skyreavers                               28.5mm
+Corsair Voidreavers                              28.5mm
+Corsair Voidscarred                              28.5mm
+Crimson Hunter                                   120x92mm Oval Base
+D-cannon Platform                                40mm
+Dark Reapers                                     28.5mm
+Death Jester                                     25mm
+Dire Avengers                                    28.5mm
+Eldrad Ulthran                                   32mm
+Falcon                                           Large Flying Base
+Farseer                                          25mm
+Farseer Skyrunner                                Small Flying Base
+Fire Dragons                                     28.5mm
+Fire Prism                                       Large Flying Base
+Fuegan                                           40mm
+Guardian Defenders                               28.5mm
+Guardian Defenders: Heavy Weapon Platform        40mm
+Hemlock Wraithfighter                            120x92mm Oval Base
+Howling Banshees                                 28.5mm
+Jain Zar                                         40mm
+Kharseth                                         32mm
+Lhykhis                                          40mm
+Maugan Ra                                        40mm
+Night Spinner                                    Large Flying Base
+Prince Yriel                                     40mm
+Rangers                                          28.5mm
+Shadow Weaver Platform                           40mm
+Shadowseer                                       25mm
+Shining Spears                                   Large Flying Base
+Shroud Runners                                   Large Flying Base
+Skyweavers                                       Large Flying Base
+Solitaire                                        25mm
+Spiritseer                                       25mm
+Starfang                                         105x70mm Oval Base
+Starweaver                                       Large Flying Base
+Storm Guardians                                  28.5mm
+
+
+
+                                            59
+UNIT                                             BASE SIZE
+Storm Guardians: Serpent’s Scale Platform        40mm
+Striking Scorpions                               28.5mm
+Swooping Hawks                                   32mm
+The Visarch                                      32mm
+The Yncarne                                      80mm
+Troupe                                           25mm
+Troupe Master                                    25mm
+Vibro Cannon Platform                            40mm
+Voidweaver                                       Large Flying Base
+Vyper                                            105x70mm Oval Base
+War Walker                                       60mm
+Warlock                                          32mm
+Warlock Conclave                                 32mm
+Warlock Skyrunners                               Small Flying Base
+Warp Spiders                                     28.5mm
+Wave Serpent                                     Large Flying Base
+Windriders                                       Small Flying Base
+Wraithblades                                     40mm
+Wraithguard                                      40mm
+Wraithknight                                     120x92mm Oval Base
+Wraithknight with Ghostglaive                    120x92mm Oval Base
+Wraithlord                                       60mm
+Ynnari Archon                                    32mm
+Ynnari Incubi                                    28.5mm
+Ynnari Kabalite Warriors                         25mm
+Ynnari Raider                                    Large Flying Base
+Ynnari Reavers                                   Small Flying Base
+Ynnari Succubus                                  25mm
+Ynnari Venom                                     Large Flying Base
+Ynnari Wyches                                    25mm
+Yvraine                                          75x42mm Oval Base
+IMPERIAL ARMOUR
+Phantom Titan                                    Hull
+Revenant Titan                                   Hull
+
+
+
+
+                                            60
+ASTRA MILITARUM
+UNIT                                               BASE SIZE
+Aegis Defence Line                                 Hull
+Armoured Sentinels                                 80mm
+Artillery Team                                     130mm
+Attilan Rough Riders                               60x35.5mm Oval Base
+Baneblade                                          Hull
+Banehammer                                         Hull
+Banesword                                          Hull
+Basilisk                                           Hull
+Bullgryn squad                                     40mm
+Cadian Castellan                                   28.5mm
+Cadian Command Squad                               28.5mm
+Cadian Heavy Weapons Squad                         50mm
+Cadian Recon Squad                                 28.5mm
+Cadian Shock Troops                                25mm
+Catachan Command Squad                             25mm
+Catachan Heavy Weapons Squad                       60mm
+Catachan Jungle Fighters                           25mm
+Centaur RSV                                        Hull
+Chimera                                            Hull
+Commissar                                          28.5mm
+Commissar Graves                                   Hull
+Commissar Graves on Foot                           32mm
+Commissar Yarrick                                  32mm
+Death Korps of Krieg                               25mm
+Death Riders                                       60x35.5mm Oval Base
+Deathstrike                                        Hull
+Doomhammer                                         Hull
+Field Ordnance Battery                             100mm
+Gaunt’s Ghosts                                     28.5mm
+Hellhammer                                         Hull
+Hellhound                                          Hull
+Hippogriff AFV                                     Hull
+Hydra                                              Hull
+Kasrkin                                            28.5mm
+Krieg Combat Engineers                             25mm
+Krieg Command Squad                                25mm
+Krieg Command Squad: Lord Commissar                32mm
+Krieg Heavy Weapons Squad                          50mm
+Krieg Heavy Weapons Squad: Fire Coordinator        25mm
+Leman Russ Battle Tank                             Hull
+Leman Russ Commander                               Hull
+
+
+
+                                              61
+UNIT                                     BASE SIZE
+Leman Russ Demolisher                    Hull
+Leman Russ Eradicator                    Hull
+Leman Russ Executioner                   Hull
+Leman Russ Exterminator                  Hull
+Leman Russ Punisher                      Hull
+Leman Russ Vanquisher                    Hull
+Lord Marshal Dreir                       75x42mm Oval Base
+Lord Solar Leontus                       80mm
+Manticore                                Hull
+Militarum Tempestus Command Squad        25mm
+Ministorum Priest                        32mm
+Nork Deddog                              40mm
+Ogryn Bodyguard                          40mm
+Ogryn squad                              40mm
+Primaris Psyker                          32mm
+Ratlings                                 25mm
+Ratlings: Tankstopper Rifle              28.5mm
+Rogal Dorn Battle Tank                   Hull
+Rogal Dorn Commander                     Hull
+Scout Sentinels                          80mm
+Shadowsword                              Hull
+Sly Marbo                                32mm
+Stormlord                                Hull
+Stormsword                               Hull
+Taurox                                   Hull
+Taurox Prime                             Hull
+Tech-Priest Enginseer                    32mm
+Tempestus Aquilons                       28.5mm
+Tempestus Scions                         25mm
+Ursula Creed                             32mm
+Valkyrie                                 120x92mm Oval Base
+Wyvern                                   Hull
+IMPERIAL ARMOUR
+Avenger Strike Fighter                   120x92mm Oval Base
+Cyclops Demolition Vehicle               Hull
+
+
+
+
+                                    62
+BLACK TEMPLARS
+UNIT                                          BASE SIZE
+Castellan                                     40mm
+Chaplain Grimaldus                            40mm
+Chaplain Grimaldus: Cenobyte Servitors        28.5mm
+Crusade Ancient                               40mm
+Crusader Squad: Initiates                     32mm
+Crusader Squad: Neophytes                     28.5mm
+Crusader Squad: Sword Brother                 40mm
+Execrator                                     40mm
+Gladiator Lancer                              100mm
+Gladiator Reaper                              100mm
+Gladiator Valiant                             100mm
+High Marshal Helbrecht                        60mm
+Impulsor                                      100mm
+Land Raider Crusader                          Hull
+Marshal                                       40mm
+Repulsor                                      100mm
+Repulsor Executioner                          100mm
+Sternguard Veteran Squad                      32mm
+Sword Brethren                                40mm
+Terminator Squad                              40mm
+The Emperor’s Champion                        40mm
+
+
+
+
+                                         63
+BLOOD ANGELS
+UNIT                                          BASE SIZE
+Astorath                                      40mm
+Baal Predator                                 Hull
+Blood Angels Captain                          40mm
+Chief Librarian Mephiston                     40mm
+Commander Dante                               50mm
+Death Company Captain                         40mm
+Death Company Captain with Jump Pack          40mm
+Death Company Dreadnought                     90mm
+Death Company Marines                         32mm
+Death Company Marines with Bolt Rifles        32mm
+Death Company Marines with Jump Packs         32mm
+Lemartes                                      40mm
+Sanguinary Guard                              40mm
+Sanguinary Priest                             40mm
+The Sanguinor                                 40mm
+
+
+
+
+                                         64
+CHAOS DAEMONS
+UNIT                                     BASE SIZE
+Be’lakor                                 100mm
+Beasts of Nurgle                         60mm
+Bloodcrushers                            90x52.5mm Oval Base
+Bloodletters                             32mm
+Bloodmaster                              40mm
+Bloodthirster                            120x92mm Oval Base
+Blue Horrors                             25mm
+Burning Chariot                          120x92mm Oval Base
+Changecaster                             32mm
+Contorted Epitome                        75x42mm Oval Base
+Daemon Prince of Chaos                   60mm
+Daemon Prince of Chaos with Wings        60mm
+Daemonettes                              25mm
+Epidemius                                60mm
+Exalted Flamer                           75x42mm Oval Base
+Fateskimmer                              120x92mm Oval Base
+Feculent Gnarlmaw                        Hull
+Fiends                                   75x42mm Oval Base
+Flamers                                  32mm
+Flesh Hounds                             60x35.5mm Oval Base
+Fluxmaster                               Large Flying Base
+Great Unclean One                        130mm
+Hellflayers                              120x92mm Oval Base
+Horticulous Slimux                       105x70mm Oval Base
+Infernal Enrapturess                     60x35.5mm Oval Base
+Kairos Fateweaver                        100mm
+Karanak                                  75x42mm Oval Base
+Keeper of Secrets                        100mm
+Lord of Change                           100mm
+Nurglings                                40mm
+Pink Horrors                             32mm
+Plague Drones                            Large Flying Base
+Plaguebearers                            32mm
+Poxbringer                               32mm
+Rendmaster on Blood Throne               120x92mm Oval Base
+Rotigus                                  130mm
+Screamers                                Small Flying Base
+Seekers                                  60x35.5mm Oval Base
+Shalaxi Helbane                          100mm
+Skarbrand                                100mm
+Skull Altar                              Hull
+
+
+
+                                    65
+UNIT                          BASE SIZE
+Skull Cannon                  120x92mm Oval Base
+Skullmaster                   90x52.5mm Oval Base
+Skulltaker                    40mm
+Sloppity Bilepiper            32mm
+Soul Grinder                  160mm
+Spoilpox Scrivener            40mm
+Syll’esske                    50mm
+The Blue Scribes              Large Flying Base
+The Changeling                40mm
+The Masque of Slaanesh        32mm
+Tormentbringer                120x92mm Oval Base
+Tranceweaver                  32mm
+
+
+
+
+                         66
+CHAOS KNIGHTS
+UNIT                                    BASE SIZE
+Knight Abominant                        170x109mm Oval Base
+Knight Desecrator                       170x109mm Oval Base
+Knight Despoiler                        170x109mm Oval Base
+Knight Rampager                         170x109mm Oval Base
+Knight Ruinator                         170x109mm Oval Base
+Knight Tyrant                           170x109mm Oval Base
+War Dog Brigand                         100mm
+War Dog Executioner                     100mm
+War Dog Huntsman                        100mm
+War Dog Karnivore                       100mm
+War Dog Stalker                         100mm
+IMPERIAL ARMOUR
+Chaos Acastus Knight Asterius           Hull
+Chaos Acastus Knight Porphyrion         Hull
+Chaos Cerastus Knight Acheron           170x109mm Oval Base
+Chaos Cerastus Knight Atrapos           170x109mm Oval Base
+Chaos Cerastus Knight Castigator        170x109mm Oval Base
+Chaos Cerastus Knight Lancer            170x109mm Oval Base
+Chaos Questoris Knight Magaera          170x109mm Oval Base
+Chaos Questoris Knight Styrix           170x109mm Oval Base
+War Dog Moirax                          100mm
+
+
+
+
+                                   67
+CHAOS SPACE MARINES
+UNIT                                                     BASE SIZE
+Abaddon the Despoiler                                    60mm
+Accursed Cultists: Mutant                                25mm
+Accursed Cultists: Torment                               40mm
+Chaos Bikers                                             75x42mm Oval Base
+Chaos Land Raider                                        Hull
+Chaos Lord                                               40mm
+Chaos Lord in Terminator Armour                          40mm
+Chaos Lord with Jump Pack                                40mm
+Chaos Predator Annihilator                               Hull
+Chaos Predator Destructor                                Hull
+Chaos Rhino                                              Hull
+Chaos Spawn                                              50mm
+Chaos Terminator Squad                                   40mm
+Chaos Vindicator                                         Hull
+Chosen                                                   32mm
+Cultist Firebrand                                        32mm
+Cultist Mob                                              25mm
+Cypher                                                   32mm
+Dark Apostle                                             40mm
+Dark Apostle: Dark Disciple                              25mm
+Dark Commune: Blessed Blade                              28.5mm
+Dark Commune: Cult Demagogue, Mindwitch, Iconarch        32mm
+Defiler                                                  160mm
+Fabius Bile                                              40mm
+Fabius Bile: Surgeon Acolyte                             32mm
+Fellgor beastmen                                         32mm
+Forgefiend                                               120x92mm Oval Base
+Haarken Worldclaimer                                     40mm
+Havocs                                                   40mm
+Helbrute                                                 60mm
+Heldrake                                                 120x92mm Oval Base
+Heretic Astartes Daemon Prince                           60mm
+Heretic Astartes Daemon Prince with Wings                60mm
+Huron Blackheart                                         50mm
+Khorne Lord of Skulls                                    Hull
+Kravek Morne                                             50mm
+Legionaries                                              32mm
+Lord Discordant on Helstalker                            120x92mm Oval Base
+Master of Executions                                     40mm
+Master of Possession                                     40mm
+
+
+
+
+                                                    68
+UNIT                                                                    BASE SIZE
+Masters of the Maelstrom: Garlon Souleater, Garreon the Corpsemaster,   40mm
+Katar Garrix, Captain Sargotta
+Masters of the Maelstrom: The Enforcer                                  32mm
+Maulerfiend                                                             120x92mm Oval Base
+Mutilators                                                              50mm
+Nemesis Claw                                                            32mm
+Noctilith Crown                                                         Hull
+Obliterators                                                            50mm
+Possessed                                                               40mm
+Raptors                                                                 32mm
+Red Corsairs Raiders                                                    40mm
+Red Corsairs Reave-Captain                                              32mm
+Sorcerer                                                                40mm
+Sorcerer in Terminator Armour                                           40mm
+Traitor Enforcer                                                        32mm
+Traitor Enforcer: Traitor Ogryn                                         40mm
+Traitor Guardsmen Squad                                                 25mm
+Vashtorr the Arkifane                                                   80mm
+Venomcrawler                                                            100mm
+Warp Talons                                                             32mm
+Warpsmith                                                               60x35.5mm Oval Base
+
+
+
+
+                                                        69
+DARK ANGELS
+UNIT                              BASE SIZE
+Asmodai                           50mm
+Azrael                            50mm
+Belial                            50mm
+Deathwing Knights                 40mm
+Deathwing Terminator Squad        40mm
+Ezekiel                           25mm
+Inner Circle Companions           40mm
+Land Speeder Vengeance            Large Flying Base
+Lazarus                           40mm
+Lion El’Jonson                    60mm
+Nephilim Jetfighter               120x92mm Oval Base
+Ravenwing Black Knights           75x42mm Oval Base
+Ravenwing Command Squad           75x42mm Oval Base
+Ravenwing Dark Talon              120x92mm Oval Base
+Ravenwing Darkshroud              Large Flying Base
+Sammael                           Large Flying Base
+
+
+
+
+                             70
+DEATH GUARD
+UNIT                                                 BASE SIZE
+Biologus Putrifier                                   40mm
+Blightlord Terminators                               40mm
+Chaos Land Raider                                    Hull
+Chaos Predator Annihilator                           Hull
+Chaos Predator Destructor                            Hull
+Chaos Rhino                                          Hull
+Chaos Spawn                                          50mm
+Daemon Prince of Nurgle                              60mm
+Daemon Prince of Nurgle with Wings                   60mm
+Deathshroud Terminators                              40mm
+Defiler                                              160mm
+Foetid Bloat-Drone                                   60mm
+Foetid Bloat-drone with Heavy Blight Launcher        60mm
+Foul Blightspawn                                     40mm
+Helbrute                                             60mm
+Icon Bearer                                          32mm
+Lord of Contagion                                    40mm
+Lord of Poxes                                        40mm
+Lord of Virulence                                    50mm
+Malignant Plaguecaster                               32mm
+Miasmic Malignifier                                  Hull
+Mortarion                                            100mm
+Myphitic Blight-Haulers                              80mm
+Noxious Blightbringer                                40mm
+Plague Marines                                       32mm
+Plague Surgeon                                       40mm
+Plagueburst Crawler                                  Hull
+Poxwalkers                                           25mm
+Tallyman                                             40mm
+Typhus                                               50mm
+DAEMONS
+Beasts of Nurgle                                     60mm
+Great Unclean One                                    130mm
+Nurglings                                            40mm
+Plague Drones                                        Large Flying Base
+Plaguebearers                                        32mm
+Rotigus                                              130mm
+
+
+
+
+                                                71
+DEATHWATCH
+UNIT                                                                  BASE SIZE
+Corvus Blackstar                                                      120x92mm Oval Base
+Deathwatch Terminator Squad                                           40mm
+Deathwatch Veterans                                                   32mm
+Decimus Kill Team: Kill Team Sergeant and Deathwatch Veterans         32mm
+Decimus Kill Team: Gravis Veterans                                    40mm
+Fortis Kill Team                                                      32mm
+Indomitor Kill Team                                                   40mm
+Spectrus Kill Team                                                    32mm
+Spectrus Kill Team: Kill Team Infiltrators with bolt sniper rifles    40mm
+Talonstrike Kill Team                                                 32mm
+Talonstrike Kill Team: Kill Team Heavy Intercessors with Jump Packs   40mm
+Watch Captain Artemis                                                 32mm
+Watch Master                                                          32mm
+
+
+
+
+                                                         72
+DRUKHARI
+UNIT                               BASE SIZE
+Archon                             32mm
+Cronos                             Large Flying Base
+Drazhar                            40mm
+Haemonculus                        25mm
+Hand of the Archon                 25mm
+Hellions                           Small Flying Base
+Incubi                             28.5mm
+Kabalite Warriors                  25mm
+Lady Malys                         32mm
+Lelith Hesperax                    32mm
+Mandrakes                          28.5mm
+Raider                             Large Flying Base
+Ravager                            Large Flying Base
+Razorwing Jetfighter               120x92mm Oval Base
+Reavers                            Small Flying Base
+Scourges with Heavy Weapons        32mm
+Scourges with Shardcarbines        32mm
+Succubus                           25mm
+Talos                              Large Flying Base
+Venom                              Large Flying Base
+Voidraven Bomber                   120x92mm Oval Base
+Wracks                             25mm
+Wyches                             25mm
+
+
+
+
+                              73
+EMPEROR’S CHILDREN
+UNIT                                        BASE SIZE
+Chaos Land Raider                           Hull
+Chaos Rhino                                 Hull
+Chaos Spawn                                 50mm
+Chaos Terminators                           40mm
+Daemon Prince of Slaanesh                   60mm
+Daemon Prince of Slaanesh with Wings        60mm
+Defiler                                     160mm
+Flawless Blades                             40mm
+Fulgrim                                     130mm
+Heldrake                                    120x92mm Oval Base
+Infractors                                  32mm
+Lord Exultant                               40mm
+Lord Kakophonist                            40mm
+Lucius the Eternal                          50mm
+Maulerfiend                                 120x92mm Oval Base
+Noise Marines                               40mm
+Sorcerer                                    40mm
+Tormentors                                  32mm
+DAEMONS
+Daemonettes                                 25mm
+Fiends                                      75x42mm Oval Base
+Keeper of Secrets                           100mm
+Seekers                                     60x35.5mm Oval Base
+Shalaxi Helbane                             100mm
+
+
+
+
+                                       74
+GENESTEALER CULTS
+UNIT                                                            BASE SIZE
+Aberrants                                                       32mm
+Abominant                                                       40mm
+Achilles Ridgerunners                                           120x92mm Oval Base
+Acolyte Hybrids with Autopistols                                32mm
+Acolyte Hybrids with Hand Flamers                               32mm
+Acolyte Iconward                                                32mm
+Atalan Jackals                                                  60x35.5mm Oval Base
+Atalan Jackals: Wolfquad                                        60mm
+Benefictus                                                      32mm
+Biophagus                                                       25mm
+Clamavus                                                        32mm
+Goliath Rockgrinder                                             Hull
+Goliath Truck                                                   Hull
+Hybrid Metamorphs                                               32mm
+Jackal Alphus                                                   60x35.5mm Oval Base
+Kelermorph                                                      32mm
+Locus                                                           32mm
+Magus                                                           32mm
+Neophyte Hybrids                                                25mm
+Neophyte Hybrids: Heavy stubber, Mining laser, Seismic cannon   32mm
+Nexos                                                           40mm
+Patriarch                                                       50mm
+Primus                                                          32mm
+Purestrain Genestealers                                         32mm
+Reductus Saboteur                                               32mm
+Sanctus                                                         32mm
+
+
+
+
+                                                       75
+GREY KNIGHTS
+UNIT                                       BASE SIZE
+Brother-Captain                            40mm
+Brotherhood Champion                       32mm
+Brotherhood Chaplain                       40mm
+Brotherhood Librarian                      40mm
+Brotherhood Techmarine                     32mm
+Brotherhood Terminator Squad               40mm
+Castellan Crowe                            40mm
+Grand Master                               40mm
+Grand Master in Nemesis Dreadknight        120x92mm Oval Base
+Grand Master Voldus                        40mm
+Interceptor Squad                          32mm
+Land Raider                                Hull
+Land Raider Crusader                       Hull
+Land Raider Redeemer                       Hull
+Nemesis Dreadknight                        120x92mm Oval Base
+Paladin Squad                              40mm
+Purgation Squad                            32mm
+Purifier Squad                             32mm
+Razorback                                  Hull
+Rhino                                      Hull
+Stormhawk Interceptor                      120x92mm Oval Base
+Stormraven Gunship                         120x92mm Oval Base
+Stormtalon Gunship                         120x92mm Oval Base
+Strike Squad                               32mm
+Venerable Dreadnought                      60mm
+IMPERIAL ARMOUR
+Grey Knights Thunderhawk Gunship           Unique
+
+
+
+
+                                      76
+IMPERIAL AGENTS
+UNIT                                                           BASE SIZE
+Aquila Kill Team: Kill Team Sergeant and Deathwatch Veterans   32mm
+Aquila Kill Team: Gravis Veterans                              40mm
+Callidus Assassin                                              32mm
+Corvus Blackstar                                               120x92mm Oval Base
+Culexus Assassin                                               32mm
+Deathwatch Kill Team                                           32mm
+Eversor Assassin                                               32mm
+Exaction Squad                                                 28.5mm
+Exaction Squad: Cyber-mastiff                                  25mm
+Grey Knights Terminator Squad                                  40mm
+Imperial Navy Breachers                                        25mm
+Imperial Navy Breachers: Navis las-volley, endurant shield     28.5mm
+Imperial Rhino                                                 Hull
+Inquisitor                                                     32mm
+Inquisitor Coteaz                                              40mm
+Inquisitor Draxus                                              32mm
+Inquisitor Greyfax                                             32mm
+Inquisitor Kroyle                                              60mm
+Inquisitorial Agents                                           25mm
+Inquisitorial Agents: Gun Servitors                            32mm
+Inquisitorial Chimera                                          Hull
+Ministorum Priest                                              32mm
+Navigator                                                      32mm
+Rogue Trader entourage                                         25mm
+Sanctifiers                                                    25mm
+Sisters of Battle Immolator                                    Hull
+Sisters of Battle Squad                                        32mm
+Subductor Squad                                                28.5mm
+Subductor Squad: Cyber-mastiff                                 25mm
+Vigilant Squad                                                 28.5mm
+Vigilant Squad: Cyber-mastiff                                  25mm
+Vindicare Assassin                                             32mm
+Voidsmen-at-Arms                                               25mm
+Watch Captain Artemis                                          32mm
+Watch Master                                                   32mm
+
+
+
+
+                                                        77
+IMPERIAL KNIGHTS
+UNIT                              BASE SIZE
+Armiger Helverin                  100mm
+Armiger Warglaive                 100mm
+Canis Rex                         170x109mm Oval Base
+Sir Hekhtur                       25mm
+Knight Castellan                  170x109mm Oval Base
+Knight Crusader                   170x109mm Oval Base
+Knight Defender                   170x109mm Oval Base
+Knight Destrier                   150x95mm Oval Base
+Knight Errant                     170x109mm Oval Base
+Knight Gallant                    170x109mm Oval Base
+Knight Paladin                    170x109mm Oval Base
+Knight Preceptor                  170x109mm Oval Base
+Knight Valiant                    170x109mm Oval Base
+Knight Warden                     170x109mm Oval Base
+IMPERIAL ARMOUR
+Acastus Knight Asterius           Hull
+Acastus Knight Porphyrion         Hull
+Armiger Moirax                    100mm
+Cerastus Knight Acheron           170x109mm Oval Base
+Cerastus Knight Atrapos           170x109mm Oval Base
+Cerastus Knight Castigator        170x109mm Oval Base
+Cerastus Knight Lancer            170x109mm Oval Base
+Questoris Knight Magaera          170x109mm Oval Base
+Questoris Knight Styrix           170x109mm Oval Base
+
+
+
+
+                             78
+LEAGUES OF VOTANN
+UNIT                                                          BASE SIZE
+Arkanyst Evaluator                                            32mm
+Berehk Stornbröw                                              40mm
+Brôkhyr Iron-master                                           32mm
+Brôkhyr Iron-master: E-COG                                    25mm
+Brôkhyr Iron-master: Ironkin Assistant                        28.5mm
+Brôkhyr Thunderkyn                                            40mm
+Buri Aegnirssen                                               40mm
+Cthonian Beserks                                              28.5mm
+Cthonian Beserks: Mole grenade launcher                       50mm
+Cthonian Earthshakers                                         80mm
+Einhyr Champion                                               40mm
+Einhyr Hearthguard                                            32mm
+Grimnyr                                                       40mm
+Grimnyr: CORV                                                 25mm
+Hearthkyn Warriors                                            28.5mm
+Hekaton Land Fortress                                         Hull
+Hernkyn Pioneers                                              90x52.5mm Oval Base
+Hernkyn Yaegirs                                               28.5mm
+Ironkin Steeljacks with Heavy Volkanite Disintegrators        40mm
+Ironkin Steeljacks with Melee Weapons                         40mm
+Kâhl                                                          40mm
+Kapricus Carrier                                              105x70mm Oval Base
+Kapricus Defenders                                            105x70mm Oval Base
+Memnyr Strategist                                             32mm
+Sagitaur                                                      Hull
+Ûthar the Destined                                            40mm
+
+
+
+
+                                                         79
+NECRONS
+UNIT                                      BASE SIZE
+Annihilation Barge                        Large Flying Base
+C’tan Shard of the Deceiver               40mm
+C’tan Shard of the Nightbringer           90mm
+C’tan Shard of the Void Dragon            80mm
+Canoptek Doomstalker                      90mm
+Canoptek Macrocytes                       28.5mm
+Canoptek Reanimator                       60mm
+Canoptek Scarab Swarms                    40mm
+Canoptek Spyders                          60mm
+Canoptek Tomb Crawlers                    50mm
+Canoptek Wraiths                          50mm
+Catacomb Command Barge                    Large Flying Base
+Chronomancer                              40mm
+Convergence of Dominion                   Hull
+Cryptothralls                             32mm
+Deathmarks                                32mm
+Doom Scythe                               120x92mm Oval Base
+Doomsday Ark                              Large Flying Base
+Flayed Ones                               28.5mm
+Geomancer                                 50mm
+Ghost Ark                                 Large Flying Base
+Hexmark Destroyer                         50mm
+Illuminor Szeras                          80mm
+Immortals                                 32mm
+Imotekh the Stormlord                     40mm
+Lokhust Destroyers                        Large Flying Base
+Lokhust Heavy Destroyers                  60mm
+Lokhust Lord                              Large Flying Base
+Lychguard                                 32mm
+Monolith                                  160mm
+Necron Warriors                           32mm
+Nekrosor Ammentar                         80mm
+Night Scythe                              120x92mm Oval Base
+Obelisk                                   120x92mm Oval Base
+Ophydian Destroyers                       50mm
+Orikan the Diviner                        40mm
+Overlord                                  40mm
+Overlord with Translocation Shroud        40mm
+Plasmancer                                32mm
+Psychomancer                              40mm
+Royal Warden                              32mm
+
+
+
+                                     80
+UNIT                                     BASE SIZE
+Skorpekh Destroyers                      50mm
+Skorpekh Lord                            60mm
+Technomancer                             50mm
+Tesseract Vault                          120x92mm Oval Base
+The Silent King: Szarekh                 100mm
+The Silent King: Triarchal Menhir        50mm
+Tomb Blades                              Small Flying Base
+Transcendent C’tan                       60mm
+Trazyn the Infinite                      25mm
+Triarch Praetorians                      32mm
+Triarch Stalker                          Hull
+IMPERIAL ARMOUR
+Seraptek Heavy Construct                 Hull
+
+
+
+
+                                    81
+ORKS
+UNIT                                 BASE SIZE
+Bannernob                            40mm
+Battlewagon                          Hull
+Beast Snagga Boyz                    32mm
+Beastboss                            50mm
+Beastboss on Squigosaur              80mm
+Bigboss                              40mm
+Big Mek                              50mm
+Big Mek Dakkarig                     90mm
+Big Mek in Mega Armour               40mm
+Big Mek with Shokk Attack Gun        40mm
+Big’ed Bossbunka                     Hull
+Blitza-bommer                        120x92mm Oval Base
+Boomdakka Snazzwagon                 150x95mm Oval Base
+Boss Snikrot                         40mm
+Boyz                                 32mm
+Boyz: Boss Nob (Armageddon)          40mm
+Breaka Boyz                          32mm
+Breaka Boyz: Boss Nob                40mm
+Burna Boyz                           32mm
+Burna-bommer                         120x92mm Oval Base
+Dakkajet                             120x92mm Oval Base
+Deff Dread                           60mm
+Deffkilla Wartrike                   150x95mm Oval Base
+Deffkoptas                           75x42mm Oval Base
+Flash Gitz                           40mm
+Ghazghkull Thraka                    80mm
+Ghazghkull Thraka: Makari            25mm
+Gorkanaut                            170x109mm Oval Base
+Gretchin                             25mm
+Gretchin: Runtherd                   32mm
+Hunta Rig                            170x109mm Oval Base
+Kill Rig                             170x109mm Oval Base
+Killa Kans                           60mm
+Kommandos                            32mm
+Kustom Boosta-blasta                 150x95mm Oval Base
+Lootas                               32mm
+Meganobz                             40mm
+Megatrakk Scrapjet                   150x95mm Oval Base
+Mek                                  32mm
+Mek Gunz                             Hull
+Morkanaut                            170x109mm Oval Base
+
+
+
+                                82
+UNIT                                      BASE SIZE
+Mozrog Skragbad                           80mm
+Nobz                                      32mm
+Painboss                                  40mm
+Painboy                                   32mm
+Rukkatrukk Squigbuggy                     150x95mm Oval Base
+Shokkjump Dragsta                         150x95mm Oval Base
+Squighog Boyz                             75x42mm Oval Base
+Squighog Boyz: Nob on Smasha Squig        90x52.5mm Oval Base
+Stompa                                    Hull
+Stormboyz                                 32mm
+Tankbustas                                32mm
+Tankbustas: Boss Nob                      40mm
+Trukk                                     Hull
+Warbikers                                 75x42mm Oval Base
+Warboss                                   40mm
+Warboss (Armageddon)                      50mm
+Warboss in Mega Armour                    50mm
+Wartrakk                                  105x70mm Oval Base
+Wazdakka Gutsmek                          120mm
+Wazbom Blastajet                          150x95mm Oval Base
+Weirdboy                                  40mm
+Weirdboy (Armageddon)                     50mm
+Wurrboy                                   32mm
+Zodgrod Wortsnagga                        50mm
+IMPERIAL ARMOUR
+Gargantuan Squiggoth                      Hull
+
+
+
+
+                                     83
+SPACE MARINES
+UNIT                                        BASE SIZE
+Adrax Agatone                               40mm
+Aethon Shaan                                50mm
+Aggressor Squad                             40mm
+Ancient                                     40mm
+Ancient in Terminator Armour                40mm
+Apothecary                                  40mm
+Apothecary Biologis                         40mm
+Assault Intercessor Squad                   32mm
+Assault Intercessors with Jump Packs        32mm
+Ballistus Dreadnought                       90mm
+Bladeguard Ancient                          40mm
+Bladeguard Veteran Squad                    40mm
+Brutalis Dreadnought                        90mm
+Caanok Var                                  50mm
+Captain                                     40mm
+Captain in Gravis Armour                    40mm
+Captain in Phobos Armour                    40mm
+Captain in Terminator Armour                50mm
+Captain Titus                               40mm
+Captain with Jump Pack                      40mm
+Cato Sicarius                               40mm
+Centurion Assault Squad                     50mm
+Centurion Devastator Squad                  50mm
+Chaplain                                    40mm
+Chaplain in Terminator Armour               40mm
+Chaplain on Bike                            90x52.5mm Oval Base
+Chaplain with Jump Pack                     32mm
+Chaplain with Jump Pack (Armageddon)        40mm
+Chief Librarian Tigurius                    40mm
+Company Heroes                              40mm
+Darnath Lysander                            50mm
+Desolation Squad                            32mm
+Devastator Squad                            32mm
+Dreadnought                                 60mm
+Drop Pod                                    Hull
+Eliminator Squad                            40mm
+Eradicator Squad                            40mm
+Eradicator Squad with Heavy Bolters         40mm
+Firestrike Servo-turrets                    80mm
+Gladiator Lancer                            100mm
+Gladiator Reaper                            100mm
+
+
+
+                                       84
+UNIT                                          BASE SIZE
+Gladiator Valiant                             100mm
+Hammerfall Bunker                             Hull
+Heavy Intercessor Squad                       40mm
+Hellblaster Squad                             32mm
+Impulsor                                      100mm
+Inceptor Squad                                40mm
+Incursor Squad                                32mm
+Infernus Squad                                32mm
+Infiltrator Squad                             32mm
+Intercessor Squad                             32mm
+Invader ATV                                   Hull
+Invictor Tactical Warsuit                     90mm
+Iron Father Feirros                           40mm
+Judiciar                                      40mm
+Kayvaan Shrike                                40mm
+Kor’sarro Khan                                40mm
+Land Raider                                   Hull
+Land Raider Crusader                          Hull
+Land Raider Redeemer                          Hull
+Land Speeder                                  105x70mm Oval Base
+Librarian                                     40mm
+Librarian in Phobos Armour                    40mm
+Librarian in Terminator Armour                40mm
+Lieutenant                                    40mm
+Lieutenant in Phobos Armour                   40mm
+Lieutenant in Reiver Armour                   40mm
+Lieutenant with Combi-weapon                  40mm
+Marneus Calgar in Armour of Antilochus        50mm
+Outrider Squad                                90x52.5mm Oval Base
+Pedro Kantor                                  32mm
+Predator Annihilator                          Hull
+Predator Destructor                           Hull
+Razorback                                     Hull
+Redemptor Dreadnought                         90mm
+Reiver Squad                                  32mm
+Repulsor                                      100mm
+Repulsor Executioner                          100mm
+Rhino                                         Hull
+Roboute Guilliman                             60mm
+Scout Squad                                   28.5mm
+Sternguard Veteran Squad                      32mm
+Storm Speeder Hailstrike                      90mm
+Storm Speeder Hammerstrike                    90mm
+Storm Speeder Thunderstrike                   90mm
+
+
+
+                                         85
+UNIT                                                                    BASE SIZE
+Stormhawk Interceptor                                                   120x92mm Oval Base
+Stormraven Gunship                                                      120x92mm Oval Base
+Stormtalon Gunship                                                      120x92mm Oval Base
+Suboden Khan                                                            90x52.5mm Oval Base
+Suppressor Squad                                                        40mm
+Tactical Squad                                                          32mm
+Techmarine                                                              40mm
+Terminator Assault Squad                                                40mm
+Terminator Squad                                                        40mm
+Tor Garadon                                                             40mm
+Uriel Ventris                                                           40mm
+Vanguard Veteran Squad with Jump Packs                                  32mm
+Victrix Honour Guard                                                    40mm
+Vindicator                                                              Hull
+Vulkan He’stan                                                          40mm
+Wardens of Ultramar: Ancient Gadriel, Veteran Sergeant Metaurus         40mm
+Wardens of Ultramar: Gaius Silva, Aemelia Minervas, Dainal Kornelius,   28.5mm
+Lucia Vestha
+Whirlwind                                                               Hull
+IMPERIAL ARMOUR
+Astraeus                                                                Hull
+Thunderhawk Gunship                                                     Unique
+
+
+
+
+                                                         86
+SPACE WOLVES
+UNIT                                         BASE SIZE
+Arjac Rockfist                               50mm
+Bjorn the Fell-handed                        60mm
+Blood Claws                                  32mm
+Fenrisian Wolves                             40mm
+Grey Hunters                                 32mm
+Iron Priest                                  32mm
+Logan Grimnar                                80mm
+Murderfang                                   60mm
+Njal Stormcaller                             40mm
+Ragnar Blackmane                             40mm
+Thunderwolf Cavalry                          60mm
+Ulrik the Slayer                             32mm
+Venerable Dreadnought                        60mm
+Wolf Guard Battle Leader                     40mm
+Wolf Guard Headtakers                        40mm
+Wolf Guard Headtakers: Hunting Wolves        60x35.5mm Oval Base
+Wolf Guard Terminators                       40mm
+Wolf Priest                                  40mm
+Wolf Scouts                                  32mm
+Wolf Scouts: Hunting Wolves                  60x35.5mm Oval Base
+Wulfen                                       40mm
+Wulfen Dreadnought                           60mm
+Wulfen with Storm Shields                    40mm
+
+
+
+
+                                        87
+T’AU EMPIRE
+UNIT                                        BASE SIZE
+Breacher Team                               25mm
+Broadside Battlesuits                       60mm
+Cadre Fireblade                             25mm
+Commander Farsight                          60mm
+Commander in Coldstar Battlesuit            60mm
+Commander in Enforcer Battlesuit            60mm
+Commander Shadowsun                         50mm
+Crisis Fireknife Battlesuits                50mm
+Crisis Starscythe Battlesuits               50mm
+Crisis Sunforge Battlesuits                 50mm
+Darkstrider                                 32mm
+Devilfish                                   Large Flying Base
+Ethereal                                    40mm
+Firesight Team                              40mm
+Ghostkeel Battlesuit                        105x70mm Oval Base
+Hammerhead Gunship                          Large Flying Base
+Kroot Carnivores                            28.5mm
+Kroot Farstalkers                           28.5mm
+Kroot Farstalkers: Kroot Kill-broker        32mm
+Kroot Flesh Shaper                          32mm
+Kroot Hounds                                28.5mm
+Kroot Lone-spear                            90x52.5mm Oval Base
+Kroot Trail Shaper                          32mm
+Kroot War Shaper                            32mm
+Krootox Rampagers                           50mm
+Krootox Riders                              50mm
+Pathfinder Team                             25mm
+Piranhas                                    Large Flying Base
+Razorshark Strike Fighter                   120x92mm Oval Base
+Riptide Battlesuit                          120x92mm Oval Base
+Sky Ray Gunship                             Large Flying Base
+Stealth Battlesuits                         32mm
+Stormsurge                                  170x109mm Oval Base
+Strike Team                                 25mm
+Sun Shark Bomber                            120x92mm Oval Base
+The Twin Lance: Ri’Lantar / Ri’Locai        60mm
+The Twin Lance: MV15 Gun Drone              32mm
+Tidewall Droneport                          Hull
+Tidewall Gunrig                             Hull
+Tidewall Shieldline                         Hull
+Vespid Stingwings                           28.5mm
+
+
+
+                                       88
+UNIT                            BASE SIZE
+IMPERIAL ARMOUR
+AX-1-0 Tiger Shark              160mm
+Manta                           Unique
+Ta’unar Supremacy Armour        160mm
+Tiger Shark                     160mm
+
+
+
+
+                           89
+THOUSAND SONS
+UNIT                                                  BASE SIZE
+Ahriman                                               40mm
+Chaos Land Raider                                     Hull
+Chaos Predator Annihilator                            Hull
+Chaos Predator Destructor                             Hull
+Chaos Rhino                                           Hull
+Chaos Spawn                                           50mm
+Chaos Vindicator                                      Hull
+Daemon Prince of Tzeentch                             60mm
+Daemon Prince of Tzeentch with Wings                  60mm
+Defiler                                               160mm
+Exalted Sorcerer                                      32mm
+Exalted Sorcerer on Disc of Tzeentch                  40mm
+Forgefiend                                            120x92mm Oval Base
+Helbrute                                              60mm
+Heldrake                                              120x92mm Oval Base
+Infernal Master                                       40mm
+Magnus the Red                                        100mm
+Maulerfiend                                           120x92mm Oval Base
+Mutalith Vortex Beast                                 120x92mm Oval Base
+Rubric Marines                                        32mm
+Scarab Occult Terminators                             40mm
+Sekhetar Robots                                       40mm
+Sorcerer                                              32mm
+Sorcerer in Terminator Armour                         40mm
+Tzaangor Enlightened                                  40mm
+Tzaangor Enlightened with Fatecaster Greatbows        40mm
+Tzaangor Shaman                                       40mm
+Tzaangors                                             32mm
+DAEMONS
+Blue Horrors                                          25mm
+Flamers                                               32mm
+Kairos Fateweaver                                     100mm
+Lord of Change                                        100mm
+Pink Horrors                                          32mm
+Screamers                                             Small Flying Base
+
+
+
+
+                                                 90
+TYRANIDS
+UNIT                                BASE SIZE
+Barbgaunts                          40mm
+Biovores                            80mm
+Broodlord                           75x42mm Oval Base
+Carnifexes                          105x70mm Oval Base
+Deathleaper                         60mm
+Exocrine                            120x92mm Oval Base
+Gargoyles                           Small Flying Base
+Genestealers                        32mm
+Harpy                               120x92mm Oval Base
+Haruspex                            120x92mm Oval Base
+Hive Crone                          120x92mm Oval Base
+Hive Guard                          50mm
+Hive Tyrant                         60mm
+Hormagaunts                         28.5mm
+Hyperadapted Raveners               40mm
+Lictor                              50mm
+Maleceptor                          120x92mm Oval Base
+Mawloc                              120x92mm Oval Base
+Mucolid Spores                      40mm
+Neurogaunts                         25mm
+Neurogaunts: Nodebeasts             28.5mm
+Neurolictor                         50mm
+Neurotyrant                         50mm
+Norn Assimilator                    100mm
+Norn Emissary                       100mm
+Old One Eye                         105x70mm Oval Base
+Parasite of Mortrex                 40mm
+Psychophage                         120x92mm Oval Base
+Pyrovores                           80mm
+Raveners                            40mm
+Ripper Swarms                       40mm
+Screamer-killer                     90mm
+Spore MInes                         25mm
+Sporocyst                           Hull
+Termagants                          28.5mm
+Tervigon                            120x92mm Oval Base
+The Red Terror                      100mm
+The Swarmlord                       60mm
+Toxicrene                           120x92mm Oval Base
+Trygon                              120x92mm Oval Base
+Tyranid Prime with Lash Whip        50mm
+
+
+
+                               91
+UNIT                                            BASE SIZE
+Tyranid Warriors with Melee Bio-weapons         50mm
+Tyranid Warriors with Ranged Bio-weapons        50mm
+Tyrannocyte                                     100mm
+Tyrannofex                                      120x92mm Oval Base
+Tyrant Guard                                    50mm
+Venomthropes                                    40mm
+Von Ryan’s Leapers                              40mm
+Winged Hive Tyrant                              60mm
+Winged Tyranid Prime                            50mm
+Zoanthropes                                     40mm
+IMPERIAL ARMOUR
+Harridan                                        Unique
+Hierophant                                      Hull
+
+
+
+
+                                           92
+WORLD EATERS
+UNIT                                      BASE SIZE
+Angron                                    100mm
+Chaos Land Raider                         Hull
+Chaos Predator Annihilator                Hull
+Chaos Predator Destructor                 Hull
+Chaos Rhino                               Hull
+Chaos Spawn                               50mm
+Daemon Prince of Khorne                   60mm
+Daemon Prince of Khorne with Wings        60mm
+Defiler                                   160mm
+Eightbound                                40mm
+Exalted Eightbound                        40mm
+Forgefiend                                120x92mm Oval Base
+Goremongers                               32mm
+Helbrute                                  60mm
+Heldrake                                  120x92mm Oval Base
+Jakhals                                   28.5mm
+Jakhals: Dishonoured                      40mm
+Khârn the Betrayer                        40mm
+Khorne Berzerkers                         32mm
+Khorne Lord of Skulls                     Hull
+Lord Invocatus                            90x52.5mm Oval Base
+Lord on Juggernaut                        90x52.5mm Oval Base
+Master of Executions                      40mm
+Maulerfiend                               120x92mm Oval Base
+Slaughterbound                            50mm
+Terminator Squad                          40mm
+DAEMONS
+Bloodcrushers                             90x52.5mm Oval Base
+Bloodletters                              32mm
+Bloodthirster                             120x92mm Oval Base
+Flesh Hounds                              60x35.5mm Oval Base
+Skarbrand                                 100mm
+
+
+
+
+                                     93
+
