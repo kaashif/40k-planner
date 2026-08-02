@@ -2,9 +2,9 @@
 
 A static GitHub Pages reference for Warhammer 40,000 11th-edition missions and official event layouts.
 
-The site is a compact 5×5 primary mission matrix. Selecting a cell shows both players' complete primary cards from GDM and the three matching measured Event Companion layouts. It also contains all 18 secondary mission names and a local source library containing the official public PDFs and normalized JSON.
+The site is a compact 5×5 primary mission matrix. Selecting a cell shows both players' complete primary cards and the three matching measured Event Companion layouts. It also contains all 18 secondary mission names and a local source library containing the official public PDFs and normalized JSON.
 
-Primary-card images are loaded from `gdmissions.app`; they are not duplicated in this repository. The 45 layout previews are generated from the local official Event Companion PDF.
+Primary-card images and all 45 layout previews are stored locally with the static site.
 
 ## Development
 

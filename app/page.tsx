@@ -6,7 +6,6 @@ import layoutsData from '../public/reference/11th-edition/data/event-layouts.jso
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 const referenceRoot = `${basePath}/reference/11th-edition`;
-const gdmRoot = 'https://gdmissions.app';
 const doubleSidedCards = new Set([
   'disruption/death-trap',
   'disruption/smoke-and-mirrors',
@@ -198,23 +197,17 @@ function PrimaryCard({ label, dispositionId, dispositionName, mission }: {
 }) {
   const missionSlug = slug(mission);
   const cardKey = `${dispositionId}/${missionSlug}`;
-  const pageUrl = `${gdmRoot}/11th/primary-missions/${dispositionId}/${missionSlug}`;
-  const imageRoot = `${gdmRoot}/assets/11th/primary-missions/${cardKey}`;
+  const imageRoot = `${referenceRoot}/cards/${cardKey}`;
 
   return (
     <article className="primary-card">
       <div className="primary-card-heading">
         <div><span>{label}</span><strong>{dispositionName} — {mission}</strong></div>
-        <a href={pageUrl} target="_blank" rel="noreferrer">Open on GDM ↗</a>
       </div>
       <div className={`card-images${doubleSidedCards.has(cardKey) ? ' double-sided' : ''}`}>
-        <a href={pageUrl} target="_blank" rel="noreferrer">
-          <img src={`${imageRoot}.png`} alt={`${mission} primary mission card`} />
-        </a>
+        <img src={`${imageRoot}.png`} alt={`${mission} primary mission card`} />
         {doubleSidedCards.has(cardKey) && (
-          <a href={pageUrl} target="_blank" rel="noreferrer">
-            <img src={`${imageRoot}-back.png`} alt={`${mission} primary mission card reverse`} />
-          </a>
+          <img src={`${imageRoot}-back.png`} alt={`${mission} primary mission card reverse`} />
         )}
       </div>
     </article>

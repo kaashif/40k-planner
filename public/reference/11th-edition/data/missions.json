@@ -7,7 +7,6 @@
       "id": "take-and-hold",
       "name": "Take and Hold",
       "summary": "Control objectives and maintain battlefield presence.",
-      "referenceUrl": "https://gdmissions.app/11th/primary-missions/take-and-hold",
       "primaryMissionsByOpponent": {
         "take-and-hold": "Battlefield Dominance",
         "purge-the-foe": "Immovable Object",
@@ -20,7 +19,6 @@
       "id": "purge-the-foe",
       "name": "Purge the Foe",
       "summary": "Destroy enemy forces and gain ground through aggression.",
-      "referenceUrl": "https://gdmissions.app/11th/primary-missions/purge-the-foe",
       "primaryMissionsByOpponent": {
         "take-and-hold": "Unstoppable Force",
         "purge-the-foe": "Meatgrinder",
@@ -33,7 +31,6 @@
       "id": "disruption",
       "name": "Disruption",
       "summary": "Interfere with the opposing battle plan and deny territory.",
-      "referenceUrl": "https://gdmissions.app/11th/primary-missions/disruption",
       "primaryMissionsByOpponent": {
         "take-and-hold": "Death Trap",
         "purge-the-foe": "Delaying Action",
@@ -46,7 +43,6 @@
       "id": "reconnaissance",
       "name": "Reconnaissance",
       "summary": "Explore the battlefield and gather operational intelligence.",
-      "referenceUrl": "https://gdmissions.app/11th/primary-missions/reconnaissance",
       "primaryMissionsByOpponent": {
         "take-and-hold": "Reconnaissance Sweep",
         "purge-the-foe": "Triangulation",
@@ -59,7 +55,6 @@
       "id": "priority-assets",
       "name": "Priority Assets",
       "summary": "Secure, exploit, or protect high-value battlefield assets.",
-      "referenceUrl": "https://gdmissions.app/11th/primary-missions/priority-assets",
       "primaryMissionsByOpponent": {
         "take-and-hold": "Secure Asset",
         "purge-the-foe": "Vital Link",
@@ -89,9 +84,8 @@
     { "id": "plunder", "name": "Plunder", "fixed": false },
     { "id": "secure-no-mans-land", "name": "Secure No Man's Land", "fixed": false }
   ],
-  "secondaryMissionReferenceUrl": "https://gdmissions.app/11th/secondary-missions",
   "notes": [
     "Primary mission names and matchup relationships are indexed here as factual reference data.",
-    "The scoring and action wording on the Chapter Approved cards is not reproduced here; follow the per-category reference URLs or consult the physical deck or official app."
+    "Consult the physical deck or official app for the current authority."
   ]
 }

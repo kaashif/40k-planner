@@ -15,7 +15,7 @@ Raw source material and normalized indexes for implementing 11th-edition mission
 
 The official PDFs are the authority for rules, exact map geometry, objective positions, terrain footprints, and measurements. The normalized JSON is an implementation index and should always retain its source-page link.
 
-The Chapter Approved Mission Deck 2026–27 is a separately sold 88-card product and is also available through the official Warhammer 40,000 app. Its paid card artwork and complete card wording are not mirrored in this repository. `missions.json` records factual names and relationships and points to the community GDM reference for convenient cross-checking.
+The Chapter Approved Mission Deck 2026–27 is a separately sold 88-card product and is also available through the official Warhammer 40,000 app. `missions.json` records the primary mission names and matchup relationships used by the grid.
 
 ## Regeneration
 
