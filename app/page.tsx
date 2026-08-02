@@ -1,105 +1,110 @@
+'use client';
+
+import { useMemo, useState } from 'react';
 import missionsData from '../public/reference/11th-edition/data/missions.json';
 import layoutsData from '../public/reference/11th-edition/data/event-layouts.json';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 const referenceRoot = `${basePath}/reference/11th-edition`;
+const gdmRoot = 'https://gdmissions.app';
+const doubleSidedCards = new Set([
+  'disruption/death-trap',
+  'disruption/smoke-and-mirrors',
+  'disruption/locate-and-deny',
+  'reconnaissance/triangulation',
+  'reconnaissance/surveil-the-foe',
+  'reconnaissance/gather-intel',
+  'priority-assets/secure-asset',
+  'priority-assets/vital-link',
+  'priority-assets/extract-relic',
+  'priority-assets/vanguard-operation',
+  'priority-assets/sabotage',
+]);
 
-type Layout = (typeof layoutsData.layouts)[number];
-
-function sourceUrl(path: string) {
-  return `${referenceRoot}/${path}`;
-}
-
-function groupLayouts(layouts: Layout[]) {
-  const groups = new Map<string, Layout[]>();
-  for (const layout of layouts) {
-    const key = [layout.attacker.forceDisposition, layout.defender.forceDisposition].join(' vs ');
-    groups.set(key, [...(groups.get(key) ?? []), layout]);
-  }
-  return [...groups.entries()];
+function slug(value: string) {
+  return value.toLowerCase().replaceAll("'", '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 }
 
 export default function Home() {
-  const layoutGroups = groupLayouts(layoutsData.layouts);
-  const primaryCount = missionsData.forceDispositions.reduce(
-    (total, disposition) => total + Object.keys(disposition.primaryMissionsByOpponent).length,
-    0,
-  );
+  const [playerDispositionId, setPlayerDispositionId] = useState('take-and-hold');
+  const [opponentDispositionId, setOpponentDispositionId] = useState('take-and-hold');
+
+  const playerDisposition = missionsData.forceDispositions.find(({ id }) => id === playerDispositionId)!;
+  const opponentDisposition = missionsData.forceDispositions.find(({ id }) => id === opponentDispositionId)!;
+  const playerMission = playerDisposition.primaryMissionsByOpponent[
+    opponentDispositionId as keyof typeof playerDisposition.primaryMissionsByOpponent
+  ];
+  const opponentMission = opponentDisposition.primaryMissionsByOpponent[
+    playerDispositionId as keyof typeof opponentDisposition.primaryMissionsByOpponent
+  ];
+
+  const selectedLayouts = useMemo(() => layoutsData.layouts.filter((layout) => {
+    const left = layout.attacker.forceDisposition;
+    const right = layout.defender.forceDisposition;
+    return (
+      (left === playerDisposition.name && right === opponentDisposition.name) ||
+      (left === opponentDisposition.name && right === playerDisposition.name)
+    );
+  }), [playerDisposition.name, opponentDisposition.name]);
+
+  function selectMatchup(playerId: string, opponentId: string) {
+    setPlayerDispositionId(playerId);
+    setOpponentDispositionId(opponentId);
+    requestAnimationFrame(() => document.getElementById('selected-layouts')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  }
 
   return (
-    <main>
-      <header className="hero">
-        <nav className="nav shell" aria-label="Primary navigation">
-          <a className="brand" href="#top" aria-label="Mission Control home">
-            <span className="brand-mark">XI</span>
-            <span>Mission Control</span>
-          </a>
-          <div className="nav-links">
-            <a href="#missions">Missions</a>
-            <a href="#layouts">Layouts</a>
-            <a href="#secondaries">Secondaries</a>
-            <a href="#sources">Sources</a>
-          </div>
-        </nav>
-
-        <div className="hero-content shell" id="top">
-          <p className="eyebrow">Warhammer 40,000 · 11th Edition · 2026–27</p>
-          <h1>Know the mission.<br /><span>Own the table.</span></h1>
-          <p className="lede">
-            Every Force Disposition matchup, primary mission and official event layout—indexed from the current rules in one field reference.
-          </p>
-          <div className="hero-actions">
-            <a className="button primary" href="#missions">Explore missions</a>
-            <a className="button secondary" href={sourceUrl('official/event-companion.pdf')}>Open Event Companion ↗</a>
-          </div>
+    <main className="tool">
+      <header className="tool-header">
+        <div>
+          <h1>40k 11th edition missions</h1>
+          <p>Chapter Approved 2026–27 / Event Companion v1.0</p>
         </div>
-
-        <div className="stats shell" aria-label="Reference totals">
-          <Stat value={missionsData.forceDispositions.length} label="Force dispositions" />
-          <Stat value={primaryCount} label="Primary missions" />
-          <Stat value={layoutsData.layouts.length} label="Measured layouts" />
-          <Stat value={missionsData.secondaryMissions.length} label="Secondary cards" />
+        <div className="reference-links">
+          <a href={`${referenceRoot}/official/core-rules.pdf`}>Core rules PDF</a>
+          <a href={`${referenceRoot}/official/event-companion.pdf`}>Event companion PDF</a>
+          <a href={`${referenceRoot}/official/terrain-area-footprints.pdf`}>Terrain footprints PDF</a>
         </div>
       </header>
 
-      <section className="section shell" id="missions">
-        <SectionHeading
-          index="01"
-          title="Mission matrix"
-          description="Your Force Disposition and your opponent’s disposition determine a different primary mission for each player."
-        />
-
-        <div className="disposition-grid">
-          {missionsData.forceDispositions.map((disposition) => (
-            <article className="disposition-card" key={disposition.id}>
-              <span className="card-code">{String(missionsData.forceDispositions.indexOf(disposition) + 1).padStart(2, '0')}</span>
-              <h3>{disposition.name}</h3>
-              <p>{disposition.summary}</p>
-              <a href={disposition.referenceUrl}>Community card reference ↗</a>
-            </article>
-          ))}
+      <section aria-labelledby="matrix-title">
+        <div className="section-title">
+          <h2 id="matrix-title">Primary mission matrix</h2>
+          <span>Click a mission to show its three layouts.</span>
         </div>
 
-        <div className="matrix-wrap">
-          <table className="matrix">
-            <caption>Your primary mission (rows) against the opponent’s disposition (columns)</caption>
+        <div className="matrix-scroll">
+          <table className="mission-matrix">
             <thead>
               <tr>
-                <th scope="col">You play ↓ / Opponent →</th>
-                {missionsData.forceDispositions.map((disposition) => (
-                  <th scope="col" key={disposition.id}>{disposition.name}</th>
+                <th className="matrix-corner">You ↓ / Opponent →</th>
+                {missionsData.forceDispositions.map((opponent) => (
+                  <th key={opponent.id}>{opponent.name}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {missionsData.forceDispositions.map((disposition) => (
-                <tr key={disposition.id}>
-                  <th scope="row">{disposition.name}</th>
-                  {missionsData.forceDispositions.map((opponent) => (
-                    <td key={opponent.id}>
-                      {disposition.primaryMissionsByOpponent[opponent.id as keyof typeof disposition.primaryMissionsByOpponent]}
-                    </td>
-                  ))}
+              {missionsData.forceDispositions.map((player) => (
+                <tr key={player.id}>
+                  <th>{player.name}</th>
+                  {missionsData.forceDispositions.map((opponent) => {
+                    const mission = player.primaryMissionsByOpponent[
+                      opponent.id as keyof typeof player.primaryMissionsByOpponent
+                    ];
+                    const active = player.id === playerDispositionId && opponent.id === opponentDispositionId;
+                    return (
+                      <td key={opponent.id}>
+                        <button
+                          className={active ? 'active' : ''}
+                          type="button"
+                          aria-pressed={active}
+                          onClick={() => selectMatchup(player.id, opponent.id)}
+                        >
+                          {mission}
+                        </button>
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -107,125 +112,111 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section section-dark" id="layouts">
-        <div className="shell">
-          <SectionHeading
-            index="02"
-            title="Official event layouts"
-            description="All 15 disposition matchups have three measured layouts. Each entry links directly to its authoritative page in the Event Companion."
-            inverted
-          />
-
-          <div className="layout-groups">
-            {layoutGroups.map(([matchup, layouts], groupIndex) => (
-              <article className="layout-group" key={matchup}>
-                <div className="layout-group-heading">
-                  <span>{String(groupIndex + 1).padStart(2, '0')}</span>
-                  <h3>{matchup}</h3>
-                </div>
-                <div className="layout-cards">
-                  {layouts.map((layout) => (
-                    <a
-                      className="layout-card"
-                      href={`${sourceUrl('official/event-companion.pdf')}#page=${layout.pdfPage}`}
-                      key={layout.id}
-                    >
-                      <div className="layout-card-top">
-                        <strong>Layout {layout.layout}</strong>
-                        <span>PDF p.{layout.printedPage} ↗</span>
-                      </div>
-                      <div className="mission-pair">
-                        <p><small>{layout.attacker.forceDisposition}</small>{layout.attacker.primaryMission}</p>
-                        <span>VS</span>
-                        <p><small>{layout.defender.forceDisposition}</small>{layout.defender.primaryMission}</p>
-                      </div>
-                      <div className="measurement-row">
-                        {layout.measurementsInches.slice(0, 7).map((measurement) => (
-                          <span key={measurement}>{measurement}&quot;</span>
-                        ))}
-                        {layout.measurementsInches.length > 7 && <span>+{layout.measurementsInches.length - 7}</span>}
-                      </div>
-                    </a>
-                  ))}
-                </div>
-              </article>
-            ))}
+      <section className="selected-layouts" id="selected-layouts" aria-live="polite">
+        <div className="selected-heading">
+          <div>
+            <span>Your disposition</span>
+            <strong>{playerDisposition.name}</strong>
+            <b>{playerMission}</b>
           </div>
+          <div className="versus">vs</div>
+          <div>
+            <span>Opponent disposition</span>
+            <strong>{opponentDisposition.name}</strong>
+            <b>{opponentMission}</b>
+          </div>
+        </div>
+
+        <div className="primary-cards">
+          <PrimaryCard
+            label="Your primary card"
+            dispositionId={playerDisposition.id}
+            dispositionName={playerDisposition.name}
+            mission={playerMission}
+          />
+          <PrimaryCard
+            label="Opponent primary card"
+            dispositionId={opponentDisposition.id}
+            dispositionName={opponentDisposition.name}
+            mission={opponentMission}
+          />
+        </div>
+
+        <div className="layouts-label">Possible layouts</div>
+        <div className="layout-grid">
+          {selectedLayouts.map((layout) => {
+            const page = String(layout.pdfPage).padStart(2, '0');
+            return (
+              <article className="layout" key={layout.id}>
+                <div className="layout-heading">
+                  <h3>Layout {layout.layout}</h3>
+                  <a href={`${referenceRoot}/official/event-companion.pdf#page=${layout.pdfPage}`} target="_blank">
+                    PDF page {layout.pdfPage} ↗
+                  </a>
+                </div>
+                <a href={`${referenceRoot}/official/event-companion.pdf#page=${layout.pdfPage}`} target="_blank">
+                  {/* The generated JPEG is a direct preview of the authoritative Event Companion page. */}
+                  <img
+                    src={`${referenceRoot}/layouts/layout-${page}.jpg`}
+                    alt={`${playerDisposition.name} versus ${opponentDisposition.name}, layout ${layout.layout}`}
+                  />
+                </a>
+              </article>
+            );
+          })}
         </div>
       </section>
 
-      <section className="section shell" id="secondaries">
-        <SectionHeading
-          index="03"
-          title="Secondary missions"
-          description="The complete 18-card name index for the Chapter Approved 2026–27 secondary deck. Fixed-capable cards are marked."
-        />
-        <div className="secondary-grid">
-          {missionsData.secondaryMissions.map((mission, index) => (
-            <a
-              className="secondary-card"
-              href={missionsData.secondaryMissionReferenceUrl}
-              key={mission.id}
-            >
-              <span>{String(index + 1).padStart(2, '0')}</span>
-              <strong>{mission.name}</strong>
-              {mission.fixed && <em>Fixed</em>}
-            </a>
+      <details className="reference-section">
+        <summary>Secondary mission index ({missionsData.secondaryMissions.length})</summary>
+        <div className="secondary-list">
+          {missionsData.secondaryMissions.map((mission) => (
+            <span key={mission.id}>{mission.name}{mission.fixed ? ' [fixed]' : ''}</span>
           ))}
         </div>
-      </section>
+      </details>
 
-      <section className="section sources-section" id="sources">
-        <div className="shell">
-          <SectionHeading
-            index="04"
-            title="Source library"
-            description="Original official PDFs, searchable text extractions, and normalized JSON are included with the site."
-            inverted
-          />
-          <div className="source-grid">
-            <SourceCard title="Core Rules" meta="Official · PDF · 88 pages" href={sourceUrl('official/core-rules.pdf')} />
-            <SourceCard title="Event Companion" meta="Official · PDF · 93 pages" href={sourceUrl('official/event-companion.pdf')} />
-            <SourceCard title="Terrain Footprints" meta="Official · PDF · 3 pages" href={sourceUrl('official/terrain-area-footprints.pdf')} />
-            <SourceCard title="Mission data" meta="Normalized · JSON" href={sourceUrl('data/missions.json')} />
-            <SourceCard title="Layout data" meta="45 entries · JSON" href={sourceUrl('data/event-layouts.json')} />
-            <SourceCard title="Source manifest" meta="URLs · checksums · JSON" href={sourceUrl('data/sources.json')} />
-            <SourceCard title="Core Rules text" meta="Searchable · plain text" href={sourceUrl('extracted/core-rules.txt')} />
-            <SourceCard title="Event Companion text" meta="Searchable · plain text" href={sourceUrl('extracted/event-companion.txt')} />
-          </div>
+      <details className="reference-section">
+        <summary>Raw reference files</summary>
+        <div className="file-list">
+          <a href={`${referenceRoot}/data/missions.json`}>missions.json</a>
+          <a href={`${referenceRoot}/data/event-layouts.json`}>event-layouts.json</a>
+          <a href={`${referenceRoot}/data/sources.json`}>sources.json</a>
+          <a href={`${referenceRoot}/extracted/core-rules.txt`}>core-rules.txt</a>
+          <a href={`${referenceRoot}/extracted/event-companion.txt`}>event-companion.txt</a>
         </div>
-      </section>
-
-      <footer className="footer shell">
-        <span>Mission Control · 11th Edition</span>
-        <p>Unofficial fan reference. Warhammer 40,000 and associated marks belong to Games Workshop.</p>
-      </footer>
+      </details>
     </main>
   );
 }
 
-function Stat({ value, label }: { value: number; label: string }) {
-  return <div className="stat"><strong>{value}</strong><span>{label}</span></div>;
-}
-
-function SectionHeading({ index, title, description, inverted = false }: {
-  index: string;
-  title: string;
-  description: string;
-  inverted?: boolean;
+function PrimaryCard({ label, dispositionId, dispositionName, mission }: {
+  label: string;
+  dispositionId: string;
+  dispositionName: string;
+  mission: string;
 }) {
-  return (
-    <div className={`section-heading${inverted ? ' inverted' : ''}`}>
-      <span>{index}</span>
-      <div><h2>{title}</h2><p>{description}</p></div>
-    </div>
-  );
-}
+  const missionSlug = slug(mission);
+  const cardKey = `${dispositionId}/${missionSlug}`;
+  const pageUrl = `${gdmRoot}/11th/primary-missions/${dispositionId}/${missionSlug}`;
+  const imageRoot = `${gdmRoot}/assets/11th/primary-missions/${cardKey}`;
 
-function SourceCard({ title, meta, href }: { title: string; meta: string; href: string }) {
   return (
-    <a className="source-card" href={href}>
-      <span>↗</span><strong>{title}</strong><small>{meta}</small>
-    </a>
+    <article className="primary-card">
+      <div className="primary-card-heading">
+        <div><span>{label}</span><strong>{dispositionName} — {mission}</strong></div>
+        <a href={pageUrl} target="_blank" rel="noreferrer">Open on GDM ↗</a>
+      </div>
+      <div className={`card-images${doubleSidedCards.has(cardKey) ? ' double-sided' : ''}`}>
+        <a href={pageUrl} target="_blank" rel="noreferrer">
+          <img src={`${imageRoot}.png`} alt={`${mission} primary mission card`} />
+        </a>
+        {doubleSidedCards.has(cardKey) && (
+          <a href={pageUrl} target="_blank" rel="noreferrer">
+            <img src={`${imageRoot}-back.png`} alt={`${mission} primary mission card reverse`} />
+          </a>
+        )}
+      </div>
+    </article>
   );
 }
