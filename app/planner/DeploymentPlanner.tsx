@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ChangeEvent, PointerEvent, useRef, useState } from 'react';
+import { ChangeEvent, PointerEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import layoutsData from '../../public/reference/11th-edition/data/event-layouts.json';
 import necronBaseData from '../../public/reference/11th-edition/data/necron-base-sizes.json';
@@ -159,7 +159,7 @@ export default function DeploymentPlanner() {
     } : marker));
   }
 
-  function loadPlan(data: PlannerImport) {
+  const loadPlan = useCallback((data: PlannerImport) => {
     if (data.schemaVersion !== 1 || !Array.isArray(data.markers)) throw new Error('Unsupported deployment-plan file.');
     if (data.layoutId !== layout.id) throw new Error(`This plan is for ${data.layoutId}, not ${layout.id}.`);
     const imported = data.markers.map((marker) => ({
@@ -173,9 +173,9 @@ export default function DeploymentPlanner() {
     setPlanName(data.name || 'Imported plan');
     setSelectedId(null);
     setImportError('');
-  }
+  }, [layout.id]);
 
-  async function loadExample() {
+  const loadExample = useCallback(async () => {
     try {
       const response = await fetch(`${referenceRoot}/plans/necrons-take-take-${layout.layout.toLowerCase()}.json`);
       if (!response.ok) throw new Error('No bundled Necron plan exists for this layout.');
@@ -183,7 +183,13 @@ export default function DeploymentPlanner() {
     } catch (error) {
       setImportError(error instanceof Error ? error.message : 'Could not load example plan.');
     }
-  }
+  }, [layout.layout, loadPlan]);
+
+  useEffect(() => {
+    if (searchParams.get('plan') === 'necrons' && layout.id.startsWith('take-and-hold-vs-take-and-hold-')) {
+      void loadExample();
+    }
+  }, [layout.id, loadExample, searchParams]);
 
   async function importPlan(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];

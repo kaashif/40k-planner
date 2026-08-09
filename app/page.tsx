@@ -37,6 +37,7 @@ export default function Home() {
   const opponentMission = opponentDisposition.primaryMissionsByOpponent[
     playerDispositionId as keyof typeof opponentDisposition.primaryMissionsByOpponent
   ];
+  const hasNecronExample = playerDispositionId === 'take-and-hold' && opponentDispositionId === 'take-and-hold';
 
   const selectedLayouts = useMemo(() => layoutsData.layouts.filter((layout) => {
     const left = layout.attacker.forceDisposition;
@@ -154,13 +155,13 @@ export default function Home() {
                     PDF page {layout.pdfPage} ↗
                   </a>
                 </div>
-                <Link className="layout-planner-link" href={`/planner/?layout=${layout.id}`}>
+                <Link className="layout-planner-link" href={`/planner/?layout=${layout.id}${hasNecronExample ? '&plan=necrons' : ''}`}>
                   {/* The generated JPEG is a direct preview of the authoritative Event Companion page. */}
                   <img
                     src={`${referenceRoot}/layouts/layout-${page}.jpg`}
                     alt={`${playerDisposition.name} versus ${opponentDisposition.name}, layout ${layout.layout}`}
                   />
-                  <span>Open deployment planner</span>
+                  <span>{hasNecronExample ? 'Open planned Necron deployment' : 'Open deployment planner'}</span>
                 </Link>
               </article>
             );
