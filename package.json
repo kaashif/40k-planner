@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "serve out",
     "lint": "eslint",
-    "preview": "serve out"
+    "preview": "serve out",
+    "plan": "node cli/40k-plan.mjs",
+    "plan:example": "node cli/40k-plan.mjs build-set --army armies/necrons-2000.json --plan plans/take-take-mirror.json --out plans/generated --app-out-dir public/reference/11th-edition/plans",
+    "test:cli": "node --test cli/*.test.mjs"
   },
   "dependencies": {
     "next": "16.1.1",

@@ -222,6 +222,12 @@ button, summary { font: inherit; }
 .overlay-control-label { margin: 2px 0 6px; color: #fff; font-size: 11px; font-weight: 700; }
 .overlay-divider { height: 1px; margin: 10px -10px; background: var(--line); }
 .control-help { margin: 8px 0 0; font-size: 10px; line-height: 1.4; }
+.planner-import-error { margin: 7px 0 0; color: #ff9aa3; font-size: 10px; }
+.sight-line-readout { display: grid; gap: 5px; margin-top: 8px; }
+.sight-line-readout > div { display: grid; grid-template-columns: 54px 1fr; gap: 6px; font-size: 9px; line-height: 1.25; }
+.sight-line-readout strong { font-size: 8px; letter-spacing: .04em; }
+.sight-line-readout .clear strong { color: #ff7b84; }
+.sight-line-readout .blocked strong { color: #69db8b; }
 .battlefield-panel { min-width: 0; border: 1px solid var(--line-dark); background: #090b0f; }
 .battlefield-title {
   height: 38px;
@@ -270,6 +276,14 @@ button, summary { font: inherit; }
 .base-marker.selected { z-index: 5; outline: 3px solid #ffd45e; outline-offset: 2px; }
 .base-marker span { pointer-events: none; }
 .visibility-overlay { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; pointer-events: none; }
+.sight-line-overlay { position: absolute; inset: 0; z-index: 4; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.sight-line-overlay g > line:not(.block-mark) { fill: none; stroke-width: .16; vector-effect: non-scaling-stroke; }
+.sight-line-overlay g.clear > line { stroke: #f04450; }
+.sight-line-overlay g.blocked > line:not(.block-mark) { stroke: #20a85c; stroke-dasharray: .45 .3; }
+.sight-line-overlay g circle { stroke: #111; stroke-width: .08; vector-effect: non-scaling-stroke; }
+.sight-line-overlay g.clear circle { fill: #f04450; }
+.sight-line-overlay g.blocked circle { fill: #20a85c; }
+.sight-line-overlay .block-mark { stroke: #20a85c; stroke-width: .18; vector-effect: non-scaling-stroke; }
 .deep-strike-overlay { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
 .deep-strike-overlay.blue rect { fill: rgba(24, 167, 217, .34); }
 .deep-strike-overlay.red rect { fill: rgba(231, 74, 86, .30); }

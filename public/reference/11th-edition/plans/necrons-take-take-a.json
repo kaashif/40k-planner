@@ -1,0 +1,709 @@
+{
+  "schemaVersion": 1,
+  "edition": 11,
+  "name": "Take/Take Layout A – natural overload and switch",
+  "layoutId": "take-and-hold-vs-take-and-hold-a",
+  "battlefieldInches": {
+    "width": 44,
+    "height": 60
+  },
+  "markers": [
+    {
+      "id": 1,
+      "x": 40,
+      "y": 52,
+      "widthMm": 90,
+      "heightMm": 90,
+      "label": "NB",
+      "side": "blue",
+      "unitId": "nightbringer"
+    },
+    {
+      "id": 2,
+      "x": 36,
+      "y": 52,
+      "widthMm": 80,
+      "heightMm": 80,
+      "label": "VD",
+      "side": "blue",
+      "unitId": "void-dragon"
+    },
+    {
+      "id": 3,
+      "x": 24.8,
+      "y": 54.5,
+      "widthMm": 80,
+      "heightMm": 80,
+      "label": "NA",
+      "side": "blue",
+      "unitId": "ammentar"
+    },
+    {
+      "id": 4,
+      "x": 21,
+      "y": 54.4,
+      "widthMm": 60,
+      "heightMm": 60,
+      "label": "SL",
+      "side": "blue",
+      "unitId": "skorpekh-lord"
+    },
+    {
+      "id": 5,
+      "x": 8,
+      "y": 56.5,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "TV",
+      "side": "blue",
+      "unitId": "technomancer-veil"
+    },
+    {
+      "id": 6,
+      "x": 16.9,
+      "y": 48.4,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "T",
+      "side": "blue",
+      "unitId": "technomancer"
+    },
+    {
+      "id": 7,
+      "x": 13,
+      "y": 50.5,
+      "widthMm": 60,
+      "heightMm": 60,
+      "label": "R",
+      "side": "blue",
+      "unitId": "reanimator"
+    },
+    {
+      "id": 8,
+      "x": 5.5,
+      "y": 52,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "WL1",
+      "side": "blue",
+      "unitId": "wraiths-left"
+    },
+    {
+      "id": 9,
+      "x": 7.7,
+      "y": 52,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "WL2",
+      "side": "blue",
+      "unitId": "wraiths-left"
+    },
+    {
+      "id": 10,
+      "x": 9.9,
+      "y": 52,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "WL3",
+      "side": "blue",
+      "unitId": "wraiths-left"
+    },
+    {
+      "id": 11,
+      "x": 5.5,
+      "y": 54.2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "WL4",
+      "side": "blue",
+      "unitId": "wraiths-left"
+    },
+    {
+      "id": 12,
+      "x": 7.7,
+      "y": 54.2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "WL5",
+      "side": "blue",
+      "unitId": "wraiths-left"
+    },
+    {
+      "id": 13,
+      "x": 9.9,
+      "y": 54.2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "WL6",
+      "side": "blue",
+      "unitId": "wraiths-left"
+    },
+    {
+      "id": 14,
+      "x": 12.5,
+      "y": 44,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "WC1",
+      "side": "blue",
+      "unitId": "wraiths-centre"
+    },
+    {
+      "id": 15,
+      "x": 14.7,
+      "y": 44,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "WC2",
+      "side": "blue",
+      "unitId": "wraiths-centre"
+    },
+    {
+      "id": 16,
+      "x": 16.9,
+      "y": 44,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "WC3",
+      "side": "blue",
+      "unitId": "wraiths-centre"
+    },
+    {
+      "id": 17,
+      "x": 12.5,
+      "y": 46.2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "WC4",
+      "side": "blue",
+      "unitId": "wraiths-centre"
+    },
+    {
+      "id": 18,
+      "x": 14.7,
+      "y": 46.2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "WC5",
+      "side": "blue",
+      "unitId": "wraiths-centre"
+    },
+    {
+      "id": 19,
+      "x": 16.9,
+      "y": 46.2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "WC6",
+      "side": "blue",
+      "unitId": "wraiths-centre"
+    },
+    {
+      "id": 20,
+      "x": 30.5,
+      "y": 57,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "F1",
+      "side": "blue",
+      "unitId": "flayed-ones"
+    },
+    {
+      "id": 21,
+      "x": 31.8,
+      "y": 57,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "F2",
+      "side": "blue",
+      "unitId": "flayed-ones"
+    },
+    {
+      "id": 22,
+      "x": 33.1,
+      "y": 57,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "F3",
+      "side": "blue",
+      "unitId": "flayed-ones"
+    },
+    {
+      "id": 23,
+      "x": 31.15,
+      "y": 58.3,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "F4",
+      "side": "blue",
+      "unitId": "flayed-ones"
+    },
+    {
+      "id": 24,
+      "x": 32.45,
+      "y": 58.3,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "F5",
+      "side": "blue",
+      "unitId": "flayed-ones"
+    },
+    {
+      "id": 25,
+      "x": 27.5,
+      "y": 58,
+      "widthMm": 60,
+      "heightMm": 60,
+      "label": "L",
+      "side": "blue",
+      "unitId": "lokhust"
+    },
+    {
+      "id": 26,
+      "x": 18.8,
+      "y": 47.5,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "S1",
+      "side": "blue",
+      "unitId": "skorpekhs"
+    },
+    {
+      "id": 27,
+      "x": 21,
+      "y": 47.5,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "S2",
+      "side": "blue",
+      "unitId": "skorpekhs"
+    },
+    {
+      "id": 28,
+      "x": 18.8,
+      "y": 49.7,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "S3",
+      "side": "blue",
+      "unitId": "skorpekhs"
+    },
+    {
+      "id": 29,
+      "x": 21,
+      "y": 49.7,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "S4",
+      "side": "blue",
+      "unitId": "skorpekhs"
+    },
+    {
+      "id": 30,
+      "x": 18.8,
+      "y": 51.9,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "S5",
+      "side": "blue",
+      "unitId": "skorpekhs"
+    },
+    {
+      "id": 31,
+      "x": 21,
+      "y": 51.9,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "S6",
+      "side": "blue",
+      "unitId": "skorpekhs"
+    },
+    {
+      "id": 32,
+      "x": 4,
+      "y": 8,
+      "widthMm": 90,
+      "heightMm": 90,
+      "label": "M-NB",
+      "side": "red",
+      "unitId": "nightbringer"
+    },
+    {
+      "id": 33,
+      "x": 8,
+      "y": 8,
+      "widthMm": 80,
+      "heightMm": 80,
+      "label": "M-VD",
+      "side": "red",
+      "unitId": "void-dragon"
+    },
+    {
+      "id": 34,
+      "x": 19.2,
+      "y": 5.5,
+      "widthMm": 80,
+      "heightMm": 80,
+      "label": "M-NA",
+      "side": "red",
+      "unitId": "ammentar"
+    },
+    {
+      "id": 35,
+      "x": 23,
+      "y": 5.600000000000001,
+      "widthMm": 60,
+      "heightMm": 60,
+      "label": "M-SL",
+      "side": "red",
+      "unitId": "skorpekh-lord"
+    },
+    {
+      "id": 36,
+      "x": 36,
+      "y": 3.5,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-TV",
+      "side": "red",
+      "unitId": "technomancer-veil"
+    },
+    {
+      "id": 37,
+      "x": 27.1,
+      "y": 11.600000000000001,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-T",
+      "side": "red",
+      "unitId": "technomancer"
+    },
+    {
+      "id": 38,
+      "x": 31,
+      "y": 9.5,
+      "widthMm": 60,
+      "heightMm": 60,
+      "label": "M-R",
+      "side": "red",
+      "unitId": "reanimator"
+    },
+    {
+      "id": 39,
+      "x": 38.5,
+      "y": 8,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-WL1",
+      "side": "red",
+      "unitId": "wraiths-left"
+    },
+    {
+      "id": 40,
+      "x": 36.3,
+      "y": 8,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-WL2",
+      "side": "red",
+      "unitId": "wraiths-left"
+    },
+    {
+      "id": 41,
+      "x": 34.1,
+      "y": 8,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-WL3",
+      "side": "red",
+      "unitId": "wraiths-left"
+    },
+    {
+      "id": 42,
+      "x": 38.5,
+      "y": 5.799999999999997,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-WL4",
+      "side": "red",
+      "unitId": "wraiths-left"
+    },
+    {
+      "id": 43,
+      "x": 36.3,
+      "y": 5.799999999999997,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-WL5",
+      "side": "red",
+      "unitId": "wraiths-left"
+    },
+    {
+      "id": 44,
+      "x": 34.1,
+      "y": 5.799999999999997,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-WL6",
+      "side": "red",
+      "unitId": "wraiths-left"
+    },
+    {
+      "id": 45,
+      "x": 31.5,
+      "y": 16,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-WC1",
+      "side": "red",
+      "unitId": "wraiths-centre"
+    },
+    {
+      "id": 46,
+      "x": 29.3,
+      "y": 16,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-WC2",
+      "side": "red",
+      "unitId": "wraiths-centre"
+    },
+    {
+      "id": 47,
+      "x": 27.1,
+      "y": 16,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-WC3",
+      "side": "red",
+      "unitId": "wraiths-centre"
+    },
+    {
+      "id": 48,
+      "x": 31.5,
+      "y": 13.799999999999997,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-WC4",
+      "side": "red",
+      "unitId": "wraiths-centre"
+    },
+    {
+      "id": 49,
+      "x": 29.3,
+      "y": 13.799999999999997,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-WC5",
+      "side": "red",
+      "unitId": "wraiths-centre"
+    },
+    {
+      "id": 50,
+      "x": 27.1,
+      "y": 13.799999999999997,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-WC6",
+      "side": "red",
+      "unitId": "wraiths-centre"
+    },
+    {
+      "id": 51,
+      "x": 13.5,
+      "y": 3,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "M-F1",
+      "side": "red",
+      "unitId": "flayed-ones"
+    },
+    {
+      "id": 52,
+      "x": 12.2,
+      "y": 3,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "M-F2",
+      "side": "red",
+      "unitId": "flayed-ones"
+    },
+    {
+      "id": 53,
+      "x": 10.899999999999999,
+      "y": 3,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "M-F3",
+      "side": "red",
+      "unitId": "flayed-ones"
+    },
+    {
+      "id": 54,
+      "x": 12.850000000000001,
+      "y": 1.7000000000000028,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "M-F4",
+      "side": "red",
+      "unitId": "flayed-ones"
+    },
+    {
+      "id": 55,
+      "x": 11.549999999999997,
+      "y": 1.7000000000000028,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "M-F5",
+      "side": "red",
+      "unitId": "flayed-ones"
+    },
+    {
+      "id": 56,
+      "x": 16.5,
+      "y": 2,
+      "widthMm": 60,
+      "heightMm": 60,
+      "label": "M-L",
+      "side": "red",
+      "unitId": "lokhust"
+    },
+    {
+      "id": 57,
+      "x": 25.2,
+      "y": 12.5,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-S1",
+      "side": "red",
+      "unitId": "skorpekhs"
+    },
+    {
+      "id": 58,
+      "x": 23,
+      "y": 12.5,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-S2",
+      "side": "red",
+      "unitId": "skorpekhs"
+    },
+    {
+      "id": 59,
+      "x": 25.2,
+      "y": 10.299999999999997,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-S3",
+      "side": "red",
+      "unitId": "skorpekhs"
+    },
+    {
+      "id": 60,
+      "x": 23,
+      "y": 10.299999999999997,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-S4",
+      "side": "red",
+      "unitId": "skorpekhs"
+    },
+    {
+      "id": 61,
+      "x": 25.2,
+      "y": 8.100000000000001,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-S5",
+      "side": "red",
+      "unitId": "skorpekhs"
+    },
+    {
+      "id": 62,
+      "x": 23,
+      "y": 8.100000000000001,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "M-S6",
+      "side": "red",
+      "unitId": "skorpekhs"
+    }
+  ],
+  "sightLines": [
+    {
+      "label": "Red natural → Nightbringer lane",
+      "from": [
+        36,
+        14
+      ],
+      "targetUnit": "nightbringer",
+      "to": [
+        40,
+        52
+      ],
+      "clear": false,
+      "blockedAt": [
+        37.64853556485355,
+        29.661087866108787
+      ],
+      "raysChecked": 5
+    },
+    {
+      "label": "Red natural → Void Dragon lane",
+      "from": [
+        36,
+        14
+      ],
+      "targetUnit": "void-dragon",
+      "to": [
+        36,
+        52
+      ],
+      "clear": false,
+      "blockedAt": [
+        36,
+        29.68
+      ],
+      "raysChecked": 5
+    },
+    {
+      "label": "Red centre staging → centre Wraiths",
+      "from": [
+        22,
+        22
+      ],
+      "targetUnit": "wraiths-centre",
+      "targetModel": 1,
+      "to": [
+        14.7,
+        44
+      ],
+      "clear": false,
+      "blockedAt": [
+        20.741379310344826,
+        25.79310344827586
+      ],
+      "raysChecked": 5
+    },
+    {
+      "label": "Red centre staging → Destroyer counter-charge",
+      "from": [
+        22,
+        22
+      ],
+      "targetUnit": "skorpekhs",
+      "targetModel": 2,
+      "to": [
+        18.8,
+        49.7
+      ],
+      "clear": false,
+      "blockedAt": [
+        21.64240687679083,
+        25.095415472779372
+      ],
+      "raysChecked": 5
+    }
+  ],
+  "reserves": []
+}

@@ -6,6 +6,20 @@ The site is a compact 5×5 primary mission matrix. Selecting a cell shows both p
 
 Primary-card images and all 45 layout previews are stored locally with the static site.
 
+## Deployment CLI
+
+The dependency-free CLI validates a list's points, base footprints, board bounds, and model overlap. It emits a planner-import JSON, a standalone SVG diagram with the mirror deployment ghosted in red, and a Markdown tactical briefing.
+
+The bundled preset is the 2,000-point Necron list in `armies/necrons-2000.json` on official Take and Hold vs Take and Hold Layout A.
+
+```sh
+npm run plan -- bases
+npm run plan -- validate
+npm run plan:example
+```
+
+Open the Take/Take Layout A deployment planner and choose **Load Necron example**, or import `public/reference/11th-edition/plans/necrons-take-take-a.json`. Edit `plans/take-take-mirror.json` and rebuild to iterate. Coordinates are model centres in inches from the board's top-left corner on the 44×60in portrait map.
+
 ## Development
 
 ```sh

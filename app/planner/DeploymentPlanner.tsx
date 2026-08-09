@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { PointerEvent, useRef, useState } from 'react';
+import { ChangeEvent, PointerEvent, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import layoutsData from '../../public/reference/11th-edition/data/event-layouts.json';
 import necronBaseData from '../../public/reference/11th-edition/data/necron-base-sizes.json';
@@ -27,6 +27,23 @@ type BaseMarker = {
   heightMm: number;
   label: string;
   side: Side;
+  unitId?: string;
+};
+
+type SightLine = {
+  label: string;
+  from: [number, number];
+  to: [number, number];
+  clear: boolean;
+  blockedAt: [number, number] | null;
+};
+
+type PlannerImport = {
+  schemaVersion: number;
+  name: string;
+  layoutId: string;
+  markers: Array<Omit<BaseMarker, 'x' | 'y'> & { x: number; y: number }>;
+  sightLines?: SightLine[];
 };
 
 function dimensions(widthMm: number, heightMm: number) {
@@ -46,7 +63,11 @@ export default function DeploymentPlanner() {
   const nextId = useRef(1);
   const dragId = useRef<number | null>(null);
   const measureDrag = useRef(false);
+  const importRef = useRef<HTMLInputElement>(null);
   const [markers, setMarkers] = useState<BaseMarker[]>([]);
+  const [planName, setPlanName] = useState('');
+  const [sightLines, setSightLines] = useState<SightLine[]>([]);
+  const [importError, setImportError] = useState('');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [side, setSide] = useState<Side>('blue');
   const [unitName, setUnitName] = useState('Necron Warriors');
@@ -138,6 +159,44 @@ export default function DeploymentPlanner() {
     } : marker));
   }
 
+  function loadPlan(data: PlannerImport) {
+    if (data.schemaVersion !== 1 || !Array.isArray(data.markers)) throw new Error('Unsupported deployment-plan file.');
+    if (data.layoutId !== layout.id) throw new Error(`This plan is for ${data.layoutId}, not ${layout.id}.`);
+    const imported = data.markers.map((marker) => ({
+      ...marker,
+      x: marker.x / TABLE_WIDTH,
+      y: marker.y / TABLE_HEIGHT,
+    }));
+    setMarkers(imported);
+    nextId.current = Math.max(0, ...imported.map(({ id }) => id)) + 1;
+    setSightLines(data.sightLines || []);
+    setPlanName(data.name || 'Imported plan');
+    setSelectedId(null);
+    setImportError('');
+  }
+
+  async function loadExample() {
+    try {
+      const response = await fetch(`${referenceRoot}/plans/necrons-take-take-${layout.layout.toLowerCase()}.json`);
+      if (!response.ok) throw new Error('No bundled Necron plan exists for this layout.');
+      loadPlan(await response.json());
+    } catch (error) {
+      setImportError(error instanceof Error ? error.message : 'Could not load example plan.');
+    }
+  }
+
+  async function importPlan(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      loadPlan(JSON.parse(await file.text()));
+    } catch (error) {
+      setImportError(error instanceof Error ? error.message : 'Could not import plan.');
+    } finally {
+      event.target.value = '';
+    }
+  }
+
   return (
     <main className="planner-shell">
       <header className="planner-header">
@@ -153,6 +212,22 @@ export default function DeploymentPlanner() {
 
       <div className="planner-workspace">
         <aside className="planner-controls">
+          <section>
+            <h2>Deployment plan</h2>
+            {layout.id.startsWith('take-and-hold-vs-take-and-hold-') && (
+              <button className="add-unit-button" onClick={loadExample}>Load Necron example</button>
+            )}
+            <button onClick={() => importRef.current?.click()}>Import planner JSON</button>
+            <input ref={importRef} type="file" accept="application/json,.json" hidden onChange={importPlan} />
+            {planName && <p className="control-help"><strong>{planName}</strong><br />Includes a ghosted mirror army and checked sight lines.</p>}
+            {sightLines.length > 0 && <div className="sight-line-readout">
+              {sightLines.map((line) => <div key={line.label} className={line.clear ? 'clear' : 'blocked'}>
+                <strong>{line.clear ? 'VISIBLE' : 'BLOCKED'}</strong><span>{line.label}</span>
+              </div>)}
+            </div>}
+            {importError && <p className="planner-import-error">{importError}</p>}
+          </section>
+
           <section>
             <h2>Add Necron base</h2>
             <div className="side-toggle" aria-label="Base side">
@@ -190,7 +265,7 @@ export default function DeploymentPlanner() {
             </div>
             <button disabled={!selected || selected.widthMm === selected.heightMm} onClick={rotateSelected}>Rotate oval 90°</button>
             <button className="danger-button" disabled={!selected} onClick={removeSelected}>Remove selected</button>
-            <button disabled={markers.length === 0} onClick={() => { setMarkers([]); setSelectedId(null); }}>Clear all</button>
+            <button disabled={markers.length === 0} onClick={() => { setMarkers([]); setSelectedId(null); setSightLines([]); setPlanName(''); }}>Clear all</button>
           </section>
 
           <section>
@@ -239,6 +314,18 @@ export default function DeploymentPlanner() {
             onPointerCancel={() => { dragId.current = null; measureDrag.current = false; }}
           >
             <img src={`${referenceRoot}/maps/layout-${page}.jpg`} alt={`Map-only view of layout ${layout.layout}`} draggable={false} />
+            {sightLines.length > 0 && (
+              <svg className="sight-line-overlay" viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-label="Checked sight lines">
+                {sightLines.map((line, index) => (
+                  <g key={`${line.label}-${index}`} className={line.clear ? 'clear' : 'blocked'}>
+                    <line x1={line.from[0]} y1={line.from[1]} x2={line.to[0]} y2={line.to[1]} />
+                    <circle cx={line.from[0]} cy={line.from[1]} r=".38" />
+                    {line.blockedAt && <><line className="block-mark" x1={line.blockedAt[0] - .45} y1={line.blockedAt[1] - .45} x2={line.blockedAt[0] + .45} y2={line.blockedAt[1] + .45} /><line className="block-mark" x1={line.blockedAt[0] + .45} y1={line.blockedAt[1] - .45} x2={line.blockedAt[0] - .45} y2={line.blockedAt[1] + .45} /></>}
+                    <title>{line.clear ? 'VISIBLE' : 'BLOCKED'} — {line.label}</title>
+                  </g>
+                ))}
+              </svg>
+            )}
             {screenEnabled && (
               <svg className={`deep-strike-overlay ${screenSide}`} viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-hidden="true">
                 <defs>

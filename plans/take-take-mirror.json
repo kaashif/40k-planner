@@ -1,0 +1,8 @@
+{
+  "name": "Take/Take Necron mirror plan set",
+  "plans": [
+    "take-take-layout-a.json",
+    "take-take-layout-b.json",
+    "take-take-layout-c.json"
+  ]
+}

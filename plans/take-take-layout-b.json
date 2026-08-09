@@ -1,0 +1,29 @@
+{
+  "name": "Take/Take Layout B – right edge launch",
+  "layoutId": "take-and-hold-vs-take-and-hold-b",
+  "layout": "B",
+  "layoutPage": 10,
+  "side": "blue",
+  "mirrorOpponentInRender": true,
+  "intent": "Hold blue home with the Lokhust, stage one Wraith brick toward centre and one toward the blue natural, and launch both C'tan together along the top edge into the red natural. Destroyers sit between the Wraith lanes and counter-charge before joining the turn-2/3 switch.",
+  "placements": {
+    "nightbringer": { "centres": [[40.0, 7.0]], "note": "Top-edge spearhead toward the red natural." },
+    "void-dragon": { "centres": [[36.0, 7.0]], "note": "Keep base-to-base lane pressure with the Nightbringer." },
+    "ammentar": { "centres": [[41.0, 34.0]], "note": "Counter-charge aura piece behind the centre Wraith lane." },
+    "skorpekh-lord": { "centres": [[39.2, 37.0]] },
+    "technomancer-veil": { "centres": [[40.5, 49.2]], "note": "Attached to the natural Wraith brick and ready to switch lanes." },
+    "technomancer": { "centres": [[40.5, 29.2]] },
+    "reanimator": { "centres": [[41.0, 43.0]], "note": "Hidden on the right edge, prioritising the natural brick." },
+    "wraiths-left": { "centres": [[34.0, 47.0], [36.2, 47.0], [38.4, 47.0], [34.0, 49.2], [36.2, 49.2], [38.4, 49.2]], "note": "Blue-natural brick." },
+    "wraiths-centre": { "centres": [[34.0, 27.0], [36.2, 27.0], [38.4, 27.0], [34.0, 29.2], [36.2, 29.2], [38.4, 29.2]], "note": "Centre brick, staged behind the right-side home terrain." },
+    "flayed-ones": { "centres": [[41.0, 22.8], [42.3, 22.8], [41.0, 24.1], [42.3, 24.1], [43.35, 25.3]], "note": "Right-edge screen above home." },
+    "lokhust": { "centres": [[42.7, 30.8]], "note": "Stays on the blue home objective." },
+    "skorpekhs": { "centres": [[34.5, 34.0], [36.7, 34.0], [34.5, 36.2], [36.7, 36.2], [34.5, 38.4], [36.7, 38.4]], "note": "Central counter-charge package." }
+  },
+  "sightLines": [
+    { "label": "Red natural → Nightbringer lane", "from": [22, 8], "targetUnit": "nightbringer" },
+    { "label": "Red natural → Void Dragon lane", "from": [22, 8], "targetUnit": "void-dragon" },
+    { "label": "Centre → centre Wraiths", "from": [22, 30], "targetUnit": "wraiths-centre", "targetModel": 1 },
+    { "label": "Red home → Destroyer staging", "from": [7, 31], "targetUnit": "skorpekhs", "targetModel": 2 }
+  ]
+}
