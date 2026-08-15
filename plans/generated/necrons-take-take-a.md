@@ -6,27 +6,27 @@ Put the Wraith bricks on the centre and blue natural lanes, send both C'tan toge
 
 ## Sight-line checks
 
-- **BLOCKED** — Red natural → Nightbringer lane (terrain at 37.6", 29.7")
-- **BLOCKED** — Red natural → Void Dragon lane (terrain at 36.0", 29.7")
-- **BLOCKED** — Red centre staging → centre Wraiths (terrain at 20.7", 25.8")
-- **BLOCKED** — Red centre staging → Destroyer counter-charge (terrain at 21.6", 25.1")
+- **BLOCKED** — Red natural → Nightbringer lane (terrain at 37.4", 29.7")
+- **BLOCKED** — Red natural → Void Dragon lane (terrain at 35.8", 29.7")
+- **BLOCKED** — Red centre staging → centre Wraiths (terrain at 20.9", 25.7")
+- **BLOCKED** — Red centre staging → Destroyer counter-charge (terrain at 22.0", 25.1")
 
 The checker samples the target centre and four points around its base edge; **VISIBLE** means at least one sampled ray is clear.
 
 ## Unit placements
 
-- **C'tan Shard of the Nightbringer** — (40", 52"). Right-flank spearhead. Run with the Void Dragon toward the red natural; do not split the pair before the natural is broken.
-- **C'tan Shard of the Void Dragon** — (36", 52"). Second C'tan in the right-flank pair.
-- **Nekrosor Ammentar** — (24.8", 54.5"). Stage with the Skorpekhs so Protective Disciples and the Destroyer aura are live.
-- **Skorpekh Lord (Enaegic Dermal Bond)** — (21", 54.4")
-- **Technomancer (Warlord)** — (8", 56.5"). Veil is the turn-2/3 switch tool if walking across would cost a scoring turn.
-- **Technomancer** — (16.9", 48.4")
-- **Canoptek Reanimator** — (13", 50.5"). Between the Wraith lanes, hidden as far as the terrain permits.
-- **Canoptek Wraiths (unit 1)** — (5.5", 52"), (7.7", 52"), (9.9", 52"), (5.5", 54.2"), (7.7", 54.2"), (9.9", 54.2"). Blue-natural brick; it crosses after the C'tan clear the red natural.
-- **Canoptek Wraiths (unit 2)** — (12.5", 44"), (14.7", 44"), (16.9", 44"), (12.5", 46.2"), (14.7", 46.2"), (16.9", 46.2"). Centre brick; establish scoring without chasing the opposing C'tan into a bad trade.
-- **Flayed Ones (unit 1)** — (30.5", 57"), (31.8", 57"), (33.1", 57"), (31.15", 58.3"), (32.45", 58.3"). First backfield screen between home and the C'tan lane.
-- **Flayed Ones (unit 2)** — (26.3", 57"), (27.6", 57"), (28.9", 57"), (26.95", 58.3"), (28.25", 58.3"). Second backfield screen around blue home.
-- **Skorpekh Destroyers** — (18.8", 47.5"), (21", 47.5"), (18.8", 49.7"), (21", 49.7"), (18.8", 51.9"), (21", 51.9"). Counter-charge staging behind the centre/natural line.
+- **C'tan Shard of the Nightbringer** — (40", 57.5"). Right-flank spearhead. Run with the Void Dragon toward the red natural; do not split the pair before the natural is broken.
+- **C'tan Shard of the Void Dragon** — (35.5", 57.5"). Second C'tan in the right-flank pair.
+- **Nekrosor Ammentar** — (31", 57.5"). Stage with the Skorpekhs so Protective Disciples and the Destroyer aura are live.
+- **Skorpekh Lord (Enaegic Dermal Bond)** — (27.5", 57.5")
+- **Technomancer (Warlord)** — (5", 58"). Supports the first Wraith brick.
+- **Technomancer** — (12", 58")
+- **Canoptek Reanimator** — (19.5", 58"). Between the Wraith and Destroyer lanes, hidden as far as the terrain permits.
+- **Canoptek Wraiths (unit 1)** — (3.5", 52.5"), (5.7", 52.5"), (7.9", 52.5"), (3.5", 54.7"), (5.7", 54.7"), (7.9", 54.7"). First Wraith brick, wholly inside the blue deployment zone.
+- **Canoptek Wraiths (unit 2)** — (10.8", 52.5"), (13", 52.5"), (15.2", 52.5"), (10.8", 54.7"), (13", 54.7"), (15.2", 54.7"). Second Wraith brick, wholly inside the blue deployment zone.
+- **Flayed Ones (unit 1)** — (3", 49"), (4.3", 49"), (5.6", 49"), (3.65", 50.3"), (4.95", 50.3"). First forward screen, wholly inside the blue deployment zone.
+- **Flayed Ones (unit 2)** — (9", 49"), (10.3", 49"), (11.6", 49"), (9.65", 50.3"), (10.95", 50.3"). Second forward screen, wholly inside the blue deployment zone.
+- **Skorpekh Destroyers** — (18", 52.5"), (20.2", 52.5"), (22.4", 52.5"), (18", 54.7"), (20.2", 54.7"), (22.4", 54.7"). Counter-charge staging wholly inside the blue deployment zone.
 
 ## Turn plan
 

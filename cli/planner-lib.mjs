@@ -5,6 +5,22 @@ import zlib from 'node:zlib';
 export const INCH_MM = 25.4;
 export const BOARD = { width: 44, height: 60 };
 
+function inBlueDeploymentZone(layout, x, y) {
+  if (layout === 'A') return y >= 48 || (x >= 22 && x <= 33 && y >= 40);
+  if (layout === 'B') return x >= 32;
+  if (layout === 'C') {
+    if (x < 22 || y < 30) return false;
+    if (x >= 31) return true;
+    return y >= 30 + Math.sqrt(Math.max(0, 81 - (x - 22) ** 2));
+  }
+  return true;
+}
+
+function whollyInBlueDeploymentZone(layout, x, y, radius) {
+  return Array.from({ length: 32 }, (_, index) => index * Math.PI * 2 / 32)
+    .every((angle) => inBlueDeploymentZone(layout, x + Math.cos(angle) * radius, y + Math.sin(angle) * radius));
+}
+
 export function readJson(file) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
@@ -32,6 +48,9 @@ export function validate(army, plan) {
     placement.centres.forEach(([x, y], index) => {
       if (x - radius < 0 || x + radius > BOARD.width || y - radius < 0 || y + radius > BOARD.height) {
         errors.push(`${unit.id} model ${index + 1} is not wholly on the 44×60in battlefield.`);
+      }
+      if (plan.side === 'blue' && !whollyInBlueDeploymentZone(plan.layout, x, y, radius)) {
+        errors.push(`${unit.id} model ${index + 1} is not wholly inside the blue deployment zone for Layout ${plan.layout}.`);
       }
       circles.push({ unit: unit.id, index, x, y, radius });
     });

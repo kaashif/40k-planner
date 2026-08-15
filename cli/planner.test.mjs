@@ -39,3 +39,10 @@ test('planner import contains one friendly army and sight-line marks', () => {
   assert.equal(output.markers.filter((marker) => marker.side === 'red').length, 0);
   assert.equal(output.sightLines.length, 4);
 });
+
+test('deployment validation rejects a model outside the blue zone', () => {
+  const invalid = structuredClone(variants[0]);
+  invalid.placements['wraiths-centre'].centres[0] = [12.5, 44];
+  const result = validate(army, invalid);
+  assert.ok(result.errors.some((error) => error.includes('blue deployment zone')));
+});

@@ -7,7 +7,7 @@ import layoutsData from '../../public/reference/11th-edition/data/event-layouts.
 import armyData from '../../armies/necrons-2000.json';
 import TerrainVisibility from './TerrainVisibility';
 import MapAuditOverlay from './MapAuditOverlay';
-import { coherencyIssues, MM_PER_INCH, TABLE_HEIGHT, TABLE_WIDTH, type PlannerMarker } from './planner-utils';
+import { coherencyIssues, MM_PER_INCH, placeUnitLabels, TABLE_HEIGHT, TABLE_WIDTH, type PlannerMarker } from './planner-utils';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 const referenceRoot = `${basePath}/reference/11th-edition`;
@@ -87,11 +87,12 @@ export default function DeploymentPlanner() {
 
   const selected = markers.find(({ id }) => id === selectedId) ?? null;
   const markerCoherencyIssues = useMemo(() => coherencyIssues(markers), [markers]);
+  const unitLabels = useMemo(() => placeUnitLabels(markers), [markers]);
 
   useEffect(() => {
     setRestoredLayout('');
     try {
-      const saved = localStorage.getItem(`deployment-planner:v1:${layout.id}`);
+      const saved = localStorage.getItem(`deployment-planner:v2:${layout.id}`);
       if (saved) {
         const data = JSON.parse(saved) as SavedPlanner;
         setMarkers(Array.isArray(data.markers) ? data.markers : []);
@@ -109,7 +110,7 @@ export default function DeploymentPlanner() {
         nextMarkupId.current = 1;
       }
     } catch {
-      localStorage.removeItem(`deployment-planner:v1:${layout.id}`);
+      localStorage.removeItem(`deployment-planner:v2:${layout.id}`);
     }
     setSelectedId(null);
     setRestoredLayout(layout.id);
@@ -118,7 +119,7 @@ export default function DeploymentPlanner() {
   useEffect(() => {
     if (restoredLayout !== layout.id) return;
     const saved: SavedPlanner = { markers, planName, sightLines, markupPaths };
-    localStorage.setItem(`deployment-planner:v1:${layout.id}`, JSON.stringify(saved));
+    localStorage.setItem(`deployment-planner:v2:${layout.id}`, JSON.stringify(saved));
   }, [layout.id, markers, markupPaths, planName, restoredLayout, sightLines]);
 
   function pointFromEvent(event: PointerEvent) {
@@ -243,7 +244,7 @@ export default function DeploymentPlanner() {
   }, [layout.layout, loadPlan]);
 
   useEffect(() => {
-    const hasSavedDeployment = localStorage.getItem(`deployment-planner:v1:${layout.id}`) !== null;
+    const hasSavedDeployment = localStorage.getItem(`deployment-planner:v2:${layout.id}`) !== null;
     const requestedDefault = searchParams.get('plan') === 'necrons';
     if ((requestedDefault || !hasSavedDeployment) && layout.id.startsWith('take-and-hold-vs-take-and-hold-')) {
       void loadExample();
@@ -488,9 +489,16 @@ export default function DeploymentPlanner() {
                   if (dragId.current === marker.id) moveMarker(marker.id, pointFromEvent(event));
                 }}
                 onPointerUp={() => { dragId.current = null; }}
+              />
+            ))}
+            {unitLabels.map((label) => (
+              <div
+                key={label.key}
+                className={`unit-name-label ${label.side}`}
+                style={{ left: `${label.x * 100}%`, top: `${label.y * 100}%` }}
               >
-                <span>{marker.label}</span>
-              </button>
+                {label.label}
+              </div>
             ))}
             {measurement && (
               <svg className="measurement-overlay" viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-hidden="true">

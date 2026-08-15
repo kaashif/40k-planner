@@ -58,3 +58,68 @@ export function coherencyIssues(markers: PlannerMarker[]) {
   }
   return issues;
 }
+
+type Rect = { left: number; right: number; top: number; bottom: number };
+export type UnitLabelPlacement = {
+  key: string;
+  label: string;
+  x: number;
+  y: number;
+  side: 'top' | 'right' | 'bottom' | 'left';
+};
+
+function overlapArea(left: Rect, right: Rect) {
+  return Math.max(0, Math.min(left.right, right.right) - Math.max(left.left, right.left))
+    * Math.max(0, Math.min(left.bottom, right.bottom) - Math.max(left.top, right.top));
+}
+
+/** Place one label per unit on whichever side collides least with bases and labels. */
+export function placeUnitLabels(markers: PlannerMarker[]): UnitLabelPlacement[] {
+  const groups = new Map<string, PlannerMarker[]>();
+  for (const marker of markers) {
+    const key = `${marker.side}:${marker.unitId || `single-${marker.id}`}`;
+    groups.set(key, [...(groups.get(key) ?? []), marker]);
+  }
+
+  const baseRects = markers.map((marker): Rect => {
+    const halfWidth = marker.widthMm / MM_PER_INCH / TABLE_WIDTH / 2;
+    const halfHeight = marker.heightMm / MM_PER_INCH / TABLE_HEIGHT / 2;
+    return { left: marker.x - halfWidth, right: marker.x + halfWidth, top: marker.y - halfHeight, bottom: marker.y + halfHeight };
+  });
+  const placedRects: Rect[] = [];
+  const placements: UnitLabelPlacement[] = [];
+  const orderedGroups = [...groups.entries()].sort((left, right) => right[1].length - left[1].length);
+
+  for (const [key, group] of orderedGroups) {
+    const bounds = group.reduce((rect, marker) => {
+      const halfWidth = marker.widthMm / MM_PER_INCH / TABLE_WIDTH / 2;
+      const halfHeight = marker.heightMm / MM_PER_INCH / TABLE_HEIGHT / 2;
+      return {
+        left: Math.min(rect.left, marker.x - halfWidth), right: Math.max(rect.right, marker.x + halfWidth),
+        top: Math.min(rect.top, marker.y - halfHeight), bottom: Math.max(rect.bottom, marker.y + halfHeight),
+      };
+    }, { left: 1, right: 0, top: 1, bottom: 0 });
+    const label = group[0].label;
+    const width = Math.min(.28, Math.max(.1, label.length * .0062));
+    const height = .026;
+    const gap = .007;
+    const centreX = (bounds.left + bounds.right) / 2;
+    const centreY = (bounds.top + bounds.bottom) / 2;
+    const candidates = [
+      { side: 'top' as const, x: centreX, y: bounds.top - gap, rect: { left: centreX - width / 2, right: centreX + width / 2, top: bounds.top - gap - height, bottom: bounds.top - gap } },
+      { side: 'right' as const, x: bounds.right + gap, y: centreY, rect: { left: bounds.right + gap, right: bounds.right + gap + width, top: centreY - height / 2, bottom: centreY + height / 2 } },
+      { side: 'bottom' as const, x: centreX, y: bounds.bottom + gap, rect: { left: centreX - width / 2, right: centreX + width / 2, top: bounds.bottom + gap, bottom: bounds.bottom + gap + height } },
+      { side: 'left' as const, x: bounds.left - gap, y: centreY, rect: { left: bounds.left - gap - width, right: bounds.left - gap, top: centreY - height / 2, bottom: centreY + height / 2 } },
+    ];
+    const score = (rect: Rect) => {
+      const outside = Math.max(0, -rect.left) + Math.max(0, rect.right - 1) + Math.max(0, -rect.top) + Math.max(0, rect.bottom - 1);
+      const baseOverlap = baseRects.reduce((total, base) => total + overlapArea(rect, base), 0);
+      const labelOverlap = placedRects.reduce((total, placed) => total + overlapArea(rect, placed), 0);
+      return outside * 100 + baseOverlap * 10_000 + labelOverlap * 15_000;
+    };
+    const chosen = candidates.reduce((best, candidate) => score(candidate.rect) < score(best.rect) ? candidate : best);
+    placedRects.push(chosen.rect);
+    placements.push({ key, label, x: chosen.x, y: chosen.y, side: chosen.side });
+  }
+  return placements;
+}
