@@ -9,7 +9,7 @@ import deploymentPlans from '../../public/reference/11th-edition/plans/index.jso
 import TerrainVisibility from './TerrainVisibility';
 import MapAuditOverlay from './MapAuditOverlay';
 import InfiltrateOverlay from './InfiltrateOverlay';
-import { coherencyIssues, coherencyMeasurements, constrainMove, MM_PER_INCH, placeUnitLabels, TABLE_HEIGHT, TABLE_WIDTH, type PlannerMarker } from './planner-utils';
+import { coherencyIssues, coherencyMeasurements, constrainMove, MM_PER_INCH, moveSelectedUnitsToDeepStrike, placeUnitLabels, TABLE_HEIGHT, TABLE_WIDTH, type PlannerMarker } from './planner-utils';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 const referenceRoot = `${basePath}/reference/11th-edition`;
@@ -47,6 +47,7 @@ type MarkupPath = {
 
 type SavedPlanner = {
   markers: BaseMarker[];
+  deepStrikeMarkers?: BaseMarker[];
   planName: string;
   planIntent?: string;
   sightLines: SightLine[];
@@ -75,6 +76,10 @@ function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(maximum, Math.max(minimum, value));
 }
 
+function armyUnitIdForMarker(marker: BaseMarker) {
+  return armyData.units.find((unit) => marker.unitId === unit.id || marker.unitId?.startsWith(`manual-${unit.id}-`))?.id;
+}
+
 export default function DeploymentPlanner() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -101,6 +106,7 @@ export default function DeploymentPlanner() {
   const boxDrag = useRef<null | { start: { x: number; y: number }; additive: boolean }>(null);
   const importRef = useRef<HTMLInputElement>(null);
   const [markers, setMarkers] = useState<BaseMarker[]>([]);
+  const [deepStrikeMarkers, setDeepStrikeMarkers] = useState<BaseMarker[]>([]);
   const [planName, setPlanName] = useState('');
   const [planIntent, setPlanIntent] = useState('');
   const [sightLines, setSightLines] = useState<SightLine[]>([]);
@@ -141,6 +147,15 @@ export default function DeploymentPlanner() {
   const markerCoherencyIssues = useMemo(() => coherencyIssues(markers), [markers]);
   const coherencyLines = useMemo(() => coherencyMeasurements(markers), [markers]);
   const unitLabels = useMemo(() => placeUnitLabels(markers), [markers]);
+  const accountedByArmyUnit = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const marker of [...markers, ...deepStrikeMarkers]) {
+      const armyUnitId = armyUnitIdForMarker(marker);
+      if (armyUnitId) counts.set(armyUnitId, (counts.get(armyUnitId) ?? 0) + 1);
+    }
+    return counts;
+  }, [deepStrikeMarkers, markers]);
+  const unplacedModels = useMemo(() => armyData.units.reduce((total, unit) => total + Math.max(0, unit.models - (accountedByArmyUnit.get(unit.id) ?? 0)), 0), [accountedByArmyUnit]);
 
   function navigateMatchup(first: string, second: string, letter: string) {
     const match = layoutsData.layouts.find((candidate) => candidate.layout === letter && (
@@ -170,6 +185,7 @@ export default function DeploymentPlanner() {
       }
       if (data) {
         setMarkers(Array.isArray(data.markers) ? data.markers : []);
+        setDeepStrikeMarkers(Array.isArray(data.deepStrikeMarkers) ? data.deepStrikeMarkers : []);
         setPlanName(data.planName || 'Saved deployment');
         setPlanIntent(data.planIntent || '');
         setSightLines(Array.isArray(data.sightLines) ? data.sightLines : []);
@@ -192,6 +208,7 @@ export default function DeploymentPlanner() {
         setLastSavedAt(restoredBackup ? 'restored' : data.savedAt || 'restored');
       } else {
         setMarkers([]);
+        setDeepStrikeMarkers([]);
         setPlanName('');
         setPlanIntent('');
         setSightLines([]);
@@ -211,7 +228,7 @@ export default function DeploymentPlanner() {
     const storageKey = `deployment-planner:v2:${layout.id}`;
     const savedAt = new Date().toISOString();
     const saved: SavedPlanner = {
-      markers, planName, planIntent, sightLines, markupPaths, side, visibilityEnabled, screenEnabled,
+      markers, deepStrikeMarkers, planName, planIntent, sightLines, markupPaths, side, visibilityEnabled, screenEnabled,
       screenSide, measureEnabled, movementEnabled, boundedMoveEnabled, markupEnabled, markupColor, auditEnabled, infiltrateEnabled,
       measurement, selectedIds, savedAt,
     };
@@ -220,7 +237,7 @@ export default function DeploymentPlanner() {
     if (previous && previous !== serialized) localStorage.setItem(`${storageKey}:backup`, previous);
     localStorage.setItem(storageKey, serialized);
     setLastSavedAt(savedAt);
-  }, [auditEnabled, boundedMoveEnabled, infiltrateEnabled, layout.id, markers, markupColor, markupEnabled, markupPaths, measureEnabled, measurement, movementEnabled, planIntent, planName, restoredLayout, screenEnabled, screenSide, selectedIds, side, sightLines, visibilityEnabled]);
+  }, [auditEnabled, boundedMoveEnabled, deepStrikeMarkers, infiltrateEnabled, layout.id, markers, markupColor, markupEnabled, markupPaths, measureEnabled, measurement, movementEnabled, planIntent, planName, restoredLayout, screenEnabled, screenSide, selectedIds, side, sightLines, visibilityEnabled]);
 
   function pointFromEvent(event: PointerEvent) {
     const bounds = boardRef.current!.getBoundingClientRect();
@@ -332,6 +349,20 @@ export default function DeploymentPlanner() {
     setSelectedIds([]);
   }
 
+  function markSelectedDeepStrike() {
+    const result = moveSelectedUnitsToDeepStrike(markers, deepStrikeMarkers, selectedIds);
+    setMarkers(result.markers);
+    setDeepStrikeMarkers(result.deepStrikeMarkers);
+    setSelectedIds([]);
+  }
+
+  function returnDeepStrike() {
+    if (deepStrikeMarkers.length === 0) return;
+    setMarkers((current) => [...current, ...deepStrikeMarkers]);
+    setSelectedIds(deepStrikeMarkers.map(({ id }) => id));
+    setDeepStrikeMarkers([]);
+  }
+
   function addArmyUnit(unit: (typeof armyData.units)[number]) {
     const groupId = `manual-${unit.id}-${nextId.current}`;
     const columns = Math.min(3, unit.models);
@@ -370,6 +401,7 @@ export default function DeploymentPlanner() {
       y: marker.y / TABLE_HEIGHT,
     }));
     setMarkers(imported);
+    setDeepStrikeMarkers([]);
     nextId.current = Math.max(0, ...imported.map(({ id }) => id)) + 1;
     setSightLines(data.sightLines || []);
     setPlanName(data.name || 'Imported plan');
@@ -436,6 +468,8 @@ export default function DeploymentPlanner() {
             {planName && <span className="toolbar-note" title={planIntent || 'Saved automatically in this browser.'}>{planName}</span>}
             {lastSavedAt && <span className="local-save-status">Saved {lastSavedAt === 'restored' ? 'backup' : new Date(lastSavedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
             {importError && <span className="planner-import-error">{importError}</span>}
+            {unplacedModels > 0 && <span className="army-warning">⚠ {unplacedModels} army model{unplacedModels === 1 ? '' : 's'} not placed</span>}
+            {deepStrikeMarkers.length > 0 && <span className="deep-strike-status">{deepStrikeMarkers.length} in deep strike</span>}
             <span className={`planner-status${markerCoherencyIssues.size ? ' warning' : ''}`}>
               {markers.length} models · {markerCoherencyIssues.size ? `${markerCoherencyIssues.size} incoherent` : 'coherent'}
             </span>
@@ -453,6 +487,8 @@ export default function DeploymentPlanner() {
             </span>
             <button disabled={!markers.some((marker) => selectedIdSet.has(marker.id) && marker.widthMm !== marker.heightMm)} onClick={rotateSelected} title="Rotate selected oval bases 90°">Rotate</button>
             <button className="danger-button" disabled={selectedIds.length === 0} onClick={removeSelected} title="Remove selected models">Remove</button>
+            <button className="deep-strike-toggle" disabled={selectedIds.length === 0} onClick={markSelectedDeepStrike} title="Move every model in the selected unit or units into deep strike">Deep strike</button>
+            <button disabled={deepStrikeMarkers.length === 0} onClick={returnDeepStrike} title="Return all deep-strike units to their previous positions">Return DS</button>
             <button disabled={markers.length === 0} onClick={() => { setMarkers([]); setSelectedIds([]); setSightLines([]); setPlanName(''); setPlanIntent(''); }} title="Remove every model">Clear models</button>
             <span className="toolstrip-divider" />
             <button className={auditEnabled ? 'audit-toggle active' : 'audit-toggle'} onClick={() => setAuditEnabled((enabled) => !enabled)} title="Show the deployment zones and sight-blocking geometry the planner reads">Map check</button>
@@ -487,11 +523,15 @@ export default function DeploymentPlanner() {
             <div className="army-roster">
               {armyData.units.map((unit) => (
                 <div className="army-roster-unit" key={unit.id}>
-                  <div><strong>{unit.name}</strong><span>{unit.models} model{unit.models === 1 ? '' : 's'} · {unit.points} pts · M {unit.movementInches}″</span></div>
-                  <button onClick={() => addArmyUnit(unit)}>Add</button>
+                  <div><strong>{unit.name}</strong><span>{accountedByArmyUnit.get(unit.id) ?? 0}/{unit.models} placed/DS · {unit.points} pts · M {unit.movementInches}″</span></div>
+                  <button disabled={(accountedByArmyUnit.get(unit.id) ?? 0) >= unit.models} onClick={() => addArmyUnit(unit)}>Add</button>
                 </div>
               ))}
             </div>
+            {deepStrikeMarkers.length > 0 && <div className="deep-strike-list">
+              <strong>Deep strike</strong>
+              {[...new Set(deepStrikeMarkers.map(({ label }) => label))].map((label) => <span key={label}>{label}</span>)}
+            </div>}
           </aside>
 
           <section className="battlefield-panel">

@@ -49,7 +49,7 @@ test('deployment validation rejects a model outside the blue zone', () => {
   assert.ok(result.errors.some((error) => error.includes('blue deployment zone')));
 });
 
-test('all seven bundled plans are legal and overlap-free', () => {
-  assert.equal(allPlans.length, 7);
+test('all eight bundled plans are legal and overlap-free', () => {
+  assert.equal(allPlans.length, 8);
   for (const plan of allPlans) assert.deepEqual(validate(army, plan).errors, [], plan.name);
 });

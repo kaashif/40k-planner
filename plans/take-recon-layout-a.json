@@ -1,0 +1,30 @@
+{
+  "name": "Take/Recon Layout A – shelf pressure and screened sweep",
+  "slug": "necrons-take-recon-a",
+  "layoutId": "take-and-hold-vs-reconnaissance-a",
+  "layout": "A",
+  "layoutPage": 18,
+  "side": "blue",
+  "mirrorOpponentInRender": false,
+  "intent": "Use the blue forward shelf to start one Wraith brick, both C'tan, Ammentar and the Destroyer package close to the centre. The second Wraith brick takes the left natural while both Flayed One units screen the deep back edge against Reconnaissance redeployments. Pressure centre and the far natural without exposing the home objective to a free sweep.",
+  "placements": {
+    "nightbringer": { "centres": [[40.0, 44.0]], "note": "Forward-shelf spearhead behind the upper-right ruin; push centre or the far natural." },
+    "void-dragon": { "centres": [[35.8, 44.5]], "note": "Runs with the Nightbringer so the C'tan pressure stays concentrated." },
+    "ammentar": { "centres": [[31.8, 44.8]], "note": "Links the C'tan lane to the Destroyer counter-charge." },
+    "skorpekh-lord": { "centres": [[35.5, 49.0]], "note": "Stages behind the forward package." },
+    "technomancer-veil": { "centres": [[24.5, 46.5]], "note": "Supports the centre Wraith brick." },
+    "technomancer": { "centres": [[11.5, 50.0]], "note": "Supports the left-natural Wraith brick." },
+    "reanimator": { "centres": [[40.0, 49.0]], "note": "Follows the shelf pressure while remaining behind the C'tan line." },
+    "wraiths-left": { "centres": [[4.0, 49.2], [6.2, 49.2], [8.4, 49.2], [4.0, 51.4], [6.2, 51.4], [8.4, 51.4]], "note": "Move onto the left natural and deny an early Recon sweep." },
+    "wraiths-centre": { "centres": [[23.2, 41.2], [25.4, 41.2], [27.6, 41.2], [23.2, 43.4], [25.4, 43.4], [27.6, 43.4]], "note": "Forward-shelf first wave into centre." },
+    "flayed-ones": { "centres": [[3.0, 57.5], [4.3, 57.5], [5.6, 57.5], [3.65, 58.8], [4.95, 58.8]], "note": "Left back-edge screen against Reconnaissance redeployments." },
+    "flayed-ones-2": { "centres": [[13.0, 57.5], [14.3, 57.5], [15.6, 57.5], [13.65, 58.8], [14.95, 58.8]], "note": "Second back-edge screen; rotate toward home if the opponent threatens a sweep." },
+    "skorpekhs": { "centres": [[28.0, 48.0], [30.2, 48.0], [32.4, 48.0], [28.0, 50.2], [30.2, 50.2], [32.4, 50.2]], "note": "Counter-charge package directly behind the centre and C'tan lanes." }
+  },
+  "sightLines": [
+    { "label": "Red natural → Nightbringer shelf", "from": [34, 16], "targetUnit": "nightbringer" },
+    { "label": "Red natural → Void Dragon shelf", "from": [34, 16], "targetUnit": "void-dragon" },
+    { "label": "Centre → forward Wraiths", "from": [22, 30], "targetUnit": "wraiths-centre", "targetModel": 1 },
+    { "label": "Centre → Destroyer counter-charge", "from": [22, 30], "targetUnit": "skorpekhs", "targetModel": 2 }
+  ]
+}

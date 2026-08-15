@@ -14,6 +14,20 @@ export type PlannerMarker = {
   moveInches?: number;
 };
 
+function unitGroupKey(marker: PlannerMarker) {
+  return marker.unitId ?? `model-${marker.id}`;
+}
+
+export function moveSelectedUnitsToDeepStrike(markers: PlannerMarker[], deepStrikeMarkers: PlannerMarker[], selectedIds: number[]) {
+  const selected = new Set(selectedIds);
+  const unitGroups = new Set(markers.filter((marker) => selected.has(marker.id)).map(unitGroupKey));
+  const moved = markers.filter((marker) => unitGroups.has(unitGroupKey(marker)));
+  return {
+    markers: markers.filter((marker) => !unitGroups.has(unitGroupKey(marker))),
+    deepStrikeMarkers: [...deepStrikeMarkers.filter((marker) => !unitGroups.has(unitGroupKey(marker))), ...moved],
+  };
+}
+
 function directionalRadius(marker: PlannerMarker, dx: number, dy: number) {
   const distance = Math.hypot(dx, dy);
   if (distance === 0) return 0;

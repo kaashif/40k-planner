@@ -16,6 +16,7 @@ function inBlueDeploymentZone(plan, x, y) {
     }
   }
   if (plan.layoutId === 'take-and-hold-vs-reconnaissance-b') return x >= 32;
+  if (plan.layoutId === 'take-and-hold-vs-reconnaissance-a') return y >= 48 || (x >= 22 && y >= 40);
   if (plan.layoutId === 'take-and-hold-vs-purge-the-foe-a') return x >= 36 || (x >= 30 && y >= 30);
   if (plan.layoutId === 'take-and-hold-vs-purge-the-foe-b') {
     if (x < 22 || y < 30) return false;

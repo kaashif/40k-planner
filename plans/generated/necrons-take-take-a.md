@@ -6,10 +6,10 @@ Put the Wraith bricks on the centre and blue natural lanes, send both C'tan toge
 
 ## Sight-line checks
 
-- **BLOCKED** — Red natural → Nightbringer lane (terrain at 37.4", 29.7")
-- **BLOCKED** — Red natural → Void Dragon lane (terrain at 35.8", 29.7")
-- **BLOCKED** — Red centre staging → centre Wraiths (terrain at 20.9", 25.7")
-- **BLOCKED** — Red centre staging → Destroyer counter-charge (terrain at 22.0", 25.1")
+- **BLOCKED** — Red natural → Nightbringer lane (terrain at 37.5", 30.1")
+- **BLOCKED** — Red natural → Void Dragon lane (terrain at 35.8", 29.8")
+- **BLOCKED** — Red centre staging → centre Wraiths (terrain at 21.1", 25.1")
+- **BLOCKED** — Red centre staging → Destroyer counter-charge (terrain at 22.0", 25.2")
 
 The checker samples the target centre and four points around its base edge; **VISIBLE** means at least one sampled ray is clear.
 

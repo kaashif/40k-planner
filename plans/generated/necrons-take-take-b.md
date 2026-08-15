@@ -8,7 +8,7 @@ Screen blue home with both Flayed One units, stage one Wraith brick toward centr
 
 - **VISIBLE** — Red natural → Nightbringer lane
 - **VISIBLE** — Red natural → Void Dragon lane
-- **BLOCKED** — Centre → centre Wraiths (terrain at 33.1", 27.7")
+- **BLOCKED** — Centre → centre Wraiths (terrain at 33.0", 27.7")
 - **BLOCKED** — Red home → Destroyer staging (terrain at 17.1", 32.9")
 
 The checker samples the target centre and four points around its base edge; **VISIBLE** means at least one sampled ray is clear.

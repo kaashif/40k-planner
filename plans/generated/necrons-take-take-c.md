@@ -6,10 +6,10 @@ Use the diagonal deployment to stage centre and natural Wraith bricks, run both 
 
 ## Sight-line checks
 
-- **BLOCKED** — Red natural → Nightbringer lane (terrain at 37.0", 21.9")
-- **BLOCKED** — Red natural → Void Dragon lane (terrain at 35.9", 22.3")
-- **BLOCKED** — Centre → centre Wraiths (terrain at 29.1", 37.8")
-- **BLOCKED** — Red diagonal staging → Destroyers (terrain at 18.5", 25.0")
+- **BLOCKED** — Red natural → Nightbringer lane (terrain at 37.1", 22.2")
+- **BLOCKED** — Red natural → Void Dragon lane (terrain at 35.9", 22.1")
+- **BLOCKED** — Centre → centre Wraiths (terrain at 29.0", 37.7")
+- **BLOCKED** — Red diagonal staging → Destroyers (terrain at 18.6", 25.2")
 
 The checker samples the target centre and four points around its base edge; **VISIBLE** means at least one sampled ray is clear.
 

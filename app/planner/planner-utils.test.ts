@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { baseEdgeDistance, coherencyIssues, coherencyMeasurements, constrainMove, placeUnitLabels, type PlannerMarker } from './planner-utils.ts';
+import { baseEdgeDistance, coherencyIssues, coherencyMeasurements, constrainMove, moveSelectedUnitsToDeepStrike, placeUnitLabels, type PlannerMarker } from './planner-utils.ts';
 
 const marker = (id: number, xInches: number, unitId = 'unit'): PlannerMarker => ({
   id, x: xInches / 44, y: 10 / 60, widthMm: 25.4, heightMm: 25.4,
@@ -42,4 +42,11 @@ test('bounded movement caps a drag at the Movement characteristic', () => {
   const destination = constrainMove({ x: 10 / 44, y: 10 / 60 }, { x: 30 / 44, y: 10 / 60 }, 8);
   assert.ok(Math.abs(destination.x * 44 - 18) < 1e-9);
   assert.ok(Math.abs(destination.y * 60 - 10) < 1e-9);
+});
+
+test('deep strike moves the complete selected unit and preserves other units', () => {
+  const markers = [marker(1, 10, 'wraiths'), marker(2, 12, 'wraiths'), marker(3, 16, 'ctan')];
+  const result = moveSelectedUnitsToDeepStrike(markers, [], [1]);
+  assert.deepEqual(result.markers.map(({ id }) => id), [3]);
+  assert.deepEqual(result.deepStrikeMarkers.map(({ id }) => id), [1, 2]);
 });
