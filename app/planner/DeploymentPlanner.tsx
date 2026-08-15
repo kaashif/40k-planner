@@ -500,7 +500,7 @@ export default function DeploymentPlanner() {
               <button className={screenSide === 'blue' ? 'active blue' : ''} onClick={() => setScreenSide('blue')} title="Use blue models for screening">B</button>
               <button className={screenSide === 'red' ? 'active red' : ''} onClick={() => setScreenSide('red')} title="Use red models for screening">R</button>
             </span>
-            <button className={screenEnabled ? 'screen-toggle active' : 'screen-toggle'} onClick={() => setScreenEnabled((enabled) => !enabled)} title={`Show positions within 8″ of a ${screenSide} base edge`}>8″ screen</button>
+            <button className={screenEnabled ? 'screen-toggle active' : 'screen-toggle'} onClick={() => setScreenEnabled((enabled) => !enabled)} title={`Show the area where enemy deep strike is denied by ${screenSide} models, measured 8″ from their base edges`}>Deep strike 8″</button>
             <button className={measureEnabled ? 'measure-toggle active' : 'measure-toggle'} onClick={() => setMeasureEnabled((enabled) => !enabled)} title="Drag between any two points to measure distance">Ruler</button>
             <input className="toolbar-colour" aria-label="Markup colour" title="Markup colour" type="color" value={markupColor} onChange={(event) => setMarkupColor(event.target.value)} />
             <button className={markupEnabled ? 'markup-toggle active' : 'markup-toggle'} onClick={() => setMarkupEnabled((enabled) => !enabled)} title="Draw routes, zones, and notes on the map">Draw</button>
