@@ -8,6 +8,7 @@ import armyData from '../../armies/necrons-2000.json';
 import deploymentPlans from '../../public/reference/11th-edition/plans/index.json';
 import TerrainVisibility from './TerrainVisibility';
 import MapAuditOverlay from './MapAuditOverlay';
+import InfiltrateOverlay from './InfiltrateOverlay';
 import { coherencyIssues, coherencyMeasurements, constrainMove, MM_PER_INCH, placeUnitLabels, TABLE_HEIGHT, TABLE_WIDTH, type PlannerMarker } from './planner-utils';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
@@ -60,6 +61,7 @@ type SavedPlanner = {
   markupEnabled?: boolean;
   markupColor?: string;
   auditEnabled?: boolean;
+  infiltrateEnabled?: boolean;
   measurement?: null | { start: { x: number; y: number }; end: { x: number; y: number } };
   selectedIds?: number[];
   savedAt?: string;
@@ -115,6 +117,7 @@ export default function DeploymentPlanner() {
   const [markupColor, setMarkupColor] = useState('#ffe071');
   const [markupPaths, setMarkupPaths] = useState<MarkupPath[]>([]);
   const [auditEnabled, setAuditEnabled] = useState(false);
+  const [infiltrateEnabled, setInfiltrateEnabled] = useState(false);
   const [restoredLayout, setRestoredLayout] = useState('');
   const [lastSavedAt, setLastSavedAt] = useState('');
   const [measurement, setMeasurement] = useState<null | {
@@ -183,6 +186,7 @@ export default function DeploymentPlanner() {
         if (typeof data.markupEnabled === 'boolean') setMarkupEnabled(data.markupEnabled);
         if (data.markupColor) setMarkupColor(data.markupColor);
         if (typeof data.auditEnabled === 'boolean') setAuditEnabled(data.auditEnabled);
+        if (typeof data.infiltrateEnabled === 'boolean') setInfiltrateEnabled(data.infiltrateEnabled);
         if (data.measurement) setMeasurement(data.measurement);
         setSelectedIds(Array.isArray(data.selectedIds) ? data.selectedIds.filter((id) => data.markers.some((marker) => marker.id === id)) : []);
         setLastSavedAt(restoredBackup ? 'restored' : data.savedAt || 'restored');
@@ -208,7 +212,7 @@ export default function DeploymentPlanner() {
     const savedAt = new Date().toISOString();
     const saved: SavedPlanner = {
       markers, planName, planIntent, sightLines, markupPaths, side, visibilityEnabled, screenEnabled,
-      screenSide, measureEnabled, movementEnabled, boundedMoveEnabled, markupEnabled, markupColor, auditEnabled,
+      screenSide, measureEnabled, movementEnabled, boundedMoveEnabled, markupEnabled, markupColor, auditEnabled, infiltrateEnabled,
       measurement, selectedIds, savedAt,
     };
     const serialized = JSON.stringify(saved);
@@ -216,7 +220,7 @@ export default function DeploymentPlanner() {
     if (previous && previous !== serialized) localStorage.setItem(`${storageKey}:backup`, previous);
     localStorage.setItem(storageKey, serialized);
     setLastSavedAt(savedAt);
-  }, [auditEnabled, boundedMoveEnabled, layout.id, markers, markupColor, markupEnabled, markupPaths, measureEnabled, measurement, movementEnabled, planIntent, planName, restoredLayout, screenEnabled, screenSide, selectedIds, side, sightLines, visibilityEnabled]);
+  }, [auditEnabled, boundedMoveEnabled, infiltrateEnabled, layout.id, markers, markupColor, markupEnabled, markupPaths, measureEnabled, measurement, movementEnabled, planIntent, planName, restoredLayout, screenEnabled, screenSide, selectedIds, side, sightLines, visibilityEnabled]);
 
   function pointFromEvent(event: PointerEvent) {
     const bounds = boardRef.current!.getBoundingClientRect();
@@ -452,6 +456,7 @@ export default function DeploymentPlanner() {
             <button disabled={markers.length === 0} onClick={() => { setMarkers([]); setSelectedIds([]); setSightLines([]); setPlanName(''); setPlanIntent(''); }} title="Remove every model">Clear models</button>
             <span className="toolstrip-divider" />
             <button className={auditEnabled ? 'audit-toggle active' : 'audit-toggle'} onClick={() => setAuditEnabled((enabled) => !enabled)} title="Show the deployment zones and sight-blocking geometry the planner reads">Map check</button>
+            <button className={infiltrateEnabled ? 'infiltrate-toggle active' : 'infiltrate-toggle'} onClick={() => setInfiltrateEnabled((enabled) => !enabled)} title={`Show every position within 8″ of the opponent's ${side === 'blue' ? 'red' : 'blue'} deployment zone`}>Infiltrate 8″</button>
             <button className={visibilityEnabled ? 'los-toggle active' : 'los-toggle'} disabled={!selected} onClick={() => setVisibilityEnabled((enabled) => !enabled)} title="Show positions visible from the selected base">Visibility</button>
             <button className={movementEnabled ? 'movement-toggle active' : 'movement-toggle'} disabled={!selected?.moveInches} onClick={() => setMovementEnabled((enabled) => !enabled)} title="Show the selected model's real Movement range">Move range{movementEnabled && selected?.moveInches ? ` ${selected.moveInches}″` : ''}</button>
             <button className={boundedMoveEnabled ? 'bounded-move-toggle active' : 'bounded-move-toggle'} onClick={() => setBoundedMoveEnabled((enabled) => !enabled)} title="Limit dragging to the model's Movement characteristic and measure it live">Move lock</button>
@@ -505,6 +510,7 @@ export default function DeploymentPlanner() {
                 terrainMaskUrl={`${referenceRoot}/terrain-masks/layout-${page}.png`}
               />
             )}
+            {infiltrateEnabled && <InfiltrateOverlay mapUrl={`${referenceRoot}/maps/layout-${page}.jpg`} playerSide={side} />}
             {selected && movementEnabled && selected.moveInches && (
               <svg className="movement-overlay" viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-label={`${selected.label} movement range`}>
                 <ellipse

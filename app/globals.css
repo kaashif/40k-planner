@@ -311,6 +311,7 @@ button, summary { font: inherit; }
 .planner-controls .bounded-move-toggle.active { border-color: #75d69a; background: #24613b; color: #fff; }
 .planner-controls .markup-toggle.active { border-color: #edc65d; background: #685520; color: #fff; }
 .planner-controls .audit-toggle.active { border-color: #9bed76; background: #315b24; color: #fff; }
+.planner-controls .infiltrate-toggle.active { border-color: #e99a62; background: #713c22; color: #fff; }
 .markup-controls { display: grid; grid-template-columns: 38px 1fr; gap: 5px; }
 .markup-controls input { width: 38px; height: 34px; padding: 2px; border: 1px solid var(--line-dark); background: #11161d; }
 .coherency-error { margin: 0 0 8px; padding: 6px; border: 1px solid #a9424b; background: rgba(116, 27, 35, .55); color: #ffb0b6; font-size: 10px; line-height: 1.35; }
@@ -434,6 +435,23 @@ button, summary { font: inherit; }
   -webkit-mask-position: center;
   -webkit-mask-size: 100% 100%;
   outline: 1px solid rgba(190, 255, 182, .8);
+}
+.infiltrate-overlay { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.infiltrate-overlay canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.infiltrate-overlay span {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  padding: 3px 6px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 255, 255, .45);
+  border-radius: 2px;
+  background: rgba(10, 12, 16, .82);
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 .map-audit-legend {
   position: absolute;
