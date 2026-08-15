@@ -56,7 +56,7 @@ export default function MapAuditOverlay({ mapUrl, terrainMaskUrl }: Props) {
         <span><i className="red-zone" /> red deployment zone</span>
         <span><i className="blue-zone" /> blue deployment zone</span>
         <span><i className="terrain-zone" /> sight-blocking terrain footprint</span>
-        <small>Line of sight is blocked when a ray enters a green footprint after leaving its starting footprint. Deployment colours are read from the official map.</small>
+        <small>Line of sight is blocked when a ray enters a green footprint after leaving its starting footprint. Deployment colours are read from the current GDM/Battlemaster map.</small>
       </div>
     </div>
   );

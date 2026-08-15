@@ -181,9 +181,9 @@ button, summary { font: inherit; }
   box-shadow: 0 3px 12px rgba(0, 0, 0, .24);
 }
 .planner-back-link, .planner-source-link { padding: 5px; white-space: nowrap; font-size: 10px; }
-.matchup-selector { min-width: 230px; display: flex; align-items: center; gap: 5px; }
-.matchup-selector span { color: var(--muted); font-size: 9px; text-transform: uppercase; letter-spacing: .04em; }
-.matchup-selector select {
+.matchup-selector { min-width: 185px; display: flex; align-items: center; gap: 5px; }
+.matchup-selector span, .layout-selector span { color: var(--muted); font-size: 8px; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+.matchup-selector select, .layout-selector select {
   width: 100%;
   min-width: 0;
   height: 30px;
@@ -192,6 +192,9 @@ button, summary { font: inherit; }
   color: var(--ink);
   font-size: 10px;
 }
+.matchup-versus { color: var(--muted); font-size: 9px; }
+.layout-selector { width: 78px; display: flex; align-items: center; gap: 4px; }
+.layout-selector select { width: 36px; }
 .tool-menu { position: relative; }
 .tool-menu > summary {
   min-height: 30px;
@@ -224,15 +227,15 @@ button, summary { font: inherit; }
 .tool-menu-map .tool-menu-body { left: auto; right: 0; width: 340px; }
 .planner-status { margin-left: auto; color: #7fe0a0; white-space: nowrap; font-size: 9px; }
 .planner-status.warning { color: #ff8c94; }
-.planner-controls button {
+.planner-controls button, .army-sidebar button {
   min-height: 34px;
   border: 1px solid var(--line-dark);
   background: #252c37;
   color: var(--ink);
   cursor: pointer;
 }
-.planner-controls button:hover:not(:disabled) { border-color: var(--active); background: #313a48; }
-.planner-controls button:disabled { cursor: not-allowed; opacity: .4; }
+.planner-controls button:hover:not(:disabled), .army-sidebar button:hover:not(:disabled) { border-color: var(--active); background: #313a48; }
+.planner-controls button:disabled, .army-sidebar button:disabled { cursor: not-allowed; opacity: .4; }
 .side-toggle { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 7px; }
 .side-toggle button:first-child { border-right: 0; }
 .side-toggle button.active { color: #fff; font-weight: 700; }
@@ -245,7 +248,7 @@ button, summary { font: inherit; }
 .army-roster-unit strong, .army-roster-unit span { display: block; }
 .army-roster-unit strong { overflow: hidden; color: #fff; font-size: 10px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
 .army-roster-unit span { margin-top: 2px; color: var(--muted); font-size: 8px; }
-.planner-controls .army-roster-unit button { min-height: 0; border-width: 0 0 0 1px; font-size: 9px; }
+.army-sidebar .army-roster-unit button { min-height: 0; border-width: 0 0 0 1px; font-size: 9px; }
 .planner-controls .plan-library-link { display: block; margin-top: 7px; padding: 7px; border: 1px solid var(--line-dark); text-align: center; font-size: 10px; text-decoration: none; }
 .unit-preset { display: block; margin: 8px 0 5px; }
 .unit-preset span, .base-sizes-label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 10px; text-transform: uppercase; }
@@ -284,6 +287,20 @@ button, summary { font: inherit; }
 .sight-line-readout strong { font-size: 8px; letter-spacing: .04em; }
 .sight-line-readout .clear strong { color: #ff7b84; }
 .sight-line-readout .blocked strong { color: #69db8b; }
+.planner-main-row { min-height: 0; flex: 1; display: flex; gap: 5px; }
+.army-sidebar {
+  width: clamp(190px, 18vw, 250px);
+  min-width: 190px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  overflow: hidden;
+  border: 1px solid var(--line-dark);
+  background: var(--panel);
+}
+.army-sidebar-title { display: flex; justify-content: space-between; margin-bottom: 7px; font-size: 11px; }
+.army-sidebar-title span { color: var(--muted); font-size: 9px; }
+.army-sidebar .army-roster { min-height: 0; max-height: none; flex: 1; }
 .battlefield-panel {
   min-width: 0;
   min-height: 0;
@@ -294,6 +311,7 @@ button, summary { font: inherit; }
   overflow: hidden;
   border: 1px solid var(--line-dark);
   background: #090b0f;
+  container-type: size;
 }
 .battlefield {
   position: relative;
@@ -307,6 +325,9 @@ button, summary { font: inherit; }
   background: #d8d8d0;
   touch-action: none;
   user-select: none;
+}
+@supports (width: 1cqw) {
+  .battlefield { height: min(100cqh, calc(100cqw * 60 / 44)); }
 }
 .battlefield > img { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .battlefield.visibility-active { cursor: default; }
@@ -455,6 +476,8 @@ button, summary { font: inherit; }
   .plan-matchup-grid { grid-template-columns: 1fr; }
   .secondary-list span:nth-child(3n), .file-list a:nth-child(3n) { border-right: 0; }
   .planner-controls { flex-wrap: wrap; }
+  .matchup-selector { min-width: 145px; flex: 1; }
+  .matchup-selector span, .layout-selector span { display: none; }
   .planner-status { display: none; }
   .planner-source-link { margin-left: auto; }
 }
@@ -467,8 +490,12 @@ button, summary { font: inherit; }
   .layout:last-child { border-bottom: 0; }
   .layout img { height: 390px; }
   .planner-shell { width: calc(100% - 6px); padding-block: 3px; }
-  .matchup-selector { min-width: min(280px, calc(100vw - 100px)); flex: 1; }
-  .matchup-selector span { display: none; }
+  .matchup-selector { min-width: 120px; }
+  .matchup-versus { display: none; }
+  .layout-selector { width: 42px; }
+  .layout-selector select { width: 42px; }
+  .army-sidebar { width: 150px; min-width: 150px; padding: 5px; }
+  .army-roster-unit { grid-template-columns: minmax(0, 1fr) 42px; }
   .planner-source-link { display: none; }
   .tool-menu-body { position: fixed; top: 45px; left: 4px; right: 4px; width: auto; max-height: calc(100dvh - 52px); }
   .tool-menu-map .tool-menu-body { left: 4px; right: 4px; width: auto; }

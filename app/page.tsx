@@ -64,7 +64,7 @@ export default function Home() {
         <div className="reference-links">
           <Link href="/plans/">Deployment plan library</Link>
           <a href={`${referenceRoot}/official/core-rules.pdf`}>Core rules PDF</a>
-          <a href={`${referenceRoot}/official/event-companion.pdf`}>Event companion PDF</a>
+          <a href={`${referenceRoot}/current-layout-reference.pdf`}>Current layout reference PDF</a>
           <a href={`${referenceRoot}/official/terrain-area-footprints.pdf`}>Terrain footprints PDF</a>
         </div>
       </header>
@@ -153,12 +153,12 @@ export default function Home() {
               <article className="layout" key={layout.id}>
                 <div className="layout-heading">
                   <h3>Layout {layout.layout}</h3>
-                  <a href={`${referenceRoot}/official/event-companion.pdf#page=${layout.pdfPage}`} target="_blank">
+                  <a href={`${referenceRoot}/current-layout-reference.pdf#page=${layout.pdfPage - 7}`} target="_blank">
                     PDF page {layout.pdfPage} ↗
                   </a>
                 </div>
                 <Link className="layout-planner-link" href={`/planner/?layout=${layout.id}`}>
-                  {/* The generated JPEG is a direct preview of the authoritative Event Companion page. */}
+                  {/* This measured preview is synchronized from the current GDM/Battlemaster set. */}
                   <img
                     src={`${referenceRoot}/layouts/layout-${page}.jpg`}
                     alt={`${playerDisposition.name} versus ${opponentDisposition.name}, layout ${layout.layout}`}

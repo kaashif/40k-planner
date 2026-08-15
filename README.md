@@ -1,8 +1,8 @@
 # Mission Control
 
-A static GitHub Pages reference for Warhammer 40,000 11th-edition missions and official event layouts.
+A static GitHub Pages reference for Warhammer 40,000 11th-edition missions and current event layouts.
 
-The site is a compact 5×5 primary mission matrix. Selecting a cell shows both players' complete primary cards and the three matching measured Event Companion layouts. It also contains all 18 secondary mission names and a local source library containing the official public PDFs and normalized JSON.
+The site is a compact 5×5 primary mission matrix. Selecting a cell shows both players' complete primary cards and the three matching current GDM/Battlemaster layouts. It also contains all 18 secondary mission names and a local source library containing official public PDFs and normalized JSON.
 
 Primary-card images and all 45 layout previews are stored locally with the static site.
 
@@ -36,10 +36,10 @@ npm start
 
 GitHub Pages deployment is handled by `.github/workflows/deploy-pages.yml`. The workflow sets `NEXT_PUBLIC_BASE_PATH=/40k-planner` so assets work beneath the repository Pages path.
 
-## Regenerating layout previews
+## Regenerating layout geometry
 
 ```sh
-pdftoppm -f 9 -l 53 -r 110 -jpeg -jpegopt quality=82,progressive=y,optimize=y \
-  public/reference/11th-edition/official/event-companion.pdf \
-  public/reference/11th-edition/layouts/layout
+npm run layouts:sync
 ```
+
+This refreshes all 45 maps and measured previews from GDM, rebuilds the current reference PDF, and regenerates the planner's sight-blocking terrain masks. The complete source mapping, tool installation, geometry interpretation, and verification procedure is in [`docs/layout-regeneration.md`](docs/layout-regeneration.md).

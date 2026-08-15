@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "edition": 11,
-  "retrievedOn": "2026-08-02",
+  "retrievedOn": "2026-08-15",
   "sources": [
     {
       "id": "core-rules",
@@ -45,6 +45,21 @@
       "title": "The Chapter Approved deck – What is it and how does it work?",
       "kind": "official-web-page",
       "url": "https://www.warhammer-community.com/en-gb/articles/p3i6aa3h/the-chapter-approved-deck-what-is-it-and-how-does-it-work/"
+    },
+    {
+      "id": "july-objective-update",
+      "publisher": "Games Workshop",
+      "title": "Warhammer 40,000 July Update: What You Need to Know",
+      "kind": "official-web-page",
+      "url": "https://www.warhammer-community.com/en-gb/articles/rgqanids/warhammer-40000-july-update-what-you-need-to-know/"
+    },
+    {
+      "id": "current-gdm-layouts",
+      "publisher": "GDM / Battlemaster",
+      "title": "Warhammer 40,000 11th-edition layouts",
+      "kind": "current-layout-images",
+      "url": "https://gdmissions.app/11th/layouts",
+      "localFile": "current-layout-reference.pdf"
     }
   ]
 }

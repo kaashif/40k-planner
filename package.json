@@ -10,6 +10,9 @@
     "preview": "serve out",
     "plan": "node cli/40k-plan.mjs",
     "plan:example": "node cli/40k-plan.mjs build-set --army armies/necrons-2000.json --plan plans/take-take-mirror.json --out plans/generated --app-out-dir public/reference/11th-edition/plans",
+    "layouts:download": "uv run --with pillow --with reportlab python scripts/sync_gdm_layouts.py",
+    "layouts:masks": "uv run --with opencv-python python scripts/generate_terrain_masks.py",
+    "layouts:sync": "npm run layouts:download && npm run layouts:masks",
     "test:cli": "node --test cli/*.test.mjs"
   },
   "dependencies": {

@@ -12,6 +12,11 @@ import { coherencyIssues, coherencyMeasurements, constrainMove, MM_PER_INCH, pla
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 const referenceRoot = `${basePath}/reference/11th-edition`;
+const dispositions = [...new Set(layoutsData.layouts.flatMap((layout) => [layout.attacker.forceDisposition, layout.defender.forceDisposition]))];
+
+function dispositionId(value: string) {
+  return value.toLowerCase().replaceAll(' ', '-');
+}
 
 type Side = 'blue' | 'red';
 type BaseMarker = PlannerMarker;
@@ -73,6 +78,10 @@ export default function DeploymentPlanner() {
   const searchParams = useSearchParams();
   const requestedId = searchParams.get('layout');
   const layout = layoutsData.layouts.find(({ id }) => id === requestedId) ?? layoutsData.layouts[0];
+  const requestedFirst = dispositions.find((name) => dispositionId(name) === searchParams.get('first'));
+  const requestedSecond = dispositions.find((name) => dispositionId(name) === searchParams.get('second'));
+  const firstDisposition = requestedFirst ?? layout.attacker.forceDisposition;
+  const secondDisposition = requestedSecond ?? layout.defender.forceDisposition;
   const bundledPlan = deploymentPlans.plans.find(({ layoutId }) => layoutId === layout.id);
   const page = String(layout.pdfPage).padStart(2, '0');
   const boardRef = useRef<HTMLDivElement>(null);
@@ -129,6 +138,14 @@ export default function DeploymentPlanner() {
   const markerCoherencyIssues = useMemo(() => coherencyIssues(markers), [markers]);
   const coherencyLines = useMemo(() => coherencyMeasurements(markers), [markers]);
   const unitLabels = useMemo(() => placeUnitLabels(markers), [markers]);
+
+  function navigateMatchup(first: string, second: string, letter: string) {
+    const match = layoutsData.layouts.find((candidate) => candidate.layout === letter && (
+      (candidate.attacker.forceDisposition === first && candidate.defender.forceDisposition === second)
+      || (candidate.attacker.forceDisposition === second && candidate.defender.forceDisposition === first)
+    ));
+    if (match) router.push(`/planner/?layout=${match.id}&first=${dispositionId(first)}&second=${dispositionId(second)}`);
+  }
 
   useEffect(() => {
     setRestoredLayout('');
@@ -393,13 +410,22 @@ export default function DeploymentPlanner() {
         <nav className="planner-controls" aria-label="Deployment planner controls">
           <Link className="planner-back-link" href="/">← Missions</Link>
           <label className="matchup-selector">
-            <span>Matchup</span>
-            <select value={layout.id} onChange={(event) => router.push(`/planner/?layout=${event.target.value}`)}>
-              {layoutsData.layouts.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.attacker.forceDisposition} vs {option.defender.forceDisposition} · {option.layout}
-                </option>
-              ))}
+            <span>First objective</span>
+            <select value={firstDisposition} onChange={(event) => navigateMatchup(event.target.value, secondDisposition, layout.layout)}>
+              {dispositions.map((name) => <option key={name} value={name}>{name}</option>)}
+            </select>
+          </label>
+          <span className="matchup-versus">vs</span>
+          <label className="matchup-selector">
+            <span>Second objective</span>
+            <select value={secondDisposition} onChange={(event) => navigateMatchup(firstDisposition, event.target.value, layout.layout)}>
+              {dispositions.map((name) => <option key={name} value={name}>{name}</option>)}
+            </select>
+          </label>
+          <label className="layout-selector">
+            <span>Layout</span>
+            <select value={layout.layout} onChange={(event) => navigateMatchup(firstDisposition, secondDisposition, event.target.value)}>
+              {['A', 'B', 'C'].map((letter) => <option key={letter} value={letter}>{letter}</option>)}
             </select>
           </label>
 
@@ -421,24 +447,6 @@ export default function DeploymentPlanner() {
               </div>)}
             </div>}
             {importError && <p className="planner-import-error">{importError}</p>}
-            </section>
-          </details>
-
-          <details className="tool-menu" name="planner-tools">
-            <summary>Army · {armyData.pointsLimit} pts</summary>
-            <section className="tool-menu-body">
-            <div className="side-toggle" aria-label="Base side">
-              <button className={side === 'blue' ? 'active blue' : ''} onClick={() => setSide('blue')}>Blue</button>
-              <button className={side === 'red' ? 'active red' : ''} onClick={() => setSide('red')}>Red</button>
-            </div>
-            <div className="army-roster">
-              {armyData.units.map((unit) => (
-                <div className="army-roster-unit" key={unit.id}>
-                  <div><strong>{unit.name}</strong><span>{unit.models} model{unit.models === 1 ? '' : 's'} · {unit.points} pts · M {unit.movementInches}″</span></div>
-                  <button onClick={() => addArmyUnit(unit)}>Add unit</button>
-                </div>
-              ))}
-            </div>
             </section>
           </details>
 
@@ -527,12 +535,29 @@ export default function DeploymentPlanner() {
           <span className={`planner-status${markerCoherencyIssues.size ? ' warning' : ''}`}>
             {markers.length} models · {markerCoherencyIssues.size ? `${markerCoherencyIssues.size} incoherent` : 'coherent'}
           </span>
-          <a className="planner-source-link" href={`${referenceRoot}/official/event-companion.pdf#page=${layout.pdfPage}`} target="_blank">
-            PDF p.{layout.pdfPage} ↗
+          <a className="planner-source-link" href={`${referenceRoot}/current-layout-reference.pdf#page=${layout.pdfPage - 7}`} target="_blank">
+            Current PDF ↗
           </a>
         </nav>
 
-        <section className="battlefield-panel">
+        <div className="planner-main-row">
+          <aside className="army-sidebar">
+            <div className="army-sidebar-title"><strong>Army list</strong><span>{armyData.pointsLimit} pts</span></div>
+            <div className="side-toggle" aria-label="Base side">
+              <button className={side === 'blue' ? 'active blue' : ''} onClick={() => setSide('blue')}>Blue</button>
+              <button className={side === 'red' ? 'active red' : ''} onClick={() => setSide('red')}>Red</button>
+            </div>
+            <div className="army-roster">
+              {armyData.units.map((unit) => (
+                <div className="army-roster-unit" key={unit.id}>
+                  <div><strong>{unit.name}</strong><span>{unit.models} model{unit.models === 1 ? '' : 's'} · {unit.points} pts · M {unit.movementInches}″</span></div>
+                  <button onClick={() => addArmyUnit(unit)}>Add</button>
+                </div>
+              ))}
+            </div>
+          </aside>
+
+          <section className="battlefield-panel">
           <div
             ref={boardRef}
             className={`battlefield${visibilityEnabled ? ' visibility-active' : ''}${measureEnabled ? ' measure-active' : ''}${markupEnabled ? ' markup-active' : ''}`}
@@ -726,7 +751,8 @@ export default function DeploymentPlanner() {
               </svg>
             )}
           </div>
-        </section>
+          </section>
+        </div>
       </div>
     </main>
   );
