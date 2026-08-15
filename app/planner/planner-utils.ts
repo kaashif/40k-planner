@@ -59,14 +59,67 @@ export function coherencyIssues(markers: PlannerMarker[]) {
   return issues;
 }
 
+export type CoherencyMeasurement = {
+  key: string;
+  from: PlannerMarker;
+  to: PlannerMarker;
+  distance: number;
+  limit: 2 | 9;
+};
+
+/** Lines that explain each failed coherency test without duplicating pairs. */
+export function coherencyMeasurements(markers: PlannerMarker[]) {
+  const groups = new Map<string, PlannerMarker[]>();
+  for (const marker of markers) {
+    const key = `${marker.side}:${marker.unitId || `single-${marker.id}`}`;
+    groups.set(key, [...(groups.get(key) ?? []), marker]);
+  }
+
+  const measurements = new Map<string, CoherencyMeasurement>();
+  for (const group of groups.values()) {
+    if (group.length < 2) continue;
+    for (const marker of group) {
+      const neighbours = group
+        .filter(({ id }) => id !== marker.id)
+        .map((other) => ({ other, distance: baseEdgeDistance(marker, other) }))
+        .sort((left, right) => left.distance - right.distance);
+      if (neighbours[0].distance > 2 + 1e-6) {
+        const other = neighbours[0].other;
+        const pair = [marker.id, other.id].sort((a, b) => a - b).join('-');
+        measurements.set(`2-${pair}`, { key: `2-${pair}`, from: marker, to: other, distance: neighbours[0].distance, limit: 2 });
+      }
+      for (const { other, distance } of neighbours) {
+        if (distance <= 9 + 1e-6) continue;
+        const pair = [marker.id, other.id].sort((a, b) => a - b).join('-');
+        measurements.set(`9-${pair}`, { key: `9-${pair}`, from: marker, to: other, distance, limit: 9 });
+      }
+    }
+  }
+  return [...measurements.values()];
+}
+
 type Rect = { left: number; right: number; top: number; bottom: number };
 export type UnitLabelPlacement = {
   key: string;
   label: string;
+  markerIds: number[];
   x: number;
   y: number;
   side: 'top' | 'right' | 'bottom' | 'left';
 };
+
+export function constrainMove(
+  origin: { x: number; y: number },
+  destination: { x: number; y: number },
+  maximumInches: number,
+) {
+  const dx = (destination.x - origin.x) * TABLE_WIDTH;
+  const dy = (destination.y - origin.y) * TABLE_HEIGHT;
+  const requestedDistance = Math.hypot(dx, dy);
+  if (requestedDistance <= maximumInches || requestedDistance === 0) return destination;
+  const scale = maximumInches / requestedDistance;
+  return { x: origin.x + dx * scale / TABLE_WIDTH, y: origin.y + dy * scale / TABLE_HEIGHT };
+}
 
 function overlapArea(left: Rect, right: Rect) {
   return Math.max(0, Math.min(left.right, right.right) - Math.max(left.left, right.left))
@@ -115,11 +168,11 @@ export function placeUnitLabels(markers: PlannerMarker[]): UnitLabelPlacement[] 
       const outside = Math.max(0, -rect.left) + Math.max(0, rect.right - 1) + Math.max(0, -rect.top) + Math.max(0, rect.bottom - 1);
       const baseOverlap = baseRects.reduce((total, base) => total + overlapArea(rect, base), 0);
       const labelOverlap = placedRects.reduce((total, placed) => total + overlapArea(rect, placed), 0);
-      return outside * 100 + baseOverlap * 10_000 + labelOverlap * 15_000;
+      return outside * 1_000_000 + baseOverlap * 10_000 + labelOverlap * 15_000;
     };
     const chosen = candidates.reduce((best, candidate) => score(candidate.rect) < score(best.rect) ? candidate : best);
     placedRects.push(chosen.rect);
-    placements.push({ key, label, x: chosen.x, y: chosen.y, side: chosen.side });
+    placements.push({ key, label, markerIds: group.map(({ id }) => id), x: chosen.x, y: chosen.y, side: chosen.side });
   }
   return placements;
 }

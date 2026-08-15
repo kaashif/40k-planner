@@ -7,6 +7,8 @@ import { analyseSightLines, plannerImport, readGrayscalePng, readJson, validate 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const army = readJson(path.join(root, 'armies', 'necrons-2000.json'));
 const variants = ['a', 'b', 'c'].map((layout) => readJson(path.join(root, 'plans', `take-take-layout-${layout}.json`)));
+const planManifest = readJson(path.join(root, 'plans', 'take-take-mirror.json'));
+const allPlans = planManifest.plans.map((file) => readJson(path.join(root, 'plans', file)));
 
 test('all three bundled layouts match the 1,995-point list and are overlap-free', () => {
   for (const plan of variants) {
@@ -45,4 +47,9 @@ test('deployment validation rejects a model outside the blue zone', () => {
   invalid.placements['wraiths-centre'].centres[0] = [12.5, 44];
   const result = validate(army, invalid);
   assert.ok(result.errors.some((error) => error.includes('blue deployment zone')));
+});
+
+test('all seven bundled plans are legal and overlap-free', () => {
+  assert.equal(allPlans.length, 7);
+  for (const plan of allPlans) assert.deepEqual(validate(army, plan).errors, [], plan.name);
 });

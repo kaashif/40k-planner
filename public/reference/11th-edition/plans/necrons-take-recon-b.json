@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "edition": 11,
-  "name": "Take/Take Layout A – natural overload and switch",
-  "layoutId": "take-and-hold-vs-take-and-hold-a",
+  "name": "Take/Recon Layout B – lengthways lane control",
+  "layoutId": "take-and-hold-vs-reconnaissance-b",
   "battlefieldInches": {
     "width": 44,
     "height": 60
@@ -11,7 +11,7 @@
     {
       "id": 1,
       "x": 40,
-      "y": 57.5,
+      "y": 7,
       "widthMm": 90,
       "heightMm": 90,
       "label": "C'tan Shard of the Nightbringer",
@@ -21,8 +21,8 @@
     },
     {
       "id": 2,
-      "x": 35.5,
-      "y": 57.5,
+      "x": 36,
+      "y": 7,
       "widthMm": 80,
       "heightMm": 80,
       "label": "C'tan Shard of the Void Dragon",
@@ -32,8 +32,8 @@
     },
     {
       "id": 3,
-      "x": 31,
-      "y": 57.5,
+      "x": 41,
+      "y": 34,
       "widthMm": 80,
       "heightMm": 80,
       "label": "Nekrosor Ammentar",
@@ -43,8 +43,8 @@
     },
     {
       "id": 4,
-      "x": 27.5,
-      "y": 57.5,
+      "x": 39.2,
+      "y": 37,
       "widthMm": 60,
       "heightMm": 60,
       "label": "Skorpekh Lord (Enaegic Dermal Bond)",
@@ -54,8 +54,8 @@
     },
     {
       "id": 5,
-      "x": 5,
-      "y": 58,
+      "x": 40.5,
+      "y": 49.2,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Technomancer (Warlord)",
@@ -65,8 +65,8 @@
     },
     {
       "id": 6,
-      "x": 12,
-      "y": 58,
+      "x": 40.5,
+      "y": 29.2,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Technomancer",
@@ -76,8 +76,8 @@
     },
     {
       "id": 7,
-      "x": 19.5,
-      "y": 58,
+      "x": 41,
+      "y": 43,
       "widthMm": 60,
       "heightMm": 60,
       "label": "Canoptek Reanimator",
@@ -87,8 +87,8 @@
     },
     {
       "id": 8,
-      "x": 3.5,
-      "y": 52.5,
+      "x": 34,
+      "y": 47,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Canoptek Wraiths (unit 1)",
@@ -98,8 +98,8 @@
     },
     {
       "id": 9,
-      "x": 5.7,
-      "y": 52.5,
+      "x": 36.2,
+      "y": 47,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Canoptek Wraiths (unit 1)",
@@ -109,8 +109,8 @@
     },
     {
       "id": 10,
-      "x": 7.9,
-      "y": 52.5,
+      "x": 38.4,
+      "y": 47,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Canoptek Wraiths (unit 1)",
@@ -120,8 +120,8 @@
     },
     {
       "id": 11,
-      "x": 3.5,
-      "y": 54.7,
+      "x": 34,
+      "y": 49.2,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Canoptek Wraiths (unit 1)",
@@ -131,8 +131,8 @@
     },
     {
       "id": 12,
-      "x": 5.7,
-      "y": 54.7,
+      "x": 36.2,
+      "y": 49.2,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Canoptek Wraiths (unit 1)",
@@ -142,8 +142,8 @@
     },
     {
       "id": 13,
-      "x": 7.9,
-      "y": 54.7,
+      "x": 38.4,
+      "y": 49.2,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Canoptek Wraiths (unit 1)",
@@ -153,8 +153,8 @@
     },
     {
       "id": 14,
-      "x": 10.8,
-      "y": 52.5,
+      "x": 34,
+      "y": 27,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Canoptek Wraiths (unit 2)",
@@ -164,8 +164,8 @@
     },
     {
       "id": 15,
-      "x": 13,
-      "y": 52.5,
+      "x": 36.2,
+      "y": 27,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Canoptek Wraiths (unit 2)",
@@ -175,8 +175,8 @@
     },
     {
       "id": 16,
-      "x": 15.2,
-      "y": 52.5,
+      "x": 38.4,
+      "y": 27,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Canoptek Wraiths (unit 2)",
@@ -186,8 +186,8 @@
     },
     {
       "id": 17,
-      "x": 10.8,
-      "y": 54.7,
+      "x": 34,
+      "y": 29.2,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Canoptek Wraiths (unit 2)",
@@ -197,8 +197,8 @@
     },
     {
       "id": 18,
-      "x": 13,
-      "y": 54.7,
+      "x": 36.2,
+      "y": 29.2,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Canoptek Wraiths (unit 2)",
@@ -208,8 +208,8 @@
     },
     {
       "id": 19,
-      "x": 15.2,
-      "y": 54.7,
+      "x": 38.4,
+      "y": 29.2,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Canoptek Wraiths (unit 2)",
@@ -219,8 +219,8 @@
     },
     {
       "id": 20,
-      "x": 3,
-      "y": 49,
+      "x": 41,
+      "y": 22.8,
       "widthMm": 28.5,
       "heightMm": 28.5,
       "label": "Flayed Ones (unit 1)",
@@ -230,8 +230,8 @@
     },
     {
       "id": 21,
-      "x": 4.3,
-      "y": 49,
+      "x": 42.3,
+      "y": 22.8,
       "widthMm": 28.5,
       "heightMm": 28.5,
       "label": "Flayed Ones (unit 1)",
@@ -241,8 +241,8 @@
     },
     {
       "id": 22,
-      "x": 5.6,
-      "y": 49,
+      "x": 41,
+      "y": 24.1,
       "widthMm": 28.5,
       "heightMm": 28.5,
       "label": "Flayed Ones (unit 1)",
@@ -252,8 +252,8 @@
     },
     {
       "id": 23,
-      "x": 3.65,
-      "y": 50.3,
+      "x": 42.3,
+      "y": 24.1,
       "widthMm": 28.5,
       "heightMm": 28.5,
       "label": "Flayed Ones (unit 1)",
@@ -263,8 +263,8 @@
     },
     {
       "id": 24,
-      "x": 4.95,
-      "y": 50.3,
+      "x": 43.35,
+      "y": 25.3,
       "widthMm": 28.5,
       "heightMm": 28.5,
       "label": "Flayed Ones (unit 1)",
@@ -274,8 +274,8 @@
     },
     {
       "id": 25,
-      "x": 9,
-      "y": 49,
+      "x": 39.5,
+      "y": 56.4,
       "widthMm": 28.5,
       "heightMm": 28.5,
       "label": "Flayed Ones (unit 2)",
@@ -285,8 +285,8 @@
     },
     {
       "id": 26,
-      "x": 10.3,
-      "y": 49,
+      "x": 40.8,
+      "y": 56.4,
       "widthMm": 28.5,
       "heightMm": 28.5,
       "label": "Flayed Ones (unit 2)",
@@ -296,8 +296,8 @@
     },
     {
       "id": 27,
-      "x": 11.6,
-      "y": 49,
+      "x": 42.1,
+      "y": 56.4,
       "widthMm": 28.5,
       "heightMm": 28.5,
       "label": "Flayed Ones (unit 2)",
@@ -307,8 +307,8 @@
     },
     {
       "id": 28,
-      "x": 9.65,
-      "y": 50.3,
+      "x": 40.15,
+      "y": 57.7,
       "widthMm": 28.5,
       "heightMm": 28.5,
       "label": "Flayed Ones (unit 2)",
@@ -318,8 +318,8 @@
     },
     {
       "id": 29,
-      "x": 10.95,
-      "y": 50.3,
+      "x": 41.45,
+      "y": 57.7,
       "widthMm": 28.5,
       "heightMm": 28.5,
       "label": "Flayed Ones (unit 2)",
@@ -329,8 +329,8 @@
     },
     {
       "id": 30,
-      "x": 18,
-      "y": 52.5,
+      "x": 34.5,
+      "y": 34,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Skorpekh Destroyers",
@@ -340,8 +340,8 @@
     },
     {
       "id": 31,
-      "x": 20.2,
-      "y": 52.5,
+      "x": 36.7,
+      "y": 34,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Skorpekh Destroyers",
@@ -351,8 +351,8 @@
     },
     {
       "id": 32,
-      "x": 22.4,
-      "y": 52.5,
+      "x": 34.5,
+      "y": 36.2,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Skorpekh Destroyers",
@@ -362,8 +362,8 @@
     },
     {
       "id": 33,
-      "x": 18,
-      "y": 54.7,
+      "x": 36.7,
+      "y": 36.2,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Skorpekh Destroyers",
@@ -373,8 +373,8 @@
     },
     {
       "id": 34,
-      "x": 20.2,
-      "y": 54.7,
+      "x": 34.5,
+      "y": 38.4,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Skorpekh Destroyers",
@@ -384,8 +384,8 @@
     },
     {
       "id": 35,
-      "x": 22.4,
-      "y": 54.7,
+      "x": 36.7,
+      "y": 38.4,
       "widthMm": 50,
       "heightMm": 50,
       "label": "Skorpekh Destroyers",
@@ -394,82 +394,7 @@
       "moveInches": 8
     }
   ],
-  "sightLines": [
-    {
-      "label": "Red natural → Nightbringer lane",
-      "from": [
-        36,
-        14
-      ],
-      "targetUnit": "nightbringer",
-      "to": [
-        40,
-        57.5
-      ],
-      "clear": false,
-      "blockedAt": [
-        37.44190301921317,
-        29.680695333943277
-      ],
-      "raysChecked": 5
-    },
-    {
-      "label": "Red natural → Void Dragon lane",
-      "from": [
-        36,
-        14
-      ],
-      "targetUnit": "void-dragon",
-      "to": [
-        35.5,
-        57.5
-      ],
-      "clear": false,
-      "blockedAt": [
-        35.81985294117647,
-        29.672794117647058
-      ],
-      "raysChecked": 5
-    },
-    {
-      "label": "Red centre staging → centre Wraiths",
-      "from": [
-        22,
-        22
-      ],
-      "targetUnit": "wraiths-centre",
-      "targetModel": 1,
-      "to": [
-        13,
-        52.5
-      ],
-      "clear": false,
-      "blockedAt": [
-        20.91457286432161,
-        25.678391959798994
-      ],
-      "raysChecked": 5
-    },
-    {
-      "label": "Red centre staging → Destroyer counter-charge",
-      "from": [
-        22,
-        22
-      ],
-      "targetUnit": "skorpekhs",
-      "targetModel": 2,
-      "to": [
-        22.4,
-        52.5
-      ],
-      "clear": false,
-      "blockedAt": [
-        22.04089121887287,
-        25.117955439056356
-      ],
-      "raysChecked": 5
-    }
-  ],
-  "intent": "Put the Wraith bricks on the centre and blue natural lanes, send both C'tan together up the right flank into the red natural, and stage the Destroyer package for the counter-charge. Once the C'tan have broken the red natural on turn 2 or 3, switch the army's weight across the board and maintain maximum primary scoring.",
+  "sightLines": [],
+  "intent": "Use the lengthways deployment to build three advancing lanes: C'tan pressure at the top, Wraiths contest the centre and lower primary, and the Destroyer package moves behind the centre lane. Flayed Ones screen the long back edge against Recon redeployments.",
   "reserves": []
 }

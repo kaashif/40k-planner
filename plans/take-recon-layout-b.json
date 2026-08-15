@@ -1,0 +1,25 @@
+{
+  "name": "Take/Recon Layout B – lengthways lane control",
+  "slug": "necrons-take-recon-b",
+  "layoutId": "take-and-hold-vs-reconnaissance-b",
+  "layout": "B",
+  "layoutPage": 19,
+  "side": "blue",
+  "mirrorOpponentInRender": false,
+  "intent": "Use the lengthways deployment to build three advancing lanes: C'tan pressure at the top, Wraiths contest the centre and lower primary, and the Destroyer package moves behind the centre lane. Flayed Ones screen the long back edge against Recon redeployments.",
+  "placements": {
+    "nightbringer": { "centres": [[40.0, 7.0]], "note": "Top-lane spearhead." },
+    "void-dragon": { "centres": [[36.0, 7.0]], "note": "Runs with the Nightbringer." },
+    "ammentar": { "centres": [[41.0, 34.0]], "note": "Supports the centre Destroyer lane." },
+    "skorpekh-lord": { "centres": [[39.2, 37.0]] },
+    "technomancer-veil": { "centres": [[40.5, 49.2]], "note": "Supports the lower Wraith brick." },
+    "technomancer": { "centres": [[40.5, 29.2]], "note": "Supports the centre Wraith brick." },
+    "reanimator": { "centres": [[41.0, 43.0]], "note": "Follows the two central lanes." },
+    "wraiths-left": { "centres": [[34.0, 47.0], [36.2, 47.0], [38.4, 47.0], [34.0, 49.2], [36.2, 49.2], [38.4, 49.2]], "note": "Lower objective lane." },
+    "wraiths-centre": { "centres": [[34.0, 27.0], [36.2, 27.0], [38.4, 27.0], [34.0, 29.2], [36.2, 29.2], [38.4, 29.2]], "note": "Centre objective lane." },
+    "flayed-ones": { "centres": [[41.0, 22.8], [42.3, 22.8], [41.0, 24.1], [42.3, 24.1], [43.35, 25.3]], "note": "Upper back-edge screen." },
+    "flayed-ones-2": { "centres": [[39.5, 56.4], [40.8, 56.4], [42.1, 56.4], [40.15, 57.7], [41.45, 57.7]], "note": "Lower back-edge screen." },
+    "skorpekhs": { "centres": [[34.5, 34.0], [36.7, 34.0], [34.5, 36.2], [36.7, 36.2], [34.5, 38.4], [36.7, 38.4]], "note": "Centre counter-charge lane." }
+  },
+  "sightLines": []
+}

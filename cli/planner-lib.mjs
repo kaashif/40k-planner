@@ -5,20 +5,30 @@ import zlib from 'node:zlib';
 export const INCH_MM = 25.4;
 export const BOARD = { width: 44, height: 60 };
 
-function inBlueDeploymentZone(layout, x, y) {
-  if (layout === 'A') return y >= 48 || (x >= 22 && x <= 33 && y >= 40);
-  if (layout === 'B') return x >= 32;
-  if (layout === 'C') {
+function inBlueDeploymentZone(plan, x, y) {
+  if (plan.layoutId.startsWith('take-and-hold-vs-take-and-hold-')) {
+    if (plan.layout === 'A') return y >= 48 || (x >= 22 && x <= 33 && y >= 40);
+    if (plan.layout === 'B') return x >= 32;
+    if (plan.layout === 'C') {
+      if (x < 22 || y < 30) return false;
+      if (x >= 31) return true;
+      return y >= 30 + Math.sqrt(Math.max(0, 81 - (x - 22) ** 2));
+    }
+  }
+  if (plan.layoutId === 'take-and-hold-vs-reconnaissance-b') return x >= 32;
+  if (plan.layoutId === 'take-and-hold-vs-purge-the-foe-a') return x >= 36 || (x >= 30 && y >= 30);
+  if (plan.layoutId === 'take-and-hold-vs-purge-the-foe-b') {
     if (x < 22 || y < 30) return false;
     if (x >= 31) return true;
     return y >= 30 + Math.sqrt(Math.max(0, 81 - (x - 22) ** 2));
   }
+  if (plan.layoutId === 'take-and-hold-vs-purge-the-foe-c') return y >= 42;
   return true;
 }
 
-function whollyInBlueDeploymentZone(layout, x, y, radius) {
+function whollyInBlueDeploymentZone(plan, x, y, radius) {
   return Array.from({ length: 32 }, (_, index) => index * Math.PI * 2 / 32)
-    .every((angle) => inBlueDeploymentZone(layout, x + Math.cos(angle) * radius, y + Math.sin(angle) * radius));
+    .every((angle) => inBlueDeploymentZone(plan, x + Math.cos(angle) * radius, y + Math.sin(angle) * radius));
 }
 
 export function readJson(file) {
@@ -49,7 +59,7 @@ export function validate(army, plan) {
       if (x - radius < 0 || x + radius > BOARD.width || y - radius < 0 || y + radius > BOARD.height) {
         errors.push(`${unit.id} model ${index + 1} is not wholly on the 44×60in battlefield.`);
       }
-      if (plan.side === 'blue' && !whollyInBlueDeploymentZone(plan.layout, x, y, radius)) {
+      if (plan.side === 'blue' && !whollyInBlueDeploymentZone(plan, x, y, radius)) {
         errors.push(`${unit.id} model ${index + 1} is not wholly inside the blue deployment zone for Layout ${plan.layout}.`);
       }
       circles.push({ unit: unit.id, index, x, y, radius });
@@ -191,7 +201,7 @@ export function plannerImport(army, plan, sightLines) {
   }
   return {
     schemaVersion: 1, edition: 11, name: plan.name, layoutId: plan.layoutId,
-    battlefieldInches: BOARD, markers, sightLines,
+    battlefieldInches: BOARD, markers, sightLines, intent: plan.intent,
     reserves: army.units.filter((unit) => plan.placements[unit.id]?.reserve).map((unit) => unit.id),
   };
 }
@@ -248,7 +258,12 @@ export function reportMarkdown(army, plan, sightLines) {
     const where = placement.reserve ? 'Reserve' : placement.centres.map(([x, y]) => `(${x}\", ${y}\")`).join(', ');
     lines.push(`- **${unit.name}** — ${where}${placement.note ? `. ${placement.note}` : ''}`);
   }
-  lines.push('', '## Turn plan', '', '- Turn 1: Wraiths establish centre and the blue natural. Both C’tan advance together along their marked flank. The Destroyer package remains staged.', '- Turn 2: the C’tan pressure or hit the red natural as a pair. Hold both Wraith scoring lanes until the far natural is actually broken.', '- Turn 2/3 switch: rotate the natural Wraith brick across, roll the centre brick into the vacated lane, and bring the Destroyers through the middle.', '- Endgame: C’tan occupy the red-natural quarter, Wraiths rotate across centre/naturals, Destroyers protect the exposed scorer, and both Flayed One units screen blue home and reserve lanes.', '', 'Coordinates are model-centre positions from the map’s top-left corner. Sight lines are sampled against the repository terrain mask; red is unobstructed and green dashed is terrain-blocked.');
+  if (plan.layoutId.startsWith('take-and-hold-vs-take-and-hold-')) {
+    lines.push('', '## Turn plan', '', '- Turn 1: Wraiths establish centre and the blue natural. Both C’tan advance together along their marked flank. The Destroyer package remains staged.', '- Turn 2: the C’tan pressure or hit the red natural as a pair. Hold both Wraith scoring lanes until the far natural is actually broken.', '- Turn 2/3 switch: rotate the natural Wraith brick across, roll the centre brick into the vacated lane, and bring the Destroyers through the middle.', '- Endgame: C’tan occupy the red-natural quarter, Wraiths rotate across centre/naturals, Destroyers protect the exposed scorer, and both Flayed One units screen blue home and reserve lanes.');
+  } else {
+    lines.push('', '## Tactical doctrine', '', plan.intent);
+  }
+  lines.push('', 'Coordinates are model-centre positions from the map’s top-left corner. Sight lines are sampled against the repository terrain mask; red is unobstructed and green dashed is terrain-blocked.');
   return `${lines.join('\n')}\n`;
 }
 
@@ -261,7 +276,7 @@ export function writeBuild({ armyFile, planFile, outDir, appOut, root }) {
   const mask = readGrayscalePng(path.join(root, 'public', 'reference', '11th-edition', 'terrain-masks', `layout-${page}.png`));
   const sightLines = analyseSightLines(army, plan, mask);
   fs.mkdirSync(outDir, { recursive: true });
-  const stem = `necrons-take-take-${plan.layout.toLowerCase()}`;
+  const stem = plan.slug || `necrons-take-take-${plan.layout.toLowerCase()}`;
   const importData = plannerImport(army, plan, sightLines);
   if (!appOut) fs.writeFileSync(path.join(outDir, `${stem}-planner.json`), `${JSON.stringify(importData, null, 2)}\n`);
   const map = fs.readFileSync(path.join(root, 'public', 'reference', '11th-edition', 'maps', `layout-${page}.jpg`)).toString('base64');

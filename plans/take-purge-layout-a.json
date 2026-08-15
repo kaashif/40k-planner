@@ -1,0 +1,25 @@
+{
+  "name": "Take/Purge Layout A – abandon home, crush centre",
+  "slug": "necrons-take-purge-a",
+  "layoutId": "take-and-hold-vs-purge-the-foe-a",
+  "layout": "A",
+  "layoutPage": 12,
+  "side": "blue",
+  "mirrorOpponentInRender": false,
+  "intent": "Abandon the blue home objective. Deploy every unit against the inner edge of the blue zone and run the entire army into the middle, using the two Wraith bricks as the first wave and the C'tan/Destroyer mass immediately behind them.",
+  "placements": {
+    "nightbringer": { "centres": [[41.5, 32.0]], "note": "Advance directly into the middle." },
+    "void-dragon": { "centres": [[41.5, 36.0]], "note": "Advance directly into the middle with the Nightbringer." },
+    "ammentar": { "centres": [[41.5, 40.0]], "note": "Keep pace with the Destroyer wave." },
+    "skorpekh-lord": { "centres": [[41.5, 43.5]] },
+    "technomancer-veil": { "centres": [[41.5, 47.0]] },
+    "technomancer": { "centres": [[41.5, 50.0]] },
+    "reanimator": { "centres": [[41.5, 54.0]], "note": "Follow the centre mass; do not remain on home." },
+    "wraiths-left": { "centres": [[34.0, 31.5], [34.0, 33.7], [34.0, 35.9], [36.2, 31.5], [36.2, 33.7], [36.2, 35.9]], "note": "First wave into centre." },
+    "wraiths-centre": { "centres": [[34.0, 39.0], [34.0, 41.2], [34.0, 43.4], [36.2, 39.0], [36.2, 41.2], [36.2, 43.4]], "note": "Second first-wave brick into centre." },
+    "flayed-ones": { "centres": [[30.7, 31.0], [30.7, 32.3], [30.7, 33.6], [32.0, 31.65], [32.0, 32.95]], "note": "Forward screen; advance into centre." },
+    "flayed-ones-2": { "centres": [[30.7, 36.0], [30.7, 37.3], [30.7, 38.6], [32.0, 36.65], [32.0, 37.95]], "note": "Second forward screen; advance into centre." },
+    "skorpekhs": { "centres": [[34.0, 47.0], [34.0, 49.2], [34.0, 51.4], [36.2, 47.0], [36.2, 49.2], [36.2, 51.4]], "note": "Counter-charge wave moving into centre." }
+  },
+  "sightLines": []
+}

@@ -1,0 +1,25 @@
+{
+  "name": "Take/Purge Layout C – full centre rush",
+  "slug": "necrons-take-purge-c",
+  "layoutId": "take-and-hold-vs-purge-the-foe-c",
+  "layout": "C",
+  "layoutPage": 14,
+  "side": "blue",
+  "mirrorOpponentInRender": false,
+  "intent": "Give up home completely. Pack the army along the top edge of the blue deployment zone and move every unit into the middle on turn one; Wraiths and Flayed Ones lead, while the C'tan and Destroyers form one dense second wave.",
+  "placements": {
+    "nightbringer": { "centres": [[40.0, 51.5]] },
+    "void-dragon": { "centres": [[35.5, 51.5]] },
+    "ammentar": { "centres": [[31.0, 51.5]] },
+    "skorpekh-lord": { "centres": [[27.5, 51.5]] },
+    "technomancer-veil": { "centres": [[5.0, 52.0]] },
+    "technomancer": { "centres": [[12.0, 52.0]] },
+    "reanimator": { "centres": [[19.5, 52.0]], "note": "Follows the centre rush." },
+    "wraiths-left": { "centres": [[3.5, 46.5], [5.7, 46.5], [7.9, 46.5], [3.5, 48.7], [5.7, 48.7], [7.9, 48.7]], "note": "First wave into centre." },
+    "wraiths-centre": { "centres": [[10.8, 46.5], [13.0, 46.5], [15.2, 46.5], [10.8, 48.7], [13.0, 48.7], [15.2, 48.7]], "note": "First wave into centre." },
+    "flayed-ones": { "centres": [[3.0, 43.0], [4.3, 43.0], [5.6, 43.0], [3.65, 44.3], [4.95, 44.3]], "note": "Forward centre screen." },
+    "flayed-ones-2": { "centres": [[9.0, 43.0], [10.3, 43.0], [11.6, 43.0], [9.65, 44.3], [10.95, 44.3]], "note": "Second forward centre screen." },
+    "skorpekhs": { "centres": [[18.0, 46.5], [20.2, 46.5], [22.4, 46.5], [18.0, 48.7], [20.2, 48.7], [22.4, 48.7]], "note": "Second wave into centre." }
+  },
+  "sightLines": []
+}

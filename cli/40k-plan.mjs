@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readJson, validate, writeBuild } from './planner-lib.mjs';
@@ -25,8 +26,11 @@ if (command === 'build') {
   for (const relativePlan of manifest.plans) {
     const variantFile = path.resolve(path.dirname(planFile), relativePlan);
     const plan = readJson(variantFile);
-    const appOut = path.join(appOutDir, `necrons-take-take-${plan.layout.toLowerCase()}.json`);
+    const appOut = path.join(appOutDir, `${plan.slug || `necrons-take-take-${plan.layout.toLowerCase()}`}.json`);
     const result = writeBuild({ armyFile, planFile: variantFile, outDir, appOut, root });
+    const previewDir = path.join(appOutDir, 'previews');
+    fs.mkdirSync(previewDir, { recursive: true });
+    fs.copyFileSync(path.join(outDir, `${plan.slug || `necrons-take-take-${plan.layout.toLowerCase()}`}.svg`), path.join(previewDir, `${plan.slug || `necrons-take-take-${plan.layout.toLowerCase()}`}.svg`));
     console.log(`Layout ${plan.layout}: valid ${result.points}-point plan; ${result.sightLines.filter((line) => line.clear).length}/${result.sightLines.length} marked lines visible.`);
   }
 } else if (command === 'validate') {

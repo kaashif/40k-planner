@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { baseEdgeDistance, coherencyIssues, placeUnitLabels, type PlannerMarker } from './planner-utils.ts';
+import { baseEdgeDistance, coherencyIssues, coherencyMeasurements, constrainMove, placeUnitLabels, type PlannerMarker } from './planner-utils.ts';
 
 const marker = (id: number, xInches: number, unitId = 'unit'): PlannerMarker => ({
   id, x: xInches / 44, y: 10 / 60, widthMm: 25.4, heightMm: 25.4,
@@ -23,10 +23,23 @@ test('coherency requires every pair to be within 9 inches', () => {
   assert.match(issues.get(3)?.join(' ') ?? '', /more than 9/);
 });
 
+test('coherency measurements identify the failed limit and distance', () => {
+  const measurements = coherencyMeasurements([marker(1, 10), marker(2, 22)]);
+  assert.deepEqual(measurements.map(({ limit }) => limit).sort(), [2, 9]);
+  assert.ok(measurements.every(({ distance }) => Math.abs(distance - 11) < 1e-9));
+});
+
 test('unit labels are consolidated and choose the side with least overlap', () => {
   const unit = [marker(1, 10), marker(2, 12)];
   const blocker = { ...marker(3, 11, 'blocker'), y: 8.5 / 60, widthMm: 80, heightMm: 80 };
   const labels = placeUnitLabels([...unit, blocker]);
   assert.equal(labels.length, 2);
+  assert.deepEqual(labels.find(({ key }) => key.endsWith(':unit'))?.markerIds, [1, 2]);
   assert.notEqual(labels.find(({ key }) => key.endsWith(':unit'))?.side, 'top');
+});
+
+test('bounded movement caps a drag at the Movement characteristic', () => {
+  const destination = constrainMove({ x: 10 / 44, y: 10 / 60 }, { x: 30 / 44, y: 10 / 60 }, 8);
+  assert.ok(Math.abs(destination.x * 44 - 18) < 1e-9);
+  assert.ok(Math.abs(destination.y * 60 - 10) < 1e-9);
 });

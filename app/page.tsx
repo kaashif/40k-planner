@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import missionsData from '../public/reference/11th-edition/data/missions.json';
 import layoutsData from '../public/reference/11th-edition/data/event-layouts.json';
+import deploymentPlans from '../public/reference/11th-edition/plans/index.json';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 const referenceRoot = `${basePath}/reference/11th-edition`;
@@ -37,7 +38,6 @@ export default function Home() {
   const opponentMission = opponentDisposition.primaryMissionsByOpponent[
     playerDispositionId as keyof typeof opponentDisposition.primaryMissionsByOpponent
   ];
-  const hasNecronExample = playerDispositionId === 'take-and-hold' && opponentDispositionId === 'take-and-hold';
 
   const selectedLayouts = useMemo(() => layoutsData.layouts.filter((layout) => {
     const left = layout.attacker.forceDisposition;
@@ -62,6 +62,7 @@ export default function Home() {
           <p>Chapter Approved 2026–27 / Event Companion v1.0</p>
         </div>
         <div className="reference-links">
+          <Link href="/plans/">Deployment plan library</Link>
           <a href={`${referenceRoot}/official/core-rules.pdf`}>Core rules PDF</a>
           <a href={`${referenceRoot}/official/event-companion.pdf`}>Event companion PDF</a>
           <a href={`${referenceRoot}/official/terrain-area-footprints.pdf`}>Terrain footprints PDF</a>
@@ -147,6 +148,7 @@ export default function Home() {
         <div className="layout-grid">
           {selectedLayouts.map((layout) => {
             const page = String(layout.pdfPage).padStart(2, '0');
+            const hasDeploymentPlan = deploymentPlans.plans.some(({ layoutId }) => layoutId === layout.id);
             return (
               <article className="layout" key={layout.id}>
                 <div className="layout-heading">
@@ -155,13 +157,13 @@ export default function Home() {
                     PDF page {layout.pdfPage} ↗
                   </a>
                 </div>
-                <Link className="layout-planner-link" href={`/planner/?layout=${layout.id}${hasNecronExample ? '&plan=necrons' : ''}`}>
+                <Link className="layout-planner-link" href={`/planner/?layout=${layout.id}`}>
                   {/* The generated JPEG is a direct preview of the authoritative Event Companion page. */}
                   <img
                     src={`${referenceRoot}/layouts/layout-${page}.jpg`}
                     alt={`${playerDisposition.name} versus ${opponentDisposition.name}, layout ${layout.layout}`}
                   />
-                  <span>{hasNecronExample ? 'Open planned Necron deployment' : 'Open deployment planner'}</span>
+                  <span>{hasDeploymentPlan ? 'Open planned Necron deployment' : 'Open deployment planner'}</span>
                 </Link>
               </article>
             );
