@@ -58,5 +58,5 @@ Usage:
   npm run plan -- build [--army FILE] [--plan FILE] [--out DIR]
   npm run plan -- build-set [--army FILE] [--plan MANIFEST]
 
-The bundled defaults are the 2,000-point Necron list and three-layout Take/Take plan set.`);
+The bundled defaults are the 1,995-point Necron list and three-layout Take/Take plan set.`);
 }

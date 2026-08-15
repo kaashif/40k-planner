@@ -14,9 +14,10 @@
       "y": 49,
       "widthMm": 90,
       "heightMm": 90,
-      "label": "NB",
+      "label": "C'tan Shard of the Nightbringer",
       "side": "blue",
-      "unitId": "nightbringer"
+      "unitId": "nightbringer",
+      "moveInches": 10
     },
     {
       "id": 2,
@@ -24,9 +25,10 @@
       "y": 49,
       "widthMm": 80,
       "heightMm": 80,
-      "label": "VD",
+      "label": "C'tan Shard of the Void Dragon",
       "side": "blue",
-      "unitId": "void-dragon"
+      "unitId": "void-dragon",
+      "moveInches": 10
     },
     {
       "id": 3,
@@ -34,9 +36,10 @@
       "y": 52.5,
       "widthMm": 80,
       "heightMm": 80,
-      "label": "NA",
+      "label": "Nekrosor Ammentar",
       "side": "blue",
-      "unitId": "ammentar"
+      "unitId": "ammentar",
+      "moveInches": 10
     },
     {
       "id": 4,
@@ -44,9 +47,10 @@
       "y": 47.2,
       "widthMm": 60,
       "heightMm": 60,
-      "label": "SL",
+      "label": "Skorpekh Lord (Enaegic Dermal Bond)",
       "side": "blue",
-      "unitId": "skorpekh-lord"
+      "unitId": "skorpekh-lord",
+      "moveInches": 8
     },
     {
       "id": 5,
@@ -54,9 +58,10 @@
       "y": 56.4,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "TV",
+      "label": "Technomancer (Warlord)",
       "side": "blue",
-      "unitId": "technomancer-veil"
+      "unitId": "technomancer-veil",
+      "moveInches": 10
     },
     {
       "id": 6,
@@ -64,9 +69,10 @@
       "y": 41.2,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "T",
+      "label": "Technomancer",
       "side": "blue",
-      "unitId": "technomancer"
+      "unitId": "technomancer",
+      "moveInches": 10
     },
     {
       "id": 7,
@@ -74,9 +80,10 @@
       "y": 46,
       "widthMm": 60,
       "heightMm": 60,
-      "label": "R",
+      "label": "Canoptek Reanimator",
       "side": "blue",
-      "unitId": "reanimator"
+      "unitId": "reanimator",
+      "moveInches": 8
     },
     {
       "id": 8,
@@ -84,9 +91,10 @@
       "y": 52,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "WL1",
+      "label": "Canoptek Wraiths (unit 1)",
       "side": "blue",
-      "unitId": "wraiths-left"
+      "unitId": "wraiths-left",
+      "moveInches": 10
     },
     {
       "id": 9,
@@ -94,9 +102,10 @@
       "y": 52,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "WL2",
+      "label": "Canoptek Wraiths (unit 1)",
       "side": "blue",
-      "unitId": "wraiths-left"
+      "unitId": "wraiths-left",
+      "moveInches": 10
     },
     {
       "id": 10,
@@ -104,9 +113,10 @@
       "y": 52,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "WL3",
+      "label": "Canoptek Wraiths (unit 1)",
       "side": "blue",
-      "unitId": "wraiths-left"
+      "unitId": "wraiths-left",
+      "moveInches": 10
     },
     {
       "id": 11,
@@ -114,9 +124,10 @@
       "y": 54.2,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "WL4",
+      "label": "Canoptek Wraiths (unit 1)",
       "side": "blue",
-      "unitId": "wraiths-left"
+      "unitId": "wraiths-left",
+      "moveInches": 10
     },
     {
       "id": 12,
@@ -124,9 +135,10 @@
       "y": 54.2,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "WL5",
+      "label": "Canoptek Wraiths (unit 1)",
       "side": "blue",
-      "unitId": "wraiths-left"
+      "unitId": "wraiths-left",
+      "moveInches": 10
     },
     {
       "id": 13,
@@ -134,9 +146,10 @@
       "y": 54.2,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "WL6",
+      "label": "Canoptek Wraiths (unit 1)",
       "side": "blue",
-      "unitId": "wraiths-left"
+      "unitId": "wraiths-left",
+      "moveInches": 10
     },
     {
       "id": 14,
@@ -144,9 +157,10 @@
       "y": 39,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "WC1",
+      "label": "Canoptek Wraiths (unit 2)",
       "side": "blue",
-      "unitId": "wraiths-centre"
+      "unitId": "wraiths-centre",
+      "moveInches": 10
     },
     {
       "id": 15,
@@ -154,9 +168,10 @@
       "y": 39,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "WC2",
+      "label": "Canoptek Wraiths (unit 2)",
       "side": "blue",
-      "unitId": "wraiths-centre"
+      "unitId": "wraiths-centre",
+      "moveInches": 10
     },
     {
       "id": 16,
@@ -164,9 +179,10 @@
       "y": 39,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "WC3",
+      "label": "Canoptek Wraiths (unit 2)",
       "side": "blue",
-      "unitId": "wraiths-centre"
+      "unitId": "wraiths-centre",
+      "moveInches": 10
     },
     {
       "id": 17,
@@ -174,9 +190,10 @@
       "y": 41.2,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "WC4",
+      "label": "Canoptek Wraiths (unit 2)",
       "side": "blue",
-      "unitId": "wraiths-centre"
+      "unitId": "wraiths-centre",
+      "moveInches": 10
     },
     {
       "id": 18,
@@ -184,9 +201,10 @@
       "y": 41.2,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "WC5",
+      "label": "Canoptek Wraiths (unit 2)",
       "side": "blue",
-      "unitId": "wraiths-centre"
+      "unitId": "wraiths-centre",
+      "moveInches": 10
     },
     {
       "id": 19,
@@ -194,9 +212,10 @@
       "y": 41.2,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "WC6",
+      "label": "Canoptek Wraiths (unit 2)",
       "side": "blue",
-      "unitId": "wraiths-centre"
+      "unitId": "wraiths-centre",
+      "moveInches": 10
     },
     {
       "id": 20,
@@ -204,9 +223,10 @@
       "y": 57,
       "widthMm": 28.5,
       "heightMm": 28.5,
-      "label": "F1",
+      "label": "Flayed Ones (unit 1)",
       "side": "blue",
-      "unitId": "flayed-ones"
+      "unitId": "flayed-ones",
+      "moveInches": 5
     },
     {
       "id": 21,
@@ -214,9 +234,10 @@
       "y": 57,
       "widthMm": 28.5,
       "heightMm": 28.5,
-      "label": "F2",
+      "label": "Flayed Ones (unit 1)",
       "side": "blue",
-      "unitId": "flayed-ones"
+      "unitId": "flayed-ones",
+      "moveInches": 5
     },
     {
       "id": 22,
@@ -224,9 +245,10 @@
       "y": 57,
       "widthMm": 28.5,
       "heightMm": 28.5,
-      "label": "F3",
+      "label": "Flayed Ones (unit 1)",
       "side": "blue",
-      "unitId": "flayed-ones"
+      "unitId": "flayed-ones",
+      "moveInches": 5
     },
     {
       "id": 23,
@@ -234,9 +256,10 @@
       "y": 58.3,
       "widthMm": 28.5,
       "heightMm": 28.5,
-      "label": "F4",
+      "label": "Flayed Ones (unit 1)",
       "side": "blue",
-      "unitId": "flayed-ones"
+      "unitId": "flayed-ones",
+      "moveInches": 5
     },
     {
       "id": 24,
@@ -244,389 +267,131 @@
       "y": 58.3,
       "widthMm": 28.5,
       "heightMm": 28.5,
-      "label": "F5",
+      "label": "Flayed Ones (unit 1)",
       "side": "blue",
-      "unitId": "flayed-ones"
+      "unitId": "flayed-ones",
+      "moveInches": 5
     },
     {
       "id": 25,
-      "x": 36.5,
-      "y": 58,
-      "widthMm": 60,
-      "heightMm": 60,
-      "label": "L",
+      "x": 33.8,
+      "y": 56.4,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "Flayed Ones (unit 2)",
       "side": "blue",
-      "unitId": "lokhust"
+      "unitId": "flayed-ones-2",
+      "moveInches": 5
     },
     {
       "id": 26,
-      "x": 29,
-      "y": 45,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "S1",
+      "x": 35.1,
+      "y": 56.4,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "Flayed Ones (unit 2)",
       "side": "blue",
-      "unitId": "skorpekhs"
+      "unitId": "flayed-ones-2",
+      "moveInches": 5
     },
     {
       "id": 27,
-      "x": 31.2,
-      "y": 45,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "S2",
+      "x": 36.4,
+      "y": 56.4,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "Flayed Ones (unit 2)",
       "side": "blue",
-      "unitId": "skorpekhs"
+      "unitId": "flayed-ones-2",
+      "moveInches": 5
     },
     {
       "id": 28,
-      "x": 29,
-      "y": 47.2,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "S3",
+      "x": 34.45,
+      "y": 57.7,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "Flayed Ones (unit 2)",
       "side": "blue",
-      "unitId": "skorpekhs"
+      "unitId": "flayed-ones-2",
+      "moveInches": 5
     },
     {
       "id": 29,
-      "x": 31.2,
-      "y": 47.2,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "S4",
+      "x": 35.75,
+      "y": 57.7,
+      "widthMm": 28.5,
+      "heightMm": 28.5,
+      "label": "Flayed Ones (unit 2)",
       "side": "blue",
-      "unitId": "skorpekhs"
+      "unitId": "flayed-ones-2",
+      "moveInches": 5
     },
     {
       "id": 30,
       "x": 29,
-      "y": 49.4,
+      "y": 45,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "S5",
+      "label": "Skorpekh Destroyers",
       "side": "blue",
-      "unitId": "skorpekhs"
+      "unitId": "skorpekhs",
+      "moveInches": 8
     },
     {
       "id": 31,
       "x": 31.2,
-      "y": 49.4,
+      "y": 45,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "S6",
+      "label": "Skorpekh Destroyers",
       "side": "blue",
-      "unitId": "skorpekhs"
+      "unitId": "skorpekhs",
+      "moveInches": 8
     },
     {
       "id": 32,
-      "x": 2,
-      "y": 11,
-      "widthMm": 90,
-      "heightMm": 90,
-      "label": "M-NB",
-      "side": "red",
-      "unitId": "nightbringer"
+      "x": 29,
+      "y": 47.2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "Skorpekh Destroyers",
+      "side": "blue",
+      "unitId": "skorpekhs",
+      "moveInches": 8
     },
     {
       "id": 33,
-      "x": 6,
-      "y": 11,
-      "widthMm": 80,
-      "heightMm": 80,
-      "label": "M-VD",
-      "side": "red",
-      "unitId": "void-dragon"
+      "x": 31.2,
+      "y": 47.2,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "Skorpekh Destroyers",
+      "side": "blue",
+      "unitId": "skorpekhs",
+      "moveInches": 8
     },
     {
       "id": 34,
-      "x": 10,
-      "y": 7.5,
-      "widthMm": 80,
-      "heightMm": 80,
-      "label": "M-NA",
-      "side": "red",
-      "unitId": "ammentar"
+      "x": 29,
+      "y": 49.4,
+      "widthMm": 50,
+      "heightMm": 50,
+      "label": "Skorpekh Destroyers",
+      "side": "blue",
+      "unitId": "skorpekhs",
+      "moveInches": 8
     },
     {
       "id": 35,
-      "x": 10.5,
-      "y": 12.799999999999997,
-      "widthMm": 60,
-      "heightMm": 60,
-      "label": "M-SL",
-      "side": "red",
-      "unitId": "skorpekh-lord"
-    },
-    {
-      "id": 36,
-      "x": 14.5,
-      "y": 3.6000000000000014,
+      "x": 31.2,
+      "y": 49.4,
       "widthMm": 50,
       "heightMm": 50,
-      "label": "M-TV",
-      "side": "red",
-      "unitId": "technomancer-veil"
-    },
-    {
-      "id": 37,
-      "x": 9.5,
-      "y": 18.799999999999997,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-T",
-      "side": "red",
-      "unitId": "technomancer"
-    },
-    {
-      "id": 38,
-      "x": 20,
-      "y": 14,
-      "widthMm": 60,
-      "heightMm": 60,
-      "label": "M-R",
-      "side": "red",
-      "unitId": "reanimator"
-    },
-    {
-      "id": 39,
-      "x": 21,
-      "y": 8,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-WL1",
-      "side": "red",
-      "unitId": "wraiths-left"
-    },
-    {
-      "id": 40,
-      "x": 18.8,
-      "y": 8,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-WL2",
-      "side": "red",
-      "unitId": "wraiths-left"
-    },
-    {
-      "id": 41,
-      "x": 16.6,
-      "y": 8,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-WL3",
-      "side": "red",
-      "unitId": "wraiths-left"
-    },
-    {
-      "id": 42,
-      "x": 21,
-      "y": 5.799999999999997,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-WL4",
-      "side": "red",
-      "unitId": "wraiths-left"
-    },
-    {
-      "id": 43,
-      "x": 18.8,
-      "y": 5.799999999999997,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-WL5",
-      "side": "red",
-      "unitId": "wraiths-left"
-    },
-    {
-      "id": 44,
-      "x": 16.6,
-      "y": 5.799999999999997,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-WL6",
-      "side": "red",
-      "unitId": "wraiths-left"
-    },
-    {
-      "id": 45,
-      "x": 16,
-      "y": 21,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-WC1",
-      "side": "red",
-      "unitId": "wraiths-centre"
-    },
-    {
-      "id": 46,
-      "x": 13.8,
-      "y": 21,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-WC2",
-      "side": "red",
-      "unitId": "wraiths-centre"
-    },
-    {
-      "id": 47,
-      "x": 11.600000000000001,
-      "y": 21,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-WC3",
-      "side": "red",
-      "unitId": "wraiths-centre"
-    },
-    {
-      "id": 48,
-      "x": 16,
-      "y": 18.799999999999997,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-WC4",
-      "side": "red",
-      "unitId": "wraiths-centre"
-    },
-    {
-      "id": 49,
-      "x": 13.8,
-      "y": 18.799999999999997,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-WC5",
-      "side": "red",
-      "unitId": "wraiths-centre"
-    },
-    {
-      "id": 50,
-      "x": 11.600000000000001,
-      "y": 18.799999999999997,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-WC6",
-      "side": "red",
-      "unitId": "wraiths-centre"
-    },
-    {
-      "id": 51,
-      "x": 4.5,
-      "y": 3,
-      "widthMm": 28.5,
-      "heightMm": 28.5,
-      "label": "M-F1",
-      "side": "red",
-      "unitId": "flayed-ones"
-    },
-    {
-      "id": 52,
-      "x": 3.200000000000003,
-      "y": 3,
-      "widthMm": 28.5,
-      "heightMm": 28.5,
-      "label": "M-F2",
-      "side": "red",
-      "unitId": "flayed-ones"
-    },
-    {
-      "id": 53,
-      "x": 1.8999999999999986,
-      "y": 3,
-      "widthMm": 28.5,
-      "heightMm": 28.5,
-      "label": "M-F3",
-      "side": "red",
-      "unitId": "flayed-ones"
-    },
-    {
-      "id": 54,
-      "x": 3.8500000000000014,
-      "y": 1.7000000000000028,
-      "widthMm": 28.5,
-      "heightMm": 28.5,
-      "label": "M-F4",
-      "side": "red",
-      "unitId": "flayed-ones"
-    },
-    {
-      "id": 55,
-      "x": 2.549999999999997,
-      "y": 1.7000000000000028,
-      "widthMm": 28.5,
-      "heightMm": 28.5,
-      "label": "M-F5",
-      "side": "red",
-      "unitId": "flayed-ones"
-    },
-    {
-      "id": 56,
-      "x": 7.5,
-      "y": 2,
-      "widthMm": 60,
-      "heightMm": 60,
-      "label": "M-L",
-      "side": "red",
-      "unitId": "lokhust"
-    },
-    {
-      "id": 57,
-      "x": 15,
-      "y": 15,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-S1",
-      "side": "red",
-      "unitId": "skorpekhs"
-    },
-    {
-      "id": 58,
-      "x": 12.8,
-      "y": 15,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-S2",
-      "side": "red",
-      "unitId": "skorpekhs"
-    },
-    {
-      "id": 59,
-      "x": 15,
-      "y": 12.799999999999997,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-S3",
-      "side": "red",
-      "unitId": "skorpekhs"
-    },
-    {
-      "id": 60,
-      "x": 12.8,
-      "y": 12.799999999999997,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-S4",
-      "side": "red",
-      "unitId": "skorpekhs"
-    },
-    {
-      "id": 61,
-      "x": 15,
-      "y": 10.600000000000001,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-S5",
-      "side": "red",
-      "unitId": "skorpekhs"
-    },
-    {
-      "id": 62,
-      "x": 12.8,
-      "y": 10.600000000000001,
-      "widthMm": 50,
-      "heightMm": 50,
-      "label": "M-S6",
-      "side": "red",
-      "unitId": "skorpekhs"
+      "label": "Skorpekh Destroyers",
+      "side": "blue",
+      "unitId": "skorpekhs",
+      "moveInches": 8
     }
   ],
   "sightLines": [

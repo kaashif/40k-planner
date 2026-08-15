@@ -200,6 +200,13 @@ button, summary { font: inherit; }
 .side-toggle button.active.blue { background: #245f8a; border-color: #55a8df; }
 .side-toggle button.active.red { background: #8d2e35; border-color: #db6570; }
 .base-size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.army-roster { display: grid; gap: 5px; max-height: 390px; overflow: auto; padding-right: 2px; }
+.army-roster-unit { display: grid; grid-template-columns: minmax(0, 1fr) 62px; gap: 5px; align-items: stretch; border: 1px solid var(--line); background: #11161d; }
+.army-roster-unit > div { min-width: 0; padding: 5px 6px; }
+.army-roster-unit strong, .army-roster-unit span { display: block; }
+.army-roster-unit strong { overflow: hidden; color: #fff; font-size: 10px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
+.army-roster-unit span { margin-top: 2px; color: var(--muted); font-size: 8px; }
+.planner-controls .army-roster-unit button { min-height: 0; border-width: 0 0 0 1px; font-size: 9px; }
 .unit-preset { display: block; margin: 8px 0 5px; }
 .unit-preset span, .base-sizes-label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 10px; text-transform: uppercase; }
 .unit-preset select {
@@ -219,6 +226,12 @@ button, summary { font: inherit; }
 .planner-controls .los-toggle.active { border-color: #f06a6a; background: #6e252b; color: #fff; }
 .planner-controls .screen-toggle.active { border-color: #69b9cb; background: #205b69; color: #fff; text-transform: capitalize; }
 .planner-controls .measure-toggle.active { border-color: #edc65d; background: #685520; color: #fff; }
+.planner-controls .movement-toggle.active { border-color: #75d69a; background: #24613b; color: #fff; }
+.planner-controls .markup-toggle.active { border-color: #edc65d; background: #685520; color: #fff; }
+.planner-controls .audit-toggle.active { border-color: #9bed76; background: #315b24; color: #fff; }
+.markup-controls { display: grid; grid-template-columns: 38px 1fr; gap: 5px; }
+.markup-controls input { width: 38px; height: 34px; padding: 2px; border: 1px solid var(--line-dark); background: #11161d; }
+.coherency-error { margin: 0 0 8px; padding: 6px; border: 1px solid #a9424b; background: rgba(116, 27, 35, .55); color: #ffb0b6; font-size: 10px; line-height: 1.35; }
 .overlay-control-label { margin: 2px 0 6px; color: #fff; font-size: 11px; font-weight: 700; }
 .overlay-divider { height: 1px; margin: 10px -10px; background: var(--line); }
 .control-help { margin: 8px 0 0; font-size: 10px; line-height: 1.4; }
@@ -253,6 +266,7 @@ button, summary { font: inherit; }
 .battlefield > img { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .battlefield.visibility-active { cursor: default; }
 .battlefield.measure-active { cursor: crosshair; }
+.battlefield.markup-active { cursor: crosshair; }
 .base-marker {
   position: absolute;
   z-index: 3;
@@ -274,7 +288,66 @@ button, summary { font: inherit; }
 .base-marker.blue { background: rgba(26, 102, 158, .88); }
 .base-marker.red { background: rgba(166, 42, 51, .88); }
 .base-marker.selected { z-index: 5; outline: 3px solid #ffd45e; outline-offset: 2px; }
-.base-marker span { pointer-events: none; }
+.base-marker.incoherent { border-color: #ff4d59; box-shadow: 0 0 0 3px rgba(255, 45, 61, .55), 0 1px 4px rgba(0, 0, 0, .8); }
+.base-marker span {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 3px);
+  max-width: 132px;
+  padding: 2px 4px;
+  overflow: hidden;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: rgba(8, 11, 15, .88);
+  color: #fff;
+  font-size: 7px;
+  font-weight: 600;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.base-marker.selected span { max-width: 190px; color: #ffe071; font-size: 8px; }
+.movement-overlay { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.movement-overlay ellipse { fill: rgba(54, 206, 112, .16); stroke: #39d97b; stroke-width: .18; stroke-dasharray: .45 .3; vector-effect: non-scaling-stroke; }
+.movement-overlay text { fill: #d9ffe8; stroke: #0a2012; stroke-width: .16; paint-order: stroke; font-size: 1.35px; font-weight: 700; text-anchor: middle; }
+.markup-overlay { position: absolute; inset: 0; z-index: 6; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.markup-overlay polyline { fill: none; stroke-width: .28; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 1px #000); }
+.map-audit-overlay { position: absolute; inset: 0; z-index: 8; pointer-events: none; }
+.map-audit-overlay canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.terrain-audit-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(105, 255, 107, .48);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: 100% 100%;
+  outline: 1px solid rgba(190, 255, 182, .8);
+}
+.map-audit-legend {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: min(245px, calc(100% - 16px));
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid #d5d9df;
+  background: rgba(7, 10, 14, .94);
+  color: #fff;
+  font-size: 9px;
+  line-height: 1.3;
+}
+.map-audit-legend span { display: flex; align-items: center; gap: 5px; }
+.map-audit-legend i { width: 12px; height: 8px; display: inline-block; border: 1px solid rgba(255, 255, 255, .65); }
+.map-audit-legend .red-zone { background: #ff2a38; }
+.map-audit-legend .blue-zone { background: #229dff; }
+.map-audit-legend .terrain-zone { background: #69ff6b; }
+.map-audit-legend small { color: #c3cbd5; font-size: 8px; }
 .visibility-overlay { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; pointer-events: none; }
 .sight-line-overlay { position: absolute; inset: 0; z-index: 4; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
 .sight-line-overlay g > line:not(.block-mark) { fill: none; stroke-width: .16; vector-effect: non-scaling-stroke; }

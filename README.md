@@ -10,7 +10,7 @@ Primary-card images and all 45 layout previews are stored locally with the stati
 
 The dependency-free CLI validates a list's points, base footprints, board bounds, and model overlap. It emits a planner-import JSON, a standalone SVG diagram with the mirror deployment ghosted in red, and a Markdown tactical briefing.
 
-The bundled preset is the 2,000-point Necron list in `armies/necrons-2000.json` on official Take and Hold vs Take and Hold Layout A.
+The bundled preset is the 1,995-point Necron list in `armies/necrons-2000.json` on all three official Take and Hold vs Take and Hold layouts. The planner loads one blue-side army by default and persists placements and freehand markup in the browser.
 
 ```sh
 npm run plan -- bases
@@ -18,7 +18,7 @@ npm run plan -- validate
 npm run plan:example
 ```
 
-Open the Take/Take Layout A deployment planner and choose **Load Necron example**, or import `public/reference/11th-edition/plans/necrons-take-take-a.json`. Edit `plans/take-take-mirror.json` and rebuild to iterate. Coordinates are model centres in inches from the board's top-left corner on the 44×60in portrait map.
+Open the Take/Take Layout A deployment planner, or import `public/reference/11th-edition/plans/necrons-take-take-a.json`. The left roster adds complete units without asking for base sizes; the map also provides movement, coherency, sight-line/deployment-zone audit, measurement, screening, visibility, and markup overlays. Edit `plans/take-take-mirror.json` and rebuild to iterate. Coordinates are model centres in inches from the board's top-left corner on the 44×60in portrait map.
 
 ## Development
 

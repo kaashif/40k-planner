@@ -4,7 +4,7 @@
   "layout": "C",
   "layoutPage": 11,
   "side": "blue",
-  "mirrorOpponentInRender": true,
+  "mirrorOpponentInRender": false,
   "intent": "Use the diagonal deployment to stage centre and natural Wraith bricks, run both C'tan straight up the right edge into the red natural, and keep the Destroyer package one layer behind. Switch the Wraiths across only after the C'tan secure the far natural.",
   "placements": {
     "nightbringer": { "centres": [[42.0, 49.0]], "note": "Right-edge spearhead toward the red natural." },
@@ -16,8 +16,8 @@
     "reanimator": { "centres": [[24.0, 46.0]], "note": "Behind the left edge of the blue central ruin, supporting both Wraith lanes." },
     "wraiths-left": { "centres": [[23.0, 52.0], [25.2, 52.0], [27.4, 52.0], [23.0, 54.2], [25.2, 54.2], [27.4, 54.2]], "note": "Stages toward the blue natural on the lower-left." },
     "wraiths-centre": { "centres": [[28.0, 39.0], [30.2, 39.0], [32.4, 39.0], [28.0, 41.2], [30.2, 41.2], [32.4, 41.2]], "note": "Centre brick on the forward edge of the diagonal zone." },
-    "flayed-ones": { "centres": [[39.5, 57.0], [40.8, 57.0], [42.1, 57.0], [40.15, 58.3], [41.45, 58.3]], "note": "Backfield screen around blue home." },
-    "lokhust": { "centres": [[36.5, 58.0]], "note": "Stays on the blue home objective." },
+    "flayed-ones": { "centres": [[39.5, 57.0], [40.8, 57.0], [42.1, 57.0], [40.15, 58.3], [41.45, 58.3]], "note": "First backfield screen around blue home." },
+    "flayed-ones-2": { "centres": [[33.8, 56.4], [35.1, 56.4], [36.4, 56.4], [34.45, 57.7], [35.75, 57.7]], "note": "Second backfield screen around blue home." },
     "skorpekhs": { "centres": [[29.0, 45.0], [31.2, 45.0], [29.0, 47.2], [31.2, 47.2], [29.0, 49.4], [31.2, 49.4]], "note": "Counter-charge staging behind centre." }
   },
   "sightLines": [

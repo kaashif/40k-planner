@@ -162,13 +162,13 @@ export function plannerImport(army, plan, sightLines) {
   for (const unit of army.units) {
     const placement = plan.placements[unit.id];
     if (placement.reserve) continue;
-    placement.centres.forEach(([x, y], modelIndex) => markers.push({
+    placement.centres.forEach(([x, y]) => markers.push({
       id: nextId++, x, y, widthMm: unit.baseMm, heightMm: unit.baseMm,
-      label: `${unit.label}${unit.models > 1 ? modelIndex + 1 : ''}`, side: 'blue', unitId: unit.id,
+      label: unit.name, side: 'blue', unitId: unit.id, moveInches: unit.movementInches,
     }));
   }
   if (plan.mirrorOpponentInRender) {
-    for (const marker of [...markers]) markers.push({ ...marker, id: nextId++, x: BOARD.width - marker.x, y: BOARD.height - marker.y, side: 'red', label: `M-${marker.label}` });
+    for (const marker of [...markers]) markers.push({ ...marker, id: nextId++, x: BOARD.width - marker.x, y: BOARD.height - marker.y, side: 'red' });
   }
   return {
     schemaVersion: 1, edition: 11, name: plan.name, layoutId: plan.layoutId,
@@ -229,7 +229,7 @@ export function reportMarkdown(army, plan, sightLines) {
     const where = placement.reserve ? 'Reserve' : placement.centres.map(([x, y]) => `(${x}\", ${y}\")`).join(', ');
     lines.push(`- **${unit.name}** — ${where}${placement.note ? `. ${placement.note}` : ''}`);
   }
-  lines.push('', '## Turn plan', '', '- Turn 1: Wraiths establish centre and the blue natural. Both C’tan advance together along their marked flank. The Destroyer package remains staged.', '- Turn 2: the C’tan pressure or hit the red natural as a pair. Hold both Wraith scoring lanes until the far natural is actually broken.', '- Turn 2/3 switch: rotate the natural Wraith brick across (Veil if walking costs a scoring turn), roll the centre brick into the vacated lane, and bring the Destroyers through the middle.', '- Endgame: C’tan occupy the red-natural quarter, Wraiths rotate across centre/naturals, Destroyers protect the exposed scorer, and the Lokhust never leaves blue home.', '', 'Coordinates are model-centre positions from the map’s top-left corner. Sight lines are sampled against the repository terrain mask; red is unobstructed and green dashed is terrain-blocked.');
+  lines.push('', '## Turn plan', '', '- Turn 1: Wraiths establish centre and the blue natural. Both C’tan advance together along their marked flank. The Destroyer package remains staged.', '- Turn 2: the C’tan pressure or hit the red natural as a pair. Hold both Wraith scoring lanes until the far natural is actually broken.', '- Turn 2/3 switch: rotate the natural Wraith brick across, roll the centre brick into the vacated lane, and bring the Destroyers through the middle.', '- Endgame: C’tan occupy the red-natural quarter, Wraiths rotate across centre/naturals, Destroyers protect the exposed scorer, and both Flayed One units screen blue home and reserve lanes.', '', 'Coordinates are model-centre positions from the map’s top-left corner. Sight lines are sampled against the repository terrain mask; red is unobstructed and green dashed is terrain-blocked.');
   return `${lines.join('\n')}\n`;
 }
 

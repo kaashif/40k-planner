@@ -1,20 +1,20 @@
 {
-  "name": "Pantheon/Destroyer Necrons 2000",
+  "name": "Ammentar Destroyer Necrons 1995",
   "faction": "Necrons",
   "edition": 11,
-  "pointsLimit": 2000,
+  "pointsLimit": 1995,
   "units": [
-    { "id": "nightbringer", "label": "NB", "name": "C'tan Shard of the Nightbringer", "points": 360, "models": 1, "baseMm": 90, "role": "pressure" },
-    { "id": "void-dragon", "label": "VD", "name": "C'tan Shard of the Void Dragon", "points": 345, "models": 1, "baseMm": 80, "role": "counterpunch" },
-    { "id": "ammentar", "label": "NA", "name": "Nekrosor Ammentar", "points": 185, "models": 1, "baseMm": 80, "role": "destroyer-support" },
-    { "id": "skorpekh-lord", "label": "SL", "name": "Skorpekh Lord", "points": 120, "models": 1, "baseMm": 60, "role": "leader", "attachedTo": "skorpekhs" },
-    { "id": "technomancer-veil", "label": "TV", "name": "Technomancer (Veil of Darkness)", "baseName": "Technomancer", "points": 100, "models": 1, "baseMm": 50, "role": "support", "attachedTo": "wraiths-left" },
-    { "id": "technomancer", "label": "T", "name": "Technomancer", "points": 90, "models": 1, "baseMm": 50, "role": "support", "attachedTo": "wraiths-centre" },
-    { "id": "reanimator", "label": "R", "name": "Canoptek Reanimator", "points": 75, "models": 1, "baseMm": 60, "role": "support" },
-    { "id": "wraiths-left", "label": "WL", "name": "Canoptek Wraiths (left)", "baseName": "Wraith w/ claws and beamer", "points": 220, "models": 6, "baseMm": 50, "role": "primary-holder" },
-    { "id": "wraiths-centre", "label": "WC", "name": "Canoptek Wraiths (centre)", "baseName": "Wraith w/ claws and beamer", "points": 240, "models": 6, "baseMm": 50, "role": "primary-holder" },
-    { "id": "flayed-ones", "label": "F", "name": "Flayed Ones", "baseName": "Flayed One", "points": 55, "models": 5, "baseMm": 28.5, "role": "screen" },
-    { "id": "lokhust", "label": "L", "name": "Lokhust Destroyer", "points": 40, "models": 1, "baseMm": 60, "role": "home-holder" },
-    { "id": "skorpekhs", "label": "S", "name": "Skorpekh Destroyers", "baseName": "Skorpekh Destroyer", "points": 170, "models": 6, "baseMm": 50, "role": "countercharge" }
+    { "id": "nightbringer", "label": "NB", "name": "C'tan Shard of the Nightbringer", "points": 360, "models": 1, "baseMm": 90, "movementInches": 10, "role": "pressure" },
+    { "id": "void-dragon", "label": "VD", "name": "C'tan Shard of the Void Dragon", "points": 345, "models": 1, "baseMm": 80, "movementInches": 10, "role": "counterpunch" },
+    { "id": "ammentar", "label": "NA", "name": "Nekrosor Ammentar", "points": 185, "models": 1, "baseMm": 80, "movementInches": 10, "role": "destroyer-support" },
+    { "id": "skorpekh-lord", "label": "SL", "name": "Skorpekh Lord (Enaegic Dermal Bond)", "baseName": "Skorpekh Lord", "points": 120, "models": 1, "baseMm": 60, "movementInches": 8, "role": "leader", "attachedTo": "skorpekhs" },
+    { "id": "technomancer-veil", "label": "T1", "name": "Technomancer (Warlord)", "baseName": "Technomancer", "points": 80, "models": 1, "baseMm": 50, "movementInches": 10, "role": "support", "attachedTo": "wraiths-left" },
+    { "id": "technomancer", "label": "T2", "name": "Technomancer", "points": 90, "models": 1, "baseMm": 50, "movementInches": 10, "role": "support", "attachedTo": "wraiths-centre" },
+    { "id": "reanimator", "label": "R", "name": "Canoptek Reanimator", "points": 75, "models": 1, "baseMm": 60, "movementInches": 8, "role": "support" },
+    { "id": "wraiths-left", "label": "W1", "name": "Canoptek Wraiths (unit 1)", "baseName": "Canoptek Wraiths", "points": 220, "models": 6, "baseMm": 50, "movementInches": 10, "role": "primary-holder" },
+    { "id": "wraiths-centre", "label": "W2", "name": "Canoptek Wraiths (unit 2)", "baseName": "Canoptek Wraiths", "points": 240, "models": 6, "baseMm": 50, "movementInches": 10, "role": "primary-holder" },
+    { "id": "flayed-ones", "label": "F1", "name": "Flayed Ones (unit 1)", "baseName": "Flayed Ones", "points": 55, "models": 5, "baseMm": 28.5, "movementInches": 5, "role": "screen" },
+    { "id": "flayed-ones-2", "label": "F2", "name": "Flayed Ones (unit 2)", "baseName": "Flayed Ones", "points": 55, "models": 5, "baseMm": 28.5, "movementInches": 5, "role": "screen" },
+    { "id": "skorpekhs", "label": "S", "name": "Skorpekh Destroyers", "points": 170, "models": 6, "baseMm": 50, "movementInches": 8, "role": "countercharge" }
   ]
 }
