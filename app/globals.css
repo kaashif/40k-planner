@@ -170,16 +170,18 @@ button, summary { font: inherit; }
 .planner-controls {
   position: relative;
   z-index: 20;
-  min-height: 40px;
   flex: none;
   display: flex;
-  align-items: center;
-  gap: 5px;
+  flex-direction: column;
+  gap: 3px;
   padding: 3px 5px;
   border: 1px solid var(--line-dark);
   background: var(--panel);
   box-shadow: 0 3px 12px rgba(0, 0, 0, .24);
 }
+.planner-context-row, .planner-toolstrip { min-width: 0; display: flex; align-items: center; gap: 4px; }
+.planner-context-row { min-height: 30px; }
+.planner-toolstrip { min-height: 26px; flex-wrap: wrap; }
 .planner-back-link, .planner-source-link { padding: 5px; white-space: nowrap; font-size: 10px; }
 .matchup-selector { min-width: 185px; display: flex; align-items: center; gap: 5px; }
 .matchup-selector span, .layout-selector span { color: var(--muted); font-size: 8px; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
@@ -236,6 +238,42 @@ button, summary { font: inherit; }
 }
 .planner-controls button:hover:not(:disabled), .army-sidebar button:hover:not(:disabled) { border-color: var(--active); background: #313a48; }
 .planner-controls button:disabled, .army-sidebar button:disabled { cursor: not-allowed; opacity: .4; }
+.planner-toolstrip button, .planner-toolstrip .toolbar-link {
+  min-height: 25px;
+  padding: 0 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-dark);
+  background: #252c37;
+  color: var(--ink);
+  font-size: 9px;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.planner-toolstrip .toolbar-link:hover { border-color: var(--active); background: #313a48; }
+.toolstrip-divider { width: 1px; height: 19px; margin-inline: 1px; background: var(--line-dark); }
+.selection-chip, .toolbar-note, .coherency-chip, .sight-line-chip {
+  max-width: 128px;
+  padding: 4px 6px;
+  overflow: hidden;
+  border: 1px solid var(--line-dark);
+  color: var(--muted);
+  font-size: 8px;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.toolbar-note { border-color: transparent; }
+.coherency-chip { border-color: #a9424b; color: #ff9aa3; }
+.sight-line-chip { color: #b9c4d0; }
+.screen-side-toggle { display: inline-flex; }
+.planner-toolstrip .screen-side-toggle button { width: 23px; padding: 0; }
+.planner-toolstrip .screen-side-toggle button + button { border-left: 0; }
+.screen-side-toggle button.active.blue { background: #245f8a; border-color: #55a8df; color: #fff; }
+.screen-side-toggle button.active.red { background: #8d2e35; border-color: #db6570; color: #fff; }
+.toolbar-colour { width: 27px; height: 25px; padding: 2px; border: 1px solid var(--line-dark); background: #11161d; }
 .side-toggle { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 7px; }
 .side-toggle button:first-child { border-right: 0; }
 .side-toggle button.active { color: #fff; font-weight: 700; }
@@ -280,7 +318,7 @@ button, summary { font: inherit; }
 .overlay-divider { height: 1px; margin: 10px -10px; background: var(--line); }
 .control-help { margin: 8px 0 0; font-size: 10px; line-height: 1.4; }
 .planner-import-error { margin: 7px 0 0; color: #ff9aa3; font-size: 10px; }
-.local-save-status { margin: 7px 0 0; color: #79d99b; font-size: 9px; }
+.local-save-status { color: #79d99b; font-size: 8px; white-space: nowrap; }
 .plan-intent { margin: 7px 0 0; padding: 6px; border-left: 2px solid var(--active); background: #11161d; color: #d7dde5; font-size: 9px; line-height: 1.4; }
 .sight-line-readout { display: grid; gap: 5px; margin-top: 8px; }
 .sight-line-readout > div { display: grid; grid-template-columns: 54px 1fr; gap: 6px; font-size: 9px; line-height: 1.25; }
@@ -475,7 +513,8 @@ button, summary { font: inherit; }
   .secondary-list, .file-list { grid-template-columns: repeat(3, 1fr); }
   .plan-matchup-grid { grid-template-columns: 1fr; }
   .secondary-list span:nth-child(3n), .file-list a:nth-child(3n) { border-right: 0; }
-  .planner-controls { flex-wrap: wrap; }
+  .planner-toolstrip { gap: 2px; }
+  .planner-toolstrip button, .planner-toolstrip .toolbar-link { min-height: 23px; padding-inline: 5px; font-size: 8px; }
   .matchup-selector { min-width: 145px; flex: 1; }
   .matchup-selector span, .layout-selector span { display: none; }
   .planner-status { display: none; }
@@ -497,8 +536,8 @@ button, summary { font: inherit; }
   .army-sidebar { width: 150px; min-width: 150px; padding: 5px; }
   .army-roster-unit { grid-template-columns: minmax(0, 1fr) 42px; }
   .planner-source-link { display: none; }
-  .tool-menu-body { position: fixed; top: 45px; left: 4px; right: 4px; width: auto; max-height: calc(100dvh - 52px); }
-  .tool-menu-map .tool-menu-body { left: 4px; right: 4px; width: auto; }
+  .planner-toolstrip { max-height: 73px; overflow: auto; }
+  .selection-chip { max-width: 88px; }
   .plan-library-shell { width: calc(100% - 10px); padding-top: 5px; }
   .plan-layout-card img { height: 105px; }
 }
@@ -511,5 +550,4 @@ button, summary { font: inherit; }
   .secondary-list, .file-list { grid-template-columns: repeat(2, 1fr); }
   .planner-back-link { font-size: 0; }
   .planner-back-link::after { content: '←'; font-size: 13px; }
-  .tool-menu > summary { padding-inline: 7px; }
 }

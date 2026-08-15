@@ -408,136 +408,68 @@ export default function DeploymentPlanner() {
     <main className="planner-shell">
       <div className="planner-workspace">
         <nav className="planner-controls" aria-label="Deployment planner controls">
-          <Link className="planner-back-link" href="/">← Missions</Link>
-          <label className="matchup-selector">
-            <span>First objective</span>
-            <select value={firstDisposition} onChange={(event) => navigateMatchup(event.target.value, secondDisposition, layout.layout)}>
-              {dispositions.map((name) => <option key={name} value={name}>{name}</option>)}
-            </select>
-          </label>
-          <span className="matchup-versus">vs</span>
-          <label className="matchup-selector">
-            <span>Second objective</span>
-            <select value={secondDisposition} onChange={(event) => navigateMatchup(firstDisposition, event.target.value, layout.layout)}>
-              {dispositions.map((name) => <option key={name} value={name}>{name}</option>)}
-            </select>
-          </label>
-          <label className="layout-selector">
-            <span>Layout</span>
-            <select value={layout.layout} onChange={(event) => navigateMatchup(firstDisposition, secondDisposition, event.target.value)}>
-              {['A', 'B', 'C'].map((letter) => <option key={letter} value={letter}>{letter}</option>)}
-            </select>
-          </label>
+          <div className="planner-context-row">
+            <Link className="planner-back-link" href="/">← Missions</Link>
+            <label className="matchup-selector">
+              <span>First objective</span>
+              <select value={firstDisposition} onChange={(event) => navigateMatchup(event.target.value, secondDisposition, layout.layout)}>
+                {dispositions.map((name) => <option key={name} value={name}>{name}</option>)}
+              </select>
+            </label>
+            <span className="matchup-versus">vs</span>
+            <label className="matchup-selector">
+              <span>Second objective</span>
+              <select value={secondDisposition} onChange={(event) => navigateMatchup(firstDisposition, event.target.value, layout.layout)}>
+                {dispositions.map((name) => <option key={name} value={name}>{name}</option>)}
+              </select>
+            </label>
+            <label className="layout-selector">
+              <span>Layout</span>
+              <select value={layout.layout} onChange={(event) => navigateMatchup(firstDisposition, secondDisposition, event.target.value)}>
+                {['A', 'B', 'C'].map((letter) => <option key={letter} value={letter}>{letter}</option>)}
+              </select>
+            </label>
+            {planName && <span className="toolbar-note" title={planIntent || 'Saved automatically in this browser.'}>{planName}</span>}
+            {lastSavedAt && <span className="local-save-status">Saved {lastSavedAt === 'restored' ? 'backup' : new Date(lastSavedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
+            {importError && <span className="planner-import-error">{importError}</span>}
+            <span className={`planner-status${markerCoherencyIssues.size ? ' warning' : ''}`}>
+              {markers.length} models · {markerCoherencyIssues.size ? `${markerCoherencyIssues.size} incoherent` : 'coherent'}
+            </span>
+            <a className="planner-source-link" href={`${referenceRoot}/current-layout-reference.pdf#page=${layout.pdfPage - 7}`} target="_blank">Current PDF ↗</a>
+          </div>
 
-          <details className="tool-menu" name="planner-tools">
-            <summary>Deployment</summary>
-            <section className="tool-menu-body">
-            {bundledPlan && (
-              <button className="add-unit-button" onClick={loadExample}>Load default 1,995-point deployment</button>
-            )}
-            <Link className="plan-library-link" href="/plans/">View all deployment plans</Link>
-            <button onClick={() => importRef.current?.click()}>Import planner JSON</button>
+          <div className="planner-toolstrip" aria-label="Planner tools">
+            {bundledPlan && <button onClick={loadExample} title="Replace the board with the bundled 1,995-point deployment">Load default</button>}
+            <Link className="toolbar-link" href="/plans/" title="View every saved deployment plan">All plans</Link>
+            <button onClick={() => importRef.current?.click()} title="Import a planner JSON file">Import</button>
             <input ref={importRef} type="file" accept="application/json,.json" hidden onChange={importPlan} />
-            {planName && <p className="control-help"><strong>{planName}</strong><br />Placements and markup save automatically in this browser.</p>}
-            {planIntent && <p className="plan-intent">{planIntent}</p>}
-            {lastSavedAt && <p className="local-save-status">Saved locally · {lastSavedAt === 'restored' ? 'restored backup' : new Date(lastSavedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>}
-            {sightLines.length > 0 && <div className="sight-line-readout">
-              {sightLines.map((line) => <div key={line.label} className={line.clear ? 'clear' : 'blocked'}>
-                <strong>{line.clear ? 'VISIBLE' : 'BLOCKED'}</strong><span>{line.label}</span>
-              </div>)}
-            </div>}
-            {importError && <p className="planner-import-error">{importError}</p>}
-            </section>
-          </details>
-
-          <details className="tool-menu" name="planner-tools">
-            <summary>{selectedIds.length > 1 ? `${selectedIds.length} selected` : selected ? selected.label : 'Selection'}</summary>
-            <section className="tool-menu-body">
-            <div className="selection-readout">
-              {selected ? <><strong>{selectedIds.length > 1 ? `${selectedIds.length} models selected` : selected.label}</strong><span>{selected.moveInches ? `M ${selected.moveInches}″ · ` : ''}drag any selected model to move the group</span></> : <span>Click a model, unit label, or drag a selection box. Ctrl/Cmd-click adds or removes models.</span>}
-            </div>
-            {selected && markerCoherencyIssues.has(selected.id) && (
-              <p className="coherency-error"><strong>OUT OF COHERENCY</strong><br />{markerCoherencyIssues.get(selected.id)?.join('; ')}</p>
-            )}
-            <button disabled={!markers.some((marker) => selectedIdSet.has(marker.id) && marker.widthMm !== marker.heightMm)} onClick={rotateSelected}>Rotate selected ovals 90°</button>
-            <button className="danger-button" disabled={selectedIds.length === 0} onClick={removeSelected}>Remove selected</button>
-            <button disabled={markers.length === 0} onClick={() => { setMarkers([]); setSelectedIds([]); setSightLines([]); setPlanName(''); setPlanIntent(''); }}>Clear all</button>
-            </section>
-          </details>
-
-          <details className="tool-menu tool-menu-map" name="planner-tools">
-            <summary>Tools &amp; modes</summary>
-            <section className="tool-menu-body">
-            <div className="overlay-control-label">Map interpretation</div>
-            <button className={auditEnabled ? 'audit-toggle active' : 'audit-toggle'} onClick={() => setAuditEnabled((enabled) => !enabled)}>
-              {auditEnabled ? 'Understanding shown' : 'Verify map understanding'}
-            </button>
-            <p className="control-help">Audits the exact deployment colours and sight-blocking terrain mask the planner reads from this official layout.</p>
-            <div className="overlay-divider" />
-            <div className="overlay-control-label">Terrain visibility</div>
-            <button
-              className={visibilityEnabled ? 'los-toggle active' : 'los-toggle'}
-              disabled={!selected}
-              onClick={() => setVisibilityEnabled((enabled) => !enabled)}
-            >
-              {visibilityEnabled ? 'Visibility on' : 'Show where visible'}
-            </button>
-            <p className="control-help">
-              Red shading shows every position with an unobstructed sight line to the selected base. Rays pass directly beside every terrain-footprint corner to form the visibility cones; drag the base to recalculate them.
-            </p>
-            <div className="overlay-divider" />
-            <div className="overlay-control-label">Movement range</div>
-            <button
-              className={movementEnabled ? 'movement-toggle active' : 'movement-toggle'}
-              disabled={!selected?.moveInches}
-              onClick={() => setMovementEnabled((enabled) => !enabled)}
-            >
-              {movementEnabled && selected?.moveInches ? `Show M ${selected.moveInches}″` : 'Show selected movement'}
-            </button>
-            <p className="control-help">Shows the selected model’s real Movement characteristic, measured from its current base position.</p>
-            <button
-              className={boundedMoveEnabled ? 'bounded-move-toggle active' : 'bounded-move-toggle'}
-              onClick={() => setBoundedMoveEnabled((enabled) => !enabled)}
-            >
-              {boundedMoveEnabled ? 'Movement-locked drag on' : 'Lock drag to Movement'}
-            </button>
-            <p className="control-help">Caps each drag at that model’s Movement characteristic and measures the move live.</p>
-            <div className="overlay-divider" />
-            <div className="overlay-control-label">8″ deep-strike screen</div>
-            <div className="side-toggle" aria-label="Deep-strike screening side">
-              <button className={screenSide === 'blue' ? 'active blue' : ''} onClick={() => setScreenSide('blue')}>Blue</button>
-              <button className={screenSide === 'red' ? 'active red' : ''} onClick={() => setScreenSide('red')}>Red</button>
-            </div>
-            <button className={screenEnabled ? 'screen-toggle active' : 'screen-toggle'} onClick={() => setScreenEnabled((enabled) => !enabled)}>
-              {screenEnabled ? `${screenSide} screen on` : 'Show screened region'}
-            </button>
-            <p className="control-help">Shades the union of all positions within 8″ of a {screenSide} base edge.</p>
-            <div className="overlay-divider" />
-            <div className="overlay-control-label">Ruler</div>
-            <button className={measureEnabled ? 'measure-toggle active' : 'measure-toggle'} onClick={() => setMeasureEnabled((enabled) => !enabled)}>
-              {measureEnabled ? 'Measure mode on' : 'Measure distance'}
-            </button>
-            <p className="control-help">Turn on, then drag between any two points on the map.</p>
-            <div className="overlay-divider" />
-            <div className="overlay-control-label">Deployment markup</div>
-            <div className="markup-controls">
-              <input aria-label="Markup colour" type="color" value={markupColor} onChange={(event) => setMarkupColor(event.target.value)} />
-              <button className={markupEnabled ? 'markup-toggle active' : 'markup-toggle'} onClick={() => setMarkupEnabled((enabled) => !enabled)}>
-                {markupEnabled ? 'Draw mode on' : 'Draw markup'}
-              </button>
-            </div>
-            <button disabled={markupPaths.length === 0} onClick={() => setMarkupPaths((current) => current.slice(0, -1))}>Undo last stroke</button>
-            <button className="danger-button" disabled={markupPaths.length === 0} onClick={() => setMarkupPaths([])}>Clear markup</button>
-            <p className="control-help">Draw arrows, routes, zones, and notes directly on the deployment map. Strokes save automatically.</p>
-            </section>
-          </details>
-
-          <span className={`planner-status${markerCoherencyIssues.size ? ' warning' : ''}`}>
-            {markers.length} models · {markerCoherencyIssues.size ? `${markerCoherencyIssues.size} incoherent` : 'coherent'}
-          </span>
-          <a className="planner-source-link" href={`${referenceRoot}/current-layout-reference.pdf#page=${layout.pdfPage - 7}`} target="_blank">
-            Current PDF ↗
-          </a>
+            <span className="toolstrip-divider" />
+            <span className="selection-chip" title={selected ? `${selected.moveInches ? `M ${selected.moveInches}″ · ` : ''}drag any selected model to move the group` : 'Click a model, unit label, or drag a box; Ctrl/Cmd-click toggles models'}>
+              {selectedIds.length > 1 ? `${selectedIds.length} selected` : selected ? selected.label : 'No selection'}
+            </span>
+            <button disabled={!markers.some((marker) => selectedIdSet.has(marker.id) && marker.widthMm !== marker.heightMm)} onClick={rotateSelected} title="Rotate selected oval bases 90°">Rotate</button>
+            <button className="danger-button" disabled={selectedIds.length === 0} onClick={removeSelected} title="Remove selected models">Remove</button>
+            <button disabled={markers.length === 0} onClick={() => { setMarkers([]); setSelectedIds([]); setSightLines([]); setPlanName(''); setPlanIntent(''); }} title="Remove every model">Clear models</button>
+            <span className="toolstrip-divider" />
+            <button className={auditEnabled ? 'audit-toggle active' : 'audit-toggle'} onClick={() => setAuditEnabled((enabled) => !enabled)} title="Show the deployment zones and sight-blocking geometry the planner reads">Map check</button>
+            <button className={visibilityEnabled ? 'los-toggle active' : 'los-toggle'} disabled={!selected} onClick={() => setVisibilityEnabled((enabled) => !enabled)} title="Show positions visible from the selected base">Visibility</button>
+            <button className={movementEnabled ? 'movement-toggle active' : 'movement-toggle'} disabled={!selected?.moveInches} onClick={() => setMovementEnabled((enabled) => !enabled)} title="Show the selected model's real Movement range">Move range{movementEnabled && selected?.moveInches ? ` ${selected.moveInches}″` : ''}</button>
+            <button className={boundedMoveEnabled ? 'bounded-move-toggle active' : 'bounded-move-toggle'} onClick={() => setBoundedMoveEnabled((enabled) => !enabled)} title="Limit dragging to the model's Movement characteristic and measure it live">Move lock</button>
+            <span className="screen-side-toggle" aria-label="Deep-strike screening side">
+              <button className={screenSide === 'blue' ? 'active blue' : ''} onClick={() => setScreenSide('blue')} title="Use blue models for screening">B</button>
+              <button className={screenSide === 'red' ? 'active red' : ''} onClick={() => setScreenSide('red')} title="Use red models for screening">R</button>
+            </span>
+            <button className={screenEnabled ? 'screen-toggle active' : 'screen-toggle'} onClick={() => setScreenEnabled((enabled) => !enabled)} title={`Show positions within 8″ of a ${screenSide} base edge`}>8″ screen</button>
+            <button className={measureEnabled ? 'measure-toggle active' : 'measure-toggle'} onClick={() => setMeasureEnabled((enabled) => !enabled)} title="Drag between any two points to measure distance">Ruler</button>
+            <input className="toolbar-colour" aria-label="Markup colour" title="Markup colour" type="color" value={markupColor} onChange={(event) => setMarkupColor(event.target.value)} />
+            <button className={markupEnabled ? 'markup-toggle active' : 'markup-toggle'} onClick={() => setMarkupEnabled((enabled) => !enabled)} title="Draw routes, zones, and notes on the map">Draw</button>
+            <button disabled={markupPaths.length === 0} onClick={() => setMarkupPaths((current) => current.slice(0, -1))} title="Undo the last markup stroke">Undo ink</button>
+            <button className="danger-button" disabled={markupPaths.length === 0} onClick={() => setMarkupPaths([])} title="Clear all markup">Clear ink</button>
+            {selected && markerCoherencyIssues.has(selected.id) && <span className="coherency-chip" title={markerCoherencyIssues.get(selected.id)?.join('; ')}>Out of coherency</span>}
+            {sightLines.length > 0 && <span className="sight-line-chip" title={sightLines.map((line) => `${line.clear ? 'Visible' : 'Blocked'}: ${line.label}`).join('\n')}>
+              {sightLines.filter((line) => line.clear).length} visible · {sightLines.filter((line) => !line.clear).length} blocked
+            </span>}
+          </div>
         </nav>
 
         <div className="planner-main-row">
