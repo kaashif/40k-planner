@@ -8,15 +8,16 @@ Raw source material and normalized indexes for implementing 11th-edition mission
 - `extracted/`: searchable plain-text extraction of the official PDFs. The footprint PDF is primarily vector artwork and therefore has almost no extractable text.
 - `data/sources.json`: source URLs, retrieval date, sizes, and SHA-256 checksums.
 - `data/missions.json`: the five Force Dispositions, directed 5×5 primary-mission matrix, and 18 secondary-card names.
-- `data/event-layouts.json`: generated index of all 45 A/B/C layout slots, including their archived PDF page, matchup, missions, measurement labels, and terrain feature groups.
-- `maps/` and `layouts/`: current GDM/Battlemaster battlefield crops and measured card previews.
-- `terrain-masks/`: generated sight-blocking geometry used by both visibility calculations and the audit overlay.
-- `current-layout-reference.pdf`: the current 45-layout measured reference generated from GDM.
+- `data/event-layouts.json`: generated index of all 45 A/B/C layout slots, including the August 2026 map revision and its 27 changed layout IDs.
+- `data/layout-geometry.json`: current vector terrain, deployment-zone, and objective geometry.
+- `maps/` and `layouts/`: current rendered battlefield maps and reference-card previews.
+- `terrain-masks/`: exact vector-derived sight-blocking geometry used by both visibility calculations and the audit overlay.
+- `current-layout-reference.pdf`: the current 45-layout reference generated from the same vectors.
 - `scripts/extract-11e-layouts.mjs`: regenerates `event-layouts.json` from the extracted Event Companion text.
 
 ## Authority and limitations
 
-Official Games Workshop documents remain the authority for rules. The June 2026 Event Companion map pages are archived because Games Workshop's 22 July update changed every Purge the Foe matchup from five objectives to six. Current map geometry, objective positions, terrain footprints, and measurements are synchronized from GDM/Battlemaster; see `docs/layout-regeneration.md` at the repository root.
+Official Games Workshop documents remain the authority for rules. The June 2026 Event Companion map pages are archived: the 22 July update changed every Purge the Foe matchup, and the 26 August update changed terrain or objectives in 27 of the 45 layouts. Current map geometry, objective positions, terrain footprints, and deployment-zone polygons are synchronized from Rapid Ingress's current vector data; see `docs/layout-regeneration.md` at the repository root.
 
 The Chapter Approved Mission Deck 2026–27 is a separately sold 88-card product and is also available through the official Warhammer 40,000 app. `missions.json` records the primary mission names and matchup relationships used by the grid.
 

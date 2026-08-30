@@ -5,6 +5,35 @@ const output = new URL('../public/reference/11th-edition/data/event-layouts.json
 
 const text = await readFile(input, 'utf8');
 const pages = text.split('\f');
+const augustUpdatedLayouts = [
+  'take-and-hold-vs-take-and-hold-b',
+  'take-and-hold-vs-take-and-hold-c',
+  'take-and-hold-vs-disruption-a',
+  'take-and-hold-vs-disruption-b',
+  'take-and-hold-vs-disruption-c',
+  'take-and-hold-vs-reconnaissance-a',
+  'take-and-hold-vs-reconnaissance-c',
+  'take-and-hold-vs-priority-assets-b',
+  'purge-the-foe-vs-purge-the-foe-a',
+  'purge-the-foe-vs-purge-the-foe-b',
+  'purge-the-foe-vs-purge-the-foe-c',
+  'purge-the-foe-vs-disruption-a',
+  'purge-the-foe-vs-disruption-b',
+  'purge-the-foe-vs-reconnaissance-a',
+  'purge-the-foe-vs-reconnaissance-c',
+  'purge-the-foe-vs-priority-assets-b',
+  'disruption-vs-reconnaissance-a',
+  'disruption-vs-reconnaissance-b',
+  'disruption-vs-priority-assets-a',
+  'disruption-vs-priority-assets-b',
+  'disruption-vs-priority-assets-c',
+  'reconnaissance-vs-reconnaissance-a',
+  'reconnaissance-vs-reconnaissance-b',
+  'reconnaissance-vs-reconnaissance-c',
+  'reconnaissance-vs-priority-assets-b',
+  'priority-assets-vs-priority-assets-b',
+  'priority-assets-vs-priority-assets-c',
+];
 
 const layouts = pages.flatMap((pageText, zeroBasedPage) => {
   const layoutMatch = pageText.match(/\bLAYOUT\s+([ABC])\b/);
@@ -61,11 +90,18 @@ if (layouts.length !== 45) {
 }
 
 await writeFile(output, `${JSON.stringify({
-  schemaVersion: 1,
+  schemaVersion: 2,
   edition: 11,
   season: '2026-27',
   battlefieldInches: { width: 60, height: 44 },
-  note: 'Coordinates and visual geometry remain authoritative in the referenced PDF page; measurements here are an index of the labels present on that page.',
+  mapRevision: {
+    publishedOn: '2026-08-26',
+    changedLayoutCount: augustUpdatedLayouts.length,
+    changedLayoutIds: augustUpdatedLayouts,
+    source: 'https://www.warhammer-community.com/en-gb/articles/b4zj2o7u/the-warhammer-40000-august-update-everything-you-need-to-know/',
+    comparison: 'https://rapidingress.com/layout-updates',
+  },
+  note: 'Current map artwork and planner geometry come from the synchronized GDM/Battlemaster assets. PDF page numbers and measurement-label indexes refer to the archived June Event Companion.',
   layouts,
 }, null, 2)}\n`);
 

@@ -9,6 +9,7 @@ const army = readJson(path.join(root, 'armies', 'necrons-2000.json'));
 const variants = ['a', 'b', 'c'].map((layout) => readJson(path.join(root, 'plans', `take-take-layout-${layout}.json`)));
 const planManifest = readJson(path.join(root, 'plans', 'take-take-mirror.json'));
 const allPlans = planManifest.plans.map((file) => readJson(path.join(root, 'plans', file)));
+const layoutIndex = readJson(path.join(root, 'public', 'reference', '11th-edition', 'data', 'event-layouts.json'));
 
 test('all three bundled layouts match the 1,995-point list and are overlap-free', () => {
   for (const plan of variants) {
@@ -28,6 +29,19 @@ test('terrain masks decode and every marked line gets a visibility result', () =
     const lines = analyseSightLines(army, plan, mask);
     assert.equal(lines.length, 4);
     assert.ok(lines.every((line) => typeof line.clear === 'boolean'));
+  }
+});
+
+test('all 45 current layout geometry masks are populated at board resolution', () => {
+  assert.equal(layoutIndex.layouts.length, 45);
+  assert.equal(new Set(layoutIndex.layouts.map(({ pdfPage }) => pdfPage)).size, 45);
+  for (const { id, pdfPage } of layoutIndex.layouts) {
+    const page = String(pdfPage).padStart(2, '0');
+    const mask = readGrayscalePng(path.join(root, 'public', 'reference', '11th-edition', 'terrain-masks', `layout-${page}.png`));
+    assert.equal(mask.width, 522, id);
+    assert.equal(mask.height, 708, id);
+    const blockingPixels = mask.pixels.reduce((count, pixel) => count + Number(pixel > 127), 0);
+    assert.ok(blockingPixels > 10_000 && blockingPixels < 200_000, `${id}: implausible terrain area ${blockingPixels}`);
   }
 });
 
