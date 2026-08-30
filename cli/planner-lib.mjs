@@ -60,7 +60,7 @@ export function validate(army, plan) {
       if (x - radius < 0 || x + radius > BOARD.width || y - radius < 0 || y + radius > BOARD.height) {
         errors.push(`${unit.id} model ${index + 1} is not wholly on the 44×60in battlefield.`);
       }
-      if (plan.side === 'blue' && !whollyInBlueDeploymentZone(plan, x, y, radius)) {
+      if (plan.side === 'blue' && !placement.infiltrate && !whollyInBlueDeploymentZone(plan, x, y, radius)) {
         errors.push(`${unit.id} model ${index + 1} is not wholly inside the blue deployment zone for Layout ${plan.layout}.`);
       }
       circles.push({ unit: unit.id, index, x, y, radius });
@@ -189,12 +189,14 @@ export function analyseSightLines(army, plan, mask) {
 export function plannerImport(army, plan, sightLines) {
   let nextId = 1;
   const markers = [];
+  const deepStrikeMarkers = [];
   for (const unit of army.units) {
     const placement = plan.placements[unit.id];
-    if (placement.reserve) continue;
-    placement.centres.forEach(([x, y]) => markers.push({
+    const destination = placement.reserve ? deepStrikeMarkers : markers;
+    const centres = placement.centres || Array.from({ length: unit.models }, () => [BOARD.width / 2, BOARD.height - 2]);
+    centres.forEach(([x, y]) => destination.push({
       id: nextId++, x, y, widthMm: unit.baseMm, heightMm: unit.baseMm,
-      label: unit.name, side: 'blue', unitId: unit.id, moveInches: unit.movementInches,
+      label: unit.label || unit.name, side: 'blue', unitId: unit.id, moveInches: unit.movementInches,
     }));
   }
   if (plan.mirrorOpponentInRender) {
@@ -202,7 +204,7 @@ export function plannerImport(army, plan, sightLines) {
   }
   return {
     schemaVersion: 1, edition: 11, name: plan.name, layoutId: plan.layoutId,
-    battlefieldInches: BOARD, markers, sightLines, intent: plan.intent,
+    battlefieldInches: BOARD, markers, deepStrikeMarkers, sightLines, intent: plan.intent,
     reserves: army.units.filter((unit) => plan.placements[unit.id]?.reserve).map((unit) => unit.id),
   };
 }
@@ -259,8 +261,8 @@ export function reportMarkdown(army, plan, sightLines) {
     const where = placement.reserve ? 'Reserve' : placement.centres.map(([x, y]) => `(${x}\", ${y}\")`).join(', ');
     lines.push(`- **${unit.name}** — ${where}${placement.note ? `. ${placement.note}` : ''}`);
   }
-  if (plan.layoutId.startsWith('take-and-hold-vs-take-and-hold-')) {
-    lines.push('', '## Turn plan', '', '- Turn 1: Wraiths establish centre and the blue natural. Both C’tan advance together along their marked flank. The Destroyer package remains staged.', '- Turn 2: the C’tan pressure or hit the red natural as a pair. Hold both Wraith scoring lanes until the far natural is actually broken.', '- Turn 2/3 switch: rotate the natural Wraith brick across, roll the centre brick into the vacated lane, and bring the Destroyers through the middle.', '- Endgame: C’tan occupy the red-natural quarter, Wraiths rotate across centre/naturals, Destroyers protect the exposed scorer, and both Flayed One units screen blue home and reserve lanes.');
+  if (plan.placements['void-dragon']?.reserve) {
+    lines.push('', '## Turn plan', '', '- Deployment: infiltrate Flayed Ones behind the centre wall. Keep the Nightbringer and Reanimator off the terrain footprint and hidden behind the blue home ruin. Put the Void Dragon in deep strike.', '- Turn 1: use the terrain-touching Wraith and Skorpekh positions to launch into the midfield while Ammentar remains close enough to the Destroyer package for Lone Operative.', '- Turn 2 onward: bring the Void Dragon into the lane where its anti-vehicle pressure matters most. Keep the second Flayed One unit available to screen the blue rear and reserve entry points.');
   } else {
     lines.push('', '## Tactical doctrine', '', plan.intent);
   }

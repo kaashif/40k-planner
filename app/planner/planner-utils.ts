@@ -168,7 +168,9 @@ export function placeUnitLabels(markers: PlannerMarker[]): UnitLabelPlacement[] 
     }, { left: 1, right: 0, top: 1, bottom: 0 });
     const label = group[0].label;
     const width = Math.min(.28, Math.max(.1, label.length * .0062));
-    const height = .026;
+    // Labels use fixed-pixel type inside a responsive board, so reserve enough
+    // relative height for the narrow mobile battlefield as well as desktop.
+    const height = .04;
     const gap = .007;
     const centreX = (bounds.left + bounds.right) / 2;
     const centreY = (bounds.top + bounds.bottom) / 2;

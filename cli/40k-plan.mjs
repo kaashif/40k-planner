@@ -30,7 +30,13 @@ if (command === 'build') {
     const result = writeBuild({ armyFile, planFile: variantFile, outDir, appOut, root });
     const previewDir = path.join(appOutDir, 'previews');
     fs.mkdirSync(previewDir, { recursive: true });
-    fs.copyFileSync(path.join(outDir, `${plan.slug || `necrons-take-take-${plan.layout.toLowerCase()}`}.svg`), path.join(previewDir, `${plan.slug || `necrons-take-take-${plan.layout.toLowerCase()}`}.svg`));
+    const stem = plan.slug || `necrons-take-take-${plan.layout.toLowerCase()}`;
+    const fullDiagram = fs.readFileSync(path.join(outDir, `${stem}.svg`), 'utf8');
+    const boardPreview = fullDiagram.replace(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="1080" viewBox="0 0 1220 1080">',
+      '<svg xmlns="http://www.w3.org/2000/svg" width="792" height="1080" viewBox="0 0 792 1080">',
+    );
+    fs.writeFileSync(path.join(previewDir, `${stem}.svg`), boardPreview);
     console.log(`Layout ${plan.layout}: valid ${result.points}-point plan; ${result.sightLines.filter((line) => line.clear).length}/${result.sightLines.length} marked lines visible.`);
   }
 } else if (command === 'validate') {
@@ -62,5 +68,5 @@ Usage:
   npm run plan -- build [--army FILE] [--plan FILE] [--out DIR]
   npm run plan -- build-set [--army FILE] [--plan MANIFEST]
 
-The bundled defaults are the 1,995-point Necron list and three-layout Take/Take plan set.`);
+The bundled defaults are Kaashif's 2,000-point Brighton Necron list and its deployment plan set.`);
 }

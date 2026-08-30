@@ -1,13 +1,6 @@
 {
   "schemaVersion": 1,
   "plans": [
-    { "layoutId": "take-and-hold-vs-take-and-hold-a", "file": "necrons-take-take-a.json", "preview": "previews/necrons-take-take-a.svg", "name": "Take/Take Layout A" },
-    { "layoutId": "take-and-hold-vs-take-and-hold-b", "file": "necrons-take-take-b.json", "preview": "previews/necrons-take-take-b.svg", "name": "Take/Take Layout B" },
-    { "layoutId": "take-and-hold-vs-take-and-hold-c", "file": "necrons-take-take-c.json", "preview": "previews/necrons-take-take-c.svg", "name": "Take/Take Layout C" },
-    { "layoutId": "take-and-hold-vs-reconnaissance-a", "file": "necrons-take-recon-a.json", "preview": "previews/necrons-take-recon-a.svg", "name": "Take/Recon Layout A" },
-    { "layoutId": "take-and-hold-vs-reconnaissance-b", "file": "necrons-take-recon-b.json", "preview": "previews/necrons-take-recon-b.svg", "name": "Take/Recon Lengthways Layout B" },
-    { "layoutId": "take-and-hold-vs-purge-the-foe-a", "file": "necrons-take-purge-a.json", "preview": "previews/necrons-take-purge-a.svg", "name": "Take/Purge Layout A" },
-    { "layoutId": "take-and-hold-vs-purge-the-foe-b", "file": "necrons-take-purge-b.json", "preview": "previews/necrons-take-purge-b.svg", "name": "Take/Purge Layout B" },
-    { "layoutId": "take-and-hold-vs-purge-the-foe-c", "file": "necrons-take-purge-c.json", "preview": "previews/necrons-take-purge-c.svg", "name": "Take/Purge Layout C" }
+    { "layoutId": "take-and-hold-vs-take-and-hold-a", "file": "necrons-take-take-a.json", "preview": "previews/necrons-take-take-a.svg", "name": "Take and Hold mirror A - suggested deployment" }
   ]
 }

@@ -1,29 +1,24 @@
 {
-  "name": "Take/Take Layout A – natural overload and switch",
+  "name": "Take and Hold mirror A - suggested deployment",
   "layoutId": "take-and-hold-vs-take-and-hold-a",
   "layout": "A",
   "layoutPage": 9,
   "side": "blue",
   "mirrorOpponentInRender": false,
-  "intent": "Put the Wraith bricks on the centre and blue natural lanes, send both C'tan together up the right flank into the red natural, and stage the Destroyer package for the counter-charge. Once the C'tan have broken the red natural on turn 2 or 3, switch the army's weight across the board and maintain maximum primary scoring.",
+  "intent": "Wraiths and the Destroyer package start as far forward as their safe terrain positions allow. Both Wraith bricks and the Skorpekhs touch terrain for cover. Ammentar is forward beside the Skorpekhs for Lone Operative. The Nightbringer and Reanimator sit clear of, and behind, the blue home ruin. One Flayed One unit infiltrates behind the centre ruin without touching it; the second screens the right rear. The Void Dragon starts in deep strike.",
   "placements": {
-    "nightbringer": { "centres": [[40.0, 57.5]], "note": "Right-flank spearhead. Run with the Void Dragon toward the red natural; do not split the pair before the natural is broken." },
-    "void-dragon": { "centres": [[35.5, 57.5]], "note": "Second C'tan in the right-flank pair." },
-    "ammentar": { "centres": [[31.0, 57.5]], "note": "Stage with the Skorpekhs so Protective Disciples and the Destroyer aura are live." },
-    "skorpekh-lord": { "centres": [[27.5, 57.5]] },
-    "technomancer-veil": { "centres": [[5.0, 58.0]], "note": "Supports the first Wraith brick." },
-    "technomancer": { "centres": [[12.0, 58.0]] },
-    "reanimator": { "centres": [[19.5, 58.0]], "note": "Between the Wraith and Destroyer lanes, hidden as far as the terrain permits." },
-    "wraiths-left": { "centres": [[3.5, 52.5], [5.7, 52.5], [7.9, 52.5], [3.5, 54.7], [5.7, 54.7], [7.9, 54.7]], "note": "First Wraith brick, wholly inside the blue deployment zone." },
-    "wraiths-centre": { "centres": [[10.8, 52.5], [13.0, 52.5], [15.2, 52.5], [10.8, 54.7], [13.0, 54.7], [15.2, 54.7]], "note": "Second Wraith brick, wholly inside the blue deployment zone." },
-    "flayed-ones": { "centres": [[3.0, 49.0], [4.3, 49.0], [5.6, 49.0], [3.65, 50.3], [4.95, 50.3]], "note": "First forward screen, wholly inside the blue deployment zone." },
-    "flayed-ones-2": { "centres": [[9.0, 49.0], [10.3, 49.0], [11.6, 49.0], [9.65, 50.3], [10.95, 50.3]], "note": "Second forward screen, wholly inside the blue deployment zone." },
-    "skorpekhs": { "centres": [[18.0, 52.5], [20.2, 52.5], [22.4, 52.5], [18.0, 54.7], [20.2, 54.7], [22.4, 54.7]], "note": "Counter-charge staging wholly inside the blue deployment zone." }
+    "nightbringer": { "centres": [[23.5, 56.3]], "note": "Behind the south corner of the blue home ruin, not touching its footprint." },
+    "void-dragon": { "reserve": true, "centres": [[36.5, 56.5]], "note": "Deep strike." },
+    "ammentar": { "centres": [[31.2, 41.8]], "note": "Forward beside the Skorpekh package, using Lone Operative." },
+    "skorpekh-lord": { "centres": [[28.3, 41.4]], "note": "At the front of the home ruin and attached to the Skorpekhs." },
+    "technomancer-veil": { "centres": [[14.0, 49.2]], "note": "Attached to Wraith unit 1 in the open pocket of the left terrain area." },
+    "technomancer": { "centres": [[23.0, 51.42]], "note": "Attached to Wraith unit 2 in the blue home ruin." },
+    "reanimator": { "centres": [[28.2, 57.0]], "note": "Behind the south corner of the blue home ruin, not touching its footprint." },
+    "wraiths-left": { "centres": [[10.8, 49.0], [10.8, 51.2], [12.9, 51.4], [15.0, 51.4], [17.1, 51.4], [17.9, 49.2]], "note": "Forward around the left terrain area with every Wraith base touching the footprint for cover." },
+    "wraiths-centre": { "centres": [[22.99, 47.2], [25.1, 47.2], [27.21, 47.2], [22.99, 49.31], [25.1, 49.31], [27.21, 49.31]], "note": "Forward in the open middle of the blue home ruin, clear of its walls." },
+    "flayed-ones": { "infiltrate": true, "centres": [[23.4, 36.0], [24.7, 36.0], [26.0, 36.0], [27.3, 36.0], [25.35, 37.3]], "note": "Infiltrate behind the centre ruin without touching its footprint." },
+    "flayed-ones-2": { "centres": [[35.0, 55.0], [36.3, 55.0], [37.6, 55.0], [38.9, 55.0], [36.95, 56.3]], "note": "Rear-right screen." },
+    "skorpekhs": { "centres": [[30.9, 44.5], [30.9, 46.55], [30.9, 48.6], [30.9, 50.65], [30.9, 52.7], [30.9, 54.75]], "note": "Forward column along the right edge of the blue home ruin, touching the footprint for cover while staying clear of the wall." }
   },
-  "sightLines": [
-    { "label": "Red natural → Nightbringer lane", "from": [36, 14], "targetUnit": "nightbringer" },
-    { "label": "Red natural → Void Dragon lane", "from": [36, 14], "targetUnit": "void-dragon" },
-    { "label": "Red centre staging → centre Wraiths", "from": [22, 22], "targetUnit": "wraiths-centre", "targetModel": 1 },
-    { "label": "Red centre staging → Destroyer counter-charge", "from": [22, 22], "targetUnit": "skorpekhs", "targetModel": 2 }
-  ]
+  "sightLines": []
 }

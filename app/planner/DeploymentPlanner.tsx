@@ -36,6 +36,7 @@ type PlannerImport = {
   layoutId: string;
   intent?: string;
   markers: Array<Omit<BaseMarker, 'x' | 'y'> & { x: number; y: number }>;
+  deepStrikeMarkers?: Array<Omit<BaseMarker, 'x' | 'y'> & { x: number; y: number }>;
   sightLines?: SightLine[];
 };
 
@@ -124,6 +125,7 @@ export default function DeploymentPlanner() {
   const [markupPaths, setMarkupPaths] = useState<MarkupPath[]>([]);
   const [auditEnabled, setAuditEnabled] = useState(false);
   const [infiltrateEnabled, setInfiltrateEnabled] = useState(false);
+  const [suggestionVisible, setSuggestionVisible] = useState(true);
   const [restoredLayout, setRestoredLayout] = useState('');
   const [lastSavedAt, setLastSavedAt] = useState('');
   const [measurement, setMeasurement] = useState<null | {
@@ -146,7 +148,7 @@ export default function DeploymentPlanner() {
   const selected = markers.find(({ id }) => id === selectedId) ?? null;
   const markerCoherencyIssues = useMemo(() => coherencyIssues(markers), [markers]);
   const coherencyLines = useMemo(() => coherencyMeasurements(markers), [markers]);
-  const unitLabels = useMemo(() => placeUnitLabels(markers), [markers]);
+  const unitLabels = useMemo(() => placeUnitLabels(suggestionVisible ? markers : []), [markers, suggestionVisible]);
   const accountedByArmyUnit = useMemo(() => {
     const counts = new Map<string, number>();
     for (const marker of [...markers, ...deepStrikeMarkers]) {
@@ -167,6 +169,7 @@ export default function DeploymentPlanner() {
 
   useEffect(() => {
     setRestoredLayout('');
+    setSuggestionVisible(true);
     const storageKey = `deployment-planner:v2:${layout.id}`;
     try {
       const primary = localStorage.getItem(storageKey);
@@ -400,13 +403,19 @@ export default function DeploymentPlanner() {
       x: marker.x / TABLE_WIDTH,
       y: marker.y / TABLE_HEIGHT,
     }));
+    const importedDeepStrike = (data.deepStrikeMarkers || []).map((marker) => ({
+      ...marker,
+      x: marker.x / TABLE_WIDTH,
+      y: marker.y / TABLE_HEIGHT,
+    }));
     setMarkers(imported);
-    setDeepStrikeMarkers([]);
-    nextId.current = Math.max(0, ...imported.map(({ id }) => id)) + 1;
+    setDeepStrikeMarkers(importedDeepStrike);
+    nextId.current = Math.max(0, ...imported.map(({ id }) => id), ...importedDeepStrike.map(({ id }) => id)) + 1;
     setSightLines(data.sightLines || []);
     setPlanName(data.name || 'Imported plan');
     setPlanIntent(data.intent || '');
     setSelectedIds([]);
+    setSuggestionVisible(true);
     setImportError('');
   }, [layout.id]);
 
@@ -423,10 +432,10 @@ export default function DeploymentPlanner() {
 
   useEffect(() => {
     const hasSavedDeployment = localStorage.getItem(`deployment-planner:v2:${layout.id}`) !== null;
-    if (!hasSavedDeployment && bundledPlan) {
+    if ((searchParams.get('suggestion') === '1' || !hasSavedDeployment) && bundledPlan) {
       void loadExample();
     }
-  }, [bundledPlan, layout.id, loadExample]);
+  }, [bundledPlan, layout.id, loadExample, searchParams]);
 
   async function importPlan(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -477,7 +486,8 @@ export default function DeploymentPlanner() {
           </div>
 
           <div className="planner-toolstrip" aria-label="Planner tools">
-            {bundledPlan && <button onClick={loadExample} title="Replace the board with the bundled 1,995-point deployment">Load default</button>}
+            {bundledPlan && <button onClick={loadExample} title="Replace the board with the bundled suggested deployment">Load suggestion</button>}
+            {bundledPlan && planName && <button className={suggestionVisible ? 'suggestion-toggle active' : 'suggestion-toggle'} aria-pressed={suggestionVisible} onClick={() => { setSuggestionVisible((visible) => !visible); setSelectedIds([]); }} title="Show or hide the suggested deployment without deleting it">{suggestionVisible ? 'Hide suggestion' : 'Show suggestion'}</button>}
             <Link className="toolbar-link" href="/plans/" title="View every saved deployment plan">All plans</Link>
             <button onClick={() => importRef.current?.click()} title="Import a planner JSON file">Import</button>
             <input ref={importRef} type="file" accept="application/json,.json" hidden onChange={importPlan} />
@@ -564,7 +574,7 @@ export default function DeploymentPlanner() {
                 </text>
               </svg>
             )}
-            {sightLines.length > 0 && (
+            {suggestionVisible && sightLines.length > 0 && (
               <svg className="sight-line-overlay" viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-label="Checked sight lines">
                 {sightLines.map((line, index) => (
                   <g key={`${line.label}-${index}`} className={line.clear ? 'clear' : 'blocked'}>
@@ -576,7 +586,7 @@ export default function DeploymentPlanner() {
                 ))}
               </svg>
             )}
-            {screenEnabled && (
+            {suggestionVisible && screenEnabled && (
               <svg className={`deep-strike-overlay ${screenSide}`} viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-hidden="true">
                 <defs>
                   <mask id="deep-strike-screen-mask" maskUnits="userSpaceOnUse" x="0" y="0" width={TABLE_WIDTH} height={TABLE_HEIGHT}>
@@ -615,7 +625,7 @@ export default function DeploymentPlanner() {
                 ))}
               </svg>
             )}
-            {coherencyLines.length > 0 && (
+            {suggestionVisible && coherencyLines.length > 0 && (
               <svg className="coherency-overlay" viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-label="Failed coherency measurements">
                 {coherencyLines.map((line) => {
                   const x1 = line.from.x * TABLE_WIDTH;
@@ -640,7 +650,7 @@ export default function DeploymentPlanner() {
                 }}
               />
             )}
-            {markers.map((marker) => (
+            {suggestionVisible && markers.map((marker) => (
               <button
                 type="button"
                 key={marker.id}

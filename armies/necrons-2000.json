@@ -1,13 +1,13 @@
 {
-  "name": "Ammentar Destroyer Necrons 1995",
+  "name": "Kaashif's Brighton Take and Hold Necrons",
   "faction": "Necrons",
   "edition": 11,
-  "pointsLimit": 1995,
+  "pointsLimit": 2000,
   "units": [
     { "id": "nightbringer", "label": "NB", "name": "C'tan Shard of the Nightbringer", "points": 360, "models": 1, "baseMm": 90, "movementInches": 10, "role": "pressure" },
     { "id": "void-dragon", "label": "VD", "name": "C'tan Shard of the Void Dragon", "points": 345, "models": 1, "baseMm": 80, "movementInches": 10, "role": "counterpunch" },
     { "id": "ammentar", "label": "NA", "name": "Nekrosor Ammentar", "points": 185, "models": 1, "baseMm": 80, "movementInches": 10, "role": "destroyer-support" },
-    { "id": "skorpekh-lord", "label": "SL", "name": "Skorpekh Lord (Enaegic Dermal Bond)", "baseName": "Skorpekh Lord", "points": 120, "models": 1, "baseMm": 60, "movementInches": 8, "role": "leader", "attachedTo": "skorpekhs" },
+    { "id": "skorpekh-lord", "label": "SL", "name": "Skorpekh Lord (Enaegic Dermal Bond)", "baseName": "Skorpekh Lord", "points": 125, "models": 1, "baseMm": 60, "movementInches": 8, "role": "leader", "attachedTo": "skorpekhs" },
     { "id": "technomancer-veil", "label": "T1", "name": "Technomancer (Warlord)", "baseName": "Technomancer", "points": 80, "models": 1, "baseMm": 50, "movementInches": 10, "role": "support", "attachedTo": "wraiths-left" },
     { "id": "technomancer", "label": "T2", "name": "Technomancer", "points": 90, "models": 1, "baseMm": 50, "movementInches": 10, "role": "support", "attachedTo": "wraiths-centre" },
     { "id": "reanimator", "label": "R", "name": "Canoptek Reanimator", "points": 75, "models": 1, "baseMm": 60, "movementInches": 8, "role": "support" },

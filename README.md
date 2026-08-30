@@ -10,7 +10,9 @@ Primary-card images and all 45 layout previews are stored locally with the stati
 
 The dependency-free CLI validates a list's points, base footprints, board bounds, and model overlap. It emits a planner-import JSON, a standalone SVG diagram with the mirror deployment ghosted in red, and a Markdown tactical briefing.
 
-The bundled preset is the 1,995-point Necron list in `armies/necrons-2000.json`. Eight legal blue-side deployments are included: all three Take/Take layouts, Take/Recon layouts A and B, and all three Take/Purge layouts. The Purge plans deliberately abandon home and mass the whole army toward centre.
+The bundled preset is Kaashif's 2,000-point Brighton Take and Hold Necron list in `armies/necrons-2000.json`. Take and Hold mirror Layout A is the first current suggested deployment. It starts the Void Dragon in deep strike, infiltrates one Flayed One unit behind the centre ruin, pushes both Wraith bricks and the Destroyer package onto forward terrain, and hides the Nightbringer and Reanimator clear of the blue home ruin. The remaining matchups are intentionally left unbundled until that first plan is vetted.
+
+The reusable unit-by-unit doctrine and acceptance checks are recorded in [`docs/kaashif-deployment-principles.md`](docs/kaashif-deployment-principles.md).
 
 ```sh
 npm run plan -- bases
@@ -18,7 +20,7 @@ npm run plan -- validate
 npm run plan:example
 ```
 
-Open a deployment planner or the `/plans/` library. Its compact top bar adds complete units without asking for base sizes and exposes movement, Movement-locked dragging with live measurement, coherency, sight-line/deployment-zone audit, opponent deployment-zone infiltrate exclusion, screening, visibility, deep strike, and markup overlays. It warns when army models are neither placed nor accounted for in deep strike. Drag a box, click a unit label, or Ctrl/Cmd-click models to multi-select; dragging any selected model moves the group. Every edit and view setting is saved to local browser storage with a rolling backup. Edit the plan files listed by `plans/take-take-mirror.json` and rebuild to iterate. Coordinates are model centres in inches from the board's top-left corner on the 44×60in portrait map.
+Open a deployment planner or the `/plans/` library. Its compact top bar adds complete units without asking for base sizes and exposes movement, Movement-locked dragging with live measurement, coherency, sight-line/deployment-zone audit, opponent deployment-zone infiltrate exclusion, screening, visibility, deep strike, and markup overlays. A suggested deployment loads automatically on a bundled layout; “Hide suggestion” removes its bases and labels from view without deleting it, and “Show suggestion” restores it. The planner warns when army models are neither placed nor accounted for in deep strike. Drag a box, click a unit label, or Ctrl/Cmd-click models to multi-select; dragging any selected model moves the group. Every edit and view setting is saved to local browser storage with a rolling backup. Edit the plan files listed by `plans/take-take-mirror.json` and rebuild to iterate. Coordinates are model centres in inches from the board's top-left corner on the 44×60in portrait map.
 
 ## Development
 
