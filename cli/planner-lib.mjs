@@ -5,30 +5,23 @@ import zlib from 'node:zlib';
 export const INCH_MM = 25.4;
 export const BOARD = { width: 44, height: 60 };
 
-function inBlueDeploymentZone(plan, x, y) {
-  if (plan.layoutId.startsWith('take-and-hold-vs-take-and-hold-')) {
-    if (plan.layout === 'A') return y >= 48 || (x >= 22 && x <= 33 && y >= 40);
-    if (plan.layout === 'B') return x >= 32;
-    if (plan.layout === 'C') {
-      if (x < 22 || y < 30) return false;
-      if (x >= 31) return true;
-      return y >= 30 + Math.sqrt(Math.max(0, 81 - (x - 22) ** 2));
-    }
-  }
-  if (plan.layoutId === 'take-and-hold-vs-reconnaissance-b') return x >= 32;
-  if (plan.layoutId === 'take-and-hold-vs-reconnaissance-a') return y >= 48 || (x >= 22 && y >= 40);
-  if (plan.layoutId === 'take-and-hold-vs-purge-the-foe-a') return x >= 36 || (x >= 30 && y >= 30);
-  if (plan.layoutId === 'take-and-hold-vs-purge-the-foe-b') {
+export function inBlueDeploymentZone(plan, x, y) {
+  const page = Number(plan.layoutPage);
+  if ([10, 19, 23].includes(page)) return x >= 32;
+  if ([14, 17, 22].includes(page)) return y >= 42;
+  if ([9, 18].includes(page)) return y >= 48 || (x >= 22 && y >= 40);
+  if ([12, 15].includes(page)) return x >= 36 || (x >= 30 && y >= 30);
+  if ([11, 13, 20].includes(page)) {
     if (x < 22 || y < 30) return false;
     if (x >= 31) return true;
     return y >= 30 + Math.sqrt(Math.max(0, 81 - (x - 22) ** 2));
   }
-  if (plan.layoutId === 'take-and-hold-vs-purge-the-foe-c') return y >= 42;
-  return true;
+  if ([16, 21].includes(page)) return y >= 60 - (30 / 44) * x;
+  return false;
 }
 
-function whollyInBlueDeploymentZone(plan, x, y, radius) {
-  return Array.from({ length: 32 }, (_, index) => index * Math.PI * 2 / 32)
+export function whollyInBlueDeploymentZone(plan, x, y, radius) {
+  return inBlueDeploymentZone(plan, x, y) && Array.from({ length: 32 }, (_, index) => index * Math.PI * 2 / 32)
     .every((angle) => inBlueDeploymentZone(plan, x + Math.cos(angle) * radius, y + Math.sin(angle) * radius));
 }
 
@@ -262,10 +255,11 @@ export function reportMarkdown(army, plan, sightLines) {
     lines.push(`- **${unit.name}** — ${where}${placement.note ? `. ${placement.note}` : ''}`);
   }
   if (plan.placements['void-dragon']?.reserve) {
-    lines.push('', '## Turn plan', '', '- Deployment: infiltrate Flayed Ones behind the centre wall. Keep the Nightbringer at the front of the compact Skorpekh/Lord/Ammentar missile group with its full 90mm base clear of terrain. Keep the Reanimator hidden off the blue home ruin and put the Void Dragon in deep strike.', '- Turn 1: launch the compact missile group and terrain-touching Wraiths into the midfield while Ammentar remains close enough to the Skorpekhs for Lone Operative.', '- Turn 2 onward: bring the Void Dragon into the lane where its anti-vehicle pressure matters most. Keep the second Flayed One unit available to screen the blue rear and reserve entry points.');
+    lines.push('', '## Turn plan', '', '- Deployment: put the left Wraith brick and its Technomancer fully behind the left objective ruin, with the Reanimator forward behind the adjacent square. Keep the Nightbringer, Skorpekhs, Lord, and Ammentar together behind the separate right-hand ruin, with no sight line from the opposing deployment zone. The Nightbringer and Reanimator remain completely off terrain, and the Void Dragon begins in deep strike.', '- Turn 1: advance the Reanimator behind the left Wraith brick and launch the compact right-hand missile when the lane is favourable. In Layout A the deployment boundary leaves a 1.41-inch gap to the right ruin, so the Skorpekhs sit as far forward as legally possible rather than touching its footprint.', '- Turn 2 onward: bring the Void Dragon into the lane where its anti-vehicle pressure matters most. Keep the second Flayed One unit available to screen the blue rear and reserve entry points unless a matchup contingency moves it forward.');
   } else {
     lines.push('', '## Tactical doctrine', '', plan.intent);
   }
+  if (plan.contingencies?.length) lines.push('', '## Matchup contingencies', '', ...plan.contingencies.map((contingency) => `- ${contingency}`));
   lines.push('', 'Coordinates are model-centre positions from the map’s top-left corner. Sight lines are sampled against the repository terrain mask; red is unobstructed and green dashed is terrain-blocked.');
   return `${lines.join('\n')}\n`;
 }

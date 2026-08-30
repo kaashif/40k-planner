@@ -62,6 +62,7 @@ export default function Home() {
           <p>Chapter Approved 2026–27 / Event Companion v1.0</p>
         </div>
         <div className="reference-links">
+          <Link href="/reviews/">Brighton deployment review</Link>
           <Link href="/plans/">Deployment plan library</Link>
           <a href={`${referenceRoot}/official/core-rules.pdf`}>Core rules PDF</a>
           <a href={`${referenceRoot}/current-layout-reference.pdf`}>Current layout reference PDF</a>

@@ -5,20 +5,24 @@
   "layoutPage": 9,
   "side": "blue",
   "mirrorOpponentInRender": false,
-  "intent": "The Nightbringer, Skorpekhs, Skorpekh Lord, and Ammentar form one compact missile group on the right. The Nightbringer occupies the frontmost legal pocket available to its full 90mm base while remaining completely clear of every terrain footprint. Both Wraith bricks and the Skorpekhs touch terrain for cover. The Reanimator remains hidden clear of the blue home ruin. One Flayed One unit infiltrates behind the centre ruin without touching it; the second screens the right rear. The Void Dragon starts in deep strike.",
+  "intent": "The Nightbringer, Skorpekhs, Skorpekh Lord, and Ammentar form one compact missile behind the separate right-hand ruin, with no sight line from the opposing deployment zone. The Nightbringer remains completely off the terrain footprint. The left Wraith brick and its Technomancer are wholly behind, rather than inside, the left objective ruin. The Reanimator starts forward behind the left-side square, off its footprint, so it can advance behind that Wraith brick. The centre Wraith brick toes the home ruin. One Flayed One unit infiltrates behind the centre ruin; the second hides behind the home ruin. The Void Dragon starts in deep strike.",
+  "contingencies": [
+    "Against Scout-heavy fast melee, move-block the opponent's key pre-game and first-turn lanes with the forward Flayed Ones.",
+    "If the objective is Abandon Home, infiltrate both Flayed One units into forward move-blocking positions instead of retaining unit 2 as a rear screen."
+  ],
   "placements": {
-    "nightbringer": { "centres": [[32.2, 49.5]], "note": "Frontmost legal pocket for the right-hand missile group. The full 90mm base, plus a verified 0.30in safety buffer, is clear of every terrain footprint." },
+    "nightbringer": { "centres": [[34.2, 49.8]], "note": "Completely behind the separate right-hand ruin and screened from the opposing deployment zone. The full 90mm base, plus a verified 0.30in buffer, is off every terrain footprint." },
     "void-dragon": { "reserve": true, "centres": [[36.5, 56.5]], "note": "Deep strike." },
-    "ammentar": { "centres": [[35.8, 50.5]], "note": "Packed beside the Nightbringer and 2.81in from the nearest Skorpekh base for the compact missile group and Lone Operative protection." },
-    "skorpekh-lord": { "centres": [[34.3, 53.1]], "note": "Packed between the Nightbringer, Ammentar, and the Skorpekh column while remaining attached to the Destroyers." },
-    "technomancer-veil": { "centres": [[14.0, 49.2]], "note": "Attached to Wraith unit 1 in the open pocket of the left terrain area." },
+    "ammentar": { "centres": [[34.8, 54.8]], "note": "Hidden at the rear-left of the right-hand missile and within 3in of the Skorpekhs for Lone Operative protection." },
+    "skorpekh-lord": { "centres": [[38.2, 55.8]], "note": "Hidden behind the right-hand ruin and attached to the rear of the compact Skorpekh block." },
+    "technomancer-veil": { "centres": [[12.3, 53.5]], "note": "Attached to Wraith unit 1, completely behind and off the left objective terrain footprint." },
     "technomancer": { "centres": [[23.0, 51.42]], "note": "Attached to Wraith unit 2 in the blue home ruin." },
-    "reanimator": { "centres": [[28.2, 57.0]], "note": "Behind the south corner of the blue home ruin, not touching its footprint." },
-    "wraiths-left": { "centres": [[10.8, 49.0], [10.8, 51.2], [12.9, 51.4], [15.0, 51.4], [17.1, 51.4], [17.9, 49.2]], "note": "Forward around the left terrain area with every Wraith base touching the footprint for cover." },
+    "reanimator": { "centres": [[15.5, 53.3]], "note": "Forward behind the left-side square, completely off its terrain footprint and screened from the opposing deployment zone, ready to advance behind Wraith unit 1." },
+    "wraiths-left": { "centres": [[6.0, 52.5], [8.1, 52.5], [10.2, 52.5], [6.0, 54.6], [8.1, 54.6], [10.2, 54.6]], "note": "Wholly behind and off the left objective ruin. Every base is screened from every sampled point in the opposing deployment zone." },
     "wraiths-centre": { "centres": [[22.99, 47.2], [25.1, 47.2], [27.21, 47.2], [22.99, 49.31], [25.1, 49.31], [27.21, 49.31]], "note": "Forward in the open middle of the blue home ruin, clear of its walls." },
-    "flayed-ones": { "infiltrate": true, "centres": [[23.4, 36.0], [24.7, 36.0], [26.0, 36.0], [27.3, 36.0], [25.35, 37.3]], "note": "Infiltrate behind the centre ruin without touching its footprint." },
-    "flayed-ones-2": { "centres": [[35.0, 55.0], [36.3, 55.0], [37.6, 55.0], [38.9, 55.0], [36.95, 56.3]], "note": "Rear-right screen." },
-    "skorpekhs": { "centres": [[30.9, 44.5], [30.9, 46.55], [29.1, 48.6], [29.1, 50.65], [30.9, 52.7], [30.9, 54.75]], "note": "Forward column along the right edge of the blue home ruin. The middle pair steps inward to clear the Nightbringer's forward 90mm base while the unit remains on the terrain footprint for cover." }
+    "flayed-ones": { "infiltrate": true, "centres": [[22.4, 36.0], [23.7, 36.0], [25.0, 36.0], [26.3, 36.0], [24.35, 37.3]], "note": "Infiltrate behind the centre ruin without touching its footprint or exposing a base to the opposing deployment zone." },
+    "flayed-ones-2": { "centres": [[21.0, 55.0], [22.3, 55.0], [23.6, 55.0], [24.9, 55.0], [22.95, 56.3]], "note": "Hidden rear screen behind the home ruin." },
+    "skorpekhs": { "centres": [[37.2, 49.0], [39.25, 49.0], [36.8, 51.05], [38.85, 51.05], [37.2, 53.1], [39.25, 53.1]], "note": "Compact block immediately behind the separate right-hand ruin, as far forward as the deployment boundary permits and screened from the entire opposing deployment zone. The 1.41in no-deploy gap makes physically toeing this ruin impossible in Layout A." }
   },
   "sightLines": []
 }

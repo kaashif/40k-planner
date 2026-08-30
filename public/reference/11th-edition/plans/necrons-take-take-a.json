@@ -10,8 +10,8 @@
   "markers": [
     {
       "id": 1,
-      "x": 32.2,
-      "y": 49.5,
+      "x": 34.2,
+      "y": 49.8,
       "widthMm": 90,
       "heightMm": 90,
       "label": "NB",
@@ -21,8 +21,8 @@
     },
     {
       "id": 3,
-      "x": 35.8,
-      "y": 50.5,
+      "x": 34.8,
+      "y": 54.8,
       "widthMm": 80,
       "heightMm": 80,
       "label": "NA",
@@ -32,8 +32,8 @@
     },
     {
       "id": 4,
-      "x": 34.3,
-      "y": 53.1,
+      "x": 38.2,
+      "y": 55.8,
       "widthMm": 60,
       "heightMm": 60,
       "label": "SL",
@@ -43,8 +43,8 @@
     },
     {
       "id": 5,
-      "x": 14,
-      "y": 49.2,
+      "x": 12.3,
+      "y": 53.5,
       "widthMm": 50,
       "heightMm": 50,
       "label": "T1",
@@ -65,8 +65,8 @@
     },
     {
       "id": 7,
-      "x": 28.2,
-      "y": 57,
+      "x": 15.5,
+      "y": 53.3,
       "widthMm": 60,
       "heightMm": 60,
       "label": "R",
@@ -76,8 +76,8 @@
     },
     {
       "id": 8,
-      "x": 10.8,
-      "y": 49,
+      "x": 6,
+      "y": 52.5,
       "widthMm": 50,
       "heightMm": 50,
       "label": "W1",
@@ -87,8 +87,8 @@
     },
     {
       "id": 9,
-      "x": 10.8,
-      "y": 51.2,
+      "x": 8.1,
+      "y": 52.5,
       "widthMm": 50,
       "heightMm": 50,
       "label": "W1",
@@ -98,8 +98,8 @@
     },
     {
       "id": 10,
-      "x": 12.9,
-      "y": 51.4,
+      "x": 10.2,
+      "y": 52.5,
       "widthMm": 50,
       "heightMm": 50,
       "label": "W1",
@@ -109,8 +109,8 @@
     },
     {
       "id": 11,
-      "x": 15,
-      "y": 51.4,
+      "x": 6,
+      "y": 54.6,
       "widthMm": 50,
       "heightMm": 50,
       "label": "W1",
@@ -120,8 +120,8 @@
     },
     {
       "id": 12,
-      "x": 17.1,
-      "y": 51.4,
+      "x": 8.1,
+      "y": 54.6,
       "widthMm": 50,
       "heightMm": 50,
       "label": "W1",
@@ -131,8 +131,8 @@
     },
     {
       "id": 13,
-      "x": 17.9,
-      "y": 49.2,
+      "x": 10.2,
+      "y": 54.6,
       "widthMm": 50,
       "heightMm": 50,
       "label": "W1",
@@ -208,7 +208,7 @@
     },
     {
       "id": 20,
-      "x": 23.4,
+      "x": 22.4,
       "y": 36,
       "widthMm": 28.5,
       "heightMm": 28.5,
@@ -219,7 +219,7 @@
     },
     {
       "id": 21,
-      "x": 24.7,
+      "x": 23.7,
       "y": 36,
       "widthMm": 28.5,
       "heightMm": 28.5,
@@ -230,7 +230,7 @@
     },
     {
       "id": 22,
-      "x": 26,
+      "x": 25,
       "y": 36,
       "widthMm": 28.5,
       "heightMm": 28.5,
@@ -241,7 +241,7 @@
     },
     {
       "id": 23,
-      "x": 27.3,
+      "x": 26.3,
       "y": 36,
       "widthMm": 28.5,
       "heightMm": 28.5,
@@ -252,7 +252,7 @@
     },
     {
       "id": 24,
-      "x": 25.35,
+      "x": 24.35,
       "y": 37.3,
       "widthMm": 28.5,
       "heightMm": 28.5,
@@ -263,7 +263,7 @@
     },
     {
       "id": 25,
-      "x": 35,
+      "x": 21,
       "y": 55,
       "widthMm": 28.5,
       "heightMm": 28.5,
@@ -274,7 +274,7 @@
     },
     {
       "id": 26,
-      "x": 36.3,
+      "x": 22.3,
       "y": 55,
       "widthMm": 28.5,
       "heightMm": 28.5,
@@ -285,7 +285,7 @@
     },
     {
       "id": 27,
-      "x": 37.6,
+      "x": 23.6,
       "y": 55,
       "widthMm": 28.5,
       "heightMm": 28.5,
@@ -296,7 +296,7 @@
     },
     {
       "id": 28,
-      "x": 38.9,
+      "x": 24.9,
       "y": 55,
       "widthMm": 28.5,
       "heightMm": 28.5,
@@ -307,7 +307,7 @@
     },
     {
       "id": 29,
-      "x": 36.95,
+      "x": 22.95,
       "y": 56.3,
       "widthMm": 28.5,
       "heightMm": 28.5,
@@ -318,8 +318,8 @@
     },
     {
       "id": 30,
-      "x": 30.9,
-      "y": 44.5,
+      "x": 37.2,
+      "y": 49,
       "widthMm": 50,
       "heightMm": 50,
       "label": "S",
@@ -329,8 +329,8 @@
     },
     {
       "id": 31,
-      "x": 30.9,
-      "y": 46.55,
+      "x": 39.25,
+      "y": 49,
       "widthMm": 50,
       "heightMm": 50,
       "label": "S",
@@ -340,8 +340,8 @@
     },
     {
       "id": 32,
-      "x": 29.1,
-      "y": 48.6,
+      "x": 36.8,
+      "y": 51.05,
       "widthMm": 50,
       "heightMm": 50,
       "label": "S",
@@ -351,8 +351,8 @@
     },
     {
       "id": 33,
-      "x": 29.1,
-      "y": 50.65,
+      "x": 38.85,
+      "y": 51.05,
       "widthMm": 50,
       "heightMm": 50,
       "label": "S",
@@ -362,8 +362,8 @@
     },
     {
       "id": 34,
-      "x": 30.9,
-      "y": 52.7,
+      "x": 37.2,
+      "y": 53.1,
       "widthMm": 50,
       "heightMm": 50,
       "label": "S",
@@ -373,8 +373,8 @@
     },
     {
       "id": 35,
-      "x": 30.9,
-      "y": 54.75,
+      "x": 39.25,
+      "y": 53.1,
       "widthMm": 50,
       "heightMm": 50,
       "label": "S",
@@ -397,7 +397,7 @@
     }
   ],
   "sightLines": [],
-  "intent": "The Nightbringer, Skorpekhs, Skorpekh Lord, and Ammentar form one compact missile group on the right. The Nightbringer occupies the frontmost legal pocket available to its full 90mm base while remaining completely clear of every terrain footprint. Both Wraith bricks and the Skorpekhs touch terrain for cover. The Reanimator remains hidden clear of the blue home ruin. One Flayed One unit infiltrates behind the centre ruin without touching it; the second screens the right rear. The Void Dragon starts in deep strike.",
+  "intent": "The Nightbringer, Skorpekhs, Skorpekh Lord, and Ammentar form one compact missile behind the separate right-hand ruin, with no sight line from the opposing deployment zone. The Nightbringer remains completely off the terrain footprint. The left Wraith brick and its Technomancer are wholly behind, rather than inside, the left objective ruin. The Reanimator starts forward behind the left-side square, off its footprint, so it can advance behind that Wraith brick. The centre Wraith brick toes the home ruin. One Flayed One unit infiltrates behind the centre ruin; the second hides behind the home ruin. The Void Dragon starts in deep strike.",
   "reserves": [
     "void-dragon"
   ]

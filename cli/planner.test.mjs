@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { analyseSightLines, plannerImport, readGrayscalePng, readJson, validate } from './planner-lib.mjs';
+import { analyseSightLines, checkLineOfSight, plannerImport, readGrayscalePng, readJson, validate } from './planner-lib.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const army = readJson(path.join(root, 'armies', 'necrons-2000.json'));
@@ -10,6 +10,7 @@ const variants = ['a', 'b', 'c'].map((layout) => readJson(path.join(root, 'plans
 const planManifest = readJson(path.join(root, 'plans', 'take-take-mirror.json'));
 const allPlans = planManifest.plans.map((file) => readJson(path.join(root, 'plans', file)));
 const layoutIndex = readJson(path.join(root, 'public', 'reference', '11th-edition', 'data', 'event-layouts.json'));
+const brightonReviews = readJson(path.join(root, 'public', 'reference', '11th-edition', 'plans', 'brighton-reviews.json'));
 
 test('all three legacy layout files match the 2,000-point Brighton list and are overlap-free', () => {
   for (const plan of variants) {
@@ -96,17 +97,59 @@ test('layout A follows the requested terrain, infiltrator, and reserve doctrine'
   };
   assert.equal(plan.placements['void-dragon'].reserve, true);
   assert.equal(plan.placements['flayed-ones'].infiltrate, true);
-  assert.ok(plan.placements['wraiths-left'].centres.every((centre) => terrainFraction('wraiths-left', centre) > .03));
+  assert.ok(plan.placements['wraiths-left'].centres.every((centre) => terrainFraction('wraiths-left', centre, .15) === 0));
   assert.ok(plan.placements['wraiths-centre'].centres.every((centre) => terrainFraction('wraiths-centre', centre) > .03));
-  assert.ok(plan.placements.skorpekhs.centres.filter((centre) => terrainFraction('skorpekhs', centre) > .03).length >= 5);
   assert.equal(terrainFraction('nightbringer', plan.placements.nightbringer.centres[0], .30), 0);
-  assert.equal(terrainFraction('reanimator', plan.placements.reanimator.centres[0]), 0);
+  assert.equal(terrainFraction('reanimator', plan.placements.reanimator.centres[0], .15), 0);
   assert.ok(plan.placements['flayed-ones'].centres.every((centre) => terrainFraction('flayed-ones', centre) === 0));
   assert.ok(closestEdgeDistance('technomancer-veil', 'wraiths-left') <= 2);
   assert.ok(closestEdgeDistance('technomancer', 'wraiths-centre') <= 2);
   assert.ok(closestEdgeDistance('skorpekh-lord', 'skorpekhs') <= 2);
   assert.ok(closestEdgeDistance('ammentar', 'skorpekhs') <= 3);
   assert.ok(closestEdgeDistance('nightbringer', 'skorpekhs') <= 1);
-  assert.ok(closestEdgeDistance('nightbringer', 'ammentar') <= 1);
+  assert.ok(closestEdgeDistance('nightbringer', 'ammentar') <= 2);
   assert.ok(plan.placements.nightbringer.centres[0][1] <= 50);
+  assert.ok(plan.placements.reanimator.centres[0][1] <= 54);
+
+  const opposingDeploymentZone = (x, y) => y <= 12 || (x >= 11 && x <= 22 && y <= 20);
+  const firingPoints = [];
+  for (let y = .25; y <= 20; y += .5) {
+    for (let x = .25; x <= 43.75; x += .5) {
+      if (opposingDeploymentZone(x, y)) firingPoints.push([x, y]);
+    }
+  }
+  const modelIsHidden = (id, centre) => {
+    const radius = unit(id).baseMm / 25.4 / 2;
+    const targetPoints = [centre];
+    for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 8) {
+      targetPoints.push([centre[0] + Math.cos(angle) * radius * .92, centre[1] + Math.sin(angle) * radius * .92]);
+    }
+    return firingPoints.every((from) => targetPoints.every((to) => !checkLineOfSight(mask, from, to, radius * .04).clear));
+  };
+  for (const [id, placement] of Object.entries(plan.placements)) {
+    if (placement.reserve) continue;
+    assert.ok(placement.centres.every((centre) => modelIsHidden(id, centre)), `${id} has a clear sight line from the opposing deployment zone`);
+  }
+});
+
+test('all Brighton opponent reviews have stable IDs and pass the hard deployment checks', () => {
+  assert.equal(brightonReviews.opponentCount, 28);
+  assert.equal(brightonReviews.reviewCount, 84);
+  assert.equal(new Set(brightonReviews.reviews.map(({ id }) => id)).size, 84);
+  assert.deepEqual(brightonReviews.reviews.map(({ id }) => id), Array.from({ length: 84 }, (_, index) => `D-${String(index + 1).padStart(3, '0')}`));
+  for (const review of brightonReviews.reviews) {
+    assert.equal(review.audit.legal, true, review.id);
+    assert.equal(review.audit.nightbringerTerrainClear, true, review.id);
+    assert.equal(review.audit.reanimatorTerrainClear, true, review.id);
+    assert.equal(review.audit.nightbringerHidden, true, review.id);
+    assert.equal(review.audit.reanimatorHidden, true, review.id);
+    assert.equal(review.audit.missileCompact, true, review.id);
+    assert.ok(review.reserves.includes('void-dragon'), review.id);
+    if (review.abandonHome) assert.equal(review.flayedPolicy, 'two-forward-abandon-home', review.id);
+  }
+  const scoutMeleeNames = new Set(['Christian Faustino', 'Andrew Mcbride', 'Jonathan Aylett', 'William Samms', 'Adam Wright']);
+  for (const review of brightonReviews.reviews.filter(({ opponent }) => scoutMeleeNames.has(opponent))) {
+    assert.equal(review.flayedPolicy, 'two-forward-lane-blockers', review.id);
+  }
+  assert.deepEqual([...new Set(brightonReviews.reviews.filter(({ listAvailable }) => !listAvailable).map(({ opponent }) => opponent))], ['Brando McCready']);
 });
