@@ -262,7 +262,7 @@ export function reportMarkdown(army, plan, sightLines) {
     lines.push(`- **${unit.name}** — ${where}${placement.note ? `. ${placement.note}` : ''}`);
   }
   if (plan.placements['void-dragon']?.reserve) {
-    lines.push('', '## Turn plan', '', '- Deployment: infiltrate Flayed Ones behind the centre wall. Keep the Nightbringer and Reanimator off the terrain footprint and hidden behind the blue home ruin. Put the Void Dragon in deep strike.', '- Turn 1: use the terrain-touching Wraith and Skorpekh positions to launch into the midfield while Ammentar remains close enough to the Destroyer package for Lone Operative.', '- Turn 2 onward: bring the Void Dragon into the lane where its anti-vehicle pressure matters most. Keep the second Flayed One unit available to screen the blue rear and reserve entry points.');
+    lines.push('', '## Turn plan', '', '- Deployment: infiltrate Flayed Ones behind the centre wall. Keep the Nightbringer at the front of the compact Skorpekh/Lord/Ammentar missile group with its full 90mm base clear of terrain. Keep the Reanimator hidden off the blue home ruin and put the Void Dragon in deep strike.', '- Turn 1: launch the compact missile group and terrain-touching Wraiths into the midfield while Ammentar remains close enough to the Skorpekhs for Lone Operative.', '- Turn 2 onward: bring the Void Dragon into the lane where its anti-vehicle pressure matters most. Keep the second Flayed One unit available to screen the blue rear and reserve entry points.');
   } else {
     lines.push('', '## Tactical doctrine', '', plan.intent);
   }

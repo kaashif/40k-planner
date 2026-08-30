@@ -74,8 +74,8 @@ test('layout A follows the requested terrain, infiltrator, and reserve doctrine'
   const plan = variants[0];
   const mask = readGrayscalePng(path.join(root, 'public', 'reference', '11th-edition', 'terrain-masks', 'layout-09.png'));
   const unit = (id) => army.units.find((candidate) => candidate.id === id);
-  const terrainFraction = (id, centre) => {
-    const radius = unit(id).baseMm / 25.4 / 2;
+  const terrainFraction = (id, centre, margin = 0) => {
+    const radius = unit(id).baseMm / 25.4 / 2 + margin;
     let covered = 0;
     let sampled = 0;
     for (let y = centre[1] - radius; y <= centre[1] + radius; y += .08) {
@@ -99,11 +99,14 @@ test('layout A follows the requested terrain, infiltrator, and reserve doctrine'
   assert.ok(plan.placements['wraiths-left'].centres.every((centre) => terrainFraction('wraiths-left', centre) > .03));
   assert.ok(plan.placements['wraiths-centre'].centres.every((centre) => terrainFraction('wraiths-centre', centre) > .03));
   assert.ok(plan.placements.skorpekhs.centres.filter((centre) => terrainFraction('skorpekhs', centre) > .03).length >= 5);
-  assert.equal(terrainFraction('nightbringer', plan.placements.nightbringer.centres[0]), 0);
+  assert.equal(terrainFraction('nightbringer', plan.placements.nightbringer.centres[0], .30), 0);
   assert.equal(terrainFraction('reanimator', plan.placements.reanimator.centres[0]), 0);
   assert.ok(plan.placements['flayed-ones'].centres.every((centre) => terrainFraction('flayed-ones', centre) === 0));
   assert.ok(closestEdgeDistance('technomancer-veil', 'wraiths-left') <= 2);
   assert.ok(closestEdgeDistance('technomancer', 'wraiths-centre') <= 2);
   assert.ok(closestEdgeDistance('skorpekh-lord', 'skorpekhs') <= 2);
   assert.ok(closestEdgeDistance('ammentar', 'skorpekhs') <= 3);
+  assert.ok(closestEdgeDistance('nightbringer', 'skorpekhs') <= 1);
+  assert.ok(closestEdgeDistance('nightbringer', 'ammentar') <= 1);
+  assert.ok(plan.placements.nightbringer.centres[0][1] <= 50);
 });

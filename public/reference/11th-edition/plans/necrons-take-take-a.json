@@ -10,8 +10,8 @@
   "markers": [
     {
       "id": 1,
-      "x": 23.5,
-      "y": 56.3,
+      "x": 32.2,
+      "y": 49.5,
       "widthMm": 90,
       "heightMm": 90,
       "label": "NB",
@@ -21,8 +21,8 @@
     },
     {
       "id": 3,
-      "x": 31.2,
-      "y": 41.8,
+      "x": 35.8,
+      "y": 50.5,
       "widthMm": 80,
       "heightMm": 80,
       "label": "NA",
@@ -32,8 +32,8 @@
     },
     {
       "id": 4,
-      "x": 28.3,
-      "y": 41.4,
+      "x": 34.3,
+      "y": 53.1,
       "widthMm": 60,
       "heightMm": 60,
       "label": "SL",
@@ -340,7 +340,7 @@
     },
     {
       "id": 32,
-      "x": 30.9,
+      "x": 29.1,
       "y": 48.6,
       "widthMm": 50,
       "heightMm": 50,
@@ -351,7 +351,7 @@
     },
     {
       "id": 33,
-      "x": 30.9,
+      "x": 29.1,
       "y": 50.65,
       "widthMm": 50,
       "heightMm": 50,
@@ -397,7 +397,7 @@
     }
   ],
   "sightLines": [],
-  "intent": "Wraiths and the Destroyer package start as far forward as their safe terrain positions allow. Both Wraith bricks and the Skorpekhs touch terrain for cover. Ammentar is forward beside the Skorpekhs for Lone Operative. The Nightbringer and Reanimator sit clear of, and behind, the blue home ruin. One Flayed One unit infiltrates behind the centre ruin without touching it; the second screens the right rear. The Void Dragon starts in deep strike.",
+  "intent": "The Nightbringer, Skorpekhs, Skorpekh Lord, and Ammentar form one compact missile group on the right. The Nightbringer occupies the frontmost legal pocket available to its full 90mm base while remaining completely clear of every terrain footprint. Both Wraith bricks and the Skorpekhs touch terrain for cover. The Reanimator remains hidden clear of the blue home ruin. One Flayed One unit infiltrates behind the centre ruin without touching it; the second screens the right rear. The Void Dragon starts in deep strike.",
   "reserves": [
     "void-dragon"
   ]

@@ -10,7 +10,7 @@ Primary-card images and all 45 layout previews are stored locally with the stati
 
 The dependency-free CLI validates a list's points, base footprints, board bounds, and model overlap. It emits a planner-import JSON, a standalone SVG diagram with the mirror deployment ghosted in red, and a Markdown tactical briefing.
 
-The bundled preset is Kaashif's 2,000-point Brighton Take and Hold Necron list in `armies/necrons-2000.json`. Take and Hold mirror Layout A is the first current suggested deployment. It starts the Void Dragon in deep strike, infiltrates one Flayed One unit behind the centre ruin, pushes both Wraith bricks and the Destroyer package onto forward terrain, and hides the Nightbringer and Reanimator clear of the blue home ruin. The remaining matchups are intentionally left unbundled until that first plan is vetted.
+The bundled preset is Kaashif's 2,000-point Brighton Take and Hold Necron list in `armies/necrons-2000.json`. Take and Hold mirror Layout A is the first current suggested deployment. It starts the Void Dragon in deep strike, infiltrates one Flayed One unit behind the centre ruin, pushes both Wraith bricks forward, and forms a compact missile group from the Nightbringer, Skorpekhs, Skorpekh Lord, and Ammentar. The Nightbringer's full 90mm base is kept clear of terrain. The remaining matchups are intentionally left unbundled until that first plan is vetted.
 
 The reusable unit-by-unit doctrine and acceptance checks are recorded in [`docs/kaashif-deployment-principles.md`](docs/kaashif-deployment-principles.md).
 
