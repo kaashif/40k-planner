@@ -28,28 +28,23 @@ try:
         page.on('pageerror', lambda error: errors.append(f'{page.url}: {error}'))
         page.on('console', lambda message: print(message.text) if message.type == 'error' else None)
         page.goto(os.environ.get('VOD_TEST_URL', f'http://127.0.0.1:{server.server_port}/40k-planner/'), wait_until='networkidle')
-        page.get_by_role('heading', name='Read the board.').wait_for()
+        page.get_by_role('heading', name='Alex Fowler vs Frasier Parry', exact=True).wait_for()
+        assert page.locator('.vod-moment').count() == 7
+        assert page.locator('.vod-board').count() == 5
+        assert page.locator('.vod-pin, .vod-takeaways, button, details').count() == 0
+        assert page.locator('.vod-movement').count() >= 4
+        assert page.locator('[id]').evaluate_all('(els) => new Set(els.map(e => e.id)).size === els.length')
         assert page.locator('img').evaluate_all('(images) => images.every(i => i.complete && i.naturalWidth > 0)')
         page.screenshot(path=str(out / 'desktop.png'), full_page=True)
-        page.get_by_role('button', name='Next checkpoint', exact=True).click()
-        page.get_by_label('Compare overheads').check()
-        assert page.locator('.vod-frame-pair figure').count() == 2
-        page.screenshot(path=str(out / 'compare.png'), full_page=True)
-        page.get_by_label('Compare overheads').uncheck()
-        page.get_by_label('Board markers').uncheck()
-        assert page.locator('.vod-pin').count() == 0
-        for _ in range(5):
-            page.get_by_role('button', name='Next checkpoint', exact=True).click()
-        assert page.get_by_role('button', name='Next checkpoint', exact=True).is_disabled()
-        assert 'earlier overhead' in page.locator('.vod-board-heading').inner_text()
+        page.locator('#frame-4500').screenshot(path=str(out / 'movement.png'))
         page.set_viewport_size({"width":390,"height":844})
         page.screenshot(path=str(out / 'mobile.png'), full_page=True)
         assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
-        page.get_by_role('link', name='Mission matrix', exact=True).click()
+        page.get_by_role('link', name='Missions', exact=True).click()
         page.get_by_role('heading', name='40k 11th edition missions', exact=True).wait_for()
         assert '/40k-planner/missions/' in page.url
         assert not errors, errors
         browser.close()
-        print('PASS: desktop/mobile, 7 checkpoints, comparison, markers, diagram fallback, images, base-path navigation, no JS errors')
+        print('PASS: desktop/mobile, 7 visible frames, 5 diagrams, movement arrows, unique SVG IDs, no overlays/controls, images, navigation, no JS errors')
 finally:
     server.shutdown()

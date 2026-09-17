@@ -28,6 +28,8 @@ If public extraction is blocked, try another verified public Grand Coven broadca
 
 ## Progress
 
+- Latest presentation revision: plain, click-free chronological scroll. All seven frames are visible, with five matching overhead maps and stronger arrows between identified sampled positions. Removed hero copy, takeaway cards, interpretation panels, screenshot number overlays and repeated explanatory text. Kept only short timestamped caption excerpts, compact labels and essential sampling caveats. SVG IDs are unique across maps. Both queued games have Magnus visually confirmed at broadcast timestamps 20400 (Fowler/Power) and 15000 (Terroxer/Allot).
+
 - Plan committed and pushed before implementation (`6ea970a`).
 - Pilot verified: Fowler/Parry, WarGames Live `WOpiPuYL0YA`, 12 August Warmaster. The index start is a countdown; reviewed opening begins at 00:40:00. Closing score 78–45 includes turn-five scoring entered after the reported elimination.
 - Public frame extraction succeeded. Seven stills selected from 33 captures; caption-assisted reports stay separate from visible evidence. Full list not independently readable from BCP.

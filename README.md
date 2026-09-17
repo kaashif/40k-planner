@@ -2,7 +2,7 @@
 
 A VOD-first GitHub Pages site for Thousand Sons game analysis, with 11th-edition mission and deployment tools kept as secondary routes.
 
-The homepage reviews Alex Fowler vs Frasier Parry through seven real broadcast stills, timestamped observations, commentary reports, interpretations and explicit gaps. Overhead frames have hand-traced terrain diagrams with labelled unit/group markers; they are approximate visual aids, not measured maps or exact model inventories. Other Grand Coven wins are linked in an unreviewed queue.
+The homepage shows Alex Fowler vs Frasier Parry as a plain chronological scroll: seven unobstructed broadcast stills, five matching maps, movement arrows between sampled positions, and short source-caption excerpts. There are no checkpoint controls, screenshot overlays or tactical takeaway cards. The diagrams are approximate visual aids, not measured maps or exact model inventories. Other Grand Coven wins are linked at the bottom.
 
 The original mission matrix is now at `/missions/`; `/planner/`, `/plans/` and `/reviews/` remain available. Selecting a mission cell shows both players' primary cards and the three matching layouts.
 

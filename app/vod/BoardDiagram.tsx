@@ -60,24 +60,23 @@ export default function BoardDiagram({ second }: {second: number}) {
   const times = Object.keys(positions).map(Number).sort((a,b) => a-b);
   const source = times.filter(time => time <= second).at(-1)!;
   const previous = times[times.indexOf(source)-1];
+  const id = `board-${second}`;
   const groups = positions[source];
   const colors = { ts: '#78e3d0', ec: '#f8a5c5', unknown: '#d3c9aa' };
   const stamp = (s: number) => [Math.floor(s/3600),Math.floor(s/60)%60,s%60].map(n=>String(n).padStart(2,'0')).join(':');
   return <section className="vod-board" aria-label="Simplified board-state diagram">
-    <div className="vod-board-heading"><strong>BOARD READ</strong><span>Traced from {stamp(source)}{source !== second ? ' · earlier overhead' : ''}</span></div>
-    <svg viewBox="0 0 640 480" role="img" aria-labelledby="board-title board-description">
-      <title id="board-title">{`Approximate unit-group positions at ${stamp(source)}`}</title>
-      <desc id="board-description">{`Same orientation as the broadcast. Teal is Thousand Sons; pink is Emperor’s Children; beige dashed markers have unresolved identity. Terrain is a hand-traced visual guide, not a legal measurement map. ${groups.map(g=>g.label).join(', ')}. Dashed arrows connect sampled positions, not proven movement paths.`}</desc>
-      <defs><pattern id="board-grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#263c40" strokeWidth=".5" /></pattern><marker id="board-arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#78e3d0" /></marker></defs>
+    <div className="vod-board-heading">{previous ? `${stamp(previous)} → ${stamp(source)}` : `Starting positions · ${stamp(source)}`}</div>
+    <svg viewBox="0 0 640 480" role="img" aria-labelledby={`${id}-title ${id}-description`}>
+      <title id={`${id}-title`}>{`Approximate unit-group positions at ${stamp(source)}`}</title>
+      <desc id={`${id}-description`}>{`Same orientation as the broadcast. Teal is Thousand Sons; pink is Emperor’s Children; beige dashed markers have unresolved identity. Terrain is approximate. ${groups.map(g=>g.label).join(', ')}. Dashed arrows connect sampled positions, not proven movement paths.`}</desc>
+      <defs><pattern id={`${id}-grid`} width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#263c40" strokeWidth=".5" /></pattern><marker id={`${id}-arrow`} markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#78e3d0" /></marker></defs>
       <rect x="12" y="12" width="616" height="456" rx="5" fill="#111e24" stroke="#547078" />
-      <rect x="20" y="20" width="600" height="440" fill="url(#board-grid)" />
+      <rect x="20" y="20" width="600" height="440" fill={`url(#${id}-grid)`} />
       <g transform="translate(20 20)">
         {ruins.map((ruin,i)=><g key={i} transform={`translate(${ruin.x*6} ${ruin.y*4.4}) rotate(${ruin.r} ${ruin.w*3} ${ruin.h*2.2})`}><rect width={ruin.w*6} height={ruin.h*4.4} fill="#26363d" stroke="#4a5b60" strokeWidth="1" /><path d={`M4 ${ruin.h*4.4-4} V4 H${ruin.w*6-4}`} stroke="#718084" strokeWidth="4" fill="none" /></g>)}
-        {previous && groups.filter(g=>g.key).map(g=>{const old=positions[previous].find(p=>p.key===g.key);return old && Math.hypot(old.x-g.x,old.y-g.y)>4 ? <g key={`arrow-${g.key}`}><circle cx={old.x*6} cy={old.y*4.4} r="9" fill="none" stroke="#78e3d0" strokeDasharray="3 3" opacity=".5"/><path d={`M${old.x*6},${old.y*4.4} L${g.x*6},${g.y*4.4}`} stroke="#78e3d0" strokeWidth="1.5" strokeDasharray="5 5" opacity=".6" markerEnd="url(#board-arrow)"/></g>:null;})}
+        {previous && groups.filter(g=>g.key).map(g=>{const old=positions[previous].find(p=>p.key===g.key);return old && Math.hypot(old.x-g.x,old.y-g.y)>4 ? <g key={`arrow-${g.key}`} className="vod-movement"><circle cx={old.x*6} cy={old.y*4.4} r="10" fill="#111e24" stroke="#78e3d0" strokeDasharray="3 3" opacity=".7"/><path d={`M${old.x*6},${old.y*4.4} L${g.x*6},${g.y*4.4}`} stroke="#78e3d0" strokeWidth="2.5" strokeDasharray="6 4" markerEnd={`url(#${id}-arrow)`}/></g>:null;})}
         {groups.map((g,i)=><g key={`${g.label}-${i}`} transform={`translate(${g.x*6} ${g.y*4.4})`}><circle r="10" fill="#15242b" stroke={colors[g.side]} strokeWidth="2.5" strokeDasharray={g.uncertain?'3 2':undefined}/>{g.vehicle ? <rect x="-5" y="-7" width="10" height="14" rx="2" fill={colors[g.side]} opacity=".8"/> : <circle r="4" fill={colors[g.side]}/>}<text x={g.dx??14} y={g.dy??4} fill={colors[g.side]} fontSize="11" fontFamily="Arial, sans-serif" fontWeight="600" paintOrder="stroke" stroke="#111e24" strokeWidth="4" strokeLinejoin="round">{g.label}</text></g>)}
       </g>
     </svg>
-    <div className="vod-board-legend"><span>● Thousand Sons</span><span>● Emperor’s Children</span><span>◌ Identity unresolved</span></div>
-    <p>Circles = unit/group markers, not individual models or measured bases. Dashed arrows = change between captures, not actual movement paths. Terrain is approximate; objective locations and control are not verified. Omitted pieces are not necessarily dead.</p>
   </section>;
 }
