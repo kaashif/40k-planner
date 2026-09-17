@@ -454,7 +454,7 @@ export default function DeploymentPlanner() {
       <div className="planner-workspace">
         <nav className="planner-controls" aria-label="Deployment planner controls">
           <div className="planner-context-row">
-            <Link className="planner-back-link" href="/">← Missions</Link>
+            <Link className="planner-back-link" href="/missions/">← Missions</Link>
             <label className="matchup-selector">
               <span>First objective</span>
               <select value={firstDisposition} onChange={(event) => navigateMatchup(event.target.value, secondDisposition, layout.layout)}>

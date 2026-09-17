@@ -1,8 +1,25 @@
-# Mission Control
+# 40k Field Notes
 
-A static GitHub Pages reference for Warhammer 40,000 11th-edition missions and the 26 August 2026 event layouts.
+A VOD-first GitHub Pages site for Thousand Sons game analysis, with 11th-edition mission and deployment tools kept as secondary routes.
 
-The site is a compact 5×5 primary mission matrix. Selecting a cell shows both players' complete primary cards and the three matching current layouts. It also contains all 18 secondary mission names and a local source library containing official public PDFs and normalized JSON.
+The homepage reviews Alex Fowler vs Frasier Parry through seven real broadcast stills, timestamped observations, commentary reports, interpretations and explicit gaps. Overhead frames have hand-traced terrain diagrams with labelled unit/group markers; they are approximate visual aids, not measured maps or exact model inventories. Other Grand Coven wins are linked in an unreviewed queue.
+
+The original mission matrix is now at `/missions/`; `/planner/`, `/plans/` and `/reviews/` remain available. Selecting a mission cell shows both players' primary cards and the three matching layouts.
+
+## VOD analysis
+
+The [implementation plan](docs/vod-analysis-plan.md) records scope, evidence standards and progress. Checkpoint data and frame provenance live in `public/vod/fowler-parry/`. Only selected commentary stills are committed; raw frames and captions stay in ignored `.cache/`. No complete videos, credentials or signed media URLs are published.
+
+```sh
+uv run --with yt-dlp --with imageio-ffmpeg --with pillow python scripts/sample-vod.py WOpiPuYL0YA --times 2400 4500 5700 7500 8700 10920 11040 --out .cache/vod/fowler-parry
+uv run --with pillow python scripts/publish-vod-frames.py
+node --test scripts/test-vod.mjs
+NEXT_PUBLIC_BASE_PATH=/40k-planner npm run build
+uv run --with playwright playwright install chromium
+uv run --with playwright python scripts/check-vod-ui.py
+```
+
+The UI test starts its own local static server and writes desktop/mobile screenshots to `.cache/vod-ui/`. An existing compatible Chromium executable can be supplied with `VOD_TEST_BROWSER`. Source captions are fallible: never promote a commentary claim to a directly observed event without checking the footage.
 
 Primary-card images and all 45 layout previews are stored locally with the static site.
 

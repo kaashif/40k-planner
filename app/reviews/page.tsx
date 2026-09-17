@@ -37,7 +37,7 @@ export default function BrightonReviews() {
           <h1>Brighton deployment review</h1>
           <p>{reviewData.reviewCount} numbered drafts · {reviewData.opponentCount} opponents · layouts A/B/C</p>
         </div>
-        <nav><Link href="/">Missions</Link><Link href="/plans/">Plan library</Link></nav>
+        <nav><Link href="/">VOD analysis</Link><Link href="/missions/">Missions</Link><Link href="/plans/">Plan library</Link></nav>
       </header>
 
       <section className="review-notice">

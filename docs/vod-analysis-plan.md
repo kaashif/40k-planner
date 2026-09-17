@@ -28,4 +28,11 @@ If public extraction is blocked, try another verified public Grand Coven broadca
 
 ## Progress
 
-- Plan written; implementation and extraction checks pending.
+- Plan committed and pushed before implementation (`6ea970a`).
+- Pilot verified: Fowler/Parry, WarGames Live `WOpiPuYL0YA`, 12 August Warmaster. The index start is a countdown; reviewed opening begins at 00:40:00. Closing score 78–45 includes turn-five scoring entered after the reported elimination.
+- Public frame extraction succeeded. Seven stills selected from 33 captures; caption-assisted reports stay separate from visible evidence. Full list not independently readable from BCP.
+- VOD-first homepage implemented, with checkpoint navigation, overhead comparison, annotation toggles, provenance, and source-linked queue. Mission matrix moved to `/missions/`; existing tools retained.
+- User requested diagrammatic analysis: hand-traced terrain and unit/group markers added for the five overhead checkpoints. Unknown identities stay labelled; non-overhead checkpoints explicitly show the earlier map timestamp. No invented exact model counts, objective control or movement paths.
+- User requested three TS wins plus a Knights match if available. Queue selected: Fowler/Power (94–78, Priority Assets mirror), Terroxer El Rojo/Allot (92–73). Fowler/Pyles excluded from win selection: Fowler lost 78–100. Further footage analysis remains separate from this published pilot.
+- Parallel research found a Hexwarp/Sekhetar versus Imperial Knights candidate, but the user subsequently restricted the scope to Grand Coven with Magnus. The alternate-detachment candidate is excluded. Queued Grand Coven rosters must confirm Magnus before further analysis; no qualifying Knights game is yet verified.
+- Static build, eight existing CLI tests and three evidence/provenance tests pass. Lint has no errors (existing and new static-image advisories). Desktop/mobile browser checks pass for checkpoints, comparison, markers, diagram fallback, images and base-path navigation. An SVG title hydration mismatch found by the browser test was fixed. Desktop/mobile screenshots visually inspected. Live deployment follows the implementation push.

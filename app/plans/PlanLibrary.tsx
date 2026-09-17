@@ -36,7 +36,8 @@ export default function PlanLibrary() {
     <main className="plan-library-shell">
       <header className="planner-header">
         <div>
-          <Link href="/">← Missions</Link>
+          <Link href="/">VOD analysis</Link>
+          <Link href="/missions/">← Missions</Link>
           <h1>Deployment plan library</h1>
           <p>Every objective matchup and official layout. Bundled plans and local browser saves are marked.</p>
         </div>
