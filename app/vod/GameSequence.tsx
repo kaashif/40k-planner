@@ -4,6 +4,11 @@ export type Game = {
   id: string; title: string; matchup: string; event: string; mission: string;
   videoId: string; broadcaster: string; indexUrl: string; result: string; notes?: string;
   roster?: {image:string;second:number;opponentImage?:string;opponentSecond?:number};
+  deployment: {
+    terminators: 'on-board' | 'reserve' | 'not-in-list' | 'unknown';
+    items: {unit:string; status:string; evidence:string; sources:{label:string;url:string}[]}[];
+    caveat?:string;
+  };
   frames: { second: number; label: string; score?: number[]; image: string; alt: string;
     caption?: { second:number; text:string }; board?: BoardState }[];
 };
@@ -18,6 +23,15 @@ export default function GameSequence({game}: {game:Game}) {
       <p>{game.matchup}</p><p>{game.event} · {game.mission} · <a href={video(game.frames[0].second)}>{game.broadcaster} ↗</a> · <a href={game.indexUrl}>Game source</a></p>
       {game.notes && <p className="vod-small">{game.notes}</p>}
     </header>
+    <section className="vod-reserves" aria-label={`${game.title} starting reserves`}>
+      <h3>Starting positions / reserves</h3>
+      <dl>{game.deployment.items.map(item=><div key={item.unit}>
+        <dt>{item.unit}</dt><dd><strong>{item.status}</strong> — {item.evidence}{' '}
+          {item.sources.map(source=><a key={source.url} href={source.url}>{source.label} ↗</a>)}
+        </dd>
+      </div>)}</dl>
+      {game.deployment.caveat && <p className="vod-small">{game.deployment.caveat}</p>}
+    </section>
     {game.roster && <div className="vod-rosters">
       <figure><img src={`${basePath}/vod/${game.id}/${game.roster.image}`} alt="Thousand Sons roster shown in the broadcast" width="1600" height="900"/><figcaption><a href={video(game.roster.second)}>Thousand Sons roster · {timestamp(game.roster.second)} ↗</a></figcaption></figure>
       {game.roster.opponentImage && <figure><img src={`${basePath}/vod/${game.id}/${game.roster.opponentImage}`} alt="Opponent roster shown in the broadcast" width="1600" height="900"/><figcaption><a href={video(game.roster.opponentSecond!)}>Opponent roster · {timestamp(game.roster.opponentSecond!)} ↗</a></figcaption></figure>}

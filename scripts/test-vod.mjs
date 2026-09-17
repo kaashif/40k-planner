@@ -46,6 +46,12 @@ for (const id of ['fowler-parry', 'fowler-power', 'terroxer-allot']) {
     const game = JSON.parse(readFileSync(new URL('game.json', dir)));
     const provenance = JSON.parse(readFileSync(new URL('frames.json', dir)));
     assert.equal(game.id, id);
+    assert(['on-board','reserve','not-in-list','unknown'].includes(game.deployment.terminators));
+    assert(game.deployment.items.length > 0);
+    for (const item of game.deployment.items) {
+      assert(item.unit && item.status && item.evidence && item.sources.length);
+      for (const source of item.sources) assert.equal(new URL(source.url).protocol, 'https:');
+    }
     assert(game.frames.length >= 5 && game.frames.length <= 16);
     assert(game.frames.some(f => f.board?.groups.some(g => g.key === 'magnus')));
     let last = -1;
@@ -79,3 +85,10 @@ for (const id of ['fowler-parry', 'fowler-power', 'terroxer-allot']) {
     assert(game.tracking.reviewedSeconds.length > game.frames.length);
   });
 }
+
+test('reserve tally excludes lists without Terminators and distinguishes reserve from embarked', () => {
+  const games = ['fowler-parry','fowler-power','terroxer-allot'].map(id=>JSON.parse(readFileSync(new URL(`../public/vod/${id}/game.json`, import.meta.url))));
+  assert.deepEqual(games.map(g=>g.deployment.terminators), ['on-board','reserve','not-in-list']);
+  for (const game of games.slice(0,2)) assert(game.deployment.items.find(i=>i.unit==='Two Rubric units').status.startsWith('Embarked'));
+  assert(games[0].frames.some(f=>f.second===2700));
+});

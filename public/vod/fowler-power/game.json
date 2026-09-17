@@ -2,17 +2,17 @@
   "id": "fowler-power",
   "title": "Fowler vs Power",
   "matchup": "Thousand Sons vs Chaos Daemons",
-  "event": "WTC Warmaster GT \u00b7 12 August 2026",
+  "event": "WTC Warmaster GT · 12 August 2026",
   "mission": "Priority Assets mirror",
   "videoId": "D8l6VqiGTac",
   "broadcaster": "Board Report",
   "indexUrl": "https://40kvodindex.com/games/alex-fowler-thousand-sons-vs-colin-power-chaos-daemons-19200",
-  "result": "Thousand Sons win 94\u201378",
+  "result": "Thousand Sons win 94–78",
   "notes": "Includes turn 1 before the indexed start. Camera changes ends; diagrams retain one orientation. Hidden units are omitted, not declared destroyed.",
   "frames": [
     {
       "second": 18000,
-      "label": "Turn 1 \u00b7 bottom",
+      "label": "Turn 1 · bottom",
       "score": [
         18,
         10
@@ -21,7 +21,7 @@
       "board": {
         "terrain": [
           {
-            "x": 14.0,
+            "x": 14,
             "y": 9.5,
             "w": 20,
             "h": 13,
@@ -50,7 +50,7 @@
           },
           {
             "x": 11.5,
-            "y": 71.0,
+            "y": 71,
             "w": 25,
             "h": 16,
             "r": -20
@@ -70,14 +70,14 @@
             "r": -30
           },
           {
-            "x": 65.0,
-            "y": 15.0,
+            "x": 65,
+            "y": 15,
             "w": 22,
             "h": 16,
             "r": -10
           },
           {
-            "x": 68.0,
+            "x": 68,
             "y": 40.5,
             "w": 20,
             "h": 13,
@@ -180,7 +180,7 @@
     },
     {
       "second": 19200,
-      "label": "Turn 2 \u00b7 top",
+      "label": "Turn 2 · top",
       "score": [
         22,
         18
@@ -189,7 +189,7 @@
       "board": {
         "terrain": [
           {
-            "x": 14.0,
+            "x": 14,
             "y": 9.5,
             "w": 20,
             "h": 13,
@@ -218,7 +218,7 @@
           },
           {
             "x": 11.5,
-            "y": 71.0,
+            "y": 71,
             "w": 25,
             "h": 16,
             "r": -20
@@ -238,14 +238,14 @@
             "r": -30
           },
           {
-            "x": 65.0,
-            "y": 15.0,
+            "x": 65,
+            "y": 15,
             "w": 22,
             "h": 16,
             "r": -10
           },
           {
-            "x": 68.0,
+            "x": 68,
             "y": 40.5,
             "w": 20,
             "h": 13,
@@ -346,7 +346,7 @@
     },
     {
       "second": 20400,
-      "label": "Turn 2 \u00b7 top \u00b7 Magnus in view",
+      "label": "Turn 2 · top · Magnus in view",
       "score": [
         22,
         18
@@ -356,7 +356,7 @@
     },
     {
       "second": 22200,
-      "label": "Turn 2 \u00b7 bottom",
+      "label": "Turn 2 · bottom",
       "score": [
         30,
         27
@@ -365,7 +365,7 @@
       "board": {
         "terrain": [
           {
-            "x": 14.0,
+            "x": 14,
             "y": 9.5,
             "w": 20,
             "h": 13,
@@ -394,7 +394,7 @@
           },
           {
             "x": 11.5,
-            "y": 71.0,
+            "y": 71,
             "w": 25,
             "h": 16,
             "r": -20
@@ -414,14 +414,14 @@
             "r": -30
           },
           {
-            "x": 65.0,
-            "y": 15.0,
+            "x": 65,
+            "y": 15,
             "w": 22,
             "h": 16,
             "r": -10
           },
           {
-            "x": 68.0,
+            "x": 68,
             "y": 40.5,
             "w": 20,
             "h": 13,
@@ -531,7 +531,7 @@
     },
     {
       "second": 22800,
-      "label": "Turn 3 \u00b7 top",
+      "label": "Turn 3 · top",
       "score": [
         34,
         45
@@ -540,7 +540,7 @@
       "board": {
         "terrain": [
           {
-            "x": 14.0,
+            "x": 14,
             "y": 9.5,
             "w": 20,
             "h": 13,
@@ -569,7 +569,7 @@
           },
           {
             "x": 11.5,
-            "y": 71.0,
+            "y": 71,
             "w": 25,
             "h": 16,
             "r": -20
@@ -589,14 +589,14 @@
             "r": -30
           },
           {
-            "x": 65.0,
-            "y": 15.0,
+            "x": 65,
+            "y": 15,
             "w": 22,
             "h": 16,
             "r": -10
           },
           {
-            "x": 68.0,
+            "x": 68,
             "y": 40.5,
             "w": 20,
             "h": 13,
@@ -708,7 +708,7 @@
     },
     {
       "second": 24360,
-      "label": "Turn 4 \u00b7 before Magnus moves",
+      "label": "Turn 4 · before Magnus moves",
       "score": [
         49,
         57
@@ -717,7 +717,7 @@
       "board": {
         "terrain": [
           {
-            "x": 14.0,
+            "x": 14,
             "y": 9.5,
             "w": 20,
             "h": 13,
@@ -746,7 +746,7 @@
           },
           {
             "x": 11.5,
-            "y": 71.0,
+            "y": 71,
             "w": 25,
             "h": 16,
             "r": -20
@@ -766,14 +766,14 @@
             "r": -30
           },
           {
-            "x": 65.0,
-            "y": 15.0,
+            "x": 65,
+            "y": 15,
             "w": 22,
             "h": 16,
             "r": -10
           },
           {
-            "x": 68.0,
+            "x": 68,
             "y": 40.5,
             "w": 20,
             "h": 13,
@@ -869,7 +869,7 @@
     },
     {
       "second": 24600,
-      "label": "Turn 4 \u00b7 top",
+      "label": "Turn 4 · top",
       "score": [
         49,
         57
@@ -882,7 +882,7 @@
       "board": {
         "terrain": [
           {
-            "x": 14.0,
+            "x": 14,
             "y": 9.5,
             "w": 20,
             "h": 13,
@@ -911,7 +911,7 @@
           },
           {
             "x": 11.5,
-            "y": 71.0,
+            "y": 71,
             "w": 25,
             "h": 16,
             "r": -20
@@ -931,14 +931,14 @@
             "r": -30
           },
           {
-            "x": 65.0,
-            "y": 15.0,
+            "x": 65,
+            "y": 15,
             "w": 22,
             "h": 16,
             "r": -10
           },
           {
-            "x": 68.0,
+            "x": 68,
             "y": 40.5,
             "w": 20,
             "h": 13,
@@ -1033,7 +1033,7 @@
     },
     {
       "second": 24960,
-      "label": "Turn 4 \u00b7 central positions",
+      "label": "Turn 4 · central positions",
       "score": [
         65,
         57
@@ -1042,7 +1042,7 @@
       "board": {
         "terrain": [
           {
-            "x": 14.0,
+            "x": 14,
             "y": 9.5,
             "w": 20,
             "h": 13,
@@ -1071,7 +1071,7 @@
           },
           {
             "x": 11.5,
-            "y": 71.0,
+            "y": 71,
             "w": 25,
             "h": 16,
             "r": -20
@@ -1091,14 +1091,14 @@
             "r": -30
           },
           {
-            "x": 65.0,
-            "y": 15.0,
+            "x": 65,
+            "y": 15,
             "w": 22,
             "h": 16,
             "r": -10
           },
           {
-            "x": 68.0,
+            "x": 68,
             "y": 40.5,
             "w": 20,
             "h": 13,
@@ -1194,7 +1194,7 @@
     },
     {
       "second": 25200,
-      "label": "Turn 4 \u00b7 bottom",
+      "label": "Turn 4 · bottom",
       "score": [
         65,
         69
@@ -1207,7 +1207,7 @@
       "board": {
         "terrain": [
           {
-            "x": 14.0,
+            "x": 14,
             "y": 9.5,
             "w": 20,
             "h": 13,
@@ -1236,7 +1236,7 @@
           },
           {
             "x": 11.5,
-            "y": 71.0,
+            "y": 71,
             "w": 25,
             "h": 16,
             "r": -20
@@ -1256,14 +1256,14 @@
             "r": -30
           },
           {
-            "x": 65.0,
-            "y": 15.0,
+            "x": 65,
+            "y": 15,
             "w": 22,
             "h": 16,
             "r": -10
           },
           {
-            "x": 68.0,
+            "x": 68,
             "y": 40.5,
             "w": 20,
             "h": 13,
@@ -1334,7 +1334,7 @@
     },
     {
       "second": 25440,
-      "label": "Turn 5 \u00b7 Magnus crosses the centre",
+      "label": "Turn 5 · Magnus crosses the centre",
       "score": [
         69,
         69
@@ -1343,7 +1343,7 @@
       "board": {
         "terrain": [
           {
-            "x": 14.0,
+            "x": 14,
             "y": 9.5,
             "w": 20,
             "h": 13,
@@ -1372,7 +1372,7 @@
           },
           {
             "x": 11.5,
-            "y": 71.0,
+            "y": 71,
             "w": 25,
             "h": 16,
             "r": -20
@@ -1392,14 +1392,14 @@
             "r": -30
           },
           {
-            "x": 65.0,
-            "y": 15.0,
+            "x": 65,
+            "y": 15,
             "w": 22,
             "h": 16,
             "r": -10
           },
           {
-            "x": 68.0,
+            "x": 68,
             "y": 40.5,
             "w": 20,
             "h": 13,
@@ -1556,7 +1556,7 @@
       25560,
       25800
     ],
-    "limits": "Sampled endpoints, not continuous movement paths. Intervening views bracket Magnus advances at 24450\u201324510 and 25260\u201325320; handheld views and player/overlay occlusion limit precision. Camera-angle drift corrected against fixed overhead terrain.",
+    "limits": "Sampled endpoints, not continuous movement paths. Intervening views bracket Magnus advances at 24450–24510 and 25260–25320; handheld views and player/overlay occlusion limit precision. Camera-angle drift corrected against fixed overhead terrain.",
     "rosterSource": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=16290s",
     "rosterStatus": "Match-specific roster overlay at 16290s; opponent roster at 16260s. Rubrics/Scarabs visual assignments remain probable where silhouettes overlap; individual attachments unresolved."
   },
@@ -1565,5 +1565,67 @@
     "second": 16290,
     "opponentImage": "opponent-roster.jpg",
     "opponentSecond": 16260
+  },
+  "deployment": {
+    "terminators": "reserve",
+    "items": [
+      {
+        "unit": "Scarab Occult Terminators + Sorcerer",
+        "status": "Reserve · explicit declaration",
+        "evidence": "Player declares the Terminators in reserve before deployment. The roster attaches the Crystal Sorcerer; Deep Strike is likely, but the declaration only establishes reserves.",
+        "sources": [
+          {
+            "label": "04:25:26 captions",
+            "url": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=15926s"
+          },
+          {
+            "label": "04:31:30 roster",
+            "url": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=16290s"
+          }
+        ]
+      },
+      {
+        "unit": "Winged Daemon Prince",
+        "status": "Reserve · explicit declaration",
+        "evidence": "Player adds the Prince to the reserve declaration; later dialogue again places him off-board.",
+        "sources": [
+          {
+            "label": "04:26:20",
+            "url": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=15980s"
+          },
+          {
+            "label": "05:48:14",
+            "url": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=20894s"
+          }
+        ]
+      },
+      {
+        "unit": "Three spear Enlightened",
+        "status": "Reserve · explicit declaration",
+        "evidence": "One spear unit is declared in reserve; later dialogue specifies three models still waiting off-board. Entry method not established.",
+        "sources": [
+          {
+            "label": "04:25:31",
+            "url": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=15931s"
+          },
+          {
+            "label": "05:48:14",
+            "url": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=20894s"
+          }
+        ]
+      },
+      {
+        "unit": "Two Rubric units",
+        "status": "Embarked · explicit declaration",
+        "evidence": "Two units begin in the Rhino, one unled. These are passengers, not reserve units.",
+        "sources": [
+          {
+            "label": "04:25:37",
+            "url": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=15937s"
+          }
+        ]
+      }
+    ],
+    "caveat": "Evidence is the broadcast’s auto-captions, cross-checked against the roster and later dialogue. In the postgame discussion Fowler describes concern about the Terminators being tagged on his expansion; this is one matchup decision, not a universal deployment rule."
   }
 }

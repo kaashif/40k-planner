@@ -1989,7 +1989,38 @@
       25330
     ],
     "limits": "Magnus's left-flank detour and the Mutalith's central stop are visible in intervening frames. Camera cuts still interrupt routes; arrows connect observed positions only.",
-    "rosterSource": "https://www.bestcoastpairings.com/list/TlfJhDewzXXy",
-    "rosterStatus": "Match-linked list did not load in the text reader; no roster card found in sampled pregame footage. Unresolved groups remain marked, not matched to another event's list."
+    "rosterSource": "https://listhammer.info/list/ec45dda1fb8f88261f",
+    "rosterStatus": "Exact Warmaster event roster recovered through Listhammer: four led Rubric units, Magnus, Rhino, two Spawn units, Forgefiend, Mutalith, Sekhetar Robots and two spear Enlightened units; no Terminators. Crystal on Exalted Sorcerer with Rubrics. Individual hidden groups remain unresolved."
+  },
+  "deployment": {
+    "terminators": "not-in-list",
+    "items": [
+      {
+        "unit": "Scarab Occult Terminators",
+        "status": "Not in this army",
+        "evidence": "The event roster contains no Terminators or Terminator Sorcerer. Excluded from the on/off-board count. References to scarabs during this game concern Necron units.",
+        "sources": [
+          {
+            "label": "Event roster",
+            "url": "https://listhammer.info/list/ec45dda1fb8f88261f"
+          }
+        ]
+      },
+      {
+        "unit": "Other starting reserves",
+        "status": "Unknown · no defensible unit-level guess",
+        "evidence": "No clear reserve declaration found. The Crystal belongs to an Exalted Sorcerer with Rubrics, so later repositioning would not by itself prove a reserve start; hidden or embarked units cannot be counted from absence.",
+        "sources": [
+          {
+            "label": "Event roster",
+            "url": "https://listhammer.info/list/ec45dda1fb8f88261f"
+          },
+          {
+            "label": "04:09:26 Crystal discussion",
+            "url": "https://www.youtube.com/watch?v=gY6uQHDmUBM&t=14966s"
+          }
+        ]
+      }
+    ]
   }
 }

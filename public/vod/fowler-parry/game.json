@@ -21,6 +21,7 @@
       2250,
       2350,
       2400,
+      2700,
       3000,
       3300,
       3900,
@@ -218,6 +219,12 @@
           }
         ]
       }
+    },
+    {
+      "second": 2700,
+      "label": "Turn 1 · Terminators already on the board",
+      "image": "002700.jpg",
+      "alt": "Turn-one close-up shows a brick of Scarab Occult Terminators behind the rear ruin, with Magnus and the white Rhino farther along the deployment edge."
     },
     {
       "second": 4380,
@@ -1531,5 +1538,63 @@
         "text": "78–45 is the finish."
       }
     }
-  ]
+  ],
+  "deployment": {
+    "terminators": "on-board",
+    "items": [
+      {
+        "unit": "Scarab Occult Terminators + Sorcerer",
+        "status": "On-board · strong evidence",
+        "evidence": "Turn-one close-up shows the Terminator brick behind the rear ruin; commentary then identifies it in the top-right deployment.",
+        "sources": [
+          {
+            "label": "00:45:00 frame",
+            "url": "https://www.youtube.com/watch?v=WOpiPuYL0YA&t=2700s"
+          },
+          {
+            "label": "00:46:19 captions",
+            "url": "https://www.youtube.com/watch?v=WOpiPuYL0YA&t=2779s"
+          }
+        ]
+      },
+      {
+        "unit": "Winged Daemon Prince",
+        "status": "Reserve · reported",
+        "evidence": "Commentary identifies the Prince in starting reserves, and player dialogue still places him there later. Deep Strike is the likely entry method, not visually confirmed.",
+        "sources": [
+          {
+            "label": "00:46:34",
+            "url": "https://www.youtube.com/watch?v=WOpiPuYL0YA&t=2794s"
+          },
+          {
+            "label": "02:16:33",
+            "url": "https://www.youtube.com/watch?v=WOpiPuYL0YA&t=8193s"
+          }
+        ]
+      },
+      {
+        "unit": "One Tzaangor Enlightened unit",
+        "status": "Reserve · reported",
+        "evidence": "Commentary identifies one Enlightened unit in starting reserves; exact entry method not established.",
+        "sources": [
+          {
+            "label": "00:46:29",
+            "url": "https://www.youtube.com/watch?v=WOpiPuYL0YA&t=2789s"
+          }
+        ]
+      },
+      {
+        "unit": "Two Rubric units",
+        "status": "Embarked · reported",
+        "evidence": "Pregame dialogue places an unled unit and a led unit in the Rhino. Not counted as reserves.",
+        "sources": [
+          {
+            "label": "00:21:07",
+            "url": "https://www.youtube.com/watch?v=WOpiPuYL0YA&t=1267s"
+          }
+        ]
+      }
+    ],
+    "caveat": "Earlier pregame captions (00:21:05) say Terminators will deep strike, but the later turn-one close-up and explicit commentary show them deployed. Starting position, not tentative pregame intent, determines this count. Captions can mistranscribe overlapping speech."
+  }
 }

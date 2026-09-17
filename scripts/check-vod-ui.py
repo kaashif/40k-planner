@@ -32,12 +32,15 @@ try:
         page.get_by_role('heading', name='Grand Coven · Magnus', exact=True).wait_for()
         games = [json.loads((root / f'public/vod/{name}/game.json').read_text()) for name in ['fowler-parry', 'fowler-power', 'terroxer-allot']]
         assert page.locator('.vod-moment').count() == sum(len(game['frames']) for game in games)
+        assert page.locator('.vod-reserves').count() == 3
+        assert '1 on-board · 1 in reserve' in page.locator('.vod-reserve-summary').inner_text()
         assert page.locator('.vod-board').count() == sum(sum('board' in f for f in game['frames']) for game in games)
         assert page.locator('.vod-pin, .vod-takeaways, button, details').count() == 0
         assert page.locator('.vod-movement').count() >= 4
         assert page.locator('[id]').evaluate_all('(els) => new Set(els.map(e => e.id)).size === els.length')
         assert page.locator('img').evaluate_all('(images) => images.every(i => i.complete && i.naturalWidth > 0)')
         page.screenshot(path=str(out / 'desktop.png'), full_page=True)
+        page.locator('.vod-reserves').first.screenshot(path=str(out / 'reserves.png'))
         page.locator('#fowler-parry-9090').screenshot(path=str(out / 'movement.png'))
         assert page.locator('.vod-sighting').count() >= 2
         for game in games:
