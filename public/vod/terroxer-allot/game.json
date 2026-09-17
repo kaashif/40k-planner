@@ -1,0 +1,1133 @@
+{
+  "id": "terroxer-allot",
+  "title": "Terroxer El Rojo vs Arnaud Allot",
+  "matchup": "Magnus · Grand Coven vs Necrons",
+  "event": "WTC Warmaster GT · 12 August 2026",
+  "mission": "Priority Assets vs Purge the Foe",
+  "videoId": "gY6uQHDmUBM",
+  "broadcaster": "DeepStrike Diaries",
+  "indexUrl": "https://40kvodindex.com/games/terroxer-el-rojo-thousand-sons-vs-arnaud-allot-necrons-13182",
+  "result": "Thousand Sons win · 92–73",
+  "notes": "Final 92–73 from the match index; the last captured live overlay is 71–62.",
+  "frames": [
+    {
+      "second": 15000,
+      "label": "Turn 1 · top",
+      "score": [
+        10,
+        10
+      ],
+      "alt": "Opening overhead board: Magnus and the Mutalith are on the left, a Thousand Sons Rhino lower centre, and Necrons clustered at the right-side ruins.",
+      "image": "015000.jpg",
+      "board": {
+        "terrain": [
+          {
+            "x": 25,
+            "y": 4.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 48,
+            "y": 6,
+            "w": 6,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56.5,
+            "y": 20.5,
+            "w": 15,
+            "h": 5,
+            "r": 0
+          },
+          {
+            "x": 76.5,
+            "y": 8,
+            "w": 21,
+            "h": 18,
+            "r": 0
+          },
+          {
+            "x": 10.5,
+            "y": 21,
+            "w": 7,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 36,
+            "y": 31.5,
+            "w": 20,
+            "h": 17,
+            "r": -44
+          },
+          {
+            "x": 42,
+            "y": 51.5,
+            "w": 24,
+            "h": 15,
+            "r": -44
+          },
+          {
+            "x": 11,
+            "y": 45.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 30,
+            "y": 52,
+            "w": 4,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 75,
+            "y": 46.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 32.5,
+            "w": 4,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 87,
+            "y": 62.5,
+            "w": 8,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 67.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 49,
+            "y": 76,
+            "w": 6,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 34,
+            "y": 72,
+            "w": 16,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 6.5,
+            "y": 73.5,
+            "w": 21,
+            "h": 15,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 21,
+            "y": 58,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 12,
+            "y": 60,
+            "label": "Mutalith",
+            "side": "ts",
+            "key": "mutalith",
+            "dx": -67,
+            "dy": 8
+          },
+          {
+            "x": 12,
+            "y": 52,
+            "label": "Disc unit",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 44,
+            "y": 85,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "rhino",
+            "vehicle": true
+          },
+          {
+            "x": 43,
+            "y": 79,
+            "label": "TS infantry",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 6,
+            "y": 87,
+            "label": "TS infantry",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 61,
+            "y": 18,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 82,
+            "y": 42,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 91,
+            "y": 70,
+            "label": "Necron group",
+            "side": "ec"
+          }
+        ]
+      }
+    },
+    {
+      "second": 19800,
+      "label": "Turn 2 · top",
+      "alt": "Magnus is now above the central diagonal ruin; the Mutalith is against its left edge and the Rhino has advanced to the lower diagonal ruin.",
+      "image": "019800.jpg",
+      "board": {
+        "terrain": [
+          {
+            "x": 25,
+            "y": 4.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 48,
+            "y": 6,
+            "w": 6,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56.5,
+            "y": 20.5,
+            "w": 15,
+            "h": 5,
+            "r": 0
+          },
+          {
+            "x": 76.5,
+            "y": 8,
+            "w": 21,
+            "h": 18,
+            "r": 0
+          },
+          {
+            "x": 10.5,
+            "y": 21,
+            "w": 7,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 36,
+            "y": 31.5,
+            "w": 20,
+            "h": 17,
+            "r": -44
+          },
+          {
+            "x": 42,
+            "y": 51.5,
+            "w": 24,
+            "h": 15,
+            "r": -44
+          },
+          {
+            "x": 11,
+            "y": 45.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 30,
+            "y": 52,
+            "w": 4,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 75,
+            "y": 46.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 32.5,
+            "w": 4,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 87,
+            "y": 62.5,
+            "w": 8,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 67.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 49,
+            "y": 76,
+            "w": 6,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 34,
+            "y": 72,
+            "w": 16,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 6.5,
+            "y": 73.5,
+            "w": 21,
+            "h": 15,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 50,
+            "y": 26,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 44,
+            "y": 43,
+            "label": "Mutalith",
+            "side": "ts",
+            "key": "mutalith"
+          },
+          {
+            "x": 59,
+            "y": 67,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "rhino",
+            "vehicle": true
+          },
+          {
+            "x": 57,
+            "y": 63,
+            "label": "TS infantry",
+            "side": "ts",
+            "uncertain": true,
+            "dx": -85,
+            "dy": -3
+          },
+          {
+            "x": 11,
+            "y": 14,
+            "label": "Disc unit",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 50,
+            "y": 8,
+            "label": "TS infantry",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 82,
+            "y": 42,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 80,
+            "y": 27,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 76,
+            "y": 62,
+            "label": "Necron flyer",
+            "side": "ec",
+            "key": "flyer",
+            "vehicle": true
+          },
+          {
+            "x": 24,
+            "y": 86,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 66,
+            "y": 95,
+            "label": "Necron vehicle",
+            "side": "ec",
+            "key": "rearvehicle",
+            "vehicle": true
+          }
+        ]
+      }
+    },
+    {
+      "second": 20400,
+      "label": "Turn 2 · bottom",
+      "score": [
+        31,
+        22
+      ],
+      "alt": "Necron groups and the crescent flyer have moved into the centre beside Magnus and the Mutalith. The Rhino remains beside the lower central ruin.",
+      "image": "020400.jpg",
+      "board": {
+        "terrain": [
+          {
+            "x": 25,
+            "y": 4.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 48,
+            "y": 6,
+            "w": 6,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56.5,
+            "y": 20.5,
+            "w": 15,
+            "h": 5,
+            "r": 0
+          },
+          {
+            "x": 76.5,
+            "y": 8,
+            "w": 21,
+            "h": 18,
+            "r": 0
+          },
+          {
+            "x": 10.5,
+            "y": 21,
+            "w": 7,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 36,
+            "y": 31.5,
+            "w": 20,
+            "h": 17,
+            "r": -44
+          },
+          {
+            "x": 42,
+            "y": 51.5,
+            "w": 24,
+            "h": 15,
+            "r": -44
+          },
+          {
+            "x": 11,
+            "y": 45.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 30,
+            "y": 52,
+            "w": 4,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 75,
+            "y": 46.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 32.5,
+            "w": 4,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 87,
+            "y": 62.5,
+            "w": 8,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 67.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 49,
+            "y": 76,
+            "w": 6,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 34,
+            "y": 72,
+            "w": 16,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 6.5,
+            "y": 73.5,
+            "w": 21,
+            "h": 15,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 50,
+            "y": 26,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 44,
+            "y": 43,
+            "label": "Mutalith",
+            "side": "ts",
+            "key": "mutalith"
+          },
+          {
+            "x": 59,
+            "y": 67,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "rhino",
+            "vehicle": true
+          },
+          {
+            "x": 55,
+            "y": 62,
+            "label": "TS infantry",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 66,
+            "y": 34,
+            "label": "Necron flyer",
+            "side": "ec",
+            "key": "flyer",
+            "vehicle": true
+          },
+          {
+            "x": 65,
+            "y": 42,
+            "label": "Necron group",
+            "side": "ec",
+            "dx": -96,
+            "dy": 8
+          },
+          {
+            "x": 80,
+            "y": 60,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 40,
+            "y": 71,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 83,
+            "y": 78,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 66,
+            "y": 95,
+            "label": "Necron vehicle",
+            "side": "ec",
+            "key": "rearvehicle",
+            "vehicle": true
+          }
+        ]
+      }
+    },
+    {
+      "second": 23400,
+      "label": "Turn 3 · top",
+      "score": [
+        44,
+        34
+      ],
+      "alt": "Magnus occupies the right edge of the upper central ruin. The Mutalith is farther down the right lane. The former Rhino position is vacant; Necrons remain across the centre and right.",
+      "image": "023400.jpg",
+      "board": {
+        "terrain": [
+          {
+            "x": 25,
+            "y": 4.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 48,
+            "y": 6,
+            "w": 6,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56.5,
+            "y": 20.5,
+            "w": 15,
+            "h": 5,
+            "r": 0
+          },
+          {
+            "x": 76.5,
+            "y": 8,
+            "w": 21,
+            "h": 18,
+            "r": 0
+          },
+          {
+            "x": 10.5,
+            "y": 21,
+            "w": 7,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 36,
+            "y": 31.5,
+            "w": 20,
+            "h": 17,
+            "r": -44
+          },
+          {
+            "x": 42,
+            "y": 51.5,
+            "w": 24,
+            "h": 15,
+            "r": -44
+          },
+          {
+            "x": 11,
+            "y": 45.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 30,
+            "y": 52,
+            "w": 4,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 75,
+            "y": 46.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 32.5,
+            "w": 4,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 87,
+            "y": 62.5,
+            "w": 8,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 67.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 49,
+            "y": 76,
+            "w": 6,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 34,
+            "y": 72,
+            "w": 16,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 6.5,
+            "y": 73.5,
+            "w": 21,
+            "h": 15,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 62,
+            "y": 36,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 77,
+            "y": 61,
+            "label": "Mutalith",
+            "side": "ts",
+            "key": "mutalith"
+          },
+          {
+            "x": 24,
+            "y": 28,
+            "label": "Disc unit",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 65,
+            "y": 29,
+            "label": "TS infantry",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 62,
+            "y": 45,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 92,
+            "y": 40,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 65,
+            "y": 65,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 66,
+            "y": 95,
+            "label": "Necron vehicle",
+            "side": "ec",
+            "key": "rearvehicle",
+            "vehicle": true
+          }
+        ]
+      }
+    },
+    {
+      "second": 24600,
+      "label": "Turn 4 · top",
+      "alt": "Magnus has moved down toward the lower central ruin. Necron groups occupy the upper central ruin, lower right ruin and right edge. No models on the side tray are included on the map.",
+      "image": "024600.jpg",
+      "board": {
+        "terrain": [
+          {
+            "x": 25,
+            "y": 4.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 48,
+            "y": 6,
+            "w": 6,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56.5,
+            "y": 20.5,
+            "w": 15,
+            "h": 5,
+            "r": 0
+          },
+          {
+            "x": 76.5,
+            "y": 8,
+            "w": 21,
+            "h": 18,
+            "r": 0
+          },
+          {
+            "x": 10.5,
+            "y": 21,
+            "w": 7,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 36,
+            "y": 31.5,
+            "w": 20,
+            "h": 17,
+            "r": -44
+          },
+          {
+            "x": 42,
+            "y": 51.5,
+            "w": 24,
+            "h": 15,
+            "r": -44
+          },
+          {
+            "x": 11,
+            "y": 45.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 30,
+            "y": 52,
+            "w": 4,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 75,
+            "y": 46.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 32.5,
+            "w": 4,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 87,
+            "y": 62.5,
+            "w": 8,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 67.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 49,
+            "y": 76,
+            "w": 6,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 34,
+            "y": 72,
+            "w": 16,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 6.5,
+            "y": 73.5,
+            "w": 21,
+            "h": 15,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 61,
+            "y": 51,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 33,
+            "y": 25,
+            "label": "Disc unit",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 85,
+            "y": 13,
+            "label": "TS infantry",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 48,
+            "y": 41,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 57,
+            "y": 70,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 93,
+            "y": 38,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 73,
+            "y": 83,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 66,
+            "y": 95,
+            "label": "Necron vehicle",
+            "side": "ec",
+            "key": "rearvehicle",
+            "vehicle": true
+          }
+        ]
+      }
+    },
+    {
+      "second": 25160,
+      "label": "Turn 5 · closing board",
+      "score": [
+        71,
+        62
+      ],
+      "alt": "Late-game overhead frame: Magnus remains central beside Necrons on the diagonal ruins; the distinct Necron vehicle has moved left along the back edge.",
+      "image": "025160.jpg",
+      "board": {
+        "terrain": [
+          {
+            "x": 25,
+            "y": 4.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 48,
+            "y": 6,
+            "w": 6,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56.5,
+            "y": 20.5,
+            "w": 15,
+            "h": 5,
+            "r": 0
+          },
+          {
+            "x": 76.5,
+            "y": 8,
+            "w": 21,
+            "h": 18,
+            "r": 0
+          },
+          {
+            "x": 10.5,
+            "y": 21,
+            "w": 7,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 36,
+            "y": 31.5,
+            "w": 20,
+            "h": 17,
+            "r": -44
+          },
+          {
+            "x": 42,
+            "y": 51.5,
+            "w": 24,
+            "h": 15,
+            "r": -44
+          },
+          {
+            "x": 11,
+            "y": 45.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 30,
+            "y": 52,
+            "w": 4,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 75,
+            "y": 46.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 32.5,
+            "w": 4,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 87,
+            "y": 62.5,
+            "w": 8,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 67.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 49,
+            "y": 76,
+            "w": 6,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 34,
+            "y": 72,
+            "w": 16,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 6.5,
+            "y": 73.5,
+            "w": 21,
+            "h": 15,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 57,
+            "y": 46,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 51,
+            "y": 41,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 57,
+            "y": 70,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 93,
+            "y": 38,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 68,
+            "y": 87,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 48,
+            "y": 95,
+            "label": "Necron vehicle",
+            "side": "ec",
+            "key": "rearvehicle",
+            "vehicle": true
+          }
+        ]
+      }
+    }
+  ]
+}

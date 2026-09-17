@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 
 const root = new URL('../public/vod/fowler-parry/', import.meta.url);
@@ -39,3 +39,35 @@ test('queue links have explicit index provenance', () => {
     assert.equal(new URL(game.indexUrl).hostname, '40kvodindex.com');
   }
 });
+
+for (const id of ['fowler-power', 'terroxer-allot']) {
+  test(`${id}: chronological frames and plausible diagram coordinates`, () => {
+    const dir = new URL(`../public/vod/${id}/`, import.meta.url);
+    const game = JSON.parse(readFileSync(new URL('game.json', dir)));
+    const provenance = JSON.parse(readFileSync(new URL('frames.json', dir)));
+    assert.equal(game.id, id);
+    assert(game.frames.length >= 5 && game.frames.length <= 8);
+    assert(game.frames.some(f => f.board?.groups.some(g => g.key === 'magnus')));
+    let last = -1;
+    for (const frame of game.frames) {
+      assert(frame.second > last);
+      last = frame.second;
+      assert(frame.alt && frame.label);
+      assert(existsSync(new URL(frame.image, dir)));
+      const source = provenance.find(p=>p.file === frame.image && p.second === frame.second);
+      assert(source);
+      assert.equal(createHash('sha256').update(readFileSync(new URL(frame.image, dir))).digest('hex'), source.sha256);
+      assert.equal(source.source, `https://www.youtube.com/watch?v=${game.videoId}&t=${frame.second}s`);
+      if (frame.score) assert.equal(frame.score.length, 2);
+      if (frame.board) {
+        const keys = frame.board.groups.map(g=>g.key).filter(Boolean);
+        assert.equal(keys.length, new Set(keys).size);
+        for (const group of frame.board.groups) {
+          assert(group.x >= 0 && group.x <= 100 && group.y >= 0 && group.y <= 100);
+          assert(['ts','ec','unknown'].includes(group.side));
+        }
+      }
+    }
+    assert(game.frames.map(f=>f.caption?.text ?? '').join(' ').trim().split(/\s+/).length <= 25);
+  });
+}

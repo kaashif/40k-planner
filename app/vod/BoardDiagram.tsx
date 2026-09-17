@@ -1,4 +1,5 @@
 type Group = { x: number; y: number; label: string; side: 'ts' | 'ec' | 'unknown'; key?: string; vehicle?: boolean; uncertain?: boolean; dx?: number; dy?: number };
+export type BoardState = { terrain: {x:number;y:number;w:number;h:number;r:number}[]; groups: Group[] };
 
 // Hand-traced from the five published overhead frames, not a measured terrain pack.
 // Each marker represents a unit/group, never an exact model count or base size.
@@ -56,26 +57,28 @@ const ruins = [
   {x:52,y:67,w:9,h:4,r:0}, {x:70,y:85,w:18,h:5,r:0},
 ];
 
-export default function BoardDiagram({ second }: {second: number}) {
+export default function BoardDiagram({ second, board, previousBoard, gameId = 'fowler-parry' }: {second: number; board?: BoardState; previousBoard?: {second:number; board:BoardState}; gameId?:string}) {
   const times = Object.keys(positions).map(Number).sort((a,b) => a-b);
-  const source = times.filter(time => time <= second).at(-1)!;
-  const previous = times[times.indexOf(source)-1];
-  const id = `board-${second}`;
-  const groups = positions[source];
+  const source = board ? second : times.filter(time => time <= second).at(-1)!;
+  const previous = board ? previousBoard?.second : times[times.indexOf(source)-1];
+  const previousGroups = board ? previousBoard?.board.groups : positions[previous!];
+  const id = `board-${gameId}-${second}`;
+  const groups = board?.groups ?? positions[source];
+  const terrain = board?.terrain ?? ruins;
   const colors = { ts: '#78e3d0', ec: '#f8a5c5', unknown: '#d3c9aa' };
   const stamp = (s: number) => [Math.floor(s/3600),Math.floor(s/60)%60,s%60].map(n=>String(n).padStart(2,'0')).join(':');
   return <section className="vod-board" aria-label="Simplified board-state diagram">
-    <div className="vod-board-heading">{previous ? `${stamp(previous)} → ${stamp(source)}` : `Starting positions · ${stamp(source)}`}</div>
+    <div className="vod-board-heading">{previous ? `${stamp(previous)} → ${stamp(source)}` : `First sampled positions · ${stamp(source)}`}</div>
     <svg viewBox="0 0 640 480" role="img" aria-labelledby={`${id}-title ${id}-description`}>
       <title id={`${id}-title`}>{`Approximate unit-group positions at ${stamp(source)}`}</title>
-      <desc id={`${id}-description`}>{`Same orientation as the broadcast. Teal is Thousand Sons; pink is Emperor’s Children; beige dashed markers have unresolved identity. Terrain is approximate. ${groups.map(g=>g.label).join(', ')}. Dashed arrows connect sampled positions, not proven movement paths.`}</desc>
-      <defs><pattern id={`${id}-grid`} width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#263c40" strokeWidth=".5" /></pattern><marker id={`${id}-arrow`} markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#78e3d0" /></marker></defs>
+      <desc id={`${id}-description`}>{`Same orientation as the broadcast. Teal is Thousand Sons; pink is the opponent; beige dashed markers have unresolved identity. Terrain is approximate. ${groups.map(g=>g.label).join(', ')}. Dashed arrows connect sampled positions, not proven movement paths.`}</desc>
+      <defs><pattern id={`${id}-grid`} width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#263c40" strokeWidth=".5" /></pattern>{Object.entries(colors).map(([side,color])=><marker key={side} id={`${id}-arrow-${side}`} markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill={color} /></marker>)}</defs>
       <rect x="12" y="12" width="616" height="456" rx="5" fill="#111e24" stroke="#547078" />
       <rect x="20" y="20" width="600" height="440" fill={`url(#${id}-grid)`} />
       <g transform="translate(20 20)">
-        {ruins.map((ruin,i)=><g key={i} transform={`translate(${ruin.x*6} ${ruin.y*4.4}) rotate(${ruin.r} ${ruin.w*3} ${ruin.h*2.2})`}><rect width={ruin.w*6} height={ruin.h*4.4} fill="#26363d" stroke="#4a5b60" strokeWidth="1" /><path d={`M4 ${ruin.h*4.4-4} V4 H${ruin.w*6-4}`} stroke="#718084" strokeWidth="4" fill="none" /></g>)}
-        {previous && groups.filter(g=>g.key).map(g=>{const old=positions[previous].find(p=>p.key===g.key);return old && Math.hypot(old.x-g.x,old.y-g.y)>4 ? <g key={`arrow-${g.key}`} className="vod-movement"><circle cx={old.x*6} cy={old.y*4.4} r="10" fill="#111e24" stroke="#78e3d0" strokeDasharray="3 3" opacity=".7"/><path d={`M${old.x*6},${old.y*4.4} L${g.x*6},${g.y*4.4}`} stroke="#78e3d0" strokeWidth="2.5" strokeDasharray="6 4" markerEnd={`url(#${id}-arrow)`}/></g>:null;})}
-        {groups.map((g,i)=><g key={`${g.label}-${i}`} transform={`translate(${g.x*6} ${g.y*4.4})`}><circle r="10" fill="#15242b" stroke={colors[g.side]} strokeWidth="2.5" strokeDasharray={g.uncertain?'3 2':undefined}/>{g.vehicle ? <rect x="-5" y="-7" width="10" height="14" rx="2" fill={colors[g.side]} opacity=".8"/> : <circle r="4" fill={colors[g.side]}/>}<text x={g.dx??14} y={g.dy??4} fill={colors[g.side]} fontSize="11" fontFamily="Arial, sans-serif" fontWeight="600" paintOrder="stroke" stroke="#111e24" strokeWidth="4" strokeLinejoin="round">{g.label}</text></g>)}
+        {terrain.map((ruin,i)=><g key={i} transform={`translate(${ruin.x*6} ${ruin.y*4.4}) rotate(${ruin.r} ${ruin.w*3} ${ruin.h*2.2})`}><rect width={ruin.w*6} height={ruin.h*4.4} fill="#26363d" stroke="#4a5b60" strokeWidth="1" /><path d={`M4 ${ruin.h*4.4-4} V4 H${ruin.w*6-4}`} stroke="#718084" strokeWidth="4" fill="none" /></g>)}
+        {previousGroups && groups.filter(g=>g.key).map(g=>{const old=previousGroups.find(p=>p.key===g.key);return old && Math.hypot(old.x-g.x,old.y-g.y)>4 ? <g key={`arrow-${g.key}`} className="vod-movement"><circle cx={old.x*6} cy={old.y*4.4} r="10" fill="#111e24" stroke={colors[g.side]} strokeDasharray="3 3" opacity=".7"/><path d={`M${old.x*6},${old.y*4.4} L${g.x*6},${g.y*4.4}`} stroke={colors[g.side]} strokeWidth="2.5" strokeDasharray="6 4" markerEnd={`url(#${id}-arrow-${g.side})`}/></g>:null;})}
+        {groups.map((g,i)=><g key={`${g.label}-${i}`} transform={`translate(${g.x*6} ${g.y*4.4})`}><circle r="10" fill="#15242b" stroke={colors[g.side]} strokeWidth="2.5" strokeDasharray={g.uncertain?'3 2':undefined}/>{g.vehicle ? <rect x="-5" y="-7" width="10" height="14" rx="2" fill={colors[g.side]} opacity=".8"/> : <circle r="4" fill={colors[g.side]}/>}<text x={g.dx??(g.x>78?-14:14)} y={g.dy??4} textAnchor={g.dx===undefined&&g.x>78?'end':undefined} fill={colors[g.side]} fontSize="11" fontFamily="Arial, sans-serif" fontWeight="600" paintOrder="stroke" stroke="#111e24" strokeWidth="4" strokeLinejoin="round">{g.label}</text></g>)}
       </g>
     </svg>
   </section>;

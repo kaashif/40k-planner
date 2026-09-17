@@ -28,6 +28,8 @@ If public extraction is blocked, try another verified public Grand Coven broadca
 
 ## Progress
 
+- Final requested scope: exactly two additional Magnus / Grand Coven wins, then stop. Added Fowler–Power (94–78, seven frames, five diagrams) and Terroxer–Allot (92–73, six frames, six diagrams), both 12 August Warmaster. Twenty screenshots and sixteen maps total across three games. Power final score is visible in the broadcast; Terroxer final result is index-confirmed and kept distinct from the closing live overlay. No further VOD reviews are scheduled.
+
 - Latest presentation revision: plain, click-free chronological scroll. All seven frames are visible, with five matching overhead maps and stronger arrows between identified sampled positions. Removed hero copy, takeaway cards, interpretation panels, screenshot number overlays and repeated explanatory text. Kept only short timestamped caption excerpts, compact labels and essential sampling caveats. SVG IDs are unique across maps. Both queued games have Magnus visually confirmed at broadcast timestamps 20400 (Fowler/Power) and 15000 (Terroxer/Allot).
 
 - Plan committed and pushed before implementation (`6ea970a`).

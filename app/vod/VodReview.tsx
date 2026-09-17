@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import data from '../../public/vod/fowler-parry/analysis.json';
 import BoardDiagram from './BoardDiagram';
+import GameSequence, { type Game } from './GameSequence';
+import power from '../../public/vod/fowler-power/game.json';
+import terroxer from '../../public/vod/terroxer-allot/game.json';
 import './vod.css';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
@@ -25,7 +28,7 @@ export default function VodReview() {
       <p>Thousand Sons · Grand Coven / Emperor’s Children · Carnival of Excess</p>
       <p>WTC Warmaster · 12 August 2026 · Priority Assets / Disruption · <a href={video(2400)}>WarGames Live ↗</a></p>
     </header>
-    <p className="vod-key"><span>● Thousand Sons</span><span>● Emperor’s Children</span><span>◌ Unidentified group</span> · Maps approximate. Arrows join sampled positions, not exact movement paths or complete turns.</p>
+    <p className="vod-key"><span>● Thousand Sons</span><span>● Opponent</span><span>◌ Unidentified group</span> · Maps approximate. Arrows join sampled positions, not exact movement paths or complete turns.</p>
     <div className="vod-sequence">
       {data.checkpoints.map(frame => <section className="vod-moment" id={`frame-${frame.second}`} key={frame.second} aria-labelledby={`heading-${frame.second}`}>
         <header className="vod-moment-heading"><h2 id={`heading-${frame.second}`}>{labels[frame.second]}</h2><a href={video(frame.second)}>{timestamp(frame.second)} ↗</a><span className="vod-score">TS {frame.score[0]} — EC {frame.score[1]}</span></header>
@@ -38,9 +41,9 @@ export default function VodReview() {
         {frame.second === 11040 && <p className="vod-small">Final total includes turn-five scoring entered at the finish.</p>}
       </section>)}
     </div>
+    <GameSequence game={power as Game} />
+    <GameSequence game={terroxer as Game} />
     <footer className="vod-footer">
-      <p>More Grand Coven with Magnus · not yet analysed</p>
-      {data.queue.map(game => <a key={game.videoId} href={video(game.second, game.videoId)}>{game.player ?? 'Alex Fowler'} vs {game.opponent} ↗</a>)}
       <nav><a href={data.indexUrl}>Game source</a><a href={`${basePath}/vod/fowler-parry/frames.json`}>Frame provenance</a><Link href="/missions/">Missions</Link><Link href="/planner/">Planner</Link><Link href="/plans/">Plans</Link><Link href="/reviews/">Reviews</Link></nav>
     </footer>
   </main>;

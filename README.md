@@ -2,13 +2,13 @@
 
 A VOD-first GitHub Pages site for Thousand Sons game analysis, with 11th-edition mission and deployment tools kept as secondary routes.
 
-The homepage shows Alex Fowler vs Frasier Parry as a plain chronological scroll: seven unobstructed broadcast stills, five matching maps, movement arrows between sampled positions, and short source-caption excerpts. There are no checkpoint controls, screenshot overlays or tactical takeaway cards. The diagrams are approximate visual aids, not measured maps or exact model inventories. Other Grand Coven wins are linked at the bottom.
+The homepage shows three Magnus / Grand Coven wins as a plain chronological scroll: Fowler–Parry (78–45), Fowler–Power (94–78, Priority Assets mirror), and Terroxer–Allot (92–73). Twenty unobstructed broadcast stills and sixteen matching maps show sampled board changes, with movement arrows and short source-caption excerpts. There are no checkpoint controls, screenshot overlays or tactical takeaway cards. Diagrams are approximate visual aids, not measured maps or exact model inventories.
 
 The original mission matrix is now at `/missions/`; `/planner/`, `/plans/` and `/reviews/` remain available. Selecting a mission cell shows both players' primary cards and the three matching layouts.
 
 ## VOD analysis
 
-The [implementation plan](docs/vod-analysis-plan.md) records scope, evidence standards and progress. Checkpoint data and frame provenance live in `public/vod/fowler-parry/`. Only selected commentary stills are committed; raw frames and captions stay in ignored `.cache/`. No complete videos, credentials or signed media URLs are published.
+The [implementation plan](docs/vod-analysis-plan.md) records scope, evidence standards and progress. Checkpoint data and frame provenance live under `public/vod/`, with one directory per game. Only selected commentary stills are committed; raw frames and captions stay in ignored `.cache/`. No complete videos, credentials or signed media URLs are published. Fowler–Power coverage begins in turn two and changes camera orientation; its diagrams retain a fixed orientation. Terroxer’s final result comes from the match index, not the earlier live score on the last published frame.
 
 ```sh
 uv run --with yt-dlp --with imageio-ffmpeg --with pillow python scripts/sample-vod.py WOpiPuYL0YA --times 2400 4500 5700 7500 8700 10920 11040 --out .cache/vod/fowler-parry

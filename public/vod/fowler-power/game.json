@@ -1,0 +1,842 @@
+{
+  "id": "fowler-power",
+  "title": "Alex Fowler vs Colin Power",
+  "matchup": "Thousand Sons · Magnus / Grand Coven vs Chaos Daemons",
+  "event": "WTC Warmaster GT \u00b7 12 August 2026",
+  "mission": "Priority Assets mirror",
+  "videoId": "D8l6VqiGTac",
+  "broadcaster": "Board Report",
+  "indexUrl": "https://40kvodindex.com/games/alex-fowler-thousand-sons-vs-colin-power-chaos-daemons-19200",
+  "result": "Thousand Sons win 94\u201378",
+  "notes": "Coverage starts in turn 2. Maps retain the opening orientation when the camera changes ends.",
+  "frames": [
+    {
+      "second": 19200,
+      "label": "Turn 2 \u00b7 top",
+      "score": [
+        22,
+        18
+      ],
+      "alt": "Coverage opens during turn two: Daemons cluster around the white Thousand Sons Rhino on the near right; more Daemons occupy the opposite ruins.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14.0,
+            "y": 9.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 22.5,
+            "y": 24.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 13.5,
+            "y": 35.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          },
+          {
+            "x": 11.5,
+            "y": 47.5,
+            "w": 21,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 11.5,
+            "y": 71.0,
+            "w": 25,
+            "h": 16,
+            "r": -20
+          },
+          {
+            "x": 39.5,
+            "y": 44.5,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 47.5,
+            "y": 13.5,
+            "w": 23,
+            "h": 5,
+            "r": -30
+          },
+          {
+            "x": 65.0,
+            "y": 15.0,
+            "w": 22,
+            "h": 16,
+            "r": -10
+          },
+          {
+            "x": 68.0,
+            "y": 40.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 53.5,
+            "y": 59.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 61.5,
+            "y": 84.5,
+            "w": 23,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 84.5,
+            "y": 69.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          }
+        ],
+        "groups": [
+          {
+            "x": 79,
+            "y": 85,
+            "label": "Rhino",
+            "side": "ts",
+            "dx": 10,
+            "dy": 12,
+            "key": "white-rhino",
+            "vehicle": true
+          },
+          {
+            "x": 69,
+            "y": 81,
+            "label": "Fiends",
+            "side": "ec",
+            "dx": -28,
+            "dy": -12
+          },
+          {
+            "x": 87,
+            "y": 70,
+            "label": "Disc riders",
+            "side": "ts",
+            "dx": 5,
+            "dy": -14
+          },
+          {
+            "x": 23,
+            "y": 13,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": 0,
+            "dy": -15
+          },
+          {
+            "x": 33,
+            "y": 29,
+            "label": "Chariots",
+            "side": "ec",
+            "dx": -28,
+            "dy": -15
+          },
+          {
+            "x": 25,
+            "y": 49,
+            "label": "Fiends",
+            "side": "ec",
+            "dx": -24,
+            "dy": 12
+          },
+          {
+            "x": 56,
+            "y": 51,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": -20,
+            "dy": 15
+          },
+          {
+            "x": 65,
+            "y": 20,
+            "label": "Large daemon",
+            "side": "ec",
+            "dx": 20,
+            "dy": -12
+          }
+        ]
+      },
+      "image": "019200.jpg"
+    },
+    {
+      "second": 20400,
+      "label": "Turn 2 \u00b7 top \u00b7 Magnus in view",
+      "score": [
+        22,
+        18
+      ],
+      "alt": "Close view confirms Magnus on the table beside the near ruin, with orange-and-white Thousand Sons infantry behind him. A player obscures much of the board.",
+      "image": "020400.jpg"
+    },
+    {
+      "second": 22200,
+      "label": "Turn 2 \u00b7 bottom",
+      "score": [
+        30,
+        27
+      ],
+      "alt": "Overhead: Magnus is along the Thousand Sons edge, separated from the infantry cluster; Daemon units remain in the opposite half.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14.0,
+            "y": 9.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 22.5,
+            "y": 24.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 13.5,
+            "y": 35.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          },
+          {
+            "x": 11.5,
+            "y": 47.5,
+            "w": 21,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 11.5,
+            "y": 71.0,
+            "w": 25,
+            "h": 16,
+            "r": -20
+          },
+          {
+            "x": 39.5,
+            "y": 44.5,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 47.5,
+            "y": 13.5,
+            "w": 23,
+            "h": 5,
+            "r": -30
+          },
+          {
+            "x": 65.0,
+            "y": 15.0,
+            "w": 22,
+            "h": 16,
+            "r": -10
+          },
+          {
+            "x": 68.0,
+            "y": 40.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 53.5,
+            "y": 59.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 61.5,
+            "y": 84.5,
+            "w": 23,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 84.5,
+            "y": 69.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          }
+        ],
+        "groups": [
+          {
+            "x": 53,
+            "y": 86,
+            "label": "Magnus",
+            "side": "ts",
+            "dx": -35,
+            "dy": 15,
+            "key": "magnus"
+          },
+          {
+            "x": 74,
+            "y": 88,
+            "label": "TS infantry",
+            "side": "ts",
+            "dx": 28,
+            "dy": 12
+          },
+          {
+            "x": 82,
+            "y": 62,
+            "label": "TS infantry",
+            "side": "ts",
+            "dx": 16,
+            "dy": -14
+          },
+          {
+            "x": 66,
+            "y": 78,
+            "label": "Disc riders",
+            "side": "ts",
+            "dx": -25,
+            "dy": -15
+          },
+          {
+            "x": 24,
+            "y": 16,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": 0,
+            "dy": -15
+          },
+          {
+            "x": 34,
+            "y": 29,
+            "label": "Chariots",
+            "side": "ec",
+            "dx": -30,
+            "dy": -15
+          },
+          {
+            "x": 22,
+            "y": 51,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": -20,
+            "dy": 15
+          },
+          {
+            "x": 63,
+            "y": 22,
+            "label": "Large daemon",
+            "side": "ec",
+            "dx": 20,
+            "dy": -15
+          },
+          {
+            "x": 20,
+            "y": 77,
+            "label": "Large daemon",
+            "side": "ec",
+            "dx": -5,
+            "dy": 15
+          }
+        ]
+      },
+      "image": "022200.jpg"
+    },
+    {
+      "second": 22800,
+      "label": "Turn 3 \u00b7 top",
+      "score": [
+        34,
+        45
+      ],
+      "alt": "View from the opposite end: Magnus and the white Rhino are behind the right-side ruin in the fixed diagram; Thousand Sons infantry extend toward the centre.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14.0,
+            "y": 9.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 22.5,
+            "y": 24.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 13.5,
+            "y": 35.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          },
+          {
+            "x": 11.5,
+            "y": 47.5,
+            "w": 21,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 11.5,
+            "y": 71.0,
+            "w": 25,
+            "h": 16,
+            "r": -20
+          },
+          {
+            "x": 39.5,
+            "y": 44.5,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 47.5,
+            "y": 13.5,
+            "w": 23,
+            "h": 5,
+            "r": -30
+          },
+          {
+            "x": 65.0,
+            "y": 15.0,
+            "w": 22,
+            "h": 16,
+            "r": -10
+          },
+          {
+            "x": 68.0,
+            "y": 40.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 53.5,
+            "y": 59.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 61.5,
+            "y": 84.5,
+            "w": 23,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 84.5,
+            "y": 69.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          }
+        ],
+        "groups": [
+          {
+            "x": 65,
+            "y": 79,
+            "label": "Magnus",
+            "side": "ts",
+            "dx": -24,
+            "dy": -14,
+            "key": "magnus"
+          },
+          {
+            "x": 85,
+            "y": 85,
+            "label": "Rhino",
+            "side": "ts",
+            "dx": -3,
+            "dy": 16,
+            "key": "white-rhino",
+            "vehicle": true
+          },
+          {
+            "x": 62,
+            "y": 56,
+            "label": "TS infantry",
+            "side": "ts",
+            "dx": -30,
+            "dy": 15
+          },
+          {
+            "x": 65,
+            "y": 36,
+            "label": "TS infantry",
+            "side": "ts",
+            "dx": 5,
+            "dy": -14
+          },
+          {
+            "x": 57,
+            "y": 71,
+            "label": "Disc riders",
+            "side": "ts",
+            "dx": -40,
+            "dy": -14
+          },
+          {
+            "x": 24,
+            "y": 17,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": 0,
+            "dy": -14
+          },
+          {
+            "x": 36,
+            "y": 29,
+            "label": "Chariots",
+            "side": "ec",
+            "dx": -28,
+            "dy": -14
+          },
+          {
+            "x": 23,
+            "y": 52,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": -23,
+            "dy": 14
+          },
+          {
+            "x": 65,
+            "y": 20,
+            "label": "Large daemon",
+            "side": "ec",
+            "dx": 18,
+            "dy": -15
+          }
+        ]
+      },
+      "image": "022800.jpg"
+    },
+    {
+      "second": 24600,
+      "label": "Turn 4 \u00b7 top",
+      "score": [
+        49,
+        57
+      ],
+      "alt": "Magnus and the white Rhino are now beside the centre cylinders; Thousand Sons infantry occupy the adjacent ruin, while two large chariots sit on the other side of the centre.",
+      "caption": {
+        "second": 24473,
+        "text": "Oh, Magnus will just take to the skies."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 14.0,
+            "y": 9.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 22.5,
+            "y": 24.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 13.5,
+            "y": 35.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          },
+          {
+            "x": 11.5,
+            "y": 47.5,
+            "w": 21,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 11.5,
+            "y": 71.0,
+            "w": 25,
+            "h": 16,
+            "r": -20
+          },
+          {
+            "x": 39.5,
+            "y": 44.5,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 47.5,
+            "y": 13.5,
+            "w": 23,
+            "h": 5,
+            "r": -30
+          },
+          {
+            "x": 65.0,
+            "y": 15.0,
+            "w": 22,
+            "h": 16,
+            "r": -10
+          },
+          {
+            "x": 68.0,
+            "y": 40.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 53.5,
+            "y": 59.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 61.5,
+            "y": 84.5,
+            "w": 23,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 84.5,
+            "y": 69.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          }
+        ],
+        "groups": [
+          {
+            "x": 61,
+            "y": 59,
+            "label": "Magnus",
+            "side": "ts",
+            "dx": 25,
+            "dy": -12,
+            "key": "magnus"
+          },
+          {
+            "x": 65,
+            "y": 66,
+            "label": "Rhino",
+            "side": "ts",
+            "dx": 28,
+            "dy": 15,
+            "key": "white-rhino",
+            "vehicle": true
+          },
+          {
+            "x": 72,
+            "y": 76,
+            "label": "TS infantry",
+            "side": "ts",
+            "dx": -18,
+            "dy": 18
+          },
+          {
+            "x": 75,
+            "y": 50,
+            "label": "TS infantry",
+            "side": "ts",
+            "dx": 28,
+            "dy": -16
+          },
+          {
+            "x": 51,
+            "y": 36,
+            "label": "Chariots",
+            "side": "ec",
+            "dx": -35,
+            "dy": -15
+          },
+          {
+            "x": 81,
+            "y": 22,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": 0,
+            "dy": -16
+          }
+        ]
+      },
+      "image": "024600.jpg"
+    },
+    {
+      "second": 25200,
+      "label": "Turn 4 \u00b7 bottom",
+      "score": [
+        65,
+        69
+      ],
+      "alt": "Magnus remains at the central cylinders with the white Rhino just behind him. An orange infantry group remains beside the near ruin; the central and left lanes are visibly sparse.",
+      "caption": {
+        "second": 25287,
+        "text": "He's going to move 16."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 14.0,
+            "y": 9.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 22.5,
+            "y": 24.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 13.5,
+            "y": 35.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          },
+          {
+            "x": 11.5,
+            "y": 47.5,
+            "w": 21,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 11.5,
+            "y": 71.0,
+            "w": 25,
+            "h": 16,
+            "r": -20
+          },
+          {
+            "x": 39.5,
+            "y": 44.5,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 47.5,
+            "y": 13.5,
+            "w": 23,
+            "h": 5,
+            "r": -30
+          },
+          {
+            "x": 65.0,
+            "y": 15.0,
+            "w": 22,
+            "h": 16,
+            "r": -10
+          },
+          {
+            "x": 68.0,
+            "y": 40.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 53.5,
+            "y": 59.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 61.5,
+            "y": 84.5,
+            "w": 23,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 84.5,
+            "y": 69.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          }
+        ],
+        "groups": [
+          {
+            "x": 65,
+            "y": 59,
+            "label": "Magnus",
+            "side": "ts",
+            "dx": 28,
+            "dy": -13,
+            "key": "magnus"
+          },
+          {
+            "x": 61,
+            "y": 68,
+            "label": "Rhino",
+            "side": "ts",
+            "dx": -32,
+            "dy": 15,
+            "key": "white-rhino",
+            "vehicle": true
+          },
+          {
+            "x": 67,
+            "y": 86,
+            "label": "TS infantry",
+            "side": "ts",
+            "dx": 18,
+            "dy": 16
+          },
+          {
+            "x": 15,
+            "y": 10,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": 15,
+            "dy": 12
+          }
+        ]
+      },
+      "image": "025200.jpg"
+    },
+    {
+      "second": 25800,
+      "label": "Final score",
+      "score": [
+        94,
+        78
+      ],
+      "alt": "Final broadcast scoreboard: Alex Fowler, Thousand Sons Grand Coven, 94; Colin Power, Chaos Daemons, 78.",
+      "image": "025800.jpg"
+    }
+  ]
+}

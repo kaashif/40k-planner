@@ -1,0 +1,65 @@
+[
+  {
+    "file": "019200.jpg",
+    "second": 19200,
+    "width": 1600,
+    "height": 900,
+    "sha256": "88ef06b261170b7b76882dd74be0460f77a8a5e953ddddce0d71b1dea81f7ce1",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=19200s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
+    "file": "020400.jpg",
+    "second": 20400,
+    "width": 1600,
+    "height": 900,
+    "sha256": "4d77ab41ea1db906c80b88fc7de89ad2eba0109694cb94a056a95686a556c377",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=20400s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
+    "file": "022200.jpg",
+    "second": 22200,
+    "width": 1600,
+    "height": 900,
+    "sha256": "8068c22a6e2637ea9d4b7bf558a21258a3cf616fbfb22375a7722384dcf9d961",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=22200s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
+    "file": "022800.jpg",
+    "second": 22800,
+    "width": 1600,
+    "height": 900,
+    "sha256": "f9aec4bc9985894dc02da180e6ba700327e54901522c7c6c3884d1e5812df8f6",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=22800s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
+    "file": "024600.jpg",
+    "second": 24600,
+    "width": 1600,
+    "height": 900,
+    "sha256": "1cbfbc0778b4c50712102bfe89d6ab263e7daef20ede1739d8067965909e9092",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=24600s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
+    "file": "025200.jpg",
+    "second": 25200,
+    "width": 1600,
+    "height": 900,
+    "sha256": "2a72112f07b9f36c548a3b3bcfc8aa1d38cfe8fb3518ed8288f3bc12fcb92de5",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=25200s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
+    "file": "025800.jpg",
+    "second": 25800,
+    "width": 1600,
+    "height": 900,
+    "sha256": "daf1f3cd9ed98e815947263b31e5f369ec5ca749d2bb2391fd4eb9d0a045c3ff",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=25800s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  }
+]
