@@ -1,15 +1,183 @@
 {
   "id": "fowler-power",
-  "title": "Alex Fowler vs Colin Power",
-  "matchup": "Thousand Sons · Magnus / Grand Coven vs Chaos Daemons",
+  "title": "Fowler vs Power",
+  "matchup": "Thousand Sons vs Chaos Daemons",
   "event": "WTC Warmaster GT \u00b7 12 August 2026",
   "mission": "Priority Assets mirror",
   "videoId": "D8l6VqiGTac",
   "broadcaster": "Board Report",
   "indexUrl": "https://40kvodindex.com/games/alex-fowler-thousand-sons-vs-colin-power-chaos-daemons-19200",
   "result": "Thousand Sons win 94\u201378",
-  "notes": "Coverage starts in turn 2. Maps retain the opening orientation when the camera changes ends.",
+  "notes": "Includes turn 1 before the indexed start. Camera changes ends; diagrams retain one orientation. Hidden units are omitted, not declared destroyed.",
   "frames": [
+    {
+      "second": 18000,
+      "label": "Turn 1 \u00b7 bottom",
+      "score": [
+        18,
+        10
+      ],
+      "alt": "Earlier coverage found before the indexed start: overhead view with Magnus in the near corner, a white Rhino beside the opposite rear ruin, and Daemons advancing through the middle.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14.0,
+            "y": 9.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 22.5,
+            "y": 24.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 13.5,
+            "y": 35.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          },
+          {
+            "x": 11.5,
+            "y": 47.5,
+            "w": 21,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 11.5,
+            "y": 71.0,
+            "w": 25,
+            "h": 16,
+            "r": -20
+          },
+          {
+            "x": 39.5,
+            "y": 44.5,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 47.5,
+            "y": 13.5,
+            "w": 23,
+            "h": 5,
+            "r": -30
+          },
+          {
+            "x": 65.0,
+            "y": 15.0,
+            "w": 22,
+            "h": 16,
+            "r": -10
+          },
+          {
+            "x": 68.0,
+            "y": 40.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 53.5,
+            "y": 59.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 61.5,
+            "y": 84.5,
+            "w": 23,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 84.5,
+            "y": 69.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          }
+        ],
+        "groups": [
+          {
+            "x": 22,
+            "y": 85,
+            "label": "Magnus",
+            "side": "ts",
+            "dx": -26,
+            "dy": -14,
+            "key": "magnus"
+          },
+          {
+            "x": 62,
+            "y": 73,
+            "label": "Rhino",
+            "side": "ts",
+            "dx": -32,
+            "dy": 14,
+            "key": "white-rhino",
+            "vehicle": true
+          },
+          {
+            "x": 77,
+            "y": 65,
+            "label": "Enlightened",
+            "side": "ts",
+            "dx": 25,
+            "dy": -12
+          },
+          {
+            "x": 51,
+            "y": 82,
+            "label": "Rubrics?",
+            "side": "ts",
+            "dx": 25,
+            "dy": 12,
+            "uncertain": true
+          },
+          {
+            "x": 40,
+            "y": 55,
+            "label": "Fiends",
+            "side": "ec",
+            "dx": -28,
+            "dy": 12
+          },
+          {
+            "x": 38,
+            "y": 20,
+            "label": "Fiends",
+            "side": "ec",
+            "dx": 22,
+            "dy": 12
+          },
+          {
+            "x": 24,
+            "y": 16,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": -15,
+            "dy": -15
+          },
+          {
+            "x": 33,
+            "y": 29,
+            "label": "Chariots",
+            "side": "ec",
+            "dx": -25,
+            "dy": -14
+          }
+        ]
+      },
+      "image": "018000.jpg"
+    },
     {
       "second": 19200,
       "label": "Turn 2 \u00b7 top",
@@ -17,7 +185,7 @@
         22,
         18
       ],
-      "alt": "Coverage opens during turn two: Daemons cluster around the white Thousand Sons Rhino on the near right; more Daemons occupy the opposite ruins.",
+      "alt": "Turn two: Daemons cluster around the white Thousand Sons Rhino on the near right; more Daemons occupy the opposite ruins.",
       "board": {
         "terrain": [
           {
@@ -127,7 +295,7 @@
           {
             "x": 87,
             "y": 70,
-            "label": "Disc riders",
+            "label": "Enlightened",
             "side": "ts",
             "dx": 5,
             "dy": -14
@@ -167,7 +335,7 @@
           {
             "x": 65,
             "y": 20,
-            "label": "Large daemon",
+            "label": "Keeper",
             "side": "ec",
             "dx": 20,
             "dy": -12
@@ -294,23 +462,25 @@
           {
             "x": 74,
             "y": 88,
-            "label": "TS infantry",
+            "label": "Rubrics?",
             "side": "ts",
             "dx": 28,
-            "dy": 12
+            "dy": 12,
+            "uncertain": true
           },
           {
             "x": 82,
             "y": 62,
-            "label": "TS infantry",
+            "label": "Rubrics?",
             "side": "ts",
             "dx": 16,
-            "dy": -14
+            "dy": -14,
+            "uncertain": true
           },
           {
             "x": 66,
             "y": 78,
-            "label": "Disc riders",
+            "label": "Enlightened",
             "side": "ts",
             "dx": -25,
             "dy": -15
@@ -342,7 +512,7 @@
           {
             "x": 63,
             "y": 22,
-            "label": "Large daemon",
+            "label": "Keeper",
             "side": "ec",
             "dx": 20,
             "dy": -15
@@ -350,8 +520,8 @@
           {
             "x": 20,
             "y": 77,
-            "label": "Large daemon",
-            "side": "ec",
+            "label": "Winged DP",
+            "side": "ts",
             "dx": -5,
             "dy": 15
           }
@@ -456,8 +626,8 @@
         ],
         "groups": [
           {
-            "x": 65,
-            "y": 79,
+            "x": 68,
+            "y": 73,
             "label": "Magnus",
             "side": "ts",
             "dx": -24,
@@ -465,8 +635,8 @@
             "key": "magnus"
           },
           {
-            "x": 85,
-            "y": 85,
+            "x": 83,
+            "y": 72,
             "label": "Rhino",
             "side": "ts",
             "dx": -3,
@@ -477,23 +647,25 @@
           {
             "x": 62,
             "y": 56,
-            "label": "TS infantry",
+            "label": "Rubrics?",
             "side": "ts",
             "dx": -30,
-            "dy": 15
+            "dy": 15,
+            "uncertain": true
           },
           {
             "x": 65,
             "y": 36,
-            "label": "TS infantry",
+            "label": "Scarabs?",
             "side": "ts",
             "dx": 5,
-            "dy": -14
+            "dy": -14,
+            "uncertain": true
           },
           {
             "x": 57,
             "y": 71,
-            "label": "Disc riders",
+            "label": "Enlightened",
             "side": "ts",
             "dx": -40,
             "dy": -14
@@ -525,7 +697,7 @@
           {
             "x": 65,
             "y": 20,
-            "label": "Large daemon",
+            "label": "Keeper",
             "side": "ec",
             "dx": 18,
             "dy": -15
@@ -533,6 +705,167 @@
         ]
       },
       "image": "022800.jpg"
+    },
+    {
+      "second": 24360,
+      "label": "Turn 4 \u00b7 before Magnus moves",
+      "score": [
+        49,
+        57
+      ],
+      "alt": "Overhead before the next advance: Magnus remains outside the rear ruin, the Rhino is along its inner edge, and the Daemon chariots have reached the centre.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14.0,
+            "y": 9.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 22.5,
+            "y": 24.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 13.5,
+            "y": 35.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          },
+          {
+            "x": 11.5,
+            "y": 47.5,
+            "w": 21,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 11.5,
+            "y": 71.0,
+            "w": 25,
+            "h": 16,
+            "r": -20
+          },
+          {
+            "x": 39.5,
+            "y": 44.5,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 47.5,
+            "y": 13.5,
+            "w": 23,
+            "h": 5,
+            "r": -30
+          },
+          {
+            "x": 65.0,
+            "y": 15.0,
+            "w": 22,
+            "h": 16,
+            "r": -10
+          },
+          {
+            "x": 68.0,
+            "y": 40.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 53.5,
+            "y": 59.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 61.5,
+            "y": 84.5,
+            "w": 23,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 84.5,
+            "y": 69.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          }
+        ],
+        "groups": [
+          {
+            "x": 71,
+            "y": 74,
+            "label": "Magnus",
+            "side": "ts",
+            "dx": 30,
+            "dy": -14,
+            "key": "magnus"
+          },
+          {
+            "x": 72,
+            "y": 61,
+            "label": "Rhino",
+            "side": "ts",
+            "dx": -30,
+            "dy": -16,
+            "key": "white-rhino",
+            "vehicle": true
+          },
+          {
+            "x": 59,
+            "y": 50,
+            "label": "Scarabs?",
+            "side": "ts",
+            "dx": 30,
+            "dy": -14,
+            "uncertain": true
+          },
+          {
+            "x": 59,
+            "y": 40,
+            "label": "Chariots",
+            "side": "ec",
+            "dx": -30,
+            "dy": 14
+          },
+          {
+            "x": 58,
+            "y": 80,
+            "label": "Rubrics?",
+            "side": "ts",
+            "dx": 22,
+            "dy": 14,
+            "uncertain": true
+          },
+          {
+            "x": 74,
+            "y": 25,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": 15,
+            "dy": 14
+          },
+          {
+            "x": 22,
+            "y": 18,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": 18,
+            "dy": 14
+          }
+        ]
+      },
+      "image": "024360.jpg"
     },
     {
       "second": 24600,
@@ -635,17 +968,24 @@
         ],
         "groups": [
           {
-            "x": 61,
-            "y": 59,
+            "x": 62,
+            "y": 53,
             "label": "Magnus",
             "side": "ts",
             "dx": 25,
             "dy": -12,
-            "key": "magnus"
+            "key": "magnus",
+            "trail": [
+              {
+                "second": 24510,
+                "x": 62,
+                "y": 53
+              }
+            ]
           },
           {
-            "x": 65,
-            "y": 66,
+            "x": 58,
+            "y": 60,
             "label": "Rhino",
             "side": "ts",
             "dx": 28,
@@ -656,18 +996,20 @@
           {
             "x": 72,
             "y": 76,
-            "label": "TS infantry",
+            "label": "Rubrics?",
             "side": "ts",
             "dx": -18,
-            "dy": 18
+            "dy": 18,
+            "uncertain": true
           },
           {
             "x": 75,
             "y": 50,
-            "label": "TS infantry",
+            "label": "Rubrics?",
             "side": "ts",
             "dx": 28,
-            "dy": -16
+            "dy": -16,
+            "uncertain": true
           },
           {
             "x": 51,
@@ -688,6 +1030,167 @@
         ]
       },
       "image": "024600.jpg"
+    },
+    {
+      "second": 24960,
+      "label": "Turn 4 \u00b7 central positions",
+      "score": [
+        65,
+        57
+      ],
+      "alt": "Overhead after the turn-four advance: Magnus and the Rhino sit next to the centre cylinders, while orange Terminators and Enlightened are concentrated beside the adjacent green ruin.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14.0,
+            "y": 9.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 22.5,
+            "y": 24.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 13.5,
+            "y": 35.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          },
+          {
+            "x": 11.5,
+            "y": 47.5,
+            "w": 21,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 11.5,
+            "y": 71.0,
+            "w": 25,
+            "h": 16,
+            "r": -20
+          },
+          {
+            "x": 39.5,
+            "y": 44.5,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 47.5,
+            "y": 13.5,
+            "w": 23,
+            "h": 5,
+            "r": -30
+          },
+          {
+            "x": 65.0,
+            "y": 15.0,
+            "w": 22,
+            "h": 16,
+            "r": -10
+          },
+          {
+            "x": 68.0,
+            "y": 40.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 53.5,
+            "y": 59.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 61.5,
+            "y": 84.5,
+            "w": 23,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 84.5,
+            "y": 69.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          }
+        ],
+        "groups": [
+          {
+            "x": 62,
+            "y": 53,
+            "label": "Magnus",
+            "side": "ts",
+            "dx": -32,
+            "dy": -14,
+            "key": "magnus"
+          },
+          {
+            "x": 58,
+            "y": 60,
+            "label": "Rhino",
+            "side": "ts",
+            "dx": 32,
+            "dy": 14,
+            "key": "white-rhino",
+            "vehicle": true
+          },
+          {
+            "x": 73,
+            "y": 48,
+            "label": "Scarabs?",
+            "side": "ts",
+            "dx": 27,
+            "dy": -14,
+            "uncertain": true
+          },
+          {
+            "x": 73,
+            "y": 44,
+            "label": "Enlightened",
+            "side": "ts",
+            "dx": -40,
+            "dy": -25
+          },
+          {
+            "x": 59,
+            "y": 69,
+            "label": "Rubrics?",
+            "side": "ts",
+            "dx": 35,
+            "dy": 14,
+            "uncertain": true
+          },
+          {
+            "x": 23,
+            "y": 18,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": 20,
+            "dy": 14
+          },
+          {
+            "x": 74,
+            "y": 25,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": 18,
+            "dy": 14
+          }
+        ]
+      },
+      "image": "024960.jpg"
     },
     {
       "second": 25200,
@@ -790,8 +1293,8 @@
         ],
         "groups": [
           {
-            "x": 65,
-            "y": 59,
+            "x": 62,
+            "y": 53,
             "label": "Magnus",
             "side": "ts",
             "dx": 28,
@@ -799,8 +1302,8 @@
             "key": "magnus"
           },
           {
-            "x": 61,
-            "y": 68,
+            "x": 58,
+            "y": 60,
             "label": "Rhino",
             "side": "ts",
             "dx": -32,
@@ -811,10 +1314,11 @@
           {
             "x": 67,
             "y": 86,
-            "label": "TS infantry",
+            "label": "Rubrics?",
             "side": "ts",
             "dx": 18,
-            "dy": 16
+            "dy": 16,
+            "uncertain": true
           },
           {
             "x": 15,
@@ -829,6 +1333,174 @@
       "image": "025200.jpg"
     },
     {
+      "second": 25440,
+      "label": "Turn 5 \u00b7 Magnus crosses the centre",
+      "score": [
+        69,
+        69
+      ],
+      "alt": "Magnus is now beyond the centre beside the far black ruin and white-outlined objective area. The Rhino has advanced onto the centre cylinders; orange infantry remain on its other side.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14.0,
+            "y": 9.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 22.5,
+            "y": 24.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 13.5,
+            "y": 35.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          },
+          {
+            "x": 11.5,
+            "y": 47.5,
+            "w": 21,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 11.5,
+            "y": 71.0,
+            "w": 25,
+            "h": 16,
+            "r": -20
+          },
+          {
+            "x": 39.5,
+            "y": 44.5,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 47.5,
+            "y": 13.5,
+            "w": 23,
+            "h": 5,
+            "r": -30
+          },
+          {
+            "x": 65.0,
+            "y": 15.0,
+            "w": 22,
+            "h": 16,
+            "r": -10
+          },
+          {
+            "x": 68.0,
+            "y": 40.5,
+            "w": 20,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 53.5,
+            "y": 59.5,
+            "w": 25,
+            "h": 17,
+            "r": -20
+          },
+          {
+            "x": 61.5,
+            "y": 84.5,
+            "w": 23,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 84.5,
+            "y": 69.5,
+            "w": 9,
+            "h": 5,
+            "r": 25
+          }
+        ],
+        "groups": [
+          {
+            "x": 38,
+            "y": 23,
+            "label": "Magnus",
+            "side": "ts",
+            "dx": -30,
+            "dy": -14,
+            "key": "magnus",
+            "trail": [
+              {
+                "second": 25320,
+                "x": 38,
+                "y": 23
+              }
+            ]
+          },
+          {
+            "x": 54,
+            "y": 44,
+            "label": "Rhino",
+            "side": "ts",
+            "dx": -33,
+            "dy": -14,
+            "key": "white-rhino",
+            "vehicle": true
+          },
+          {
+            "x": 63,
+            "y": 52,
+            "label": "Rubrics?",
+            "side": "ts",
+            "dx": 32,
+            "dy": 15,
+            "uncertain": true
+          },
+          {
+            "x": 67,
+            "y": 36,
+            "label": "Scarabs?",
+            "side": "ts",
+            "dx": 25,
+            "dy": -15,
+            "uncertain": true
+          },
+          {
+            "x": 76,
+            "y": 33,
+            "label": "Enlightened",
+            "side": "ts",
+            "dx": 30,
+            "dy": 14
+          },
+          {
+            "x": 24,
+            "y": 10,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": 10,
+            "dy": -12
+          },
+          {
+            "x": 81,
+            "y": 23,
+            "label": "Daemonettes",
+            "side": "ec",
+            "dx": 15,
+            "dy": -15
+          }
+        ]
+      },
+      "image": "025440.jpg"
+    },
+    {
       "second": 25800,
       "label": "Final score",
       "score": [
@@ -838,5 +1510,60 @@
       "alt": "Final broadcast scoreboard: Alex Fowler, Thousand Sons Grand Coven, 94; Colin Power, Chaos Daemons, 78.",
       "image": "025800.jpg"
     }
-  ]
+  ],
+  "tracking": {
+    "reviewedSeconds": [
+      15540,
+      15900,
+      16260,
+      16290,
+      16320,
+      16800,
+      17400,
+      18000,
+      18480,
+      18600,
+      18900,
+      19080,
+      19200,
+      19800,
+      20400,
+      21000,
+      21600,
+      22200,
+      22320,
+      22440,
+      22560,
+      22680,
+      22800,
+      23400,
+      23880,
+      24000,
+      24120,
+      24240,
+      24360,
+      24450,
+      24480,
+      24510,
+      24600,
+      24960,
+      25200,
+      25260,
+      25300,
+      25320,
+      25380,
+      25440,
+      25560,
+      25800
+    ],
+    "limits": "Sampled endpoints, not continuous movement paths. Intervening views bracket Magnus advances at 24450\u201324510 and 25260\u201325320; handheld views and player/overlay occlusion limit precision. Camera-angle drift corrected against fixed overhead terrain.",
+    "rosterSource": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=16290s",
+    "rosterStatus": "Match-specific roster overlay at 16290s; opponent roster at 16260s. Rubrics/Scarabs visual assignments remain probable where silhouettes overlap; individual attachments unresolved."
+  },
+  "roster": {
+    "image": "roster.jpg",
+    "second": 16290,
+    "opponentImage": "opponent-roster.jpg",
+    "opponentSecond": 16260
+  }
 }

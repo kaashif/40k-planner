@@ -29,16 +29,17 @@ try:
         page.on('pageerror', lambda error: errors.append(f'{page.url}: {error}'))
         page.on('console', lambda message: print(message.text) if message.type == 'error' else None)
         page.goto(os.environ.get('VOD_TEST_URL', f'http://127.0.0.1:{server.server_port}/40k-planner/'), wait_until='networkidle')
-        page.get_by_role('heading', name='Alex Fowler vs Frasier Parry', exact=True).wait_for()
-        games = [json.loads((root / f'public/vod/{name}/game.json').read_text()) for name in ['fowler-power', 'terroxer-allot']]
-        assert page.locator('.vod-moment').count() == 7 + sum(len(game['frames']) for game in games)
-        assert page.locator('.vod-board').count() == 5 + sum(sum('board' in f for f in game['frames']) for game in games)
+        page.get_by_role('heading', name='Grand Coven · Magnus', exact=True).wait_for()
+        games = [json.loads((root / f'public/vod/{name}/game.json').read_text()) for name in ['fowler-parry', 'fowler-power', 'terroxer-allot']]
+        assert page.locator('.vod-moment').count() == sum(len(game['frames']) for game in games)
+        assert page.locator('.vod-board').count() == sum(sum('board' in f for f in game['frames']) for game in games)
         assert page.locator('.vod-pin, .vod-takeaways, button, details').count() == 0
         assert page.locator('.vod-movement').count() >= 4
         assert page.locator('[id]').evaluate_all('(els) => new Set(els.map(e => e.id)).size === els.length')
         assert page.locator('img').evaluate_all('(images) => images.every(i => i.complete && i.naturalWidth > 0)')
         page.screenshot(path=str(out / 'desktop.png'), full_page=True)
-        page.locator('#frame-4500').screenshot(path=str(out / 'movement.png'))
+        page.locator('#fowler-parry-9090').screenshot(path=str(out / 'movement.png'))
+        assert page.locator('.vod-sighting').count() >= 2
         for game in games:
             first_board = next(f for f in game['frames'] if 'board' in f)
             page.locator(f"#{game['id']}-{first_board['second']}").screenshot(path=str(out / f"{game['id']}.png"))

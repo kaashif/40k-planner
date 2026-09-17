@@ -1,5 +1,14 @@
 [
   {
+    "file": "018000.jpg",
+    "second": 18000,
+    "width": 1600,
+    "height": 900,
+    "sha256": "e1600915ac2dfadacb2c0f2c26df86c0f4ec5dd14cb615e73d51e7203ec20da5",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=18000s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
     "file": "019200.jpg",
     "second": 19200,
     "width": 1600,
@@ -36,12 +45,30 @@
     "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
   },
   {
+    "file": "024360.jpg",
+    "second": 24360,
+    "width": 1600,
+    "height": 900,
+    "sha256": "81594855df7fd6a145363f68a722135c1a6a2463c6587e6f5011db5afeb65152",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=24360s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
     "file": "024600.jpg",
     "second": 24600,
     "width": 1600,
     "height": 900,
     "sha256": "1cbfbc0778b4c50712102bfe89d6ab263e7daef20ede1739d8067965909e9092",
     "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=24600s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
+    "file": "024960.jpg",
+    "second": 24960,
+    "width": 1600,
+    "height": 900,
+    "sha256": "84667a7d1df0d9efe3ceab14dbacc104f5b024543b1e8fc743d3571f7dfe61e7",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=24960s",
     "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
   },
   {
@@ -54,12 +81,39 @@
     "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
   },
   {
+    "file": "025440.jpg",
+    "second": 25440,
+    "width": 1600,
+    "height": 900,
+    "sha256": "d5bfecd73eac6574c10401fc050dcd3cc39082bc4e256a4488c621ea36ba01fe",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=25440s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
     "file": "025800.jpg",
     "second": 25800,
     "width": 1600,
     "height": 900,
     "sha256": "daf1f3cd9ed98e815947263b31e5f369ec5ca749d2bb2391fd4eb9d0a045c3ff",
     "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=25800s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
+    "file": "roster.jpg",
+    "second": 16290,
+    "width": 1600,
+    "height": 900,
+    "sha256": "5570453aafd255e3f13b769b7185a34e38189b4a091c9819518ee06b3c01c8f7",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=16290s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
+    "file": "opponent-roster.jpg",
+    "second": 16260,
+    "width": 1600,
+    "height": 900,
+    "sha256": "3a18a9f6e87f092433b65fc6a31cb618ba292953813d204401a46adb111c776f",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=16260s",
     "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
   }
 ]

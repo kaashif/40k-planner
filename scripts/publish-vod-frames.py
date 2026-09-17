@@ -10,9 +10,9 @@ from PIL import Image
 
 root = Path(__file__).resolve().parents[1]
 destination = root / "public/vod/fowler-parry"
-analysis = json.loads((destination / "analysis.json").read_text())
+analysis = json.loads((destination / "game.json").read_text())
 manifest = []
-for checkpoint in analysis["checkpoints"]:
+for checkpoint in analysis["frames"]:
     second = checkpoint["second"]
     source = root / f".cache/vod/fowler-parry/{second:06d}.jpg"
     target = destination / f"{second:06d}.jpg"

@@ -1,0 +1,1535 @@
+{
+  "id": "fowler-parry",
+  "title": "Alex Fowler vs Frasier Parry",
+  "matchup": "Thousand Sons · Magnus / Grand Coven vs Emperor’s Children",
+  "event": "WTC Warmaster · 12 August 2026",
+  "mission": "Priority Assets vs Disruption",
+  "videoId": "WOpiPuYL0YA",
+  "broadcaster": "WarGames Live",
+  "indexUrl": "https://40kvodindex.com/games/frasier-parry-emperors-children-vs-alex-fowler-thousand-sons-637",
+  "result": "Thousand Sons win 78–45",
+  "notes": "Roster screen at 00:32:30. Labels with ? are probable matches. Final score includes closing turn-five scoring.",
+  "tracking": {
+    "reviewedSeconds": [
+      1500,
+      1800,
+      1830,
+      1920,
+      1950,
+      1980,
+      2100,
+      2250,
+      2350,
+      2400,
+      3000,
+      3300,
+      3900,
+      4350,
+      4380,
+      4410,
+      4500,
+      4800,
+      5100,
+      5700,
+      6000,
+      6300,
+      7200,
+      7500,
+      8100,
+      8400,
+      8700,
+      9000,
+      9030,
+      9060,
+      9090,
+      9150,
+      9300,
+      9420,
+      9480,
+      9540,
+      9600,
+      10200,
+      10380,
+      10620,
+      10920,
+      11040
+    ],
+    "rosterSource": "https://www.youtube.com/watch?v=WOpiPuYL0YA&t=1950s",
+    "rosterStatus": "Broadcast roster inspected; weapon options and exact attachments not displayed.",
+    "limits": "Magnus seen in place at9060 and removed by9090; death reported9231. Rhino observed above right ruin8400, below diagonal ruin10200, nearercentre10920. No inferred continuous path across camera cuts."
+  },
+  "frames": [
+    {
+      "second": 1950,
+      "label": "Pre-game · Thousand Sons roster",
+      "image": "001950.jpg",
+      "alt": "Broadcast Grand Coven roster: Sorcerers, three Rubric entries, Terminator Sorcerer and Scarabs, winged Daemon Prince, Magnus, Rhino, Spawn, three Enlightened entries and Tzaangors."
+    },
+    {
+      "second": 2400,
+      "label": "Deployment",
+      "score": [
+        10,
+        10
+      ],
+      "image": "002400.jpg",
+      "alt": "Overhead opening board. Magnus is near the top edge, a white transport sits by the upper diagonal ruin, and purple vehicles are in the lower half.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14,
+            "y": 10,
+            "w": 19,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 11,
+            "y": 21,
+            "w": 19,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 51,
+            "y": 9,
+            "w": 23,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 76,
+            "y": 11,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 72,
+            "y": 34,
+            "w": 23,
+            "h": 15,
+            "r": -35
+          },
+          {
+            "x": 44,
+            "y": 42,
+            "w": 12,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 18,
+            "y": 53,
+            "w": 21,
+            "h": 13,
+            "r": 35
+          },
+          {
+            "x": 5,
+            "y": 75,
+            "w": 24,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 32,
+            "y": 77,
+            "w": 24,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 75,
+            "y": 62,
+            "w": 21,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 52,
+            "y": 67,
+            "w": 9,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 70,
+            "y": 85,
+            "w": 18,
+            "h": 5,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 63,
+            "y": 8,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus",
+            "dx": 12,
+            "dy": 4
+          },
+          {
+            "x": 57,
+            "y": 4,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "white",
+            "vehicle": true,
+            "dx": -116,
+            "dy": 18
+          },
+          {
+            "x": 19,
+            "y": 13,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dy": 22
+          },
+          {
+            "x": 26,
+            "y": 73,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dx": -12,
+            "dy": -17
+          },
+          {
+            "x": 88,
+            "y": 65,
+            "label": "Units obscured",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": -105,
+            "dy": -18
+          },
+          {
+            "x": 30,
+            "y": 93,
+            "label": "Large model · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": 13,
+            "dy": 0
+          }
+        ]
+      }
+    },
+    {
+      "second": 4380,
+      "label": "Turn 1 · before Magnus moves",
+      "score": [
+        10,
+        20
+      ],
+      "image": "004380.jpg",
+      "alt": "Magnus is still beside the white Rhino near the top edge; both opposing Rhinos are already forward.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14,
+            "y": 10,
+            "w": 19,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 11,
+            "y": 21,
+            "w": 19,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 51,
+            "y": 9,
+            "w": 23,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 76,
+            "y": 11,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 72,
+            "y": 34,
+            "w": 23,
+            "h": 15,
+            "r": -35
+          },
+          {
+            "x": 44,
+            "y": 42,
+            "w": 12,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 18,
+            "y": 53,
+            "w": 21,
+            "h": 13,
+            "r": 35
+          },
+          {
+            "x": 5,
+            "y": 75,
+            "w": 24,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 32,
+            "y": 77,
+            "w": 24,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 75,
+            "y": 62,
+            "w": 21,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 52,
+            "y": 67,
+            "w": 9,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 70,
+            "y": 85,
+            "w": 18,
+            "h": 5,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 63,
+            "y": 7,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus",
+            "dy": -18
+          },
+          {
+            "x": 58,
+            "y": 4,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "white",
+            "vehicle": true,
+            "dx": -119,
+            "dy": 17
+          },
+          {
+            "x": 88,
+            "y": 4,
+            "label": "Scarabs?",
+            "side": "ts",
+            "uncertain": true,
+            "dx": -90,
+            "dy": 24
+          },
+          {
+            "x": 17,
+            "y": 43,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dy": -19
+          },
+          {
+            "x": 86,
+            "y": 51,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dx": -103,
+            "dy": -16
+          },
+          {
+            "x": 45,
+            "y": 62,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": 15
+          },
+          {
+            "x": 71,
+            "y": 68,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": 15
+          }
+        ]
+      }
+    },
+    {
+      "second": 4500,
+      "label": "Thousand Sons · turn 1",
+      "score": [
+        10,
+        20
+      ],
+      "image": "004500.jpg",
+      "alt": "Overhead board at 1 hour 15 minutes. Magnus is below the upper-right ruin; purple transports have advanced on both flanks.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14,
+            "y": 10,
+            "w": 19,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 11,
+            "y": 21,
+            "w": 19,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 51,
+            "y": 9,
+            "w": 23,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 76,
+            "y": 11,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 72,
+            "y": 34,
+            "w": 23,
+            "h": 15,
+            "r": -35
+          },
+          {
+            "x": 44,
+            "y": 42,
+            "w": 12,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 18,
+            "y": 53,
+            "w": 21,
+            "h": 13,
+            "r": 35
+          },
+          {
+            "x": 5,
+            "y": 75,
+            "w": 24,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 32,
+            "y": 77,
+            "w": 24,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 75,
+            "y": 62,
+            "w": 21,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 52,
+            "y": 67,
+            "w": 9,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 70,
+            "y": 85,
+            "w": 18,
+            "h": 5,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 82,
+            "y": 29,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus",
+            "dy": -18
+          },
+          {
+            "x": 58,
+            "y": 4,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "white",
+            "vehicle": true,
+            "dx": -119,
+            "dy": 17
+          },
+          {
+            "x": 88,
+            "y": 4,
+            "label": "Scarabs?",
+            "side": "ts",
+            "uncertain": true,
+            "dx": -90,
+            "dy": 24
+          },
+          {
+            "x": 17,
+            "y": 43,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dy": -19
+          },
+          {
+            "x": 86,
+            "y": 51,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dx": -103,
+            "dy": -16
+          },
+          {
+            "x": 45,
+            "y": 62,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": 15
+          },
+          {
+            "x": 71,
+            "y": 68,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": 15
+          }
+        ]
+      },
+      "caption": {
+        "second": 4421,
+        "text": "Going after the Defiler here."
+      }
+    },
+    {
+      "second": 5700,
+      "label": "After turn 1 shooting",
+      "score": [
+        14,
+        20
+      ],
+      "image": "005700.jpg",
+      "alt": "Broadcast scoring panel shows Thousand Sons 14 and Emperor’s Children 20, including four No Prisoners points.",
+      "caption": {
+        "second": 5603,
+        "text": "Six damage dead."
+      }
+    },
+    {
+      "second": 7500,
+      "label": "Turn 2 · after the counterattack",
+      "score": [
+        14,
+        24
+      ],
+      "image": "007500.jpg",
+      "alt": "Overhead board at 2 hours 5 minutes. Magnus and nearby infantry crowd the upper-right flank beside a purple transport.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14,
+            "y": 10,
+            "w": 19,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 11,
+            "y": 21,
+            "w": 19,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 51,
+            "y": 9,
+            "w": 23,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 76,
+            "y": 11,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 72,
+            "y": 34,
+            "w": 23,
+            "h": 15,
+            "r": -35
+          },
+          {
+            "x": 44,
+            "y": 42,
+            "w": 12,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 18,
+            "y": 53,
+            "w": 21,
+            "h": 13,
+            "r": 35
+          },
+          {
+            "x": 5,
+            "y": 75,
+            "w": 24,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 32,
+            "y": 77,
+            "w": 24,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 75,
+            "y": 62,
+            "w": 21,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 52,
+            "y": 67,
+            "w": 9,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 70,
+            "y": 85,
+            "w": 18,
+            "h": 5,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 83,
+            "y": 29,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus",
+            "dy": -18
+          },
+          {
+            "x": 67,
+            "y": 2,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "white",
+            "vehicle": true,
+            "dx": -122,
+            "dy": 18
+          },
+          {
+            "x": 8,
+            "y": 29,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dx": 16
+          },
+          {
+            "x": 91,
+            "y": 33,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dx": -104,
+            "dy": 28
+          },
+          {
+            "x": 79,
+            "y": 34,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": -98,
+            "dy": 14
+          },
+          {
+            "x": 52,
+            "y": 57,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": 15
+          },
+          {
+            "x": 19,
+            "y": 75,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": 15
+          }
+        ]
+      }
+    },
+    {
+      "second": 8400,
+      "label": "Turn 2 · Rhino moves right",
+      "score": [
+        14,
+        24
+      ],
+      "image": "008400.jpg",
+      "alt": "The Thousand Sons Rhino is now beside the upper-right ruin rather than the back edge; Magnus remains on the right.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14,
+            "y": 10,
+            "w": 19,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 11,
+            "y": 21,
+            "w": 19,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 51,
+            "y": 9,
+            "w": 23,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 76,
+            "y": 11,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 72,
+            "y": 34,
+            "w": 23,
+            "h": 15,
+            "r": -35
+          },
+          {
+            "x": 44,
+            "y": 42,
+            "w": 12,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 18,
+            "y": 53,
+            "w": 21,
+            "h": 13,
+            "r": 35
+          },
+          {
+            "x": 5,
+            "y": 75,
+            "w": 24,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 32,
+            "y": 77,
+            "w": 24,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 75,
+            "y": 62,
+            "w": 21,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 52,
+            "y": 67,
+            "w": 9,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 70,
+            "y": 85,
+            "w": 18,
+            "h": 5,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 88,
+            "y": 29,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus",
+            "dy": -18
+          },
+          {
+            "x": 70,
+            "y": 28,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "white",
+            "vehicle": true,
+            "dx": -120,
+            "dy": -18
+          },
+          {
+            "x": 60,
+            "y": 34,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": -103,
+            "dy": 16
+          },
+          {
+            "x": 8,
+            "y": 28,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dx": -50,
+            "dy": -22
+          },
+          {
+            "x": 92,
+            "y": 34,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dx": -103,
+            "dy": 25
+          },
+          {
+            "x": 79,
+            "y": 59,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": -95,
+            "dy": 21
+          }
+        ]
+      }
+    },
+    {
+      "second": 8700,
+      "label": "Turn 2 · late board",
+      "score": [
+        26,
+        28
+      ],
+      "image": "008700.jpg",
+      "alt": "Midgame overhead board. The white transport has moved toward the right-side ruin, infantry extend to the centre, and the score is 26–28.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14,
+            "y": 10,
+            "w": 19,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 11,
+            "y": 21,
+            "w": 19,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 51,
+            "y": 9,
+            "w": 23,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 76,
+            "y": 11,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 72,
+            "y": 34,
+            "w": 23,
+            "h": 15,
+            "r": -35
+          },
+          {
+            "x": 44,
+            "y": 42,
+            "w": 12,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 18,
+            "y": 53,
+            "w": 21,
+            "h": 13,
+            "r": 35
+          },
+          {
+            "x": 5,
+            "y": 75,
+            "w": 24,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 32,
+            "y": 77,
+            "w": 24,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 75,
+            "y": 62,
+            "w": 21,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 52,
+            "y": 67,
+            "w": 9,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 70,
+            "y": 85,
+            "w": 18,
+            "h": 5,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 88,
+            "y": 29,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus",
+            "dy": -18
+          },
+          {
+            "x": 69,
+            "y": 28,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "white",
+            "vehicle": true,
+            "dx": -120,
+            "dy": -18
+          },
+          {
+            "x": 60,
+            "y": 34,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": -103,
+            "dy": 16
+          },
+          {
+            "x": 21,
+            "y": 28,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dx": -50,
+            "dy": -22
+          },
+          {
+            "x": 27,
+            "y": 30,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": 15
+          },
+          {
+            "x": 92,
+            "y": 34,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dx": -103,
+            "dy": 25
+          },
+          {
+            "x": 79,
+            "y": 59,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": -95,
+            "dy": 21
+          },
+          {
+            "x": 55,
+            "y": 52,
+            "label": "Daemon Prince",
+            "side": "ts",
+            "key": "dp",
+            "dx": 14,
+            "dy": 14
+          },
+          {
+            "x": 60,
+            "y": 38,
+            "label": "Spawn",
+            "side": "ts",
+            "key": "spawn",
+            "dx": -42,
+            "dy": 17
+          }
+        ]
+      }
+    },
+    {
+      "second": 9090,
+      "label": "Turn 3 · Magnus removed",
+      "score": [
+        26,
+        28
+      ],
+      "image": "009090.jpg",
+      "alt": "Magnus is absent from his right-flank position following the close-up at 2:31; the Daemon Prince and Spawn remain central.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14,
+            "y": 10,
+            "w": 19,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 11,
+            "y": 21,
+            "w": 19,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 51,
+            "y": 9,
+            "w": 23,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 76,
+            "y": 11,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 72,
+            "y": 34,
+            "w": 23,
+            "h": 15,
+            "r": -35
+          },
+          {
+            "x": 44,
+            "y": 42,
+            "w": 12,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 18,
+            "y": 53,
+            "w": 21,
+            "h": 13,
+            "r": 35
+          },
+          {
+            "x": 5,
+            "y": 75,
+            "w": 24,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 32,
+            "y": 77,
+            "w": 24,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 75,
+            "y": 62,
+            "w": 21,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 52,
+            "y": 67,
+            "w": 9,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 70,
+            "y": 85,
+            "w": 18,
+            "h": 5,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 69,
+            "y": 28,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "white",
+            "vehicle": true,
+            "dx": -120,
+            "dy": -18
+          },
+          {
+            "x": 21,
+            "y": 28,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dx": -50,
+            "dy": -22
+          },
+          {
+            "x": 27,
+            "y": 30,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": 15
+          },
+          {
+            "x": 91,
+            "y": 29,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dx": -103,
+            "dy": 25
+          },
+          {
+            "x": 55,
+            "y": 56,
+            "label": "Daemon Prince",
+            "side": "ts",
+            "key": "dp",
+            "dx": 14,
+            "dy": 15
+          },
+          {
+            "x": 60,
+            "y": 38,
+            "label": "Spawn",
+            "side": "ts",
+            "key": "spawn",
+            "dx": -46,
+            "dy": 17
+          },
+          {
+            "x": 82,
+            "y": 36,
+            "label": "Infantry · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": -110,
+            "dy": 25
+          }
+        ]
+      },
+      "caption": {
+        "second": 9231,
+        "text": "Magnus is dead."
+      }
+    },
+    {
+      "second": 10200,
+      "label": "Turn 4 · Rhino below the diagonal ruin",
+      "score": [
+        37,
+        33
+      ],
+      "image": "010200.jpg",
+      "alt": "The white Rhino is below the central-right diagonal ruin, with the winged Daemon Prince above it and Spawn nearer the centre. This is an intermediate position before the final sideways move.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14,
+            "y": 10,
+            "w": 19,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 11,
+            "y": 21,
+            "w": 19,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 51,
+            "y": 9,
+            "w": 23,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 76,
+            "y": 11,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 72,
+            "y": 34,
+            "w": 23,
+            "h": 15,
+            "r": -35
+          },
+          {
+            "x": 44,
+            "y": 42,
+            "w": 12,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 18,
+            "y": 53,
+            "w": 21,
+            "h": 13,
+            "r": 35
+          },
+          {
+            "x": 5,
+            "y": 75,
+            "w": 24,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 32,
+            "y": 77,
+            "w": 24,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 75,
+            "y": 62,
+            "w": 21,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 52,
+            "y": 67,
+            "w": 9,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 70,
+            "y": 85,
+            "w": 18,
+            "h": 5,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 74,
+            "y": 55,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "white",
+            "vehicle": true,
+            "dx": 14,
+            "dy": 8
+          },
+          {
+            "x": 69,
+            "y": 40,
+            "label": "Daemon Prince",
+            "side": "ts",
+            "key": "dp",
+            "dx": 14,
+            "dy": -15
+          },
+          {
+            "x": 61,
+            "y": 54,
+            "label": "Spawn",
+            "side": "ts",
+            "key": "spawn",
+            "dx": -50,
+            "dy": 18
+          },
+          {
+            "x": 21,
+            "y": 28,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dx": -40,
+            "dy": -18
+          },
+          {
+            "x": 69,
+            "y": 32,
+            "label": "Scarabs?",
+            "side": "ts",
+            "uncertain": true,
+            "dx": -64,
+            "dy": -8
+          },
+          {
+            "x": 89,
+            "y": 20,
+            "label": "Rubrics?",
+            "side": "ts",
+            "uncertain": true,
+            "dx": -76,
+            "dy": -16
+          }
+        ]
+      }
+    },
+    {
+      "second": 10920,
+      "label": "Turn 4 · late board",
+      "score": [
+        46,
+        45
+      ],
+      "image": "010920.jpg",
+      "alt": "Late-game overhead board, now much more sparsely occupied. The white transport is beside the central-right ruin and a purple transport remains at the upper-left edge. Overlay 46–45.",
+      "board": {
+        "terrain": [
+          {
+            "x": 14,
+            "y": 10,
+            "w": 19,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 11,
+            "y": 21,
+            "w": 19,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 51,
+            "y": 9,
+            "w": 23,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 76,
+            "y": 11,
+            "w": 19,
+            "h": 13,
+            "r": 0
+          },
+          {
+            "x": 72,
+            "y": 34,
+            "w": 23,
+            "h": 15,
+            "r": -35
+          },
+          {
+            "x": 44,
+            "y": 42,
+            "w": 12,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 18,
+            "y": 53,
+            "w": 21,
+            "h": 13,
+            "r": 35
+          },
+          {
+            "x": 5,
+            "y": 75,
+            "w": 24,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 32,
+            "y": 77,
+            "w": 24,
+            "h": 14,
+            "r": 35
+          },
+          {
+            "x": 75,
+            "y": 62,
+            "w": 21,
+            "h": 17,
+            "r": 0
+          },
+          {
+            "x": 52,
+            "y": 67,
+            "w": 9,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 70,
+            "y": 85,
+            "w": 18,
+            "h": 5,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 65,
+            "y": 47,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "white",
+            "vehicle": true,
+            "dx": 16
+          },
+          {
+            "x": 10,
+            "y": 8,
+            "label": "EC Rhino",
+            "side": "ec",
+            "vehicle": true,
+            "dx": 16
+          },
+          {
+            "x": 52,
+            "y": 51,
+            "label": "Spawn",
+            "side": "ts",
+            "dx": -116,
+            "dy": -17,
+            "key": "spawn"
+          },
+          {
+            "x": 53,
+            "y": 58,
+            "label": "Daemon Prince",
+            "side": "ts",
+            "dx": 15,
+            "dy": 8,
+            "key": "dp"
+          },
+          {
+            "x": 75,
+            "y": 40,
+            "label": "Small group · ID?",
+            "side": "unknown",
+            "uncertain": true,
+            "dx": -110,
+            "dy": -17
+          }
+        ]
+      }
+    },
+    {
+      "second": 11040,
+      "label": "Final score",
+      "score": [
+        78,
+        45
+      ],
+      "image": "011040.jpg",
+      "alt": "Players standing beside the table after the game. The broadcast scoreboard shows Alex Fowler 78, Frasier Parry 45; the turn label still reads bottom turn 4.",
+      "caption": {
+        "second": 11009,
+        "text": "78–45 is the finish."
+      }
+    }
+  ]
+}

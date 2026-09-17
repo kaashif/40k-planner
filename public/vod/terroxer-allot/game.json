@@ -154,7 +154,7 @@
           {
             "x": 12,
             "y": 52,
-            "label": "Disc unit",
+            "label": "Enlightened?",
             "side": "ts",
             "uncertain": true
           },
@@ -169,14 +169,14 @@
           {
             "x": 43,
             "y": 79,
-            "label": "TS infantry",
+            "label": "TS group",
             "side": "ts",
             "uncertain": true
           },
           {
             "x": 6,
             "y": 87,
-            "label": "TS infantry",
+            "label": "TS group",
             "side": "ts",
             "uncertain": true
           },
@@ -195,6 +195,620 @@
           {
             "x": 91,
             "y": 70,
+            "label": "Necron group",
+            "side": "ec"
+          }
+        ]
+      }
+    },
+    {
+      "second": 15600,
+      "label": "Turn 1 · Magnus moves up the left",
+      "alt": "Magnus has moved from the left-middle ruin to the upper-left lane; the Mutalith and Rhino have not followed yet.",
+      "image": "015600.jpg",
+      "board": {
+        "terrain": [
+          {
+            "x": 25,
+            "y": 4.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 48,
+            "y": 6,
+            "w": 6,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56.5,
+            "y": 20.5,
+            "w": 15,
+            "h": 5,
+            "r": 0
+          },
+          {
+            "x": 76.5,
+            "y": 8,
+            "w": 21,
+            "h": 18,
+            "r": 0
+          },
+          {
+            "x": 10.5,
+            "y": 21,
+            "w": 7,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 36,
+            "y": 31.5,
+            "w": 20,
+            "h": 17,
+            "r": -44
+          },
+          {
+            "x": 42,
+            "y": 51.5,
+            "w": 24,
+            "h": 15,
+            "r": -44
+          },
+          {
+            "x": 11,
+            "y": 45.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 30,
+            "y": 52,
+            "w": 4,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 75,
+            "y": 46.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 32.5,
+            "w": 4,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 87,
+            "y": 62.5,
+            "w": 8,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 67.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 49,
+            "y": 76,
+            "w": 6,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 34,
+            "y": 72,
+            "w": 16,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 6.5,
+            "y": 73.5,
+            "w": 21,
+            "h": 15,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 21,
+            "y": 30,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 16,
+            "y": 59,
+            "label": "Mutalith",
+            "side": "ts",
+            "key": "mutalith",
+            "dx": -70
+          },
+          {
+            "x": 12,
+            "y": 52,
+            "label": "Enlightened?",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 44,
+            "y": 85,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "rhino",
+            "vehicle": true
+          },
+          {
+            "x": 43,
+            "y": 79,
+            "label": "TS group",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 6,
+            "y": 87,
+            "label": "TS group",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 61,
+            "y": 18,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 82,
+            "y": 42,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 91,
+            "y": 70,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 81,
+            "y": 27,
+            "label": "Necron group",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        10,
+        10
+      ]
+    },
+    {
+      "second": 16080,
+      "label": "Turn 1 · farther up the flank",
+      "alt": "Magnus is farther up the left flank, partly covered by the score overlay. The Mutalith has followed to the upper-left ruin; the Rhino is still lower centre.",
+      "image": "016080.jpg",
+      "board": {
+        "terrain": [
+          {
+            "x": 25,
+            "y": 4.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 48,
+            "y": 6,
+            "w": 6,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56.5,
+            "y": 20.5,
+            "w": 15,
+            "h": 5,
+            "r": 0
+          },
+          {
+            "x": 76.5,
+            "y": 8,
+            "w": 21,
+            "h": 18,
+            "r": 0
+          },
+          {
+            "x": 10.5,
+            "y": 21,
+            "w": 7,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 36,
+            "y": 31.5,
+            "w": 20,
+            "h": 17,
+            "r": -44
+          },
+          {
+            "x": 42,
+            "y": 51.5,
+            "w": 24,
+            "h": 15,
+            "r": -44
+          },
+          {
+            "x": 11,
+            "y": 45.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 30,
+            "y": 52,
+            "w": 4,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 75,
+            "y": 46.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 32.5,
+            "w": 4,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 87,
+            "y": 62.5,
+            "w": 8,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 67.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 49,
+            "y": 76,
+            "w": 6,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 34,
+            "y": 72,
+            "w": 16,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 6.5,
+            "y": 73.5,
+            "w": 21,
+            "h": 15,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 21,
+            "y": 15,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus",
+            "trail": [
+              {
+                "second": 15960,
+                "x": 21,
+                "y": 30
+              }
+            ]
+          },
+          {
+            "x": 27,
+            "y": 37,
+            "label": "Mutalith",
+            "side": "ts",
+            "key": "mutalith",
+            "trail": [
+              {
+                "second": 15960,
+                "x": 27,
+                "y": 37
+              }
+            ]
+          },
+          {
+            "x": 8,
+            "y": 26,
+            "label": "Enlightened?",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 44,
+            "y": 85,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "rhino",
+            "vehicle": true
+          },
+          {
+            "x": 43,
+            "y": 79,
+            "label": "TS group",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 16,
+            "y": 67,
+            "label": "TS group",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 61,
+            "y": 18,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 82,
+            "y": 42,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 91,
+            "y": 70,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 81,
+            "y": 27,
+            "label": "Necron group",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        13,
+        10
+      ]
+    },
+    {
+      "second": 18900,
+      "label": "Turn 2 · before Magnus shifts right",
+      "alt": "Magnus is just right of the long upper-left ruin, before his next short shift toward the centre. The Mutalith and Rhino are now at the two diagonal ruins.",
+      "image": "018900.jpg",
+      "board": {
+        "terrain": [
+          {
+            "x": 25,
+            "y": 4.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 48,
+            "y": 6,
+            "w": 6,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56.5,
+            "y": 20.5,
+            "w": 15,
+            "h": 5,
+            "r": 0
+          },
+          {
+            "x": 76.5,
+            "y": 8,
+            "w": 21,
+            "h": 18,
+            "r": 0
+          },
+          {
+            "x": 10.5,
+            "y": 21,
+            "w": 7,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 36,
+            "y": 31.5,
+            "w": 20,
+            "h": 17,
+            "r": -44
+          },
+          {
+            "x": 42,
+            "y": 51.5,
+            "w": 24,
+            "h": 15,
+            "r": -44
+          },
+          {
+            "x": 11,
+            "y": 45.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 30,
+            "y": 52,
+            "w": 4,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 75,
+            "y": 46.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 32.5,
+            "w": 4,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 87,
+            "y": 62.5,
+            "w": 8,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 67.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 49,
+            "y": 76,
+            "w": 6,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 34,
+            "y": 72,
+            "w": 16,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 6.5,
+            "y": 73.5,
+            "w": 21,
+            "h": 15,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 42,
+            "y": 20,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 44,
+            "y": 43,
+            "label": "Mutalith",
+            "side": "ts",
+            "key": "mutalith"
+          },
+          {
+            "x": 59,
+            "y": 67,
+            "label": "Rhino",
+            "side": "ts",
+            "key": "rhino",
+            "vehicle": true
+          },
+          {
+            "x": 57,
+            "y": 63,
+            "label": "TS group",
+            "side": "ts",
+            "uncertain": true,
+            "dx": -85,
+            "dy": -3
+          },
+          {
+            "x": 11,
+            "y": 14,
+            "label": "Enlightened?",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 50,
+            "y": 8,
+            "label": "TS group",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 82,
+            "y": 42,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 80,
+            "y": 27,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 76,
+            "y": 62,
+            "label": "Necron flyer",
+            "side": "ec",
+            "key": "flyer",
+            "vehicle": true
+          },
+          {
+            "x": 24,
+            "y": 86,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 66,
+            "y": 95,
+            "label": "Necron vehicle",
+            "side": "ec",
+            "key": "rearvehicle",
+            "vehicle": true
+          },
+          {
+            "x": 59,
+            "y": 38,
             "label": "Necron group",
             "side": "ec"
           }
@@ -347,7 +961,7 @@
           {
             "x": 57,
             "y": 63,
-            "label": "TS infantry",
+            "label": "TS group",
             "side": "ts",
             "uncertain": true,
             "dx": -85,
@@ -356,14 +970,14 @@
           {
             "x": 11,
             "y": 14,
-            "label": "Disc unit",
+            "label": "Enlightened?",
             "side": "ts",
             "uncertain": true
           },
           {
             "x": 50,
             "y": 8,
-            "label": "TS infantry",
+            "label": "TS group",
             "side": "ts",
             "uncertain": true
           },
@@ -554,7 +1168,7 @@
           {
             "x": 55,
             "y": 62,
-            "label": "TS infantry",
+            "label": "TS group",
             "side": "ts",
             "uncertain": true
           },
@@ -599,6 +1213,187 @@
             "side": "ec",
             "key": "rearvehicle",
             "vehicle": true
+          }
+        ]
+      }
+    },
+    {
+      "second": 22020,
+      "label": "Turn 3 · Mutalith crosses the centre",
+      "alt": "Magnus remains at the north tip of the upper diagonal ruin, while the Mutalith is now between the diagonal ruins rather than on the far-right flank.",
+      "image": "022020.jpg",
+      "board": {
+        "terrain": [
+          {
+            "x": 25,
+            "y": 4.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 48,
+            "y": 6,
+            "w": 6,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56.5,
+            "y": 20.5,
+            "w": 15,
+            "h": 5,
+            "r": 0
+          },
+          {
+            "x": 76.5,
+            "y": 8,
+            "w": 21,
+            "h": 18,
+            "r": 0
+          },
+          {
+            "x": 10.5,
+            "y": 21,
+            "w": 7,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 36,
+            "y": 31.5,
+            "w": 20,
+            "h": 17,
+            "r": -44
+          },
+          {
+            "x": 42,
+            "y": 51.5,
+            "w": 24,
+            "h": 15,
+            "r": -44
+          },
+          {
+            "x": 11,
+            "y": 45.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 30,
+            "y": 52,
+            "w": 4,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 75,
+            "y": 46.5,
+            "w": 18,
+            "h": 7,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 32.5,
+            "w": 4,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 87,
+            "y": 62.5,
+            "w": 8,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 71,
+            "y": 67.5,
+            "w": 12,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 49,
+            "y": 76,
+            "w": 6,
+            "h": 14,
+            "r": 0
+          },
+          {
+            "x": 34,
+            "y": 72,
+            "w": 16,
+            "h": 4,
+            "r": 0
+          },
+          {
+            "x": 6.5,
+            "y": 73.5,
+            "w": 21,
+            "h": 15,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 52,
+            "y": 26,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 58,
+            "y": 49,
+            "label": "Mutalith",
+            "side": "ts",
+            "key": "mutalith"
+          },
+          {
+            "x": 11,
+            "y": 14,
+            "label": "Enlightened?",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 63,
+            "y": 63,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 78,
+            "y": 78,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 65,
+            "y": 65,
+            "label": "Necron group",
+            "side": "ec"
+          },
+          {
+            "x": 66,
+            "y": 95,
+            "label": "Necron vehicle",
+            "side": "ec",
+            "key": "rearvehicle",
+            "vehicle": true
+          },
+          {
+            "x": 66,
+            "y": 34,
+            "label": "Necron flyer",
+            "side": "ec",
+            "key": "flyer",
+            "vehicle": true,
+            "dx": 14,
+            "dy": -14
           }
         ]
       }
@@ -745,14 +1540,14 @@
           {
             "x": 24,
             "y": 28,
-            "label": "Disc unit",
+            "label": "Enlightened?",
             "side": "ts",
             "uncertain": true
           },
           {
             "x": 65,
             "y": 29,
-            "label": "TS infantry",
+            "label": "TS group",
             "side": "ts",
             "uncertain": true
           },
@@ -916,14 +1711,14 @@
           {
             "x": 33,
             "y": 25,
-            "label": "Disc unit",
+            "label": "Enlightened?",
             "side": "ts",
             "uncertain": true
           },
           {
             "x": 85,
             "y": 13,
-            "label": "TS infantry",
+            "label": "TS group",
             "side": "ts",
             "uncertain": true
           },
@@ -1129,5 +1924,72 @@
         ]
       }
     }
-  ]
+  ],
+  "tracking": {
+    "reviewedSeconds": [
+      13182,
+      13320,
+      13500,
+      13980,
+      14220,
+      14400,
+      14520,
+      14700,
+      15000,
+      15360,
+      15480,
+      15520,
+      15540,
+      15600,
+      15720,
+      15840,
+      15960,
+      16020,
+      16080,
+      16200,
+      16800,
+      17400,
+      17520,
+      17640,
+      17700,
+      17820,
+      18000,
+      18300,
+      18600,
+      18720,
+      18840,
+      18900,
+      18930,
+      18960,
+      19200,
+      19500,
+      19800,
+      20100,
+      20400,
+      20700,
+      21000,
+      21600,
+      21720,
+      21840,
+      21900,
+      22020,
+      22200,
+      22500,
+      22800,
+      23100,
+      23400,
+      23700,
+      24000,
+      24300,
+      24600,
+      24900,
+      25160,
+      25230,
+      25280,
+      25330
+    ],
+    "limits": "Magnus's left-flank detour and the Mutalith's central stop are visible in intervening frames. Camera cuts still interrupt routes; arrows connect observed positions only.",
+    "rosterSource": "https://www.bestcoastpairings.com/list/TlfJhDewzXXy",
+    "rosterStatus": "Match-linked list did not load in the text reader; no roster card found in sampled pregame footage. Unresolved groups remain marked, not matched to another event's list."
+  }
 }
