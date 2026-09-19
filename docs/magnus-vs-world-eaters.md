@@ -31,6 +31,10 @@ Each page presents all evidence without expandable sections:
 
 These are win samples with incomplete coverage. “Reserve” does not automatically prove Deep Strike, and a later reposition does not establish a reserve start. Passenger units are not reserve units merely because their models are off-table.
 
+## Measured deployment examples
+
+[Current threat distances and all three Purge vs Priority Assets layouts](world-eaters-threat-ranges.md) explain Angron’s lack of advance-and-charge in this build, scouting Eightbound, and where to place the important bases.
+
 ## My starting plan for your matchup
 
 **Start Magnus and the Scarab brick on the table if the terrain gives both a protected staging pocket. Reserve the winged Prince as the delayed response.** This is a proposed baseline to test, not a conclusion that on-board Scarabs always beat WE. The two large damage pieces plus the Prince represent 1,175 listed points; beginning with both the brick and Prince off-board leaves a much thinner opening army. Your lack of a Rhino makes that tradeoff more important.

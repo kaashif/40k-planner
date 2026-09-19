@@ -74,3 +74,5 @@ This refreshes all 45 maps and previews from current vector geometry, rebuilds t
 Validate with `node --test scripts/test-vod.mjs`, `npm run build` and `uv run --with playwright python scripts/check-vod-ui.py`. Publish reviewed stills with `uv run --with pillow python scripts/publish-vod-frames.py --game <game-id>` after sampling into `.cache/vod/<game-id>/`.
 
 Each VOD now has a dedicated `/vod/<game-id>/` page with fully expanded evidence. [Personal matchup plan: Magnus vs World Eaters](docs/magnus-vs-world-eaters.md) covers the supplied lists, deployment and reserve choices.
+
+[World Eaters deployment and charge examples](https://kaashif.github.io/40k-planner/matchups/world-eaters/) and [screening tactics](https://kaashif.github.io/40k-planner/tactics/screening/) provide three layout examples and three worked screening lessons. Run `node --test scripts/test-screening.mjs` to verify the numerical screening examples.

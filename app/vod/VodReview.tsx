@@ -15,6 +15,8 @@ export default function VodReview() {
       <p><a href="https://github.com/kaashif/40k-planner/blob/main/docs/fast-melee-vod-study.md">Army checklist, list comparison, tactical notes and search results ↗</a> · <a href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/vod/search-2026-09-19.json`}>Source inventory ↗</a></p>
       <p><a href="https://github.com/kaashif/40k-planner/blob/main/docs/magnus-vs-world-eaters.md">Your Magnus list vs World Eaters: deployment, reserves and target priorities ↗</a></p>
       <p><a href="https://github.com/kaashif/40k-planner/blob/main/docs/world-eaters-game-plan.md">World Eaters game plan: concise summary ↗</a></p>
+      <p><Link href="/matchups/world-eaters/">Purge vs Priority Assets: three deployment examples and charge calculator →</Link></p>
+      <p><Link href="/tactics/screening/">Screening tactics: formations, Angron landings and combat follow-up →</Link></p>
       <nav><a href="#yarin-iyer">Blood Angels</a><a href="#most-fritschen">Slaanesh Daemons</a><a href="#fowler-parry">Emperor’s Children</a><a href="#fowler-power">Earlier Daemons win</a></nav>
     </section>
     <p className="vod-key"><span>● Thousand Sons</span><span>● Opponent</span><span>◌ Probable identity / previous position</span> · Maps approximate. Dotted arrows join sampled sightings, not exact routes. Labels with ? are uncertain.</p>

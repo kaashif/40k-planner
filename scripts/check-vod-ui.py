@@ -15,7 +15,10 @@ class Handler(SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path.startswith('/40k-planner/'):
             self.path = self.path[len('/40k-planner'):]
-        super().do_GET()
+        try:
+            super().do_GET()
+        except (BrokenPipeError, ConnectionResetError):
+            pass  # Browser navigation can cancel an in-flight prefetch.
     def do_HEAD(self):
         if self.path.startswith('/40k-planner/'):
             self.path = self.path[len('/40k-planner'):]
@@ -65,11 +68,37 @@ try:
             page.get_by_role('heading', name='Grand Coven · Magnus', exact=True).wait_for()
         page.screenshot(path=str(out / 'mobile.png'), full_page=True)
         assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
-        page.get_by_role('link', name='Missions', exact=True).click()
+        page.goto(index_url+'matchups/world-eaters/', wait_until='networkidle')
+        assert page.locator('svg[role="img"]').count() == 3
+        assert '27.8%' in page.get_by_role('status').inner_text()
+        page.get_by_label('Re-roll a failed charge roll').check()
+        assert '47.8%' in page.get_by_role('status').inner_text()
+        page.get_by_label('Initial base-to-base gap').fill('27')
+        assert 'no direct charge' in page.get_by_role('status').inner_text()
+        page.get_by_role('combobox').select_option('eightbound')
+        assert '30.6%' in page.get_by_role('status').inner_text()
+        page.get_by_label('Initial base-to-base gap').fill('29')
+        assert 'no direct charge' in page.get_by_role('status').inner_text()
+        assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
+        page.screenshot(path=str(out / 'world-eaters-mobile.png'))
+        page.set_viewport_size({"width":1440,"height":1100})
+        for variant in 'abc':
+            page.locator('#layout-'+variant).screenshot(path=str(out / ('deployment-'+variant+'.png')))
+        for slug in ['screen-shape','angron-landings','after-the-screen-dies']:
+            page.goto(index_url+'tactics/screening/'+slug+'/', wait_until='networkidle')
+            assert page.locator('svg[role="img"]').count() == 2
+            assert page.locator('details').count() == 0
+            assert page.locator('[id]').evaluate_all('(els) => new Set(els.map(e => e.id)).size === els.length')
+            page.locator('.screen-example').first.screenshot(path=str(out / ('screening-'+slug+'.png')))
+            page.set_viewport_size({"width":390,"height":844})
+            assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
+            page.set_viewport_size({"width":1440,"height":1100})
+        page.goto(index_url, wait_until='networkidle')
+        page.get_by_role('link', name='Missions' , exact=True).click()
         page.get_by_role('heading', name='40k 11th edition missions', exact=True).wait_for()
         assert '/40k-planner/missions/' in page.url
         assert not errors, errors
         browser.close()
-        print('PASS: desktop/mobile, separate scrollable game pages, dated editions, roster/evidence notes, movement arrows, unique SVG IDs, images, navigation, no JS errors')
+        print('PASS: desktop/mobile, game pages, deployment maps, charge probabilities, screening diagrams, links, unique IDs, images, no HTTP or JS errors')
 finally:
     server.shutdown()

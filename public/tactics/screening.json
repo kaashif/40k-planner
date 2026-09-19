@@ -1,0 +1,632 @@
+[
+  {
+    "slug": "screen-shape",
+    "title": "Build a coherent screen that blocks a ground route",
+    "summary": "Start with your ten Tzaangors in a compact two-rank formation. Use Spawn or Enlightened to cover a separate lane; do not stretch one unit across the whole table.",
+    "rules": "11th edition coherency: each model must be within 2 inches horizontally of at least one other model, and within 9 inches horizontally of every other model (5 inches vertically in both cases). Models cannot ordinarily move through enemy bases. Ground chargers may still go around the ends if their movement, targeting and end position allow it.",
+    "figures": [
+      {
+        "title": "Works for the stated job: two ranks of five",
+        "models": [
+          {
+            "x": 6,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 8,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 10,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 12,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 14,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 6,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 8,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 10,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 12,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 14,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 8,
+            "y": 19,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          },
+          {
+            "x": 10,
+            "y": 19,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          },
+          {
+            "x": 12,
+            "y": 19,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          }
+        ],
+        "notes": [
+          "Tzaangors: 32mm bases; centres 2 inches apart horizontally and vertically. Clear gaps are 0.74 inches.",
+          "A 40mm Eightbound base is 1.57 inches wide: it cannot physically pass through a 0.74-inch gap.",
+          "Most distant Tzaangor base-edge separation is 6.99 inches: within the 9-inch whole-unit coherency limit. Every model has a neighbour within 2 inches.",
+          "This blocks the straight ground route through the formation. It does not block routes around the ends, flight, shooting, or every charge into the protected unit."
+        ],
+        "labels": [
+          {
+            "x": 10,
+            "y": 6,
+            "text": "10 Tzaangors \u00b7 2 \u00d7 5"
+          },
+          {
+            "x": 10,
+            "y": 21,
+            "text": "Scarab front \u00b7 schematic"
+          }
+        ]
+      },
+      {
+        "title": "Does not work: a long ten-model chain",
+        "models": [
+          {
+            "x": 2,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 4,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 6,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 8,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 10,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 12,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 14,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 16,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 18,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 20,
+            "y": 10,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          }
+        ],
+        "notes": [
+          "Every adjacent pair is close enough, but the first and last models are 16.74 inches apart edge-to-edge. That violates the current 9-inch requirement.",
+          "This is an illegal formation, not a way to screen an 18-inch front with one unit.",
+          "A different failure: a local gap of 1.80 inches between screen bases physically admits a 40mm base. Coherency alone does not prove that a screen blocks passage."
+        ],
+        "labels": [
+          {
+            "x": 11,
+            "y": 8,
+            "text": "Endpoints 16.74 inches apart"
+          }
+        ]
+      }
+    ],
+    "practice": [
+      "Use the two-rank shape as a starting template, then bend it around the lane you need to deny while rechecking all-model coherency.",
+      "Check the route around BOTH ends with an actual 40mm base. Anchor a flank on a genuinely impassable feature or another unit, not an assumed solid ruin wall. Infantry terrain permissions still apply.",
+      "Keep enough room for your own Rubrics and Scarabs to leave their staging position next turn. Friendly movement can pass through friendly models, but cannot finish overlapping them.",
+      "After Forgefiend shooting removes screen models, re-check gaps. A deployment-time barrier may no longer exist when charges start."
+    ],
+    "sources": [
+      {
+        "label": "Core rules \u00a7\u00a703.01\u201303.04",
+        "url": "https://assets.warhammer-community.com/eng_01-06_warhammer40k_new40k_core_rules-was6fbu1ix-hfewhmxyiy.pdf"
+      },
+      {
+        "label": "Tzaangor base and datasheet",
+        "url": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Tzaangors"
+      },
+      {
+        "label": "Eightbound base and datasheet",
+        "url": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Eightbound"
+      }
+    ]
+  },
+  {
+    "slug": "angron-landings",
+    "title": "Screen Angron\u2019s landing space, not just his route",
+    "summary": "A single Tzaangor line does not wall off a flying Angron. Check the space where his 100mm base could finish a normal move, and separately check his charge.",
+    "rules": "Taking to the skies lets a flying model cross models and terrain, but subtracts 2 inches from that move\u2019s maximum. A normal move must finish unengaged: more than 2 inches from enemy bases. Charge moves have different end conditions, so denying a normal-move landing does not automatically deny a flying charge.",
+    "figures": [
+      {
+        "title": "Fails: a legal normal-move landing behind the screen",
+        "models": [
+          {
+            "x": 6,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 8,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 10,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 12,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 14,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 6,
+            "y": 9.6,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 8,
+            "y": 9.6,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 10,
+            "y": 9.6,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 12,
+            "y": 9.6,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 14,
+            "y": 9.6,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 8,
+            "y": 21,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          },
+          {
+            "x": 10,
+            "y": 21,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          },
+          {
+            "x": 12,
+            "y": 21,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          },
+          {
+            "x": 10,
+            "y": 3,
+            "r": 1.968503937007874,
+            "side": "enemy"
+          },
+          {
+            "x": 10,
+            "y": 15,
+            "r": 1.968503937007874,
+            "side": "candidate"
+          }
+        ],
+        "notes": [
+          "Angron starts at (10,3), takes to the skies and moves 12 inches to (10,15): legal for his 14-inch move minus 2.",
+          "At this candidate landing, the nearest Tzaangor is 2.80 inches away edge-to-edge, and the Scarab front is 3.24 inches away. He is unengaged and no bases overlap.",
+          "The screen did not prevent this landing. He can then attempt a charge into the Scarabs: they are within 12 inches, but a sufficient modified charge roll is still required."
+        ],
+        "labels": [
+          {
+            "x": 10,
+            "y": 0.6,
+            "text": "Angron start"
+          },
+          {
+            "x": 10,
+            "y": 12,
+            "text": "Candidate landing"
+          },
+          {
+            "x": 10,
+            "y": 23,
+            "text": "Scarab front"
+          }
+        ],
+        "arrow": {
+          "x1": 10,
+          "y1": 3,
+          "x2": 10,
+          "y2": 15
+        }
+      },
+      {
+        "title": "Works only for this landing: the candidate is denied",
+        "models": [
+          {
+            "x": 6,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 8,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 10,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 12,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 14,
+            "y": 8,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 6,
+            "y": 9.6,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 8,
+            "y": 9.6,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 10,
+            "y": 9.6,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 12,
+            "y": 9.6,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 14,
+            "y": 9.6,
+            "r": 0.6299212598425197,
+            "side": "screen"
+          },
+          {
+            "x": 8,
+            "y": 18,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          },
+          {
+            "x": 10,
+            "y": 18,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          },
+          {
+            "x": 12,
+            "y": 18,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          },
+          {
+            "x": 10,
+            "y": 3,
+            "r": 1.968503937007874,
+            "side": "enemy"
+          },
+          {
+            "x": 10,
+            "y": 15,
+            "r": 1.968503937007874,
+            "side": "candidate"
+          }
+        ],
+        "notes": [
+          "With the Scarab front at y=18 instead, that same landing at (10,15) ends only 0.24 inches from a Scarab base: engaged, so illegal for a normal move.",
+          "The straight gap between the screen\u2019s rear and the Scarab front is 6.98 inches. A 100mm base needs more than 7.94 inches to fit between two opposed parallel base edges while staying more than 2 inches from each.",
+          "That is a corridor calculation, not proof that all lateral landings are blocked. Move the 100mm template sideways and check around both ends.",
+          "A direct flying charge over the screen can still be possible. Check it separately; do not move the Scarabs closer merely to close this normal-move pocket without also checking charges and combat follow-up."
+        ],
+        "labels": [
+          {
+            "x": 10,
+            "y": 0.6,
+            "text": "Angron start"
+          },
+          {
+            "x": 10,
+            "y": 12,
+            "text": "Same candidate \u00b7 illegal"
+          },
+          {
+            "x": 10,
+            "y": 21,
+            "text": "Closer Scarab front"
+          }
+        ],
+        "arrow": {
+          "x1": 10,
+          "y1": 3,
+          "x2": 10,
+          "y2": 15
+        }
+      }
+    ],
+    "practice": [
+      "Use the actual 100mm base or a template. Test normal-move landings more than 2 inches from EVERY TS unit, not just the forward screen.",
+      "Deny the useful destination while also keeping Magnus/Scarabs outside a legal direct charge. A screen is strongest when range, terrain, endpoint denial and your counterattack all help.",
+      "Apply the 2-inch flight cost each time he takes to the skies. Flying in movement and flying again in the charge are two separate choices. The 26-inch open-ground upper bound is not a promise of 26 inches through terrain.",
+      "Keep Forgefiend shooting in the sequence: removing one flank of the screen can open a legal landing. Check alternate destinations after casualties."
+    ],
+    "sources": [
+      {
+        "label": "Core rules \u00a7\u00a709.05, 11.04, 21.03",
+        "url": "https://assets.warhammer-community.com/eng_01-06_warhammer40k_new40k_core_rules-was6fbu1ix-hfewhmxyiy.pdf"
+      },
+      {
+        "label": "Angron 100mm base / 14-inch move",
+        "url": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Angron"
+      }
+    ]
+  },
+  {
+    "slug": "after-the-screen-dies",
+    "title": "Do not let the dead screen deliver the next engagement",
+    "summary": "Measure from the enemy\u2019s possible position after charging and piling in\u2014not from where your screen started. Your goal is a surviving shooting reply, with the Crystal unit unengaged.",
+    "rules": "Current engaging consolidation is available when an unengaged unit is within 3 inches of an enemy unit. World Eaters\u2019 6-inch pile-in/consolidation blessing changes movement distance; its text does not replace that 3-inch mode-selection condition. Other consolidation modes and nearby objectives can change the situation. The examples deliberately exclude those.",
+    "figures": [
+      {
+        "title": "Fails: the enemy is within 3 inches after the screen dies",
+        "models": [
+          {
+            "x": 8,
+            "y": 10,
+            "r": 0.7874015748031497,
+            "side": "enemy"
+          },
+          {
+            "x": 10,
+            "y": 10,
+            "r": 0.7874015748031497,
+            "side": "enemy"
+          },
+          {
+            "x": 12,
+            "y": 10,
+            "r": 0.7874015748031497,
+            "side": "enemy"
+          },
+          {
+            "x": 8,
+            "y": 14,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          },
+          {
+            "x": 10,
+            "y": 14,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          },
+          {
+            "x": 12,
+            "y": 14,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          }
+        ],
+        "notes": [
+          "This is a POST-FIGHT snapshot. The screen has been destroyed, the Eightbound have already completed any pile-in, and both surviving units are coherent.",
+          "Closest base-edge gap: 4 \u2212 1.57 = 2.43 inches. The unengaged Eightbound qualify for engaging consolidation.",
+          "Moving each Eightbound 2 inches toward the Scarabs leaves a 0.43-inch gap: engaged. The Scarabs are now tagged.",
+          "The Scarabs may get to fight if they have not fought yet; being tagged is not a free unanswered attack. But it can still compromise your planned shooting and Crystal use."
+        ],
+        "labels": [
+          {
+            "x": 10,
+            "y": 7,
+            "text": "Eightbound \u00b7 screen already removed"
+          },
+          {
+            "x": 10,
+            "y": 17,
+            "text": "Scarab front \u00b7 2.43-inch gap"
+          }
+        ],
+        "arrow": {
+          "x1": 10,
+          "y1": 10,
+          "x2": 10,
+          "y2": 12
+        }
+      },
+      {
+        "title": "Works in this snapshot: no engaging-consolidation target",
+        "models": [
+          {
+            "x": 8,
+            "y": 10,
+            "r": 0.7874015748031497,
+            "side": "enemy"
+          },
+          {
+            "x": 10,
+            "y": 10,
+            "r": 0.7874015748031497,
+            "side": "enemy"
+          },
+          {
+            "x": 12,
+            "y": 10,
+            "r": 0.7874015748031497,
+            "side": "enemy"
+          },
+          {
+            "x": 8,
+            "y": 16,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          },
+          {
+            "x": 10,
+            "y": 16,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          },
+          {
+            "x": 12,
+            "y": 16,
+            "r": 0.7874015748031497,
+            "side": "protected"
+          }
+        ],
+        "notes": [
+          "Closest base-edge gap: 6 \u2212 1.57 = 4.43 inches. No enemy is within 3 inches, so this unit cannot select engaging consolidation toward the Scarabs.",
+          "Assumptions: it is unengaged, there is no other enemy or objective within 3 inches, and no separate special movement rule applies.",
+          "This does NOT mean \u201cput your screen 4.43 inches ahead of the brick.\u201d It is the distance remaining AFTER charge placement, any pile-in and removing the screen.",
+          "If a different charge endpoint or pile-in brings any Eightbound within 3 inches, the protection is gone. Check every possible nearest model, not only the unit centre."
+        ],
+        "labels": [
+          {
+            "x": 10,
+            "y": 7,
+            "text": "Eightbound \u00b7 final post-fight position"
+          },
+          {
+            "x": 10,
+            "y": 19,
+            "text": "Scarab front \u00b7 4.43-inch gap"
+          }
+        ]
+      }
+    ],
+    "practice": [
+      "Before offering the screen, place spare enemy bases at plausible charge endpoints and resolve the legal pile-in. Then remove the screen and measure the remaining gap.",
+      "Repeat with the 6-inch pile-in blessing active. A base-contacted model cannot pile in, but other models can often move; account for the whole enemy unit.",
+      "Check objectives and other TS units nearby. The clean \u201cno move\u201d example assumes there is no alternative consolidation mode or target.",
+      "Keep the Crystal brick unengaged at your next Command phase. Use another unit for the forward job if the screen\u2019s likely loss puts the brick in combat.",
+      "Do not treat all 6-inch fight movement as automatic 6 + 6 inches toward any target: eligibility, target selection, closer-to conditions, coherency and base contact still constrain it."
+    ],
+    "sources": [
+      {
+        "label": "Core rules \u00a7\u00a712.02\u201312.08",
+        "url": "https://assets.warhammer-community.com/eng_01-06_warhammer40k_new40k_core_rules-was6fbu1ix-hfewhmxyiy.pdf"
+      },
+      {
+        "label": "World Eaters blessings",
+        "url": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/#Blessings-of-Khorne"
+      },
+      {
+        "label": "Current Crystal condition",
+        "url": "https://assets.warhammer-community.com/eng_wh40k_faction_pack_thousand_sons-zha93omuus-lqi5vkrcpq.pdf"
+      }
+    ]
+  }
+]
