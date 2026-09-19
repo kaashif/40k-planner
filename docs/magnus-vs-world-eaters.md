@@ -35,6 +35,10 @@ These are win samples with incomplete coverage. “Reserve” does not automatic
 
 [Current threat distances and all three Purge vs Priority Assets layouts](world-eaters-threat-ranges.md) explain Angron’s lack of advance-and-charge in this build, scouting Eightbound, and where to place the important bases.
 
+## User’s reserve-heavy alternative
+
+The 20 September follow-up chooses Scarabs + attached Terminator Sorcerer and winged Prince off-board. [All three layout plans, timing corrections and screening roles](world-eaters-reserve-plan.md) develop that alternative. The baseline below remains the earlier option for comparison.
+
 ## My starting plan for your matchup
 
 **Start Magnus and the Scarab brick on the table if the terrain gives both a protected staging pocket. Reserve the winged Prince as the delayed response.** This is a proposed baseline to test, not a conclusion that on-board Scarabs always beat WE. The two large damage pieces plus the Prince represent 1,175 listed points; beginning with both the brick and Prince off-board leaves a much thinner opening army. Your lack of a Rhino makes that tradeoff more important.

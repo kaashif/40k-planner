@@ -1,0 +1,5 @@
+.reserve-plan .reserve-maps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin:24px 0}
+.reserve-map{margin:0;min-width:0}.reserve-map svg{display:block;width:100%;background:#101a20;border:1px solid #3a505b;border-radius:8px;padding:8px}.reserve-map figcaption{font-size:.85rem;color:#afc0cc;line-height:1.5;margin-top:10px}
+.reserve-table-wrap{overflow-x:auto;margin:20px 0}.reserve-plan table{width:100%;border-collapse:collapse;line-height:1.5}.reserve-plan th,.reserve-plan td{padding:10px 14px;border:1px solid #30414c;text-align:left;vertical-align:top}.reserve-plan thead{background:#172a34}.reserve-plan tbody th{color:#88e6d4}
+.reserve-nav{display:flex;gap:18px;flex-wrap:wrap;margin:24px 0}.reserve-layout{scroll-margin-top:16px}
+@media(max-width:800px){.reserve-plan .reserve-maps{grid-template-columns:1fr}.reserve-plan th,.reserve-plan td{padding:8px;font-size:.85rem}}

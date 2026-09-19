@@ -96,8 +96,20 @@ try:
             page.set_viewport_size({"width":390,"height":844})
             assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
             page.set_viewport_size({"width":1440,"height":1100})
+        page.goto(index_url+'matchups/world-eaters/reserve-plan/', wait_until='networkidle')
+        assert page.locator('.reserve-map svg').count() == 6
+        assert page.locator('details').count() == 0
+        assert '720 points' in page.locator('main').inner_text()
+        assert 'your turn 3' in page.locator('main').inner_text()
+        assert page.locator('[id]').evaluate_all('(els) => new Set(els.map(e => e.id)).size === els.length')
+        assert page.locator('.reserve-map image').evaluate_all('''async images => (await Promise.all(images.map(el => new Promise(resolve => { const img = new Image(); img.onload = () => resolve(img.naturalWidth > 0); img.onerror = () => resolve(false); img.src = el.getAttribute("href"); })))).every(Boolean)''')
+        for variant in 'abc':
+            page.locator('#layout-'+variant+' .reserve-maps').screenshot(path=str(out / ('reserve-plan-'+variant+'.png')))
+        page.set_viewport_size({"width":390,"height":844})
+        assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
+        page.locator('#layout-a .reserve-map').first.screenshot(path=str(out / 'reserve-plan-mobile.png'))
         page.goto(index_url, wait_until='networkidle')
-        page.get_by_role('link', name='Missions' , exact=True).click()
+        page.get_by_role('link', name='Missions'  , exact=True).click()
         page.get_by_role('heading', name='40k 11th edition missions', exact=True).wait_for()
         assert '/40k-planner/missions/' in page.url
         assert not errors, errors

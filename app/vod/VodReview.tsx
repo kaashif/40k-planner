@@ -17,6 +17,7 @@ export default function VodReview() {
       <p><a href="https://github.com/kaashif/40k-planner/blob/main/docs/world-eaters-game-plan.md">World Eaters game plan: concise summary ↗</a></p>
       <p><Link href="/matchups/world-eaters/">Purge vs Priority Assets: three deployment examples and charge calculator →</Link></p>
       <p><Link href="/tactics/screening/">Screening tactics: formations, Angron landings and combat follow-up →</Link></p>
+      <p><Link href="/matchups/world-eaters/reserve-plan/">Scarabs + Prince off-board: your plan for PA vs Purge A, B and C →</Link></p>
       <nav><a href="#yarin-iyer">Blood Angels</a><a href="#most-fritschen">Slaanesh Daemons</a><a href="#fowler-parry">Emperor’s Children</a><a href="#fowler-power">Earlier Daemons win</a></nav>
     </section>
     <p className="vod-key"><span>● Thousand Sons</span><span>● Opponent</span><span>◌ Probable identity / previous position</span> · Maps approximate. Dotted arrows join sampled sightings, not exact routes. Labels with ? are uncertain.</p>

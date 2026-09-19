@@ -1,0 +1,262 @@
+{
+  "edition": 11,
+  "reviewed": "2026-09-20",
+  "mapRevision": "2026-08-26",
+  "orientation": "Transpose of portrait artwork, matching planner coordinates: x=0\u201360 left to right; y=0\u201344 top to bottom.",
+  "reservePoints": 720,
+  "reserveLimit": 1000,
+  "layouts": [
+    {
+      "variant": "A",
+      "page": 33,
+      "title": "Long edges \u00b7 20\u2033 gap",
+      "subtitle": "Magnus right; support group left of centre",
+      "plannerId": "purge-the-foe-vs-priority-assets-a",
+      "image": "/matchups/world-eaters-reserve-plan/layout-a.png",
+      "sourceImage": "/reference/11th-edition/maps/layout-33.jpg",
+      "sourceSha256": "04bc39e348714bc4e61fb15cb960847f663c8f6de5af6bac384dddfe5481b0ae",
+      "sha256": "7bc072a5433c86ee27ac3fbe24e9565516bc0bcf8d5818d8e01bf1616fb71caa",
+      "units": [
+        {
+          "id": "M",
+          "label": "Magnus",
+          "x": 43,
+          "y": 41
+        },
+        {
+          "id": "R2",
+          "label": "Rubrics + Sorcerer \u00b7 Magnus group",
+          "x": 52,
+          "y": 38
+        },
+        {
+          "id": "T",
+          "label": "Ten Tzaangors \u00b7 forward ground screen",
+          "x": 43,
+          "y": 33.5
+        },
+        {
+          "id": "R1",
+          "label": "Rubrics + Sorcerer \u00b7 support group",
+          "x": 22,
+          "y": 40
+        },
+        {
+          "id": "D+B1",
+          "label": "Exalted Disc Sorcerer + bow Enlightened bodyguard",
+          "x": 28,
+          "y": 41
+        },
+        {
+          "id": "Rob",
+          "label": "Sekhetar Robots \u00b7 home / rear coverage",
+          "x": 40,
+          "y": 37
+        },
+        {
+          "id": "Sp",
+          "label": "Two Chaos Spawn \u00b7 central action",
+          "x": 29,
+          "y": 33.5
+        },
+        {
+          "id": "En",
+          "label": "Spear Enlightened \u00b7 first mobile screen",
+          "x": 8,
+          "y": 40
+        },
+        {
+          "id": "B2",
+          "label": "Other bow Enlightened \u00b7 second lane / scoring",
+          "x": 55,
+          "y": 34
+        }
+      ],
+      "scarabs": {
+        "x": 22,
+        "y": 34
+      },
+      "prince": {
+        "x": 53,
+        "y": 29
+      },
+      "centralApproach": {
+        "x": 28,
+        "y": 28
+      },
+      "deployment": "Magnus starts behind the home ruin, near the rear edge. R2 is offset to its right; Tzaangors cover the forward approach. Keep the left exit of the home ruin clear for Magnus. R1 and the Disc group stage behind the small lower-left ruins, close enough to support the same central fight rather than disappearing into the far-left corner.",
+      "risk": "A Magnus centre at (43,41) puts his nearest base edge only about 7\u2033 behind the line: beyond Angron\u2019s direct first-turn reach, but not beyond a fully scouting Eightbound unit opposite him. A blanket promise that everything is safe at the back is impossible here. Reposition against the actual Eightbound starts and cover their ground routes. The 100mm base also overlaps the rear edge of the home terrain footprint in this anchor example: it is not a guaranteed wholly-behind-the-footprint position. Confirm the actual wall blocks visibility, or change the pocket rather than assuming the artwork hides him.",
+      "spawn": "Spawn stage near the lower central ruin. Use a legal normal move into range of the nearer central objective, then Maintain Control if eligible and able to keep control through the end of your turn. Do not advance and assume the action still works.",
+      "arrival": "Keep a Scarab arrival option near the lower-left staging ruins, or use a deeper friendly-side landing if WE enter that pocket. The Prince candidate is behind the lower-right small ruins; reject it if the Forgefiends see around them or a surviving melee unit can charge it.",
+      "response": "If WE rush the right, Magnus and R2 answer with the arriving Scarabs shooting into that same fight. If WE rush left, withdraw the support group and let them cross into your combined shooting; do not strand the Scarabs there solely to attempt a 9\u2033 charge."
+    },
+    {
+      "variant": "B",
+      "page": 34,
+      "title": "Opposite quarters \u00b7 18\u2033 minimum gap",
+      "subtitle": "Magnus behind home; support group along the lower edge",
+      "plannerId": "purge-the-foe-vs-priority-assets-b",
+      "image": "/matchups/world-eaters-reserve-plan/layout-b.png",
+      "sourceImage": "/reference/11th-edition/maps/layout-34.jpg",
+      "sourceSha256": "1d4987e35be17a1bf6275672c1bfb53598d996a59aee5f0ce520c844b37f8617",
+      "sha256": "0ebf4b6af3fd6126f3f36d975c1c126782d5ccfdae8d4e8d6a959e5c0953e59b",
+      "units": [
+        {
+          "id": "M",
+          "label": "Magnus",
+          "x": 55,
+          "y": 41.5
+        },
+        {
+          "id": "R2",
+          "label": "Rubrics + Sorcerer \u00b7 Magnus group",
+          "x": 51,
+          "y": 41
+        },
+        {
+          "id": "T",
+          "label": "Ten Tzaangors \u00b7 forward ground screen",
+          "x": 49,
+          "y": 29.5
+        },
+        {
+          "id": "R1",
+          "label": "Rubrics + Sorcerer \u00b7 support group",
+          "x": 40,
+          "y": 40
+        },
+        {
+          "id": "D+B1",
+          "label": "Exalted Disc Sorcerer + bow Enlightened bodyguard",
+          "x": 44,
+          "y": 42
+        },
+        {
+          "id": "Rob",
+          "label": "Sekhetar Robots \u00b7 home / rear coverage",
+          "x": 47,
+          "y": 36
+        },
+        {
+          "id": "Sp",
+          "label": "Two Chaos Spawn \u00b7 central action",
+          "x": 36,
+          "y": 34.5
+        },
+        {
+          "id": "En",
+          "label": "Spear Enlightened \u00b7 first mobile screen",
+          "x": 33.5,
+          "y": 41
+        },
+        {
+          "id": "B2",
+          "label": "Other bow Enlightened \u00b7 second lane / scoring",
+          "x": 57,
+          "y": 25
+        }
+      ],
+      "scarabs": {
+        "x": 39,
+        "y": 35
+      },
+      "prince": {
+        "x": 48,
+        "y": 26
+      },
+      "centralApproach": {
+        "x": 32,
+        "y": 28
+      },
+      "deployment": "Use the home ruin as the pivot: Magnus behind its southern/rear edge, R2 behind it, Tzaangors toward its northwestern approach. R1 and the Disc group use the lower route behind the small ruins. Do not split those groups between the two distant expansion objectives before seeing the enemy commitment.",
+      "risk": "Distance is diagonal here. Measure from actual enemy bases on both straight portions of the opposing quarter and its curved boundary. The forward Spawn, Enlightened and Tzaangors are deliberately more exposed than Magnus. A screen buys a response; it is not a second damage group.",
+      "spawn": "The lower central triangle is the first objective to test with Spawn. Stage behind the small ruin near the lower edge of the arc and use its sheltered approach if the physical walls allow it. Swap to the other central objective only after the enemy lane and control situation justify it.",
+      "arrival": "The Scarab candidate sits on the lower approach to the central fight; eleven bases must fit around the wall geometry. The Prince candidate is south of the upper-right crossbar terrain. If WE have already wrapped the right edge, ingress deeper behind home or use a different legal entry.",
+      "response": "Concentrate on one central triangle. The curve can funnel several assault units into one contact area; remove the lead package while leaving the second unable to touch Magnus or the Scarabs. Move R1/Disc across the rear instead of defending both expansion objectives independently."
+    },
+    {
+      "variant": "C",
+      "page": 35,
+      "title": "Short edges \u00b7 24\u2033 gap",
+      "subtitle": "Magnus behind the central home ruin; support group lower-right",
+      "plannerId": "purge-the-foe-vs-priority-assets-c",
+      "image": "/matchups/world-eaters-reserve-plan/layout-c.png",
+      "sourceImage": "/reference/11th-edition/maps/layout-35.jpg",
+      "sourceSha256": "72a64eebb79a7e4ed29f87c1af9a4ce3b545cae0f525bb15dd56a8f33d7a5330",
+      "sha256": "1f8a387667a8455a845f4dd577a65b61d927034389e76ff85627d1ea548712ab",
+      "units": [
+        {
+          "id": "M",
+          "label": "Magnus",
+          "x": 54,
+          "y": 21
+        },
+        {
+          "id": "R2",
+          "label": "Rubrics + Sorcerer \u00b7 Magnus group",
+          "x": 55,
+          "y": 28
+        },
+        {
+          "id": "T",
+          "label": "Ten Tzaangors \u00b7 forward ground screen",
+          "x": 43.5,
+          "y": 21
+        },
+        {
+          "id": "R1",
+          "label": "Rubrics + Sorcerer \u00b7 support group",
+          "x": 55,
+          "y": 39
+        },
+        {
+          "id": "D+B1",
+          "label": "Exalted Disc Sorcerer + bow Enlightened bodyguard",
+          "x": 56,
+          "y": 31
+        },
+        {
+          "id": "Rob",
+          "label": "Sekhetar Robots \u00b7 home / rear coverage",
+          "x": 49,
+          "y": 23
+        },
+        {
+          "id": "Sp",
+          "label": "Two Chaos Spawn \u00b7 central action",
+          "x": 43.5,
+          "y": 29
+        },
+        {
+          "id": "En",
+          "label": "Spear Enlightened \u00b7 first mobile screen",
+          "x": 52,
+          "y": 9
+        },
+        {
+          "id": "B2",
+          "label": "Other bow Enlightened \u00b7 second lane / scoring",
+          "x": 57,
+          "y": 6
+        }
+      ],
+      "scarabs": {
+        "x": 54,
+        "y": 35
+      },
+      "prince": {
+        "x": 51,
+        "y": 12
+      },
+      "centralApproach": {
+        "x": 37,
+        "y": 28
+      },
+      "deployment": "Magnus sits on the far/right side of the central home ruin with R2 behind its lower-right corner. Tzaangors occupy the enemy-facing approach, while Robots hold the home area. R1 and the Disc group stage behind the lower-right small ruins; the unattached Enlightened cover the upper route.",
+      "risk": "With a 24\u2033 deployment gap, important nearest base edges more than 4\u2033 behind the x=42 line deny the full 28\u2033 direct scouting-Eightbound reach. Magnus at (54,21) has about 10\u2033 of setback to his nearest edge. That room is useful, but do not fill his route around the home ruin with friendly bases.",
+      "spawn": "Spawn start near the lower end of the home ruin, ready to enter range of the lower central triangle with a normal move if the route is legal. This gives a scoring option without moving Magnus onto the central objective in the opening turn.",
+      "arrival": "Keep a Scarab pocket toward the lower-right lane and move your own staging units aside before their arrival. The Prince\u2019s upper-side candidate threatens a later approach around the home ruin; its presence is conditional on both Forgefiend lanes and all nearby enemy bases. Do not force it if WE have occupied the upper expansion.",
+      "response": "Use the extra depth to keep the two damage threats independent. Magnus answers the central commitment; Scarabs land on the lower supporting angle and shoot. If the upper lane is the enemy\u2019s main effort, change the arrival side rather than following the diagram into an irrelevant flank."
+    }
+  ]
+}
