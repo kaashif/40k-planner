@@ -1,5 +1,7 @@
 # Magnus against this World Eaters list
 
+[Concise game plan, saved verbatim from the response](world-eaters-game-plan.md).
+
 Prepared 19 September 2026. This is a practice plan derived from the linked August **11th-edition** games, not an observed TS-versus-WE victory. No verified current-edition TS win against WE was found in this search. [Full search and list comparison](fast-melee-vod-study.md).
 
 ## Your roster and the comparison

@@ -35,9 +35,14 @@ try:
         page.goto(os.environ.get('VOD_TEST_URL', f'http://127.0.0.1:{server.server_port}/40k-planner/'), wait_until='networkidle')
         page.get_by_role('heading', name='Grand Coven · Magnus', exact=True).wait_for()
         games = [json.loads(path.read_text()) for path in sorted((root / 'public/vod').glob('*/game.json'))]
-        assert page.locator('.vod-game-index article').count() == len(games)
+        assert page.locator('.vod-game-table tbody tr').count() == len(games)
         assert '1 on-board · 1 in reserve' in page.locator('.vod-reserve-summary').inner_text()
         page.screenshot(path=str(out / 'desktop.png'), full_page=True)
+        assert page.locator('.vod-game-table .vod-board').count() == len(games)
+        assert 'Unknown' in page.locator('#yarin-iyer').inner_text()
+        assert 'explicitly declared' in page.locator('#fowler-power').inner_text()
+        assert page.locator('[id]').evaluate_all('(els) => new Set(els.map(e => e.id)).size === els.length')
+        assert page.locator('.vod-game-table .vod-board circle[stroke="#f8a5c5"]').count() == 0
         index_url = page.url
         for game in games:
             page.set_viewport_size({"width":1440,"height":1100})
@@ -59,6 +64,7 @@ try:
             page.get_by_role('link', name='← All game analyses', exact=True).click()
             page.get_by_role('heading', name='Grand Coven · Magnus', exact=True).wait_for()
         page.screenshot(path=str(out / 'mobile.png'), full_page=True)
+        assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
         page.get_by_role('link', name='Missions', exact=True).click()
         page.get_by_role('heading', name='40k 11th edition missions', exact=True).wait_for()
         assert '/40k-planner/missions/' in page.url

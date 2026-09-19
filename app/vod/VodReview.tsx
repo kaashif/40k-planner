@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { type Game } from './GameSequence';
 import { games } from './games';
 import './vod.css';
+import GameTable from './GameTable';
 
 export default function VodReview() {
   const count = (status:Game['deployment']['terminators']) => games.filter(game=>game.deployment.terminators===status).length;
@@ -13,11 +14,12 @@ export default function VodReview() {
       <p>Core matchups to scout: World Eaters, Blood Angels, Space Wolves, Emperor’s Children, assault Orks, Drukhari and fast Daemon builds. Other factions qualify when their actual lists deliver fast melee pressure.</p>
       <p><a href="https://github.com/kaashif/40k-planner/blob/main/docs/fast-melee-vod-study.md">Army checklist, list comparison, tactical notes and search results ↗</a> · <a href={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/vod/search-2026-09-19.json`}>Source inventory ↗</a></p>
       <p><a href="https://github.com/kaashif/40k-planner/blob/main/docs/magnus-vs-world-eaters.md">Your Magnus list vs World Eaters: deployment, reserves and target priorities ↗</a></p>
+      <p><a href="https://github.com/kaashif/40k-planner/blob/main/docs/world-eaters-game-plan.md">World Eaters game plan: concise summary ↗</a></p>
       <nav><a href="#yarin-iyer">Blood Angels</a><a href="#most-fritschen">Slaanesh Daemons</a><a href="#fowler-parry">Emperor’s Children</a><a href="#fowler-power">Earlier Daemons win</a></nav>
     </section>
     <p className="vod-key"><span>● Thousand Sons</span><span>● Opponent</span><span>◌ Probable identity / previous position</span> · Maps approximate. Dotted arrows join sampled sightings, not exact routes. Labels with ? are uncertain.</p>
     <p className="vod-reserve-summary">Confirmed Terminator starts: <strong>{count('on-board')} on-board · {count('reserve')} in reserve</strong> (both Fowler). {count('unknown')} unknown starts; Terroxer has no Terminators. Lists confirm Terminators in both new games, but do not establish their reserve declarations. This tiny, win-only sample is not a general usage rate.</p>
-    <section className="vod-game-index" aria-label="Game analyses">{games.map(game=><article key={game.id} id={game.id}><h2><Link href={`/vod/${game.id}/`}>{game.title} →</Link></h2><p>{game.matchup} · {game.result}</p><p>{game.event} · {game.edition ?? '11th edition'}</p><p>{game.notes}</p><Link href={`/vod/${game.id}/`}>Read full analysis, lists and timestamped evidence</Link></article>)}</section>
+    <GameTable/>
     <footer className="vod-footer"><nav><Link href="/missions/">Missions</Link><Link href="/planner/">Planner</Link><Link href="/plans/">Plans</Link><Link href="/reviews/">Reviews</Link></nav></footer>
   </main>;
 }
