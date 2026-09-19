@@ -1661,5 +1661,21 @@
         8750
       ]
     }
-  ]
+  ],
+  "terrainLayout": {
+    "label": "Disruption / Priority Assets \u00b7 A",
+    "page": 42,
+    "image": "/vod/fowler-parry/terrain-layout.png",
+    "width": 708,
+    "height": 522,
+    "confidence": "Likely visual match",
+    "evidence": "The two central small ruins, opposing outer large ruins and staggered diagonal ruins match this layout.",
+    "archiveDate": "2026-08-15",
+    "sourceCommit": "6d48cdecabfc8dfe168ab9b5200e35f01e985fd8",
+    "sourceUrl": "https://github.com/kaashif/40k-planner/blob/6d48cdecabfc8dfe168ab9b5200e35f01e985fd8/public/reference/11th-edition/maps/layout-42.jpg",
+    "sourceSha256": "e6cbe56388dee54ffde61fa9815cd994696e02d02bbdf37f6e0d7321e3e5bb0a",
+    "sha256": "35f49783645ee2d6ca22e38333417473732a3ba418408ea38747b885bc084849",
+    "orientation": "90\u00b0 counterclockwise from the portrait layout",
+    "note": "Archived planner artwork from 15 August, before the 26 August revision; not proof of the exact event revision. Unit markers are approximate observations, not measured base positions. Layout colours do not identify the players."
+  }
 }

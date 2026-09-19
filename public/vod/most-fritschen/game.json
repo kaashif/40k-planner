@@ -1224,5 +1224,21 @@
         34200
       ]
     }
-  ]
+  ],
+  "terrainLayout": {
+    "label": "Priority Assets / Priority Assets \u00b7 C",
+    "page": 53,
+    "image": "/vod/most-fritschen/terrain-layout.png",
+    "width": 708,
+    "height": 522,
+    "confidence": "Likely visual match",
+    "evidence": "The central small ruins, opposite rectangular end ruins and paired diagonal middle ruins match this layout.",
+    "archiveDate": "2026-08-15",
+    "sourceCommit": "6d48cdecabfc8dfe168ab9b5200e35f01e985fd8",
+    "sourceUrl": "https://github.com/kaashif/40k-planner/blob/6d48cdecabfc8dfe168ab9b5200e35f01e985fd8/public/reference/11th-edition/maps/layout-53.jpg",
+    "sourceSha256": "74f40aedc62bc9ba0120917c705a751bafa7a936f829402ba0f34740d1794503",
+    "sha256": "de4f70c277df2f1c836bff441f5312e2105f633ef7c651e05a2f9f40518903bd",
+    "orientation": "90\u00b0 counterclockwise from the portrait layout",
+    "note": "Archived planner artwork from 15 August, before the 26 August revision; not proof of the exact event revision. Unit markers are approximate observations, not measured base positions. Layout colours do not identify the players."
+  }
 }

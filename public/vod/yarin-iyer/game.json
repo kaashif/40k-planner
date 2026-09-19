@@ -1177,5 +1177,21 @@
         8400
       ]
     }
-  ]
+  ],
+  "terrainLayout": {
+    "label": "Take and Hold / Priority Assets \u00b7 A",
+    "page": 21,
+    "image": "/vod/yarin-iyer/terrain-layout.png",
+    "width": 708,
+    "height": 522,
+    "confidence": "Likely visual match",
+    "evidence": "The staggered central triangular ruins, diagonal expansion ruins and opposite home ruins match this layout.",
+    "archiveDate": "2026-08-15",
+    "sourceCommit": "6d48cdecabfc8dfe168ab9b5200e35f01e985fd8",
+    "sourceUrl": "https://github.com/kaashif/40k-planner/blob/6d48cdecabfc8dfe168ab9b5200e35f01e985fd8/public/reference/11th-edition/maps/layout-21.jpg",
+    "sourceSha256": "6c84436a6001fa70a30a4cc106d1b29e6f3db79370222ba7fb76066989bde9f4",
+    "sha256": "3191dd8a713af44f203ab21ce45b3eb788946cbf952cae05b48df7ab664b66ee",
+    "orientation": "90\u00b0 counterclockwise from the portrait layout",
+    "note": "Archived planner artwork from 15 August, before the 26 August revision; not proof of the exact event revision. Unit markers are approximate observations, not measured base positions. Layout colours do not identify the players."
+  }
 }

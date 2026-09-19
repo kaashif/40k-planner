@@ -2022,5 +2022,21 @@
         ]
       }
     ]
+  },
+  "terrainLayout": {
+    "label": "Purge the Foe / Priority Assets · B",
+    "page": 34,
+    "image": "/vod/terroxer-allot/terrain-layout.png",
+    "width": 708,
+    "height": 522,
+    "confidence": "Likely visual match",
+    "evidence": "The two central triangular ruins and opposite outer home and expansion ruins match this layout.",
+    "archiveDate": "2026-08-15",
+    "sourceCommit": "6d48cdecabfc8dfe168ab9b5200e35f01e985fd8",
+    "sourceUrl": "https://github.com/kaashif/40k-planner/blob/6d48cdecabfc8dfe168ab9b5200e35f01e985fd8/public/reference/11th-edition/maps/layout-34.jpg",
+    "sourceSha256": "fb8f3af605be1739528b9293bfd9679107275f842c492a7ba36e376349d72207",
+    "sha256": "a6f28f6f5c18ed69ff33d398d5734b92fb3c56fbb9ad82d00ff4ee5749cd3d25",
+    "orientation": "90° counterclockwise from the portrait layout",
+    "note": "Archived planner artwork from 15 August, before the 26 August revision; not proof of the exact event revision. Unit markers are approximate observations, not measured base positions. Layout colours do not identify the players."
   }
 }

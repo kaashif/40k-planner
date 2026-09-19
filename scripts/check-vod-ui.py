@@ -42,6 +42,7 @@ try:
         assert '1 on-board · 1 in reserve' in page.locator('.vod-reserve-summary').inner_text()
         page.screenshot(path=str(out / 'desktop.png'), full_page=True)
         assert page.locator('.vod-game-table .vod-board').count() == len(games)
+        assert page.locator('.vod-game-table .vod-terrain-image').count() == len(games)
         assert 'Unknown' in page.locator('#yarin-iyer').inner_text()
         assert 'explicitly declared' in page.locator('#fowler-power').inner_text()
         assert page.locator('[id]').evaluate_all('(els) => new Set(els.map(e => e.id)).size === els.length')
@@ -57,7 +58,9 @@ try:
             assert page.locator('[id]').evaluate_all('(els) => new Set(els.map(e => e.id)).size === els.length')
             assert page.locator('img').evaluate_all('(images) => images.every(i => i.complete && i.naturalWidth > 0)')
             if game.get('analysis'):
-                assert page.locator('.vod-review-text h3').count() == len(game['analysis'])
+                assert page.locator('.vod-review-text h3').count() == len(game['analysis']) + bool(game.get('terrainLayout'))
+            assert page.locator('.vod-terrain-image').count() == sum('board' in f for f in game['frames'])
+            assert page.locator('.vod-terrain-image').evaluate_all('''async images => (await Promise.all(images.map(el => new Promise(resolve => { const img = new Image(); img.onload = () => resolve(img.naturalWidth > 0); img.onerror = () => resolve(false); img.src = el.getAttribute("href"); })))).every(Boolean)''')
             first_board = next(f for f in game['frames'] if 'board' in f)
             page.locator(f"#{game['id']}-{first_board['second']}").screenshot(path=str(out / f"{game['id']}.png"))
             page.screenshot(path=str(out / f"{game['id']}-page.png"), full_page=False)

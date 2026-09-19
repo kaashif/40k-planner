@@ -1,6 +1,7 @@
-import BoardDiagram, { type BoardState } from './BoardDiagram';
+import BoardDiagram, { type BoardState, type TerrainLayout } from './BoardDiagram';
 
 export type Game = {
+  terrainLayout?: TerrainLayout;
   id: string; title: string; matchup: string; event: string; mission: string;
   videoId: string; broadcaster: string; indexUrl: string; result: string; notes?: string;
   date?: string; edition?: string; editionSource?: string; dateNote?: string;
@@ -30,6 +31,7 @@ export default function GameSequence({game}: {game:Game}) {
       {game.dateNote && <p className="vod-small">{game.dateNote}</p>}
       {game.notes && <p className="vod-small">{game.notes}</p>}
     </header>
+    {game.terrainLayout && <section className="vod-review-text"><h3>Terrain layout · {game.terrainLayout.confidence}</h3><p><strong>{game.terrainLayout.label}</strong> — {game.terrainLayout.evidence}</p><p>{game.terrainLayout.note}</p><p><a href={`${basePath}${game.terrainLayout.image}`}>Open matched terrain PNG ↗</a> · <a href={game.terrainLayout.sourceUrl}>Archived planner layout ↗</a></p></section>}
     {game.analysis && <section className="vod-review-text" aria-label="Game summary and reserve timeline">{game.analysis.map(section=><div key={section.heading}><h3>{section.heading}</h3><p>{section.text}</p><p>{section.seconds.map(s=><a key={s} href={video(s)}>{timestamp(s)} ↗ </a>)}</p></div>)}</section>}
     {game.lessons && <section className="vod-lessons" aria-label="Melee matchup lessons"><h3>What to practise against melee pressure</h3><ul>{game.lessons.map(lesson=><li key={lesson.text}>{lesson.text}{' '}{lesson.seconds.map(s=><a key={s} href={video(s)}>{timestamp(s)} ↗ </a>)}</li>)}</ul></section>}
     {game.lists && <section className="vod-lists" aria-label="Verified event lists">{game.lists.map(list=><div key={list.player}><h3>{list.player} · <a href={list.source}>Event list ↗</a></h3><ul>{list.units.map(unit=><li key={unit}>{unit}</li>)}</ul><p className="vod-small">{list.notes}</p></div>)}</section>}
@@ -54,7 +56,7 @@ export default function GameSequence({game}: {game:Game}) {
           <header className="vod-moment-heading"><h3 id={`${game.id}-${frame.second}-heading`}>{frame.label}</h3><a href={video(frame.second)}>{timestamp(frame.second)} ↗</a>{frame.score && <span className="vod-score">TS {frame.score[0]} — Opp. {frame.score[1]}</span>}</header>
           <div className={`vod-moment-content ${!frame.board?'vod-nonboard':''}`}>
             <figure className="vod-frame"><img src={`${basePath}/vod/${game.id}/${frame.image}`} alt={frame.alt} width="1600" height="900"/><figcaption>{game.broadcaster} · {timestamp(frame.second)}</figcaption></figure>
-            {frame.board && <BoardDiagram second={frame.second} board={frame.board} previousBoard={previous?.board ? {second:previous.second,board:previous.board}:undefined} gameId={game.id}/>}
+            {frame.board && <BoardDiagram second={frame.second} board={frame.board} previousBoard={previous?.board ? {second:previous.second,board:previous.board}:undefined} gameId={game.id} layout={game.terrainLayout}/>}
             {frame.caption && <aside className="vod-caption"><blockquote>“{frame.caption.text}”</blockquote><a href={video(frame.caption.second)}>{timestamp(frame.caption.second)} · captions ↗</a></aside>}
           </div>
           {frame.evidence && <dl className="vod-evidence"><div><dt>Visible</dt><dd>{frame.evidence.visible}</dd></div><div><dt>Interpretation</dt><dd>{frame.evidence.interpretation}</dd></div><div><dt>Unknown</dt><dd>{frame.evidence.unknown}</dd></div><div><dt>Confidence</dt><dd>{frame.evidence.confidence}</dd></div></dl>}

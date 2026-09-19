@@ -1716,5 +1716,21 @@
         25682
       ]
     }
-  ]
+  ],
+  "terrainLayout": {
+    "label": "Priority Assets / Priority Assets \u00b7 B",
+    "page": 52,
+    "image": "/vod/fowler-power/terrain-layout.png",
+    "width": 522,
+    "height": 708,
+    "confidence": "Likely visual match",
+    "evidence": "The central pair of small ruins and diagonal outer terrain rows match this layout. The diagram keeps the study\u2019s common orientation when the broadcast changes camera ends.",
+    "archiveDate": "2026-08-15",
+    "sourceCommit": "6d48cdecabfc8dfe168ab9b5200e35f01e985fd8",
+    "sourceUrl": "https://github.com/kaashif/40k-planner/blob/6d48cdecabfc8dfe168ab9b5200e35f01e985fd8/public/reference/11th-edition/maps/layout-52.jpg",
+    "sourceSha256": "09e67aa35db5e3d7f7cb1e5f7c69a5d4225d296e8e147ea4b97a3630796a1fbd",
+    "sha256": "9a9c33150602417d1a0b5ad03d5c9fb7b6e3214fe40d09b82a74f62187636258",
+    "orientation": "portrait",
+    "note": "Archived planner artwork from 15 August, before the 26 August revision; not proof of the exact event revision. Unit markers are approximate observations, not measured base positions. Layout colours do not identify the players."
+  }
 }

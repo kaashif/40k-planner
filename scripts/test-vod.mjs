@@ -123,3 +123,19 @@ test('reserve tally excludes lists without Terminators and distinguishes reserve
   for (const game of games.slice(0,2)) assert(game.deployment.items.find(i=>i.unit==='Two Rubric units').status.startsWith('Embarked'));
   assert(games[0].frames.some(f=>f.second===2700));
 });
+
+for (const id of gameIds) {
+  test(`${id}: matched terrain has pinned provenance and correct PNG dimensions`, () => {
+    const dir = new URL(`../public/vod/${id}/`, import.meta.url);
+    const {terrainLayout: layout} = JSON.parse(readFileSync(new URL('game.json', dir)));
+    assert.equal(layout.confidence, 'Likely visual match');
+    assert.match(layout.sourceCommit, /^[a-f0-9]{40}$/);
+    assert(layout.sourceUrl.includes(layout.sourceCommit));
+    assert(layout.evidence && layout.note);
+    const bytes = readFileSync(new URL(`../public${layout.image}`, import.meta.url));
+    assert.equal(bytes.subarray(1,4).toString(), 'PNG');
+    assert.equal(bytes.readUInt32BE(16), layout.width);
+    assert.equal(bytes.readUInt32BE(20), layout.height);
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), layout.sha256);
+  });
+}
