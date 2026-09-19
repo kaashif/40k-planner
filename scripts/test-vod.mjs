@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 
 const root = new URL('../public/vod/fowler-parry/', import.meta.url);
@@ -40,7 +40,8 @@ test('queue links have explicit index provenance', () => {
   }
 });
 
-for (const id of ['fowler-parry', 'fowler-power', 'terroxer-allot']) {
+const gameIds = readdirSync(new URL('../public/vod/', import.meta.url), {withFileTypes:true}).filter(d=>d.isDirectory()).map(d=>d.name);
+for (const id of gameIds) {
   test(`${id}: chronological frames and plausible diagram coordinates`, () => {
     const dir = new URL(`../public/vod/${id}/`, import.meta.url);
     const game = JSON.parse(readFileSync(new URL('game.json', dir)));
@@ -83,8 +84,38 @@ for (const id of ['fowler-parry', 'fowler-power', 'terroxer-allot']) {
       assert.equal(createHash('sha256').update(readFileSync(new URL(entry.file, dir))).digest('hex'), entry.sha256);
     }
     assert(game.tracking.reviewedSeconds.length > game.frames.length);
+    for (const frame of game.frames) assert(game.tracking.reviewedSeconds.includes(frame.second));
+    if (game.lessons) {
+      assert(game.date && game.edition && game.editionSource);
+      assert.equal(new URL(game.editionSource).protocol, 'https:');
+      for (const lesson of game.lessons) {
+        assert(lesson.text && lesson.seconds.length);
+        for (const second of lesson.seconds) assert(game.frames.some(f=>f.second===second));
+      }
+      for (const frame of game.frames) {
+        for (const category of ['visible','interpretation','unknown','confidence']) assert(frame.evidence[category]);
+      }
+      for (const list of game.lists) {
+        assert(list.player && list.units.length && list.notes);
+        assert.equal(new URL(list.source).protocol, 'https:');
+      }
+    }
   });
 }
+
+test('search inventory links analysed games to existing evidence and keeps score types explicit', () => {
+  const inventory = JSON.parse(readFileSync(new URL('../public/vod/search-2026-09-19.json', import.meta.url)));
+  assert.equal(inventory.searchedOn, '2026-09-19');
+  for (const game of inventory.games) {
+    assert.equal(new URL(game.indexUrl).hostname, '40kvodindex.com');
+    assert.equal(new URL(game.videoUrl).hostname, 'www.youtube.com');
+    assert(['team points','game points'].includes(game.scoreType));
+    if (game.localReview) {
+      const reviewed = JSON.parse(readFileSync(new URL(`../public/vod/${game.localReview}`, import.meta.url)));
+      assert.equal(reviewed.videoId, new URL(game.videoUrl).searchParams.get('v'));
+    } else assert.equal(game.reviewStatus, 'source metadata only');
+  }
+});
 
 test('reserve tally excludes lists without Terminators and distinguishes reserve from embarked', () => {
   const games = ['fowler-parry','fowler-power','terroxer-allot'].map(id=>JSON.parse(readFileSync(new URL(`../public/vod/${id}/game.json`, import.meta.url))));

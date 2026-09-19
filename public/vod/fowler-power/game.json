@@ -2,17 +2,17 @@
   "id": "fowler-power",
   "title": "Fowler vs Power",
   "matchup": "Thousand Sons vs Chaos Daemons",
-  "event": "WTC Warmaster GT · 12 August 2026",
+  "event": "WTC Warmaster GT \u00b7 12 August 2026",
   "mission": "Priority Assets mirror",
   "videoId": "D8l6VqiGTac",
   "broadcaster": "Board Report",
   "indexUrl": "https://40kvodindex.com/games/alex-fowler-thousand-sons-vs-colin-power-chaos-daemons-19200",
-  "result": "Thousand Sons win 94–78",
+  "result": "Thousand Sons win 94\u201378",
   "notes": "Includes turn 1 before the indexed start. Camera changes ends; diagrams retain one orientation. Hidden units are omitted, not declared destroyed.",
   "frames": [
     {
       "second": 18000,
-      "label": "Turn 1 · bottom",
+      "label": "Turn 1 \u00b7 bottom",
       "score": [
         18,
         10
@@ -180,7 +180,7 @@
     },
     {
       "second": 19200,
-      "label": "Turn 2 · top",
+      "label": "Turn 2 \u00b7 top",
       "score": [
         22,
         18
@@ -345,8 +345,20 @@
       "image": "019200.jpg"
     },
     {
+      "second": 19575,
+      "label": "Reserve arrival evidence",
+      "image": "019575.jpg",
+      "alt": "Broadcast view at the reserve-arrival discussion; see analysis for identification and uncertainty."
+    },
+    {
+      "second": 19620,
+      "label": "Reserve arrival evidence",
+      "image": "019620.jpg",
+      "alt": "Broadcast view at the reserve-arrival discussion; see analysis for identification and uncertainty."
+    },
+    {
       "second": 20400,
-      "label": "Turn 2 · top · Magnus in view",
+      "label": "Turn 2 \u00b7 top \u00b7 Magnus in view",
       "score": [
         22,
         18
@@ -355,8 +367,14 @@
       "image": "020400.jpg"
     },
     {
+      "second": 21420,
+      "label": "Reserve arrival evidence",
+      "image": "021420.jpg",
+      "alt": "Broadcast view at the reserve-arrival discussion; see analysis for identification and uncertainty."
+    },
+    {
       "second": 22200,
-      "label": "Turn 2 · bottom",
+      "label": "Turn 2 \u00b7 bottom",
       "score": [
         30,
         27
@@ -531,7 +549,7 @@
     },
     {
       "second": 22800,
-      "label": "Turn 3 · top",
+      "label": "Turn 3 \u00b7 top",
       "score": [
         34,
         45
@@ -708,7 +726,7 @@
     },
     {
       "second": 24360,
-      "label": "Turn 4 · before Magnus moves",
+      "label": "Turn 4 \u00b7 before Magnus moves",
       "score": [
         49,
         57
@@ -869,7 +887,7 @@
     },
     {
       "second": 24600,
-      "label": "Turn 4 · top",
+      "label": "Turn 4 \u00b7 top",
       "score": [
         49,
         57
@@ -1033,7 +1051,7 @@
     },
     {
       "second": 24960,
-      "label": "Turn 4 · central positions",
+      "label": "Turn 4 \u00b7 central positions",
       "score": [
         65,
         57
@@ -1194,7 +1212,7 @@
     },
     {
       "second": 25200,
-      "label": "Turn 4 · bottom",
+      "label": "Turn 4 \u00b7 bottom",
       "score": [
         65,
         69
@@ -1334,7 +1352,7 @@
     },
     {
       "second": 25440,
-      "label": "Turn 5 · Magnus crosses the centre",
+      "label": "Turn 5 \u00b7 Magnus crosses the centre",
       "score": [
         69,
         69
@@ -1526,9 +1544,12 @@
       18900,
       19080,
       19200,
+      19575,
+      19620,
       19800,
       20400,
       21000,
+      21420,
       21600,
       22200,
       22320,
@@ -1556,7 +1577,7 @@
       25560,
       25800
     ],
-    "limits": "Sampled endpoints, not continuous movement paths. Intervening views bracket Magnus advances at 24450–24510 and 25260–25320; handheld views and player/overlay occlusion limit precision. Camera-angle drift corrected against fixed overhead terrain.",
+    "limits": "Sampled endpoints, not continuous movement paths. Intervening views bracket Magnus advances at 24450\u201324510 and 25260\u201325320; handheld views and player/overlay occlusion limit precision. Camera-angle drift corrected against fixed overhead terrain.",
     "rosterSource": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=16290s",
     "rosterStatus": "Match-specific roster overlay at 16290s; opponent roster at 16260s. Rubrics/Scarabs visual assignments remain probable where silhouettes overlap; individual attachments unresolved."
   },
@@ -1571,7 +1592,7 @@
     "items": [
       {
         "unit": "Scarab Occult Terminators + Sorcerer",
-        "status": "Reserve · explicit declaration",
+        "status": "Reserve \u00b7 explicit declaration",
         "evidence": "Player declares the Terminators in reserve before deployment. The roster attaches the Crystal Sorcerer; Deep Strike is likely, but the declaration only establishes reserves.",
         "sources": [
           {
@@ -1586,7 +1607,7 @@
       },
       {
         "unit": "Winged Daemon Prince",
-        "status": "Reserve · explicit declaration",
+        "status": "Reserve \u00b7 explicit declaration",
         "evidence": "Player adds the Prince to the reserve declaration; later dialogue again places him off-board.",
         "sources": [
           {
@@ -1601,7 +1622,7 @@
       },
       {
         "unit": "Three spear Enlightened",
-        "status": "Reserve · explicit declaration",
+        "status": "Reserve \u00b7 explicit declaration",
         "evidence": "One spear unit is declared in reserve; later dialogue specifies three models still waiting off-board. Entry method not established.",
         "sources": [
           {
@@ -1616,7 +1637,7 @@
       },
       {
         "unit": "Two Rubric units",
-        "status": "Embarked · explicit declaration",
+        "status": "Embarked \u00b7 explicit declaration",
         "evidence": "Two units begin in the Rhino, one unled. These are passengers, not reserve units.",
         "sources": [
           {
@@ -1626,6 +1647,74 @@
         ]
       }
     ],
-    "caveat": "Evidence is the broadcast’s auto-captions, cross-checked against the roster and later dialogue. In the postgame discussion Fowler describes concern about the Terminators being tagged on his expansion; this is one matchup decision, not a universal deployment rule."
-  }
+    "caveat": "Evidence is the broadcast\u2019s auto-captions, cross-checked against the roster and later dialogue. In the postgame discussion Fowler describes concern about the Terminators being tagged on his expansion; this is one matchup decision, not a universal deployment rule."
+  },
+  "lists": [
+    {
+      "player": "Alex Fowler \u00b7 2,000 points",
+      "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=16290s",
+      "units": [
+        "Magnus the Red \u2014 455",
+        "Winged Daemon Prince \u2014 205; Eldritch Vortex of E\u2019Taph",
+        "2 Sorcerers \u2014 170 total, each attached to 5 Rubric Marines \u2014 200 total",
+        "Terminator Sorcerer \u2014 115; Umbralefic Crystal, with 10 Scarab Occult Terminators \u2014 385",
+        "5 additional Rubric Marines \u2014 100",
+        "Chaos Rhino \u2014 80",
+        "2 Chaos Spawn \u2014 65",
+        "3 \u00d7 3 Tzaangor Enlightened \u2014 150 total",
+        "10 Tzaangors \u2014 75"
+      ],
+      "notes": "Grand Coven / Priority Assets. Detailed quantities, points and enhancements from the Power-game roster card; the Parry-game card at 00:32:30 confirms the same unit entries but omits quantities and upgrades. Weapon options are not shown. August event points; total 2,000."
+    }
+  ],
+  "analysis": [
+    {
+      "heading": "What happened",
+      "text": "12 August 2026 \u00b7 11th edition \u00b7 Thousand Sons win 94\u201378. Fowler fields the same Magnus/ten-Scarab/Vortex Prince core, three Rubric units and Rhino. Here he explicitly reserves the Scarabs, Prince and three spear Enlightened. Magnus and the deployed support carry the opening while the delayed units join the response. This contrasts with his on-board Terminators against EC.",
+      "seconds": [
+        15926,
+        15980,
+        18000
+      ]
+    },
+    {
+      "heading": "Magnus opening position",
+      "text": "The earliest published board view is bottom turn one, not deployment itself: Magnus is in the near corner behind/alongside a ruin, away from the central Daemon concentration. The Rhino occupies the other rear pocket. Treat this as his early staging position, not a recovered exact deployment coordinate.",
+      "seconds": [
+        18000
+      ]
+    },
+    {
+      "heading": "Terminators: turn-two arrival, then shooting",
+      "text": "At 05:26:06\u201305:26:15 dialogue announces the Terminators coming down while leaving the Prince in reserve. The screenshots at 05:26:15 and 05:27:00 show TS infantry being placed on the near/right side around a ruin; nearby overlays identify TS turn two. At 05:37:19 their shooting begins. Later, at 06:26:40, dialogue names their Epitome-unit target and splits shots into another squad. The evidence supports a reserve shooting response, not an automatic successful charge from Deep Strike. Initial reserves and later Crystal movement are separate decisions.",
+      "seconds": [
+        19566,
+        19575,
+        19620,
+        20239,
+        23200
+      ]
+    },
+    {
+      "heading": "Prince and Enlightened",
+      "text": "At 05:48:14 the Prince and three Enlightened are still in reserve. At 05:55:24\u201305:56:30 the players discuss bringing the Prince in and apparently Rapid Ingress; this falls in Daemons turn two, but the auto-caption of the stratagem is ambiguous. The 05:57:00 frame does not isolate an unambiguous placement. At 06:04:29 dialogue has the Prince surviving on two wounds and then fighting back; at 06:25:46 it shoots, including psychic shots at Fiends. Do not claim a precise landing square or casualty total. The Enlightened arrival remains unknown.",
+      "seconds": [
+        20894,
+        21324,
+        21390,
+        21420,
+        21869,
+        23146
+      ]
+    },
+    {
+      "heading": "Why it matters",
+      "text": "In the postgame discussion the players talk about arriving in a safe shooting position and the danger of the Epitome tagging the Terminators. Reserve protects the brick before arrival; the landing site determines whether it remains useful afterward. For your list, reserve the Scarabs only if the remaining army can survive and preserve a landing lane; their eleven-model footprint matters.",
+      "seconds": [
+        25644,
+        25659,
+        25682
+      ]
+    }
+  ]
 }

@@ -1,13 +1,13 @@
 {
   "id": "fowler-parry",
   "title": "Alex Fowler vs Frasier Parry",
-  "matchup": "Thousand Sons · Magnus / Grand Coven vs Emperor’s Children",
-  "event": "WTC Warmaster · 12 August 2026",
+  "matchup": "Thousand Sons \u00b7 Magnus / Grand Coven vs Emperor\u2019s Children",
+  "event": "WTC Warmaster \u00b7 12 August 2026",
   "mission": "Priority Assets vs Disruption",
   "videoId": "WOpiPuYL0YA",
   "broadcaster": "WarGames Live",
   "indexUrl": "https://40kvodindex.com/games/frasier-parry-emperors-children-vs-alex-fowler-thousand-sons-637",
-  "result": "Thousand Sons win 78–45",
+  "result": "Thousand Sons win 78\u201345",
   "notes": "Roster screen at 00:32:30. Labels with ? are probable matches. Final score includes closing turn-five scoring.",
   "tracking": {
     "reviewedSeconds": [
@@ -39,6 +39,8 @@
       8100,
       8400,
       8700,
+      8750,
+      8800,
       9000,
       9030,
       9060,
@@ -62,7 +64,7 @@
   "frames": [
     {
       "second": 1950,
-      "label": "Pre-game · Thousand Sons roster",
+      "label": "Pre-game \u00b7 Thousand Sons roster",
       "image": "001950.jpg",
       "alt": "Broadcast Grand Coven roster: Sorcerers, three Rubric entries, Terminator Sorcerer and Scarabs, winged Daemon Prince, Magnus, Rhino, Spawn, three Enlightened entries and Tzaangors."
     },
@@ -185,7 +187,7 @@
           {
             "x": 19,
             "y": 13,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dy": 22
@@ -211,7 +213,7 @@
           {
             "x": 30,
             "y": 93,
-            "label": "Large model · ID?",
+            "label": "Large model \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": 13,
@@ -222,13 +224,13 @@
     },
     {
       "second": 2700,
-      "label": "Turn 1 · Terminators already on the board",
+      "label": "Turn 1 \u00b7 Terminators already on the board",
       "image": "002700.jpg",
       "alt": "Turn-one close-up shows a brick of Scarab Occult Terminators behind the rear ruin, with Magnus and the white Rhino farther along the deployment edge."
     },
     {
       "second": 4380,
-      "label": "Turn 1 · before Magnus moves",
+      "label": "Turn 1 \u00b7 before Magnus moves",
       "score": [
         10,
         20
@@ -370,7 +372,7 @@
           {
             "x": 45,
             "y": 62,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": 15
@@ -378,7 +380,7 @@
           {
             "x": 71,
             "y": 68,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": 15
@@ -388,7 +390,7 @@
     },
     {
       "second": 4500,
-      "label": "Thousand Sons · turn 1",
+      "label": "Thousand Sons \u00b7 turn 1",
       "score": [
         10,
         20
@@ -530,7 +532,7 @@
           {
             "x": 45,
             "y": 62,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": 15
@@ -538,7 +540,7 @@
           {
             "x": 71,
             "y": 68,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": 15
@@ -558,7 +560,7 @@
         20
       ],
       "image": "005700.jpg",
-      "alt": "Broadcast scoring panel shows Thousand Sons 14 and Emperor’s Children 20, including four No Prisoners points.",
+      "alt": "Broadcast scoring panel shows Thousand Sons 14 and Emperor\u2019s Children 20, including four No Prisoners points.",
       "caption": {
         "second": 5603,
         "text": "Six damage dead."
@@ -566,7 +568,7 @@
     },
     {
       "second": 7500,
-      "label": "Turn 2 · after the counterattack",
+      "label": "Turn 2 \u00b7 after the counterattack",
       "score": [
         14,
         24
@@ -699,7 +701,7 @@
           {
             "x": 79,
             "y": 34,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": -98,
@@ -708,7 +710,7 @@
           {
             "x": 52,
             "y": 57,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": 15
@@ -716,7 +718,7 @@
           {
             "x": 19,
             "y": 75,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": 15
@@ -726,7 +728,7 @@
     },
     {
       "second": 8400,
-      "label": "Turn 2 · Rhino moves right",
+      "label": "Turn 2 \u00b7 Rhino moves right",
       "score": [
         14,
         24
@@ -842,7 +844,7 @@
           {
             "x": 60,
             "y": 34,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": -103,
@@ -869,7 +871,7 @@
           {
             "x": 79,
             "y": 59,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": -95,
@@ -880,13 +882,13 @@
     },
     {
       "second": 8700,
-      "label": "Turn 2 · late board",
+      "label": "Turn 2 \u00b7 late board",
       "score": [
         26,
         28
       ],
       "image": "008700.jpg",
-      "alt": "Midgame overhead board. The white transport has moved toward the right-side ruin, infantry extend to the centre, and the score is 26–28.",
+      "alt": "Midgame overhead board. The white transport has moved toward the right-side ruin, infantry extend to the centre, and the score is 26\u201328.",
       "board": {
         "terrain": [
           {
@@ -996,7 +998,7 @@
           {
             "x": 60,
             "y": 34,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": -103,
@@ -1014,7 +1016,7 @@
           {
             "x": 27,
             "y": 30,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": 15
@@ -1031,7 +1033,7 @@
           {
             "x": 79,
             "y": 59,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": -95,
@@ -1059,8 +1061,14 @@
       }
     },
     {
+      "second": 8750,
+      "label": "Reserve arrival evidence",
+      "image": "008750.jpg",
+      "alt": "Broadcast view at the reserve-arrival discussion; see analysis for identification and uncertainty."
+    },
+    {
       "second": 9090,
-      "label": "Turn 3 · Magnus removed",
+      "label": "Turn 3 \u00b7 Magnus removed",
       "score": [
         26,
         28
@@ -1177,7 +1185,7 @@
           {
             "x": 27,
             "y": 30,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": 15
@@ -1212,7 +1220,7 @@
           {
             "x": 82,
             "y": 36,
-            "label": "Infantry · ID?",
+            "label": "Infantry \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": -110,
@@ -1227,7 +1235,7 @@
     },
     {
       "second": 10200,
-      "label": "Turn 4 · Rhino below the diagonal ruin",
+      "label": "Turn 4 \u00b7 Rhino below the diagonal ruin",
       "score": [
         37,
         33
@@ -1382,13 +1390,13 @@
     },
     {
       "second": 10920,
-      "label": "Turn 4 · late board",
+      "label": "Turn 4 \u00b7 late board",
       "score": [
         46,
         45
       ],
       "image": "010920.jpg",
-      "alt": "Late-game overhead board, now much more sparsely occupied. The white transport is beside the central-right ruin and a purple transport remains at the upper-left edge. Overlay 46–45.",
+      "alt": "Late-game overhead board, now much more sparsely occupied. The white transport is beside the central-right ruin and a purple transport remains at the upper-left edge. Overlay 46\u201345.",
       "board": {
         "terrain": [
           {
@@ -1515,7 +1523,7 @@
           {
             "x": 75,
             "y": 40,
-            "label": "Small group · ID?",
+            "label": "Small group \u00b7 ID?",
             "side": "unknown",
             "uncertain": true,
             "dx": -110,
@@ -1535,7 +1543,7 @@
       "alt": "Players standing beside the table after the game. The broadcast scoreboard shows Alex Fowler 78, Frasier Parry 45; the turn label still reads bottom turn 4.",
       "caption": {
         "second": 11009,
-        "text": "78–45 is the finish."
+        "text": "78\u201345 is the finish."
       }
     }
   ],
@@ -1544,7 +1552,7 @@
     "items": [
       {
         "unit": "Scarab Occult Terminators + Sorcerer",
-        "status": "On-board · strong evidence",
+        "status": "On-board \u00b7 strong evidence",
         "evidence": "Turn-one close-up shows the Terminator brick behind the rear ruin; commentary then identifies it in the top-right deployment.",
         "sources": [
           {
@@ -1559,7 +1567,7 @@
       },
       {
         "unit": "Winged Daemon Prince",
-        "status": "Reserve · reported",
+        "status": "Reserve \u00b7 reported",
         "evidence": "Commentary identifies the Prince in starting reserves, and player dialogue still places him there later. Deep Strike is the likely entry method, not visually confirmed.",
         "sources": [
           {
@@ -1574,7 +1582,7 @@
       },
       {
         "unit": "One Tzaangor Enlightened unit",
-        "status": "Reserve · reported",
+        "status": "Reserve \u00b7 reported",
         "evidence": "Commentary identifies one Enlightened unit in starting reserves; exact entry method not established.",
         "sources": [
           {
@@ -1585,7 +1593,7 @@
       },
       {
         "unit": "Two Rubric units",
-        "status": "Embarked · reported",
+        "status": "Embarked \u00b7 reported",
         "evidence": "Pregame dialogue places an unled unit and a led unit in the Rhino. Not counted as reserves.",
         "sources": [
           {
@@ -1596,5 +1604,62 @@
       }
     ],
     "caveat": "Earlier pregame captions (00:21:05) say Terminators will deep strike, but the later turn-one close-up and explicit commentary show them deployed. Starting position, not tentative pregame intent, determines this count. Captions can mistranscribe overlapping speech."
-  }
+  },
+  "lists": [
+    {
+      "player": "Alex Fowler \u00b7 2,000 points",
+      "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=16290s",
+      "units": [
+        "Magnus the Red \u2014 455",
+        "Winged Daemon Prince \u2014 205; Eldritch Vortex of E\u2019Taph",
+        "2 Sorcerers \u2014 170 total, each attached to 5 Rubric Marines \u2014 200 total",
+        "Terminator Sorcerer \u2014 115; Umbralefic Crystal, with 10 Scarab Occult Terminators \u2014 385",
+        "5 additional Rubric Marines \u2014 100",
+        "Chaos Rhino \u2014 80",
+        "2 Chaos Spawn \u2014 65",
+        "3 \u00d7 3 Tzaangor Enlightened \u2014 150 total",
+        "10 Tzaangors \u2014 75"
+      ],
+      "notes": "Grand Coven / Priority Assets. Detailed quantities, points and enhancements from the Power-game roster card; the Parry-game card at 00:32:30 confirms the same unit entries but omits quantities and upgrades. Weapon options are not shown. August event points; total 2,000."
+    }
+  ],
+  "analysis": [
+    {
+      "heading": "What happened",
+      "text": "12 August 2026 \u00b7 11th edition \u00b7 Thousand Sons win 78\u201345. Fowler uses Magnus, ten Scarabs with a Crystal Terminator Sorcerer, the Vortex winged Prince, three Rubric units, a Rhino and small trading units. His Terminators start on the table. EC break into the army and Magnus is removed by 02:31:30, but the surviving pieces keep scoring and fighting. The win is evidence that the response after the first collision matters; it does not prove sacrificing Magnus was optimal.",
+      "seconds": [
+        2700,
+        9090,
+        11040
+      ]
+    },
+    {
+      "heading": "Magnus deployment",
+      "text": "At 00:40:00 Magnus is in the far/top deployment area beside the Rhino and angled ruin, offset from the central lane. This is a board position, not a measured claim that every enemy charge is impossible. The later close-up confirms the Scarabs are on-board too. Ignore earlier tentative pregame talk of deep striking the Terminators.",
+      "seconds": [
+        2400,
+        2700,
+        2779
+      ]
+    },
+    {
+      "heading": "Reserve arrival and job",
+      "text": "The Prince and one Enlightened unit are reported in starting reserve; two Rubric units are passengers in the Rhino, not reserves. At 02:25:01\u201302:25:50 commentators report the Prince using Rapid Ingress. The 02:25:50 screenshot reads Top Turn 3; the camera angle does not establish an exact safe landing coordinate. At 02:46:51\u201302:47:36 the Prince shoots Noise Marines after Magnus has been lost; commentary does not confirm a wipe. This is a delayed damage piece that remains available after the first exchange. The Enlightened arrival turn and first action remain unresolved.",
+      "seconds": [
+        2794,
+        8701,
+        8750,
+        10011,
+        10056
+      ]
+    },
+    {
+      "heading": "Transfer to your World Eaters game",
+      "text": "This is the closest example of starting the Scarabs on-board while reserving the Prince. Stage the brick where it can shoot the first committed melee unit without being charged alongside Magnus. Do not assume Crystal can rescue an engaged unit: the current update requires it to be unengaged. The opponent is EC, so this is a positioning comparison, not proof of World Eaters damage outcomes.",
+      "seconds": [
+        2700,
+        8750
+      ]
+    }
+  ]
 }

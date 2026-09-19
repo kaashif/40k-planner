@@ -1,0 +1,1181 @@
+{
+  "id": "yarin-iyer",
+  "title": "Boris Yarin vs Oliver Iyer",
+  "matchup": "Magnus \u00b7 Grand Coven vs Blood Angels \u00b7 Liberator Assault Group",
+  "event": "Huxleys Open 2026 \u00b7 round 1",
+  "mission": "Priority Assets vs Take and Hold",
+  "videoId": "M7iDLZU9kks",
+  "broadcaster": "Shut up and Roll",
+  "indexUrl": "https://40kvodindex.com/games/boris-yarin-thousand-sons-vs-oliver-iyer-blood-angels-782",
+  "result": "Thousand Sons win \u00b7 100\u201332 (index)",
+  "date": "21 August 2026",
+  "edition": "11th edition",
+  "editionSource": "https://listhammer.info/list/242b4d8b2aa24fb9b3",
+  "dateNote": "29 days before this 19 September review. Index broadcast date: 21 August; YouTube upload date: 22 August. Edition identified from the event\u2019s 11th-edition Force Dispositions, not merely the upload date.",
+  "notes": "25 sampled timestamps, eight published checkpoints. Board regions are approximate; no continuous replay or verified charge distances. The final sampled overlay is 90\u201322. Captions could not be downloaded (HTTP 429); no commentary claims are used.",
+  "frames": [
+    {
+      "second": 2400,
+      "label": "Opening positions \u00b7 opposite sides of the ruins",
+      "image": "002400.jpg",
+      "alt": "Purple-and-cream Thousand Sons occupy the upper-right and right-side ruins. Dark Blood Angels groups are concentrated along the left. The overlay is 0\u20130.",
+      "evidence": {
+        "visible": "Purple-and-cream Thousand Sons occupy the upper-right and right-side ruins. Dark Blood Angels groups are concentrated along the left. The overlay is 0\u20130.",
+        "interpretation": "The opening gives a reference for which lanes the assault army must cross; it does not establish legal charge distances.",
+        "unknown": "Exact deployment completion, reserve declarations and model-to-unit matching beyond the recovered roster.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 18,
+            "y": 10,
+            "w": 14,
+            "h": 24,
+            "r": -27
+          },
+          {
+            "x": 58,
+            "y": 5,
+            "w": 8,
+            "h": 25,
+            "r": -24
+          },
+          {
+            "x": 80,
+            "y": 12,
+            "w": 12,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 10,
+            "y": 36,
+            "w": 9,
+            "h": 18,
+            "r": -28
+          },
+          {
+            "x": 35,
+            "y": 40,
+            "w": 10,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 55,
+            "y": 33,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 74,
+            "y": 44,
+            "w": 8,
+            "h": 20,
+            "r": -27
+          },
+          {
+            "x": 8,
+            "y": 65,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 27,
+            "y": 66,
+            "w": 10,
+            "h": 24,
+            "r": -30
+          },
+          {
+            "x": 48,
+            "y": 75,
+            "w": 10,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 69,
+            "y": 67,
+            "w": 16,
+            "h": 27,
+            "r": -35
+          }
+        ],
+        "groups": [
+          {
+            "x": 65,
+            "y": 13,
+            "label": "Scarabs?",
+            "side": "ts",
+            "key": "north-ts",
+            "uncertain": true
+          },
+          {
+            "x": 74,
+            "y": 25,
+            "label": "Defiler",
+            "side": "ts",
+            "key": "defiler"
+          },
+          {
+            "x": 79,
+            "y": 53,
+            "label": "TS small unit?",
+            "side": "ts"
+          },
+          {
+            "x": 85,
+            "y": 75,
+            "label": "Disc riders?",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 15,
+            "y": 43,
+            "label": "BA concentration",
+            "side": "ec"
+          },
+          {
+            "x": 31,
+            "y": 79,
+            "label": "BA infantry",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        0,
+        0
+      ]
+    },
+    {
+      "second": 3000,
+      "label": "First forward TS line \u00b7 large models remain right",
+      "image": "003000.jpg",
+      "alt": "A Thousand Sons infantry line now runs beside the centre-right ruin. The winged Magnus model is visible behind that line on the right; the northern group remains separate.",
+      "evidence": {
+        "visible": "A Thousand Sons infantry line now runs beside the centre-right ruin. The winged Magnus model is visible behind that line on the right; the northern group remains separate.",
+        "interpretation": "This is a layered position: a forward group and large models behind it, with another group on the northern lane.",
+        "unknown": "Whether the forward unit was intended as a sacrifice, precise distances and which movements used abilities.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 18,
+            "y": 10,
+            "w": 14,
+            "h": 24,
+            "r": -27
+          },
+          {
+            "x": 58,
+            "y": 5,
+            "w": 8,
+            "h": 25,
+            "r": -24
+          },
+          {
+            "x": 80,
+            "y": 12,
+            "w": 12,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 10,
+            "y": 36,
+            "w": 9,
+            "h": 18,
+            "r": -28
+          },
+          {
+            "x": 35,
+            "y": 40,
+            "w": 10,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 55,
+            "y": 33,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 74,
+            "y": 44,
+            "w": 8,
+            "h": 20,
+            "r": -27
+          },
+          {
+            "x": 8,
+            "y": 65,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 27,
+            "y": 66,
+            "w": 10,
+            "h": 24,
+            "r": -30
+          },
+          {
+            "x": 48,
+            "y": 75,
+            "w": 10,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 69,
+            "y": 67,
+            "w": 16,
+            "h": 27,
+            "r": -35
+          }
+        ],
+        "groups": [
+          {
+            "x": 65,
+            "y": 12,
+            "label": "Scarabs?",
+            "side": "ts",
+            "key": "north-ts",
+            "uncertain": true
+          },
+          {
+            "x": 71,
+            "y": 39,
+            "label": "Defiler",
+            "side": "ts",
+            "key": "defiler"
+          },
+          {
+            "x": 79,
+            "y": 49,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 61,
+            "y": 47,
+            "label": "TS forward line",
+            "side": "ts"
+          },
+          {
+            "x": 85,
+            "y": 75,
+            "label": "Disc riders?",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 17,
+            "y": 42,
+            "label": "BA concentration",
+            "side": "ec"
+          },
+          {
+            "x": 31,
+            "y": 79,
+            "label": "BA infantry",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        0,
+        0
+      ]
+    },
+    {
+      "second": 5400,
+      "label": "Blood Angels reach the central ruin",
+      "image": "005400.jpg",
+      "alt": "Blood Angels models stand along the left central ruin and at the near edge of the right central ruin. Fewer cream-based models remain in the earlier forward line. Magnus and the Defiler are still to its right.",
+      "evidence": {
+        "visible": "Blood Angels models stand along the left central ruin and at the near edge of the right central ruin. Fewer cream-based models remain in the earlier forward line. Magnus and the Defiler are still to its right.",
+        "interpretation": "The forward line has not prevented all penetration. Review this as buying space for a response, not as a perfect screen.",
+        "unknown": "Which missing models were casualties, the exact charge/fight sequence, and whether any unit could consolidate into another.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 18,
+            "y": 10,
+            "w": 14,
+            "h": 24,
+            "r": -27
+          },
+          {
+            "x": 58,
+            "y": 5,
+            "w": 8,
+            "h": 25,
+            "r": -24
+          },
+          {
+            "x": 80,
+            "y": 12,
+            "w": 12,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 10,
+            "y": 36,
+            "w": 9,
+            "h": 18,
+            "r": -28
+          },
+          {
+            "x": 35,
+            "y": 40,
+            "w": 10,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 55,
+            "y": 33,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 74,
+            "y": 44,
+            "w": 8,
+            "h": 20,
+            "r": -27
+          },
+          {
+            "x": 8,
+            "y": 65,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 27,
+            "y": 66,
+            "w": 10,
+            "h": 24,
+            "r": -30
+          },
+          {
+            "x": 48,
+            "y": 75,
+            "w": 10,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 69,
+            "y": 67,
+            "w": 16,
+            "h": 27,
+            "r": -35
+          }
+        ],
+        "groups": [
+          {
+            "x": 65,
+            "y": 13,
+            "label": "Scarabs?",
+            "side": "ts",
+            "key": "north-ts",
+            "uncertain": true
+          },
+          {
+            "x": 72,
+            "y": 42,
+            "label": "Defiler",
+            "side": "ts",
+            "key": "defiler"
+          },
+          {
+            "x": 79,
+            "y": 55,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 59,
+            "y": 37,
+            "label": "TS survivors?",
+            "side": "ts"
+          },
+          {
+            "x": 38,
+            "y": 55,
+            "label": "BA central line",
+            "side": "ec"
+          },
+          {
+            "x": 58,
+            "y": 59,
+            "label": "BA contact",
+            "side": "ec"
+          },
+          {
+            "x": 18,
+            "y": 24,
+            "label": "BA rear group",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        9,
+        4
+      ]
+    },
+    {
+      "second": 6000,
+      "label": "Scoring lead \u00b7 right-side threats survive",
+      "image": "006000.jpg",
+      "alt": "The overlay reads TS 24\u20138, with TS primary 14 and secondary 10. Magnus and the large cream-based monster remain on the right; Blood Angels also have a group below the central ruins.",
+      "evidence": {
+        "visible": "The overlay reads TS 24\u20138, with TS primary 14 and secondary 10. Magnus and the large cream-based monster remain on the right; Blood Angels also have a group below the central ruins.",
+        "interpretation": "Yarin has established a scoring lead before the larger central convergence. Keeping a northern group separate preserves an additional response lane.",
+        "unknown": "How much of the lead was caused by screening; no turn number is inferred from the persistent Runde 1 event-round label.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 18,
+            "y": 10,
+            "w": 14,
+            "h": 24,
+            "r": -27
+          },
+          {
+            "x": 58,
+            "y": 5,
+            "w": 8,
+            "h": 25,
+            "r": -24
+          },
+          {
+            "x": 80,
+            "y": 12,
+            "w": 12,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 10,
+            "y": 36,
+            "w": 9,
+            "h": 18,
+            "r": -28
+          },
+          {
+            "x": 35,
+            "y": 40,
+            "w": 10,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 55,
+            "y": 33,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 74,
+            "y": 44,
+            "w": 8,
+            "h": 20,
+            "r": -27
+          },
+          {
+            "x": 8,
+            "y": 65,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 27,
+            "y": 66,
+            "w": 10,
+            "h": 24,
+            "r": -30
+          },
+          {
+            "x": 48,
+            "y": 75,
+            "w": 10,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 69,
+            "y": 67,
+            "w": 16,
+            "h": 27,
+            "r": -35
+          }
+        ],
+        "groups": [
+          {
+            "x": 65,
+            "y": 13,
+            "label": "Scarabs?",
+            "side": "ts",
+            "key": "north-ts",
+            "uncertain": true
+          },
+          {
+            "x": 69,
+            "y": 42,
+            "label": "Defiler",
+            "side": "ts",
+            "key": "defiler"
+          },
+          {
+            "x": 77,
+            "y": 54,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 60,
+            "y": 34,
+            "label": "TS small models",
+            "side": "ts"
+          },
+          {
+            "x": 38,
+            "y": 52,
+            "label": "BA central line",
+            "side": "ec"
+          },
+          {
+            "x": 53,
+            "y": 87,
+            "label": "BA lower group",
+            "side": "ec"
+          },
+          {
+            "x": 18,
+            "y": 24,
+            "label": "BA rear group",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        24,
+        8
+      ]
+    },
+    {
+      "second": 7500,
+      "label": "Assault concentration \u00b7 both large models still visible",
+      "image": "007500.jpg",
+      "alt": "Blood Angels are clustered around the centre-right ruin and the large Thousand Sons models. The Defiler remains visible above Magnus. The TS northern group is still separate.",
+      "evidence": {
+        "visible": "Blood Angels are clustered around the centre-right ruin and the large Thousand Sons models. The Defiler remains visible above Magnus. The TS northern group is still separate.",
+        "interpretation": "The pressure has concentrated on the right. The useful decision to study is what can answer this commitment from outside that cluster.",
+        "unknown": "Engagement status, who charged, fight order, defensive stratagems and damage rolls.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 18,
+            "y": 10,
+            "w": 14,
+            "h": 24,
+            "r": -27
+          },
+          {
+            "x": 58,
+            "y": 5,
+            "w": 8,
+            "h": 25,
+            "r": -24
+          },
+          {
+            "x": 80,
+            "y": 12,
+            "w": 12,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 10,
+            "y": 36,
+            "w": 9,
+            "h": 18,
+            "r": -28
+          },
+          {
+            "x": 35,
+            "y": 40,
+            "w": 10,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 55,
+            "y": 33,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 74,
+            "y": 44,
+            "w": 8,
+            "h": 20,
+            "r": -27
+          },
+          {
+            "x": 8,
+            "y": 65,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 27,
+            "y": 66,
+            "w": 10,
+            "h": 24,
+            "r": -30
+          },
+          {
+            "x": 48,
+            "y": 75,
+            "w": 10,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 69,
+            "y": 67,
+            "w": 16,
+            "h": 27,
+            "r": -35
+          }
+        ],
+        "groups": [
+          {
+            "x": 65,
+            "y": 13,
+            "label": "Scarabs?",
+            "side": "ts",
+            "key": "north-ts",
+            "uncertain": true
+          },
+          {
+            "x": 69,
+            "y": 42,
+            "label": "Defiler",
+            "side": "ts",
+            "key": "defiler"
+          },
+          {
+            "x": 77,
+            "y": 55,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 68,
+            "y": 52,
+            "label": "BA contact",
+            "side": "ec",
+            "dx": -80,
+            "dy": 20
+          },
+          {
+            "x": 37,
+            "y": 42,
+            "label": "BA line",
+            "side": "ec"
+          },
+          {
+            "x": 36,
+            "y": 29,
+            "label": "BA upper group",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        24,
+        8
+      ]
+    },
+    {
+      "second": 7800,
+      "label": "Large monster no longer on board \u00b7 Magnus remains",
+      "image": "007800.jpg",
+      "alt": "The large cream-based monster visible at 7500 is now at the off-board right edge. Magnus remains beside the right ruin, surrounded by dark models; the northern TS group is still visible.",
+      "evidence": {
+        "visible": "The large cream-based monster visible at 7500 is now at the off-board right edge. Magnus remains beside the right ruin, surrounded by dark models; the northern TS group is still visible.",
+        "interpretation": "A major asset has left the board during the assault concentration. The win does not mean the first contact was harmless.",
+        "unknown": "Removal is visible across samples; the killing unit, weapon, phase and exact cause are not established.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 18,
+            "y": 10,
+            "w": 14,
+            "h": 24,
+            "r": -27
+          },
+          {
+            "x": 58,
+            "y": 5,
+            "w": 8,
+            "h": 25,
+            "r": -24
+          },
+          {
+            "x": 80,
+            "y": 12,
+            "w": 12,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 10,
+            "y": 36,
+            "w": 9,
+            "h": 18,
+            "r": -28
+          },
+          {
+            "x": 35,
+            "y": 40,
+            "w": 10,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 55,
+            "y": 33,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 74,
+            "y": 44,
+            "w": 8,
+            "h": 20,
+            "r": -27
+          },
+          {
+            "x": 8,
+            "y": 65,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 27,
+            "y": 66,
+            "w": 10,
+            "h": 24,
+            "r": -30
+          },
+          {
+            "x": 48,
+            "y": 75,
+            "w": 10,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 69,
+            "y": 67,
+            "w": 16,
+            "h": 27,
+            "r": -35
+          }
+        ],
+        "groups": [
+          {
+            "x": 65,
+            "y": 13,
+            "label": "Scarabs?",
+            "side": "ts",
+            "key": "north-ts",
+            "uncertain": true
+          },
+          {
+            "x": 77,
+            "y": 55,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 69,
+            "y": 52,
+            "label": "BA contact",
+            "side": "ec",
+            "dx": -85,
+            "dy": 16
+          },
+          {
+            "x": 37,
+            "y": 42,
+            "label": "BA line",
+            "side": "ec"
+          },
+          {
+            "x": 36,
+            "y": 29,
+            "label": "BA upper group",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        24,
+        8
+      ]
+    },
+    {
+      "second": 8400,
+      "label": "Northern TS group shifts inward",
+      "image": "008400.jpg",
+      "alt": "The cream-based northern TS group has moved down beside its ruin. Magnus remains on the right and the Blood Angels concentration is visibly smaller than at 7800. The overlay is TS 24\u201319.",
+      "evidence": {
+        "visible": "The cream-based northern TS group has moved down beside its ruin. Magnus remains on the right and the Blood Angels concentration is visibly smaller than at 7800. The overlay is TS 24\u201319.",
+        "interpretation": "This is consistent with a response from a previously separate group, while the score has temporarily tightened.",
+        "unknown": "Exact target selection and casualties. A smaller group in a still is not proof of a particular shooting or melee attack.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 18,
+            "y": 10,
+            "w": 14,
+            "h": 24,
+            "r": -27
+          },
+          {
+            "x": 58,
+            "y": 5,
+            "w": 8,
+            "h": 25,
+            "r": -24
+          },
+          {
+            "x": 80,
+            "y": 12,
+            "w": 12,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 10,
+            "y": 36,
+            "w": 9,
+            "h": 18,
+            "r": -28
+          },
+          {
+            "x": 35,
+            "y": 40,
+            "w": 10,
+            "h": 25,
+            "r": 0
+          },
+          {
+            "x": 55,
+            "y": 33,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 74,
+            "y": 44,
+            "w": 8,
+            "h": 20,
+            "r": -27
+          },
+          {
+            "x": 8,
+            "y": 65,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 27,
+            "y": 66,
+            "w": 10,
+            "h": 24,
+            "r": -30
+          },
+          {
+            "x": 48,
+            "y": 75,
+            "w": 10,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 69,
+            "y": 67,
+            "w": 16,
+            "h": 27,
+            "r": -35
+          }
+        ],
+        "groups": [
+          {
+            "x": 64,
+            "y": 27,
+            "label": "Scarabs?",
+            "side": "ts",
+            "key": "north-ts",
+            "uncertain": true
+          },
+          {
+            "x": 77,
+            "y": 55,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 69,
+            "y": 51,
+            "label": "BA contact",
+            "side": "ec",
+            "dx": -85,
+            "dy": 20
+          },
+          {
+            "x": 37,
+            "y": 42,
+            "label": "BA line",
+            "side": "ec"
+          },
+          {
+            "x": 36,
+            "y": 29,
+            "label": "BA upper group",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        24,
+        19
+      ]
+    },
+    {
+      "second": 9000,
+      "label": "Closing overlay \u00b7 do not map cleanup as movement",
+      "image": "009000.jpg",
+      "alt": "The overlay has been updated to TS 90\u201322. Many models have been removed or gathered by the centre-right ruin; later frames show active pack-up.",
+      "evidence": {
+        "visible": "The overlay has been updated to TS 90\u201322. Many models have been removed or gathered by the centre-right ruin; later frames show active pack-up.",
+        "interpretation": "The broadcast supports a decisive TS win. The index records 100\u201332; adding ten to both matches these totals, but the reason for that adjustment is unverified.",
+        "unknown": "The jump is a closing score entry, not evidence for 66 points scored in one turn. Final turns and scoring allocation cannot be reconstructed from these samples.",
+        "confidence": "High for the displayed 90\u201322; index-confirmed 100\u201332; low for reconciliation and late-game action sequence."
+      },
+      "score": [
+        90,
+        22
+      ]
+    }
+  ],
+  "deployment": {
+    "terminators": "unknown",
+    "items": [
+      {
+        "unit": "Magnus",
+        "status": "On-board by 00:50:00",
+        "evidence": "Winged model visible behind the forward TS line; no reserve declaration recovered.",
+        "sources": [
+          {
+            "label": "Early board",
+            "url": "https://www.youtube.com/watch?v=M7iDLZU9kks&t=3000s"
+          }
+        ]
+      },
+      {
+        "unit": "10 Scarab Occult Terminators + Terminator Sorcerer",
+        "status": "In list; northern early-board group is probable",
+        "evidence": "Full event list confirms the brick and Crystal. Northern cream-based group is the likely visual match, but no explicit reserve declaration was recovered.",
+        "sources": [
+          {
+            "label": "Event list",
+            "url": "https://listhammer.info/list/242b4d8b2aa24fb9b3"
+          },
+          {
+            "label": "Early board",
+            "url": "https://www.youtube.com/watch?v=M7iDLZU9kks&t=2400s"
+          }
+        ]
+      }
+    ],
+    "caveat": "The first published frame is an opening position, not a complete record of deployment. No reserve-frequency tally contribution."
+  },
+  "lessons": [
+    {
+      "text": "Stage a second response group outside the lane taking the first assault. The northern group stays separate through the central convergence, then shifts inward.",
+      "seconds": [
+        3000,
+        7500,
+        8400
+      ]
+    },
+    {
+      "text": "Treat a forward unit as time and space, not immunity from melee. Blood Angels reach the right-side threats, and the Defiler leaves the board while Magnus remains.",
+      "seconds": [
+        5400,
+        7500,
+        7800
+      ]
+    },
+    {
+      "text": "Track points while absorbing pressure: the visible lead is 24\u20138, later 24\u201319, before the closing update. A winning plan can lose an expensive model; this footage does not prove that trade was optimal.",
+      "seconds": [
+        6000,
+        8400,
+        9000
+      ]
+    }
+  ],
+  "reviewedOn": "2026-09-19",
+  "tracking": {
+    "reviewedSeconds": [
+      780,
+      1200,
+      1800,
+      2400,
+      2700,
+      3000,
+      3600,
+      4200,
+      4800,
+      5100,
+      5400,
+      5700,
+      6000,
+      6600,
+      7200,
+      7500,
+      7800,
+      8100,
+      8400,
+      8550,
+      8700,
+      8850,
+      9000,
+      9300,
+      9540
+    ],
+    "method": "Coarse contact sheet, then denser samples around first contact, major relocation, removal and closing score. Selected full-resolution frames inspected. Generic groups are not tracked as individual units; arrows only join confident visual re-identifications.",
+    "limitations": "Sampled visual analysis; missing actions, exact measurements and ability use remain unknown. No hidden models or off-screen casualties reconstructed.",
+    "rosterSources": [
+      "https://listhammer.info/list/242b4d8b2aa24fb9b3",
+      "https://listhammer.info/list/54459dfa6b448c25b8"
+    ],
+    "rosterCorrection": "Full Yarin list identifies a Defiler, not a Mutalith. Roster plus mechanical silhouette supports that label; northern Scarab group remains probable.",
+    "rosterRetrieval": {
+      "retrievedOn": "2026-09-19",
+      "publicEndpoints": [
+        "https://listhammer.info/api/listSummary?listId=242b4d8b2aa24fb9b3",
+        "https://listhammer.info/api/listSummary?listId=54459dfa6b448c25b8"
+      ],
+      "method": "Read-only requests to the same public list endpoints used by the linked event website. Exact weapon text stays in the linked source; roster composition and relevant upgrades are summarised here."
+    }
+  },
+  "lists": [
+    {
+      "player": "Boris Yarin \u00b7 2,000 points",
+      "source": "https://listhammer.info/list/242b4d8b2aa24fb9b3",
+      "units": [
+        "Magnus the Red \u2014 455",
+        "Winged Daemon Prince \u2014 205; Eldritch Vortex of E\u2019Taph",
+        "Sorcerer \u2014 85, attached to 5 Rubric Marines \u2014 100",
+        "Terminator Sorcerer \u2014 115; Umbralefic Crystal, attached to 10 Scarab Occult Terminators \u2014 385",
+        "Defiler \u2014 330",
+        "3 \u00d7 2 Chaos Spawn \u2014 195 total",
+        "3 Enlightened with Fatecaster Greatbows \u2014 55",
+        "10 Tzaangors \u2014 75"
+      ],
+      "notes": "Grand Coven / Priority Assets. August event points; total checked at 2,000. Rubrics: three warpflamers and one soulreaper cannon. Scarabs: two soulreaper cannons and two missile racks. No Mutalith, Rhino or Infernal Master in this list. Roster narrows possible model identities but does not prove an action."
+    },
+    {
+      "player": "Oliver Iyer \u00b7 2,000 points",
+      "source": "https://listhammer.info/list/54459dfa6b448c25b8",
+      "units": [
+        "Dante + 10 Vanguard Veterans with jump packs",
+        "Lemartes + 10 jump Death Company; jump Death Company Captain + another 10",
+        "Jump Chaplain + 5 Vanguard Veterans",
+        "Sanguinary Priest + 6 Bladeguard",
+        "5 Intercessors; 2 \u00d7 5 jump Assault Intercessors; 2 \u00d7 3 Sanguinary Guard"
+      ],
+      "notes": "Liberator Assault Group / Take and Hold. Roster confirms multiple jump assault waves, so this is a fast-melee match on composition as well as faction."
+    }
+  ],
+  "analysis": [
+    {
+      "heading": "What happened",
+      "text": "21 August 2026 \u00b7 11th edition \u00b7 indexed win 100\u201332; closing overlay 90\u201322. Yarin has the shared Magnus/ten-Scarab/Vortex Prince core, but adds a 330-point Defiler and three Spawn units, with only one Rubric squad. Blood Angels reach his forward line; the Defiler is off-table by 02:10 while Magnus remains. The likely northern Scarab group later shifts down as the right-side BA concentration thins. A substantial second response remains after the first collision.",
+      "seconds": [
+        2400,
+        5400,
+        7500,
+        7800,
+        8400,
+        9000
+      ]
+    },
+    {
+      "heading": "Magnus and reserves",
+      "text": "In the opening sampled board states TS are on the right. Magnus is behind the centre-right forward line; the probable Scarab brick occupies the northern pocket. These establish early positions, not complete deployment declarations. No verified Prince/Terminator reserve declaration or arrival sequence was recovered. English captions could not be retrieved (HTTP 429), so no deep-strike turn or Crystal use is asserted.",
+      "seconds": [
+        2400,
+        3000
+      ]
+    },
+    {
+      "heading": "Transfer to your list",
+      "text": "Preserve an independent reply when the front unit gets hit. Your list has neither the Defiler nor three Spawn units, so it cannot reproduce Yarin\u2019s exact damage absorption. Use his separation of threats as a practice question, not permission to expose a 455-point Magnus.",
+      "seconds": [
+        7500,
+        7800,
+        8400
+      ]
+    }
+  ]
+}

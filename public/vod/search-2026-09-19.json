@@ -1,0 +1,1391 @@
+{
+  "searchedOn": "2026-09-19",
+  "source": "https://40kvodindex.com/",
+  "scope": "All 62 Thousand Sons entries in the homepage embedded public game data; 64 TS-side records because two entries are mirrors. Broader than the 53-game faction page shown by the web cache. Records are broadcasts, not necessarily unique matches; Serianni–Cookies appears twice.",
+  "games": [
+    {
+      "date": "2026-09-13",
+      "player": "Mike Muzeni",
+      "detachment": [
+        "Sekhetar Cohort",
+        "Warpforged Cabal"
+      ],
+      "opponent": "Mitch Beard",
+      "opponentArmy": "Adepta Sororitas",
+      "opponentDetachments": [
+        "Bringers of Flame",
+        "Chorus of Condemnation"
+      ],
+      "score": [
+        59,
+        95
+      ],
+      "scoreType": "game points",
+      "event": "Crucible 2026",
+      "indexUrl": "https://40kvodindex.com/games/mitch-beard-adepta-sororitas-vs-mike-muzeni-thousand-sons-1731",
+      "videoUrl": "https://www.youtube.com/watch?v=3esXEuo8sQU&t=1731s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-09-13",
+      "player": "Edoardo Pierini",
+      "detachment": [
+        "Rubricae Phalanx"
+      ],
+      "opponent": "Daniele De Gemini",
+      "opponentArmy": "Chaos Space Marines",
+      "opponentDetachments": [
+        "Cabal of Chaos",
+        "Soulforged Warpack"
+      ],
+      "score": [
+        75,
+        70
+      ],
+      "scoreType": "game points",
+      "event": "Ars Manufactorea 40K Italian GT",
+      "indexUrl": "https://40kvodindex.com/games/daniele-de-gemini-chaos-space-marines-vs-edoardo-pierini-thousand-sons",
+      "videoUrl": "https://www.youtube.com/watch?v=HzTDJzIM1_k",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-09-12",
+      "player": "Andrea Lelli",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Federico Enei di ruocco",
+      "opponentArmy": "Necrons",
+      "opponentDetachments": [
+        "Cursed Legion"
+      ],
+      "score": [
+        100,
+        52
+      ],
+      "scoreType": "game points",
+      "event": "Ars Manufactorea 40K Italian GT",
+      "indexUrl": "https://40kvodindex.com/games/andrea-lelli-thousand-sons-vs-federico-enei-di-ruocco-necrons",
+      "videoUrl": "https://www.youtube.com/watch?v=ehRdKxDjYYU",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-09-11",
+      "player": "Karol Kepczynski",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Michal Kosman",
+      "opponentArmy": "Leagues of Votann",
+      "opponentDetachments": [
+        "Armoured Trailblazers",
+        "Brandfast Oathband"
+      ],
+      "score": [
+        18,
+        2
+      ],
+      "scoreType": "team points",
+      "event": "Warhammer Open: Krakow Warhammer 40,000",
+      "indexUrl": "https://40kvodindex.com/games/michal-kosman-leagues-of-votann-vs-karol-kepczynski-thousand-sons",
+      "videoUrl": "https://www.youtube.com/watch?v=D4gIGxdEt3A",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-09-06",
+      "player": "Fredy Blanco",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Ivan Andres",
+      "opponentArmy": "Orks",
+      "opponentDetachments": [
+        "Da Big Hunt",
+        "Rollin' Deff"
+      ],
+      "score": [
+        30,
+        100
+      ],
+      "scoreType": "game points",
+      "event": "La Voz Open 2026",
+      "indexUrl": "https://40kvodindex.com/games/ivan-andres-orks-vs-fredy-blanco-thousand-sons-0",
+      "videoUrl": "https://www.youtube.com/watch?v=dQ1iMPvIeJs&t=0s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-09-06",
+      "player": "Dan Meloro",
+      "detachment": [
+        "Rubricae Phalanx"
+      ],
+      "opponent": "Austin Warfel",
+      "opponentArmy": "Tyranids",
+      "opponentDetachments": [
+        "Invasion Fleet"
+      ],
+      "score": [
+        83,
+        79
+      ],
+      "scoreType": "game points",
+      "event": "NOVA Open 2026 Grand Tournament",
+      "indexUrl": "https://40kvodindex.com/games/austin-warfel-tyranids-vs-dan-meloro-thousand-sons-1200",
+      "videoUrl": "https://www.youtube.com/watch?v=82hKRJvN-Jw&t=1200s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-09-05",
+      "player": "Dan Meloro",
+      "detachment": [
+        "Rubricae Phalanx"
+      ],
+      "opponent": "Amelia Pollard",
+      "opponentArmy": "Tyranids",
+      "opponentDetachments": [
+        "Assimilation Swarm",
+        "Talons of the Norn Queen"
+      ],
+      "score": [
+        94,
+        72
+      ],
+      "scoreType": "game points",
+      "event": "NOVA Open 2026 Grand Tournament",
+      "indexUrl": "https://40kvodindex.com/games/amelia-pollard-tyranids-vs-dan-meloro-thousand-sons-29899",
+      "videoUrl": "https://www.youtube.com/watch?v=Xs88TrA6iao&t=29899s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-09-05",
+      "player": "Callum Evans",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Callum Spicer",
+      "opponentArmy": "Adeptus Custodes",
+      "opponentDetachments": [
+        "Lions of the Emperor"
+      ],
+      "score": [
+        97,
+        56
+      ],
+      "scoreType": "game points",
+      "event": "Nailhammer XII GT",
+      "indexUrl": "https://40kvodindex.com/games/callum-evans-thousand-sons-vs-callum-spicer-adeptus-custodes-3000",
+      "videoUrl": "https://www.youtube.com/watch?v=6RpQQeGGKoQ&t=3000s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-09-05",
+      "player": "Callum Evans",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Michele Mallardo",
+      "opponentArmy": "Adepta Sororitas",
+      "opponentDetachments": [
+        "Hallowed Martyrs"
+      ],
+      "score": [
+        73,
+        85
+      ],
+      "scoreType": "game points",
+      "event": "Nailhammer XII GT",
+      "indexUrl": "https://40kvodindex.com/games/callum-evans-thousand-sons-vs-michele-mallardo-adepta-sororitas-18600",
+      "videoUrl": "https://www.youtube.com/watch?v=6RpQQeGGKoQ&t=18600s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-09-04",
+      "player": "Dylan Ayers",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Jeffrey Kolodner",
+      "opponentArmy": "Adepta Sororitas",
+      "opponentDetachments": [
+        "Hallowed Martyrs"
+      ],
+      "score": [
+        28,
+        100
+      ],
+      "scoreType": "game points",
+      "event": "NOVA Open 2026 Grand Tournament",
+      "indexUrl": "https://40kvodindex.com/games/jeffrey-kolodner-adepta-sororitas-vs-dylan-ayers-thousand-sons-16714",
+      "videoUrl": "https://www.youtube.com/watch?v=CGmIgoia8BM&t=16714s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-29",
+      "player": "Jeremy Borg",
+      "detachment": [
+        "Sekhetar Cohort",
+        "Warpforged Cabal"
+      ],
+      "opponent": "Nick Jagiello",
+      "opponentArmy": "Astra Militarum",
+      "opponentDetachments": [
+        "Bridgehead Strike",
+        "Combined Arms"
+      ],
+      "score": [
+        86,
+        96
+      ],
+      "scoreType": "game points",
+      "event": "Ottawa Gaming Convention 40k Champs",
+      "indexUrl": "https://40kvodindex.com/games/jeremy-borg-thousand-sons-vs-nick-jagiello-astra-militarum-32040",
+      "videoUrl": "https://www.youtube.com/watch?v=As0euiyNst8&t=32040s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-22",
+      "player": "Sebastian Feurich",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Max Kanter",
+      "opponentArmy": "Orks",
+      "opponentDetachments": [
+        "Freebooter Krew",
+        "More Dakka!"
+      ],
+      "score": [
+        66,
+        92
+      ],
+      "scoreType": "game points",
+      "event": "HUXLEYS OPEN 2026 - WARHAMMER 40K",
+      "indexUrl": "https://40kvodindex.com/games/sebastian-feurich-thousand-sons-vs-max-kanter-orks-0",
+      "videoUrl": "https://www.youtube.com/watch?v=Wm9fBEXoDZU&t=0s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-22",
+      "player": "Samuel Pole",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Levi Libengood",
+      "opponentArmy": "Leagues of Votann",
+      "opponentDetachments": [
+        "Hearthguard Covenant",
+        "Needgaard Oathband"
+      ],
+      "score": [
+        6,
+        14
+      ],
+      "scoreType": "game points",
+      "event": "Northern Rockies War for the Divide",
+      "indexUrl": "https://40kvodindex.com/games/samuel-pole-thousand-sons-vs-levi-libengood-leagues-of-votann-21600",
+      "videoUrl": "https://www.youtube.com/watch?v=SxHz7UmtdgU&t=21600s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-22",
+      "player": "Blair Bristow",
+      "detachment": [
+        "Changehost of Deceit",
+        "Ritual of Regeneration"
+      ],
+      "opponent": "MICHAEL RADDER",
+      "opponentArmy": "Thousand Sons",
+      "opponentDetachments": [
+        "Grand Coven"
+      ],
+      "score": [
+        82,
+        88
+      ],
+      "scoreType": "game points",
+      "event": "August RTT at GK",
+      "indexUrl": "https://40kvodindex.com/games/blair-bristow-thousand-sons-vs-michael-radder-thousand-sons-3131",
+      "videoUrl": "https://www.youtube.com/watch?v=AS2jEeRnpTs&t=3131s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-22",
+      "player": "MICHAEL RADDER",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Blair Bristow",
+      "opponentArmy": "Thousand Sons",
+      "opponentDetachments": [
+        "Changehost of Deceit",
+        "Ritual of Regeneration"
+      ],
+      "score": [
+        88,
+        82
+      ],
+      "scoreType": "game points",
+      "event": "August RTT at GK",
+      "indexUrl": "https://40kvodindex.com/games/blair-bristow-thousand-sons-vs-michael-radder-thousand-sons-3131",
+      "videoUrl": "https://www.youtube.com/watch?v=AS2jEeRnpTs&t=3131s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-21",
+      "player": "Michael House",
+      "detachment": [
+        "Changehost of Deceit",
+        "Ritual of Regeneration"
+      ],
+      "opponent": "Brodie Middleton",
+      "opponentArmy": "Space Marines",
+      "opponentDetachments": [
+        "Shadowmark Talon",
+        "Librarius Conclave"
+      ],
+      "score": [
+        89,
+        76
+      ],
+      "scoreType": "game points",
+      "event": "Krootcon 2026",
+      "indexUrl": "https://40kvodindex.com/games/brodie-middleton-space-marines-vs-michael-house-thousand-sons-15629",
+      "videoUrl": "https://www.youtube.com/watch?v=l7aCAQhNN80&t=15629s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-21",
+      "player": "Boris Yarin",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Oliver Iyer",
+      "opponentArmy": "Blood Angels",
+      "opponentDetachments": [
+        "Liberator Assault Group"
+      ],
+      "score": [
+        100,
+        32
+      ],
+      "scoreType": "game points",
+      "event": "HUXLEYS OPEN 2026 - WARHAMMER 40K",
+      "indexUrl": "https://40kvodindex.com/games/boris-yarin-thousand-sons-vs-oliver-iyer-blood-angels-782",
+      "videoUrl": "https://www.youtube.com/watch?v=M7iDLZU9kks&t=782s",
+      "reviewStatus": "sampled visual analysis",
+      "localReview": "yarin-iyer/game.json"
+    },
+    {
+      "date": "2026-08-16",
+      "player": "Juha Ottelin",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Mafi Chan",
+      "opponentArmy": "Emperor's Children",
+      "opponentDetachments": [
+        "Carnival of Excess",
+        "Frenzied Host"
+      ],
+      "score": [
+        0,
+        20
+      ],
+      "scoreType": "team points",
+      "event": "WTC WH40K 2026",
+      "indexUrl": "https://40kvodindex.com/games/juha-ottelin-thousand-sons-vs-mafi-chan-emperors-children-1355",
+      "videoUrl": "https://www.youtube.com/watch?v=QhgK_kVmSMk&t=1355s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-16",
+      "player": "Manuel Wayand",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Alexandre Sacco",
+      "opponentArmy": "Emperor's Children",
+      "opponentDetachments": [
+        "Coterie of the Conceited"
+      ],
+      "score": [
+        10,
+        10
+      ],
+      "scoreType": "team points",
+      "event": "WTC WH40K 2026",
+      "indexUrl": "https://40kvodindex.com/games/alexandre-sacco-emperors-children-vs-manuel-wayand-thousand-sons-19058",
+      "videoUrl": "https://www.youtube.com/watch?v=GJsOndxFTpA&t=19058s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-16",
+      "player": "Martijn Van der Most",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Nick \"Lizard\" Blackburn",
+      "opponentArmy": "Leagues of Votann",
+      "opponentDetachments": [
+        "Hearthguard Covenant",
+        "Needgaard Oathband"
+      ],
+      "score": [
+        10,
+        10
+      ],
+      "scoreType": "team points",
+      "event": "WTC WH40K 2026",
+      "indexUrl": "https://40kvodindex.com/games/martijn-van-der-most-thousand-sons-vs-nick-lizard-blackburn-leagues-of-votann-21840",
+      "videoUrl": "https://www.youtube.com/watch?v=_cqE_n30oUc&t=21840s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-15",
+      "player": "Sagi Ben Itzhak",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Chong Liu",
+      "opponentArmy": "Adeptus Custodes",
+      "opponentDetachments": [
+        "Lions of the Emperor",
+        "Silent Hunters"
+      ],
+      "score": [
+        12,
+        8
+      ],
+      "scoreType": "team points",
+      "event": "WTC WH40K 2026",
+      "indexUrl": "https://40kvodindex.com/games/chong-liu-adeptus-custodes-vs-sagi-ben-itzhak-thousand-sons-22416",
+      "videoUrl": "https://www.youtube.com/watch?v=evbzGbNmNH8&t=22416s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-15",
+      "player": "Alex Fowler",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Guillaume Dusaussois",
+      "opponentArmy": "Emperor's Children",
+      "opponentDetachments": [
+        "Carnival of Excess",
+        "Frenzied Host"
+      ],
+      "score": [
+        8,
+        12
+      ],
+      "scoreType": "team points",
+      "event": "WTC WH40K 2026",
+      "indexUrl": "https://40kvodindex.com/games/alex-fowler-thousand-sons-vs-guillaume-dusaussois-emperors-children-22642",
+      "videoUrl": "https://www.youtube.com/watch?v=51DKU8N2zLo&t=22642s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-15",
+      "player": "Andrea Lelli",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Aidan Lee",
+      "opponentArmy": "Adeptus Custodes",
+      "opponentDetachments": [
+        "Shield Host",
+        "Tharanatoi Hammerblow"
+      ],
+      "score": [
+        13,
+        7
+      ],
+      "scoreType": "team points",
+      "event": "WTC WH40K 2026",
+      "indexUrl": "https://40kvodindex.com/games/aidan-lee-adeptus-custodes-vs-andrea-lelli-thousand-sons-24176",
+      "videoUrl": "https://www.youtube.com/watch?v=Fy_nDQ_tO5s&t=24176s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-14",
+      "player": "Martijn Van der Most",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Niklas Fritschen",
+      "opponentArmy": "Chaos Daemons",
+      "opponentDetachments": [
+        "Legion of Excess",
+        "Warptide"
+      ],
+      "score": [
+        20,
+        0
+      ],
+      "scoreType": "team points",
+      "event": "WTC WH40K 2026",
+      "indexUrl": "https://40kvodindex.com/games/niklas-fritschen-chaos-daemons-vs-martijn-van-der-most-thousand-sons-22338",
+      "videoUrl": "https://www.youtube.com/watch?v=H0xPGlVtX_g&t=22338s",
+      "reviewStatus": "sampled visual analysis",
+      "localReview": "most-fritschen/game.json"
+    },
+    {
+      "date": "2026-08-14",
+      "player": "Ivan Rozga",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Daan Van Herk",
+      "opponentArmy": "Orks",
+      "opponentDetachments": [
+        "Freebooter Krew",
+        "More Dakka!"
+      ],
+      "score": [
+        7,
+        13
+      ],
+      "scoreType": "team points",
+      "event": "WTC WH40K 2026",
+      "indexUrl": "https://40kvodindex.com/games/daan-van-herk-orks-vs-ivan-rozga-thousand-sons-1647",
+      "videoUrl": "https://www.youtube.com/watch?v=VTXxjJbiM6w&t=1647s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-13",
+      "player": "Dimitar \"Gobbo\" Donev",
+      "detachment": [
+        "Sekhetar Cohort",
+        "Warpforged Cabal"
+      ],
+      "opponent": "Andrea Manfroni",
+      "opponentArmy": "Orks",
+      "opponentDetachments": [
+        "War Horde"
+      ],
+      "score": [
+        8,
+        12
+      ],
+      "scoreType": "team points",
+      "event": "WTC WH40K 2026",
+      "indexUrl": "https://40kvodindex.com/games/andrea-manfroni-orks-vs-dimitar-gobbo-donev-thousand-sons-2691",
+      "videoUrl": "https://www.youtube.com/watch?v=B7o1fAK2Lsw&t=2691s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-12",
+      "player": "Terroxer El Rojo",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Arnaud ALLOT",
+      "opponentArmy": "Necrons",
+      "opponentDetachments": [
+        "Cursed Legion",
+        "Skyshroud Spearhead"
+      ],
+      "score": [
+        92,
+        73
+      ],
+      "scoreType": "game points",
+      "event": "WTC Warmaster GT 2026",
+      "indexUrl": "https://40kvodindex.com/games/terroxer-el-rojo-thousand-sons-vs-arnaud-allot-necrons-13182",
+      "videoUrl": "https://www.youtube.com/watch?v=gY6uQHDmUBM&t=13182s",
+      "reviewStatus": "sampled visual analysis",
+      "localReview": "terroxer-allot/game.json"
+    },
+    {
+      "date": "2026-08-12",
+      "player": "Alex Fowler",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Frasier Parry",
+      "opponentArmy": "Emperor's Children",
+      "opponentDetachments": [
+        "Carnival of Excess",
+        "Frenzied Host"
+      ],
+      "score": [
+        78,
+        45
+      ],
+      "scoreType": "game points",
+      "event": "WTC Warmaster GT 2026",
+      "indexUrl": "https://40kvodindex.com/games/frasier-parry-emperors-children-vs-alex-fowler-thousand-sons-637",
+      "videoUrl": "https://www.youtube.com/watch?v=WOpiPuYL0YA&t=637s",
+      "reviewStatus": "sampled visual analysis",
+      "localReview": "fowler-parry/game.json"
+    },
+    {
+      "date": "2026-08-12",
+      "player": "Alex Fowler",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Folger Pyles",
+      "opponentArmy": "Adeptus Custodes",
+      "opponentDetachments": [
+        "Lions of the Emperor",
+        "Might of the Moritoi"
+      ],
+      "score": [
+        78,
+        100
+      ],
+      "scoreType": "game points",
+      "event": "WTC Warmaster GT 2026",
+      "indexUrl": "https://40kvodindex.com/games/folger-pyles-adeptus-custodes-vs-alex-fowler-thousand-sons-28800",
+      "videoUrl": "https://www.youtube.com/watch?v=TP8FPs4q-GY&t=28800s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-08-12",
+      "player": "Alex Fowler",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Colin Power",
+      "opponentArmy": "Chaos Daemons",
+      "opponentDetachments": [
+        "Legion of Excess",
+        "Warptide"
+      ],
+      "score": [
+        94,
+        78
+      ],
+      "scoreType": "game points",
+      "event": "WTC Warmaster GT 2026",
+      "indexUrl": "https://40kvodindex.com/games/alex-fowler-thousand-sons-vs-colin-power-chaos-daemons-19200",
+      "videoUrl": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=19200s",
+      "reviewStatus": "sampled visual analysis",
+      "localReview": "fowler-power/game.json"
+    },
+    {
+      "date": "2026-08-09",
+      "player": "Joe Senior",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Thomas Welsh",
+      "opponentArmy": "Tyranids",
+      "opponentDetachments": [
+        "Synaptic Nexus",
+        "Talons of the Norn Queen"
+      ],
+      "score": [
+        10,
+        10
+      ],
+      "scoreType": "team points",
+      "event": "The Summer I. T. T. - INTERNATIONAL TEAM TOURNAMENT - August",
+      "indexUrl": "https://40kvodindex.com/games/joe-senior-thousand-sons-vs-thomas-welsh-tyranids-1752",
+      "videoUrl": "https://www.youtube.com/watch?v=UzeWN2hlXEo&t=1752s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-07-25",
+      "player": "Jack Kosidowski",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Tim Cook",
+      "opponentArmy": "Space Wolves",
+      "opponentDetachments": [
+        "Legends of Saga and Song",
+        "Saga of the Beastslayer"
+      ],
+      "score": [
+        50,
+        94
+      ],
+      "scoreType": "game points",
+      "event": "Northern Maelstrom 2026 Warhammer 40,000 Grand Tournament",
+      "indexUrl": "https://40kvodindex.com/games/jack-kosidowski-thousand-sons-vs-tim-cook-space-wolves-29834",
+      "videoUrl": "https://www.youtube.com/watch?v=1AwnDclFviQ&t=29834s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-07-20",
+      "player": "Luca Serianni",
+      "detachment": [
+        "Hexwarp Thrallband",
+        "Ritual of Regeneration"
+      ],
+      "opponent": "Ben Cookies",
+      "opponentArmy": "Chaos Space Marines",
+      "opponentDetachments": [
+        "Creations of Bile"
+      ],
+      "score": [
+        86,
+        84
+      ],
+      "scoreType": "game points",
+      "event": "Shark Tank Winter 2026",
+      "indexUrl": "https://40kvodindex.com/games/ben-cookies-vs-luca-serianni-thousand-sons-1330",
+      "videoUrl": "https://www.youtube.com/watch?v=380C3GwbBYk&t=1330s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-07-18",
+      "player": "George Miller",
+      "detachment": [
+        "Rubricae Phalanx"
+      ],
+      "opponent": "Ian Hartley",
+      "opponentArmy": "T'au Empire",
+      "opponentDetachments": [
+        "Mont'ka"
+      ],
+      "score": [
+        86,
+        81
+      ],
+      "scoreType": "game points",
+      "event": "Phoenix 40k July RTT (11TH EDITION)",
+      "indexUrl": "https://40kvodindex.com/games/george-miller-thousand-sons-vs-ian-hartley-tau-empire-14184",
+      "videoUrl": "https://www.youtube.com/watch?v=9agy10IIcYI&t=14184s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-07-11",
+      "player": "Nicholas Kudriavetz",
+      "detachment": [
+        "Hexwarp Thrallband",
+        "Sekhetar Cohort"
+      ],
+      "opponent": "Jordan C Rakow",
+      "opponentArmy": "Grey Knights",
+      "opponentDetachments": [
+        "Banishers",
+        "Immaterial Interdiction"
+      ],
+      "score": [
+        66,
+        63
+      ],
+      "scoreType": "game points",
+      "event": "W4 - Western Wisconsin Wargaming Weekend",
+      "indexUrl": "https://40kvodindex.com/games/jordan-c-rakow-grey-knights-vs-nicholas-kudriavetz-thousand-sons-16783",
+      "videoUrl": "https://www.youtube.com/watch?v=HER6VzUGO60&t=16783s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-07-10",
+      "player": "Luca Serianni",
+      "detachment": [
+        "Hexwarp Thrallband",
+        "Ritual of Regeneration"
+      ],
+      "opponent": "Ben Cookies",
+      "opponentArmy": "Chaos Space Marines",
+      "opponentDetachments": [
+        "Creations of Bile"
+      ],
+      "score": [
+        86,
+        84
+      ],
+      "scoreType": "game points",
+      "event": "Shark Tank Winter 2026",
+      "indexUrl": "https://40kvodindex.com/games/ben-cookies-vs-luca-serianni-thousand-sons-15691",
+      "videoUrl": "https://www.youtube.com/watch?v=h8FZzr0XY7s&t=15691s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-06-26",
+      "player": "Joe MacMillan",
+      "detachment": [
+        "Hexwarp Thrallband"
+      ],
+      "opponent": "Tivi Piechocki",
+      "opponentArmy": "Adepta Sororitas",
+      "opponentDetachments": [
+        "Army of Faith",
+        "Sacred Champions"
+      ],
+      "score": [
+        19,
+        1
+      ],
+      "scoreType": "team points",
+      "event": "ATC 2026 8-Player Event",
+      "indexUrl": "https://40kvodindex.com/games/joe-macmillan-thousand-sons-vs-tivi-piechocki-adepta-sororitas-22200",
+      "videoUrl": "https://www.youtube.com/watch?v=XaWjk2-YpdI&t=22200s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-06-21",
+      "player": "Dan Meloro",
+      "detachment": [
+        "Hexwarp Thrallband",
+        "Sekhetar Cohort"
+      ],
+      "opponent": "David Montgomery",
+      "opponentArmy": "T'au Empire",
+      "opponentDetachments": [
+        "Kauyon"
+      ],
+      "score": [
+        100,
+        31
+      ],
+      "scoreType": "game points",
+      "event": "GDG Summer Ruin II Warhammer 40K GT (11th Edition)",
+      "indexUrl": "https://40kvodindex.com/games/dan-meloro-thousand-sons-vs-david-montgomery-tau-empire-2629",
+      "videoUrl": "https://www.youtube.com/watch?v=5nekhLyH3c8&t=2629s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-06-21",
+      "player": "Dan Meloro",
+      "detachment": [
+        "Hexwarp Thrallband",
+        "Sekhetar Cohort"
+      ],
+      "opponent": "Jerome Nicholson",
+      "opponentArmy": "T'au Empire",
+      "opponentDetachments": [
+        "Mont'ka"
+      ],
+      "score": [
+        100,
+        32
+      ],
+      "scoreType": "game points",
+      "event": "GDG Summer Ruin II Warhammer 40K GT (11th Edition)",
+      "indexUrl": "https://40kvodindex.com/games/dan-meloro-thousand-sons-vs-jerome-nicholson-tau-empire-14984",
+      "videoUrl": "https://www.youtube.com/watch?v=5nekhLyH3c8&t=14984s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-06-14",
+      "player": "Ryan Richards",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Scott Morris",
+      "opponentArmy": "Aeldari",
+      "opponentDetachments": [
+        "Aspect Host"
+      ],
+      "score": [
+        63,
+        72
+      ],
+      "scoreType": "game points",
+      "event": "THE LEEDS 40K SUPER MAJOR",
+      "indexUrl": "https://40kvodindex.com/games/scott-morris-aeldari-vs-ryan-richards-thousand-sons-4800",
+      "videoUrl": "https://www.youtube.com/watch?v=JGoefoN-1ac&t=4800s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-06-13",
+      "player": "Cole McAneeny",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "rOBIN rOBERTS",
+      "opponentArmy": "Genestealer Cults",
+      "opponentDetachments": [
+        "Host of Ascension"
+      ],
+      "score": [
+        10,
+        10
+      ],
+      "scoreType": "team points",
+      "event": "Atlantic City Open 2026 - NTL 5's Team Finals",
+      "indexUrl": "https://40kvodindex.com/games/cole-mcaneeny-thousand-sons-vs-robin-roberts-genestealer-cults-3018",
+      "videoUrl": "https://www.youtube.com/watch?v=6LFDHgUj07c&t=3018s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-06-12",
+      "player": "Malaki Fowler",
+      "detachment": [
+        "Rubricae Phalanx"
+      ],
+      "opponent": "Brian Zhu",
+      "opponentArmy": "T'au Empire",
+      "opponentDetachments": [
+        "Mont'ka"
+      ],
+      "score": [
+        15,
+        5
+      ],
+      "scoreType": "team points",
+      "event": "Atlantic City Open 2026 - NTL 5's Team Finals",
+      "indexUrl": "https://40kvodindex.com/games/malaki-fowler-thousand-sons-vs-brian-zhu-tau-empire-2060",
+      "videoUrl": "https://www.youtube.com/watch?v=-Yoso3B0CbY&t=2060s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-05-31",
+      "player": "Michael Tonel",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Max Coltrin",
+      "opponentArmy": "Emperor's Children",
+      "opponentDetachments": [
+        "Coterie of the Conceited"
+      ],
+      "score": [
+        70,
+        70
+      ],
+      "scoreType": "game points",
+      "event": "Mountain West Classic Grand Tournament '26 - Warhammer 40K",
+      "indexUrl": "https://40kvodindex.com/games/michael-tonel-thousand-sons-vs-max-coltrin-emperors-children-0",
+      "videoUrl": "https://www.youtube.com/watch?v=IGcYXwcozDY&t=0s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-05-30",
+      "player": "Samuel Pole",
+      "detachment": [
+        "Rubricae Phalanx"
+      ],
+      "opponent": "Jordan Gledhill",
+      "opponentArmy": "Emperor's Children",
+      "opponentDetachments": [
+        "Carnival of Excess"
+      ],
+      "score": [
+        34,
+        100
+      ],
+      "scoreType": "game points",
+      "event": "Mountain West Classic Grand Tournament '26 - Warhammer 40K",
+      "indexUrl": "https://40kvodindex.com/games/samuel-pole-thousand-sons-vs-jordan-gledhill-emperors-children-15900",
+      "videoUrl": "https://www.youtube.com/watch?v=77MdLcZRAjw&t=15900s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-05-23",
+      "player": "Jack Turner",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Richard Dabrowski",
+      "opponentArmy": "T'au Empire",
+      "opponentDetachments": [
+        "Kroot Hunting Pack"
+      ],
+      "score": [
+        68,
+        60
+      ],
+      "scoreType": "game points",
+      "event": "THE BRISTOL 40K SUPER MAJOR",
+      "indexUrl": "https://40kvodindex.com/games/jack-turner-thousand-sons-vs-richard-dabrowski-tau-empire-28800",
+      "videoUrl": "https://www.youtube.com/watch?v=9MDjqaQraL0&t=28800s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-05-17",
+      "player": "Dustin Hammond",
+      "detachment": [
+        "Rubricae Phalanx"
+      ],
+      "opponent": "Joshua Howard",
+      "opponentArmy": "Astra Militarum",
+      "opponentDetachments": [
+        "Recon Element"
+      ],
+      "score": [
+        11,
+        9
+      ],
+      "scoreType": "team points",
+      "event": "Wyoming Team Championship (WyoTC)",
+      "indexUrl": "https://40kvodindex.com/games/dustin-hammond-thousand-sons-vs-joshua-howard-astra-militarum-3300",
+      "videoUrl": "https://www.youtube.com/watch?v=40DUzGogbSw&t=3300s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-05-17",
+      "player": "AxelRyden",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "eetu5801",
+      "opponentArmy": "Thousand Sons",
+      "opponentDetachments": [
+        "Grand Coven"
+      ],
+      "score": [
+        0,
+        20
+      ],
+      "scoreType": "team points",
+      "event": "Nordic Masters 2026",
+      "indexUrl": "https://40kvodindex.com/games/axelryden-thousand-sons-vs-eetu5801-thousand-sons-2400",
+      "videoUrl": "https://www.youtube.com/watch?v=W0d2owp-9gY&t=2400s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-05-17",
+      "player": "eetu5801",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "AxelRyden",
+      "opponentArmy": "Thousand Sons",
+      "opponentDetachments": [
+        "Grand Coven"
+      ],
+      "score": [
+        20,
+        0
+      ],
+      "scoreType": "team points",
+      "event": "Nordic Masters 2026",
+      "indexUrl": "https://40kvodindex.com/games/axelryden-thousand-sons-vs-eetu5801-thousand-sons-2400",
+      "videoUrl": "https://www.youtube.com/watch?v=W0d2owp-9gY&t=2400s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-05-02",
+      "player": "Dylan Ayers",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Conor Lobb",
+      "opponentArmy": "Aeldari",
+      "opponentDetachments": [
+        "Aspect Host"
+      ],
+      "score": [
+        82,
+        77
+      ],
+      "scoreType": "game points",
+      "event": "The Richmond Open 40K Event Hosted by Away Games",
+      "indexUrl": "https://40kvodindex.com/games/dylan-ayers-thousand-sons-vs-conor-lobb-aeldari-27998",
+      "videoUrl": "https://www.youtube.com/watch?v=YwhdtunnCU0&t=27998s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-05-02",
+      "player": "Joakim Engström",
+      "detachment": [
+        "Rubricae Phalanx"
+      ],
+      "opponent": "Jouni",
+      "opponentArmy": "T'au Empire",
+      "opponentDetachments": [
+        "Mont'ka"
+      ],
+      "score": [
+        13,
+        7
+      ],
+      "scoreType": "team points",
+      "event": "Malmö Team Weekend 2 - Warhammer 40K",
+      "indexUrl": "https://40kvodindex.com/games/joakim-engstrom-thousand-sons-vs-jouni-tau-empire-32440",
+      "videoUrl": "https://www.youtube.com/watch?v=Ni3beaaG0GM&t=32440s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-04-26",
+      "player": "Connor Johnson",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Sam Anderson",
+      "opponentArmy": "Emperor's Children",
+      "opponentDetachments": [
+        "Coterie of the Conceited"
+      ],
+      "score": [
+        55,
+        68
+      ],
+      "scoreType": "game points",
+      "event": "Oz-Con 2026",
+      "indexUrl": "https://40kvodindex.com/games/connor-johnson-thousand-sons-vs-sam-anderson-emperors-children-11400",
+      "videoUrl": "https://www.youtube.com/watch?v=e_EnJxwjDEs&t=11400s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-04-26",
+      "player": "Martijn Van der Most",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Ron Eliyahoo",
+      "opponentArmy": "Tyranids",
+      "opponentDetachments": [
+        "Subterranean Assault"
+      ],
+      "score": [
+        77,
+        78
+      ],
+      "scoreType": "game points",
+      "event": "Warhammer 40,000 GT: Warhammer Open Maastricht",
+      "indexUrl": "https://40kvodindex.com/games/ron-eliyahoo-tyranids-vs-martijn-van-der-most-thousand-sons",
+      "videoUrl": "https://www.youtube.com/watch?v=rdW9MgYuiX0",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-04-26",
+      "player": "Joshua Cowlard",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Nick Watkins",
+      "opponentArmy": "Space Marines",
+      "opponentDetachments": [
+        "Blade of Ultramar"
+      ],
+      "score": [
+        17,
+        3
+      ],
+      "scoreType": "team points",
+      "event": "Surrey Primarchs 8vs8 40k Tournament",
+      "indexUrl": "https://40kvodindex.com/games/nick-watkins-space-marines-vs-joshua-cowlard-thousand-sons-0",
+      "videoUrl": "https://www.youtube.com/watch?v=92dqjuT38E0&t=0s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-04-25",
+      "player": "Connor Johnson",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Jason Brown",
+      "opponentArmy": "Dark Angels",
+      "opponentDetachments": [
+        "Gladius Task Force"
+      ],
+      "score": [
+        81,
+        75
+      ],
+      "scoreType": "game points",
+      "event": "Oz-Con 2026",
+      "indexUrl": "https://40kvodindex.com/games/connor-johnson-thousand-sons-vs-jason-brown-dark-angels-27600",
+      "videoUrl": "https://www.youtube.com/watch?v=GtWsZtxyq-s&t=27600s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-04-18",
+      "player": "Adam Douglas",
+      "detachment": [
+        "Rubricae Phalanx"
+      ],
+      "opponent": "Levon Leastman",
+      "opponentArmy": "Adepta Sororitas",
+      "opponentDetachments": [
+        "Champions of Faith"
+      ],
+      "score": [
+        10,
+        10
+      ],
+      "scoreType": "team points",
+      "event": "ANZTC team championship - April 2026",
+      "indexUrl": "https://40kvodindex.com/games/adam-douglas-thousand-sons-vs-levon-leastman-adepta-sororitas-600",
+      "videoUrl": "https://www.youtube.com/watch?v=lTTI-Q-nypE&t=600s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-04-12",
+      "player": "TJ Lanigan",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Cole Westbrook",
+      "opponentArmy": "Space Marines",
+      "opponentDetachments": [
+        "Blade of Ultramar"
+      ],
+      "score": [
+        39,
+        54
+      ],
+      "scoreType": "game points",
+      "event": "21st Legion Wargaming Presents: Battle to End Alzheimer's 2026 40K hosted by Away Games",
+      "indexUrl": "https://40kvodindex.com/games/tj-lanigan-thousand-sons-vs-cole-westbrook-space-marines-13800",
+      "videoUrl": "https://www.youtube.com/watch?v=H9hlYrqrwZY&t=13800s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-04-10",
+      "player": "Michael Hiner",
+      "detachment": [
+        "Warpforged Cabal"
+      ],
+      "opponent": "Walter Langendorf",
+      "opponentArmy": "Necrons",
+      "opponentDetachments": [
+        "Canoptek Court"
+      ],
+      "score": [
+        12,
+        8
+      ],
+      "scoreType": "team points",
+      "event": "BFS Team Championship 2026",
+      "indexUrl": "https://40kvodindex.com/games/michael-hiner-thousand-sons-vs-walter-langendorf-necrons-22345",
+      "videoUrl": "https://www.youtube.com/watch?v=7O4EStVwZs4&t=22345s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-03-28",
+      "player": "Alex Tosney",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Ross Mason",
+      "opponentArmy": "Chaos Daemons",
+      "opponentDetachments": [
+        "Plague Legion"
+      ],
+      "score": [
+        55,
+        96
+      ],
+      "scoreType": "game points",
+      "event": "THE SHEFFIELD 40K GT",
+      "indexUrl": "https://40kvodindex.com/games/ross-mason-chaos-daemons-vs-alex-tosney-thousand-sons-28800",
+      "videoUrl": "https://www.youtube.com/watch?v=4hpmpYZXKIs&t=28800s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-03-26",
+      "player": "Ian Smith",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Folger Pyles",
+      "opponentArmy": "Imperial Agents",
+      "opponentDetachments": [
+        "Imperialis Fleet"
+      ],
+      "score": [
+        58,
+        70
+      ],
+      "scoreType": "game points",
+      "event": "AdeptiCon 2026 40K Championships",
+      "indexUrl": "https://40kvodindex.com/games/folger-pyles-imperial-agents-vs-ian-smith-thousand-sons-14400",
+      "videoUrl": "https://www.youtube.com/watch?v=-ubYzzULEZI&t=14400s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-03-15",
+      "player": "Tim Lanza",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Tom Cohen",
+      "opponentArmy": "Necrons",
+      "opponentDetachments": [
+        "Starshatter Arsenal"
+      ],
+      "score": [
+        35,
+        90
+      ],
+      "scoreType": "game points",
+      "event": "The Colorado Cup '26 - Warhammer 40K",
+      "indexUrl": "https://40kvodindex.com/games/tim-lanza-thousand-sons-vs-tom-cohen-necrons-3900",
+      "videoUrl": "https://www.youtube.com/watch?v=WJO2FLFafUY&t=3900s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-03-14",
+      "player": "Jason Clark",
+      "detachment": [
+        "Grand Coven"
+      ],
+      "opponent": "Mitchell Corey",
+      "opponentArmy": "Imperial Agents",
+      "opponentDetachments": [
+        "Veiled Blade Elimination Force"
+      ],
+      "score": [
+        66,
+        80
+      ],
+      "scoreType": "game points",
+      "event": "Ides of March 2026 [40k GT]",
+      "indexUrl": "https://40kvodindex.com/games/mitchell-corey-imperial-agents-vs-jason-clark-thousand-sons-3480",
+      "videoUrl": "https://www.youtube.com/watch?v=2HMlZMSAmqo&t=3480s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-02-20",
+      "player": "Scott McCoy",
+      "detachment": [
+        "Rubricae Phalanx"
+      ],
+      "opponent": "Jerry King",
+      "opponentArmy": "Black Templars",
+      "opponentDetachments": [
+        "Godhammer Assault Force"
+      ],
+      "score": [
+        72,
+        70
+      ],
+      "scoreType": "game points",
+      "event": "Cherokee Open 2026 - 40k Champs",
+      "indexUrl": "https://40kvodindex.com/games/jerry-king-black-templars-vs-scott-mccoy-thousand-sons-2700",
+      "videoUrl": "https://www.youtube.com/watch?v=Ryvu7iOn-Q0&t=2700s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-02-07",
+      "player": "Nick Langol",
+      "detachment": [
+        "Rubricae Phalanx"
+      ],
+      "opponent": "Sascha Alexander Edelkraut",
+      "opponentArmy": "Chaos Space Marines",
+      "opponentDetachments": [
+        "Pactbound Zealots"
+      ],
+      "score": [
+        34,
+        99
+      ],
+      "scoreType": "game points",
+      "event": "Green Dice Games Winter Ruin III Warhammer 40K Grand Tournament",
+      "indexUrl": "https://40kvodindex.com/games/nick-langol-thousand-sons-vs-sascha-alexander-edelkraut-chaos-space-marines-17234",
+      "videoUrl": "https://www.youtube.com/watch?v=HtgZe3lT9RQ&t=17234s",
+      "reviewStatus": "source metadata only"
+    },
+    {
+      "date": "2026-01-10",
+      "player": "Isaac Clark",
+      "detachment": [
+        "Rubricae Phalanx"
+      ],
+      "opponent": "Chris Dailey",
+      "opponentArmy": "Astra Militarum",
+      "opponentDetachments": [
+        "Grizzled Company"
+      ],
+      "score": [
+        3,
+        17
+      ],
+      "scoreType": "team points",
+      "event": "Tennessee Elite Open - Team of 8!",
+      "indexUrl": "https://40kvodindex.com/games/isaac-clark-thousand-sons-vs-chris-dailey-astra-militarum-22273",
+      "videoUrl": "https://www.youtube.com/watch?v=6lakmsr2pW4&t=22273s",
+      "reviewStatus": "source metadata only"
+    }
+  ]
+}

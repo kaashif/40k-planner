@@ -1,0 +1,74 @@
+[
+  {
+    "file": "002400.jpg",
+    "second": 2400,
+    "width": 1600,
+    "height": 900,
+    "sha256": "70707ea6300a6a92fea4e90dda1fd5bb304883ab1e0bcd9a8c3294c7a8a62fc1",
+    "source": "https://www.youtube.com/watch?v=M7iDLZU9kks&t=2400s",
+    "processing": "Full frame resized to 1600\u00d7900 maximum; JPEG quality 86. No crop or compositing."
+  },
+  {
+    "file": "003000.jpg",
+    "second": 3000,
+    "width": 1600,
+    "height": 900,
+    "sha256": "f0fad4527dbf2ad9d44ce5087d7aa0acd4d92bb6b563764b093a1ae55b43d514",
+    "source": "https://www.youtube.com/watch?v=M7iDLZU9kks&t=3000s",
+    "processing": "Full frame resized to 1600\u00d7900 maximum; JPEG quality 86. No crop or compositing."
+  },
+  {
+    "file": "005400.jpg",
+    "second": 5400,
+    "width": 1600,
+    "height": 900,
+    "sha256": "ab971643c30d826236f065de97ffd25a24129599b47d5de477ebf2496f2b64fe",
+    "source": "https://www.youtube.com/watch?v=M7iDLZU9kks&t=5400s",
+    "processing": "Full frame resized to 1600\u00d7900 maximum; JPEG quality 86. No crop or compositing."
+  },
+  {
+    "file": "006000.jpg",
+    "second": 6000,
+    "width": 1600,
+    "height": 900,
+    "sha256": "496624632e8879fc394d332bed7f0e3c5d792d8716391c4fcf29921b30fd2b13",
+    "source": "https://www.youtube.com/watch?v=M7iDLZU9kks&t=6000s",
+    "processing": "Full frame resized to 1600\u00d7900 maximum; JPEG quality 86. No crop or compositing."
+  },
+  {
+    "file": "007500.jpg",
+    "second": 7500,
+    "width": 1600,
+    "height": 900,
+    "sha256": "686a6adecf36db3cc9b98e37b96e37e4a418eb52c5f94a0dcbbdf508371aa475",
+    "source": "https://www.youtube.com/watch?v=M7iDLZU9kks&t=7500s",
+    "processing": "Full frame resized to 1600\u00d7900 maximum; JPEG quality 86. No crop or compositing."
+  },
+  {
+    "file": "007800.jpg",
+    "second": 7800,
+    "width": 1600,
+    "height": 900,
+    "sha256": "6e27033887fd1b27859f28c511356e94a944e41940fd9deaf9f3ffba59636f29",
+    "source": "https://www.youtube.com/watch?v=M7iDLZU9kks&t=7800s",
+    "processing": "Full frame resized to 1600\u00d7900 maximum; JPEG quality 86. No crop or compositing."
+  },
+  {
+    "file": "008400.jpg",
+    "second": 8400,
+    "width": 1600,
+    "height": 900,
+    "sha256": "d644e81cb417742308e35f3cdfe2e921ff341612933fe3eea5f0b5c6e324f476",
+    "source": "https://www.youtube.com/watch?v=M7iDLZU9kks&t=8400s",
+    "processing": "Full frame resized to 1600\u00d7900 maximum; JPEG quality 86. No crop or compositing."
+  },
+  {
+    "file": "009000.jpg",
+    "second": 9000,
+    "width": 1600,
+    "height": 900,
+    "sha256": "1face22629849df3b80d519aed039df4029fef8a9e2e4cddf4cefb7ba38a6c27",
+    "source": "https://www.youtube.com/watch?v=M7iDLZU9kks&t=9000s",
+    "processing": "Full frame resized to 1600\u00d7900 maximum; JPEG quality 86. No crop or compositing."
+  }
+]

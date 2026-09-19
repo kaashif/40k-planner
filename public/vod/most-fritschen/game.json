@@ -1,0 +1,1228 @@
+{
+  "id": "most-fritschen",
+  "title": "Martijn van der Most vs Niklas Fritschen",
+  "matchup": "Magnus \u00b7 Grand Coven vs Chaos Daemons \u00b7 Legion of Excess / Warptide",
+  "event": "WTC 2026 \u00b7 Netherlands vs Germany \u00b7 round 3",
+  "mission": "Priority Assets vs Priority Assets (broadcast)",
+  "videoId": "H0xPGlVtX_g",
+  "broadcaster": "Targetpriority40k",
+  "indexUrl": "https://40kvodindex.com/games/niklas-fritschen-chaos-daemons-vs-martijn-van-der-most-thousand-sons-22338",
+  "result": "Thousand Sons win \u00b7 99\u201338 VP / 20\u20130 team points",
+  "date": "14 August 2026",
+  "edition": "11th edition",
+  "editionSource": "https://wtc-belgium.com/wp-content/uploads/2026/06/2026-WTC40K-11th-edition-Event-Pack-v1.1.pdf",
+  "dateNote": "36 days before this 19 September review. Broadcast and YouTube upload dates both 14 August; edition confirmed by the WTC event pack.",
+  "notes": "32 sampled timestamps, eight published checkpoints and one partial roster card. At 09:40:00 the named match row is 99\u201338 / 20\u20130. Do not read the bottom eight-game team aggregate as this game\u2019s score. Unit-level casualty and ability claims remain unverified.",
+  "frames": [
+    {
+      "second": 24000,
+      "label": "Opening board \u00b7 Magnus on the left",
+      "image": "024000.jpg",
+      "alt": "Magnus is visible beside the left-middle ruin. Smaller TS models occupy separated left-side positions. Purple/teal Daemons are concentrated at the right-side ruins. Both live totals are 10.",
+      "evidence": {
+        "visible": "Magnus is visible beside the left-middle ruin. Smaller TS models occupy separated left-side positions. Purple/teal Daemons are concentrated at the right-side ruins. Both live totals are 10.",
+        "interpretation": "The TS army begins spread across several pockets rather than presenting a single packed target.",
+        "unknown": "Exact reserve starts, mapping every model to the recovered rosters, and whether deployment had just finished.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 23,
+            "y": 10,
+            "w": 22,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56,
+            "y": 17,
+            "w": 9,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 78,
+            "y": 9,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 8,
+            "y": 24,
+            "w": 14,
+            "h": 26,
+            "r": 0
+          },
+          {
+            "x": 29,
+            "y": 38,
+            "w": 10,
+            "h": 23,
+            "r": -28
+          },
+          {
+            "x": 46,
+            "y": 44,
+            "w": 12,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 67,
+            "y": 42,
+            "w": 10,
+            "h": 20,
+            "r": -30
+          },
+          {
+            "x": 15,
+            "y": 68,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 37,
+            "y": 73,
+            "w": 12,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 61,
+            "y": 77,
+            "w": 21,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 83,
+            "y": 59,
+            "w": 11,
+            "h": 25,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 25,
+            "y": 59,
+            "label": "Magnus",
+            "side": "ts",
+            "key": "magnus"
+          },
+          {
+            "x": 11,
+            "y": 31,
+            "label": "TS infantry?",
+            "side": "ts"
+          },
+          {
+            "x": 23,
+            "y": 76,
+            "label": "TS infantry?",
+            "side": "ts"
+          },
+          {
+            "x": 10,
+            "y": 80,
+            "label": "Disc riders?",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 76,
+            "y": 48,
+            "label": "Daemon mass",
+            "side": "ec"
+          },
+          {
+            "x": 78,
+            "y": 21,
+            "label": "Daemon group",
+            "side": "ec"
+          },
+          {
+            "x": 86,
+            "y": 76,
+            "label": "Daemons",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        10,
+        10
+      ]
+    },
+    {
+      "second": 25200,
+      "label": "Magnus relocates to the far-left edge",
+      "image": "025200.jpg",
+      "alt": "Magnus is now behind the upper-left ruin, far from his earlier left-middle position. Daemon models occupy the central objective area; the bulk of the opposing army remains right.",
+      "evidence": {
+        "visible": "Magnus is now behind the upper-left ruin, far from his earlier left-middle position. Daemon models occupy the central objective area; the bulk of the opposing army remains right.",
+        "interpretation": "Magnus changes the angle of approach rather than meeting the central advance directly.",
+        "unknown": "The movement route and rule used; no claim that this was a teleport, extra move or a legal path of any measured length.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 23,
+            "y": 10,
+            "w": 22,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56,
+            "y": 17,
+            "w": 9,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 78,
+            "y": 9,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 8,
+            "y": 24,
+            "w": 14,
+            "h": 26,
+            "r": 0
+          },
+          {
+            "x": 29,
+            "y": 38,
+            "w": 10,
+            "h": 23,
+            "r": -28
+          },
+          {
+            "x": 46,
+            "y": 44,
+            "w": 12,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 67,
+            "y": 42,
+            "w": 10,
+            "h": 20,
+            "r": -30
+          },
+          {
+            "x": 15,
+            "y": 68,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 37,
+            "y": 73,
+            "w": 12,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 61,
+            "y": 77,
+            "w": 21,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 83,
+            "y": 59,
+            "w": 11,
+            "h": 25,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 29,
+            "y": 6,
+            "label": "Magnus",
+            "side": "ts",
+            "dy": 18,
+            "key": "magnus"
+          },
+          {
+            "x": 15,
+            "y": 34,
+            "label": "TS infantry?",
+            "side": "ts"
+          },
+          {
+            "x": 28,
+            "y": 57,
+            "label": "TS models",
+            "side": "ts"
+          },
+          {
+            "x": 26,
+            "y": 74,
+            "label": "TS infantry?",
+            "side": "ts"
+          },
+          {
+            "x": 52,
+            "y": 54,
+            "label": "Daemons at centre",
+            "side": "ec",
+            "dx": 14,
+            "dy": 18
+          },
+          {
+            "x": 77,
+            "y": 48,
+            "label": "Daemon mass",
+            "side": "ec"
+          },
+          {
+            "x": 79,
+            "y": 23,
+            "label": "Daemon group",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        10,
+        10
+      ]
+    },
+    {
+      "second": 26700,
+      "label": "Central contest \u00b7 Magnus holds the outside lane",
+      "image": "026700.jpg",
+      "alt": "Magnus remains behind the upper-left ruin. Small TS groups occupy the left and lower-left lanes, while Daemons occupy the central area and right-side ruins. Live totals read TS 18\u201316.",
+      "evidence": {
+        "visible": "Magnus remains behind the upper-left ruin. Small TS groups occupy the left and lower-left lanes, while Daemons occupy the central area and right-side ruins. Live totals read TS 18\u201316.",
+        "interpretation": "The outside threat and central contest coexist. This is not a simple all-army retreat to a corner.",
+        "unknown": "Objective control from model counts, which actions scored, and exact turn/phase.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 23,
+            "y": 10,
+            "w": 22,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56,
+            "y": 17,
+            "w": 9,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 78,
+            "y": 9,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 8,
+            "y": 24,
+            "w": 14,
+            "h": 26,
+            "r": 0
+          },
+          {
+            "x": 29,
+            "y": 38,
+            "w": 10,
+            "h": 23,
+            "r": -28
+          },
+          {
+            "x": 46,
+            "y": 44,
+            "w": 12,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 67,
+            "y": 42,
+            "w": 10,
+            "h": 20,
+            "r": -30
+          },
+          {
+            "x": 15,
+            "y": 68,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 37,
+            "y": 73,
+            "w": 12,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 61,
+            "y": 77,
+            "w": 21,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 83,
+            "y": 59,
+            "w": 11,
+            "h": 25,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 29,
+            "y": 6,
+            "label": "Magnus",
+            "side": "ts",
+            "dy": 18,
+            "key": "magnus"
+          },
+          {
+            "x": 26,
+            "y": 33,
+            "label": "TS infantry?",
+            "side": "ts"
+          },
+          {
+            "x": 49,
+            "y": 39,
+            "label": "TS small group?",
+            "side": "ts"
+          },
+          {
+            "x": 32,
+            "y": 70,
+            "label": "TS infantry?",
+            "side": "ts"
+          },
+          {
+            "x": 10,
+            "y": 78,
+            "label": "Disc riders?",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 51,
+            "y": 53,
+            "label": "Daemons at centre",
+            "side": "ec",
+            "dx": 14,
+            "dy": 18
+          },
+          {
+            "x": 77,
+            "y": 50,
+            "label": "Daemon mass",
+            "side": "ec"
+          },
+          {
+            "x": 72,
+            "y": 21,
+            "label": "Daemon flank",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        18,
+        16
+      ]
+    },
+    {
+      "second": 28800,
+      "label": "Magnus reaches the upper lane \u00b7 TS lead grows",
+      "image": "028800.jpg",
+      "alt": "Magnus is at the upper centre, beyond the central ruins. TS infantry remain on the left and lower-left. The live scoreboard reads TS 39\u201316, including TS primary 15 and secondary 14.",
+      "evidence": {
+        "visible": "Magnus is at the upper centre, beyond the central ruins. TS infantry remain on the left and lower-left. The live scoreboard reads TS 39\u201316, including TS primary 15 and secondary 14.",
+        "interpretation": "The flank relocation accompanies a scoring lead while other units continue to occupy separate regions.",
+        "unknown": "Which objective each unit controls and how the score was earned; visibility alone cannot prove the strategy caused the lead.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 23,
+            "y": 10,
+            "w": 22,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56,
+            "y": 17,
+            "w": 9,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 78,
+            "y": 9,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 8,
+            "y": 24,
+            "w": 14,
+            "h": 26,
+            "r": 0
+          },
+          {
+            "x": 29,
+            "y": 38,
+            "w": 10,
+            "h": 23,
+            "r": -28
+          },
+          {
+            "x": 46,
+            "y": 44,
+            "w": 12,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 67,
+            "y": 42,
+            "w": 10,
+            "h": 20,
+            "r": -30
+          },
+          {
+            "x": 15,
+            "y": 68,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 37,
+            "y": 73,
+            "w": 12,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 61,
+            "y": 77,
+            "w": 21,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 83,
+            "y": 59,
+            "w": 11,
+            "h": 25,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 61,
+            "y": 8,
+            "label": "Magnus",
+            "side": "ts",
+            "dy": 18,
+            "trail": [
+              {
+                "second": 27000,
+                "x": 52,
+                "y": 3
+              }
+            ],
+            "key": "magnus"
+          },
+          {
+            "x": 27,
+            "y": 32,
+            "label": "TS infantry?",
+            "side": "ts"
+          },
+          {
+            "x": 33,
+            "y": 73,
+            "label": "TS infantry?",
+            "side": "ts"
+          },
+          {
+            "x": 11,
+            "y": 78,
+            "label": "Disc riders?",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 40,
+            "y": 29,
+            "label": "Daemons near left ruin",
+            "side": "ec",
+            "dx": 14,
+            "dy": -14
+          },
+          {
+            "x": 80,
+            "y": 30,
+            "label": "Daemon group",
+            "side": "ec"
+          },
+          {
+            "x": 70,
+            "y": 83,
+            "label": "Daemon lower group",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        39,
+        16
+      ]
+    },
+    {
+      "second": 30000,
+      "label": "Daemons converge near Magnus \u00b7 pressure on two flanks",
+      "image": "030000.jpg",
+      "alt": "A cluster of large dark Daemon models is close to Magnus along the top edge. Another Daemon group has advanced along the lower edge; TS infantry still occupy left-side ruins. The match row shows TS 39\u201321.",
+      "evidence": {
+        "visible": "A cluster of large-base Daemon models is close to Magnus along the top edge. Another Daemon group has advanced along the lower edge; TS infantry still occupy left-side ruins. The match row shows TS 39\u201321.",
+        "interpretation": "The opponent has to address a threat away from the centre while committing models on the lower flank too. Practise checking both lanes before exposing a response unit.",
+        "unknown": "Charge legality, engagement distances, which units the large bases represent, and attack outcomes.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 23,
+            "y": 10,
+            "w": 22,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56,
+            "y": 17,
+            "w": 9,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 78,
+            "y": 9,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 8,
+            "y": 24,
+            "w": 14,
+            "h": 26,
+            "r": 0
+          },
+          {
+            "x": 29,
+            "y": 38,
+            "w": 10,
+            "h": 23,
+            "r": -28
+          },
+          {
+            "x": 46,
+            "y": 44,
+            "w": 12,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 67,
+            "y": 42,
+            "w": 10,
+            "h": 20,
+            "r": -30
+          },
+          {
+            "x": 15,
+            "y": 68,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 37,
+            "y": 73,
+            "w": 12,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 61,
+            "y": 77,
+            "w": 21,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 83,
+            "y": 59,
+            "w": 11,
+            "h": 25,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 61,
+            "y": 8,
+            "label": "Magnus",
+            "side": "ts",
+            "dx": -65,
+            "dy": 18,
+            "key": "magnus"
+          },
+          {
+            "x": 67,
+            "y": 10,
+            "label": "Daemon group",
+            "side": "ec",
+            "dx": 14,
+            "dy": 20
+          },
+          {
+            "x": 26,
+            "y": 31,
+            "label": "TS infantry?",
+            "side": "ts"
+          },
+          {
+            "x": 32,
+            "y": 73,
+            "label": "TS infantry?",
+            "side": "ts"
+          },
+          {
+            "x": 10,
+            "y": 79,
+            "label": "Disc riders?",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 34,
+            "y": 35,
+            "label": "Daemon left group",
+            "side": "ec",
+            "dx": 14,
+            "dy": 18
+          },
+          {
+            "x": 52,
+            "y": 87,
+            "label": "Daemon lower group",
+            "side": "ec"
+          },
+          {
+            "x": 79,
+            "y": 40,
+            "label": "Daemon group",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        39,
+        21
+      ]
+    },
+    {
+      "second": 32100,
+      "label": "Far-right TS group \u00b7 reduced central concentrations",
+      "image": "032100.jpg",
+      "alt": "A cream-based TS group is visible at the upper-right edge, while left-side TS models remain. Large Daemon bases persist at the right central ruin and lower edge. Magnus is partly beyond the top camera boundary.",
+      "evidence": {
+        "visible": "A cream-based TS group is visible at the upper-right edge, while left-side TS models remain. Large Daemon bases persist at the right central ruin and lower edge. Magnus is partly beyond the top camera boundary.",
+        "interpretation": "TS presence now spans both sides. The position is consistent with exploiting space opened during the exchanges.",
+        "unknown": "Whether the far-right group arrived from reserve, teleported or moved normally. Magnus is deliberately not mapped while his base is off-camera.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 23,
+            "y": 10,
+            "w": 22,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56,
+            "y": 17,
+            "w": 9,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 78,
+            "y": 9,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 8,
+            "y": 24,
+            "w": 14,
+            "h": 26,
+            "r": 0
+          },
+          {
+            "x": 29,
+            "y": 38,
+            "w": 10,
+            "h": 23,
+            "r": -28
+          },
+          {
+            "x": 46,
+            "y": 44,
+            "w": 12,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 67,
+            "y": 42,
+            "w": 10,
+            "h": 20,
+            "r": -30
+          },
+          {
+            "x": 15,
+            "y": 68,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 37,
+            "y": 73,
+            "w": 12,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 61,
+            "y": 77,
+            "w": 21,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 83,
+            "y": 59,
+            "w": 11,
+            "h": 25,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 45,
+            "y": 22,
+            "label": "TS infantry?",
+            "side": "ts"
+          },
+          {
+            "x": 32,
+            "y": 83,
+            "label": "TS infantry?",
+            "side": "ts"
+          },
+          {
+            "x": 30,
+            "y": 58,
+            "label": "Disc riders?",
+            "side": "ts",
+            "uncertain": true
+          },
+          {
+            "x": 87,
+            "y": 18,
+            "label": "TS group?",
+            "side": "ts"
+          },
+          {
+            "x": 78,
+            "y": 37,
+            "label": "Daemon group",
+            "side": "ec"
+          },
+          {
+            "x": 55,
+            "y": 92,
+            "label": "Daemon lower group",
+            "side": "ec"
+          }
+        ]
+      },
+      "score": [
+        39,
+        21
+      ]
+    },
+    {
+      "second": 34200,
+      "label": "Late board \u00b7 TS groups occupy centre and right",
+      "image": "034200.jpg",
+      "alt": "TS infantry groups are visible on the central feature and beside the upper-right ruin. The previous large Daemon concentrations are no longer visible in these regions. The top match row reads TS 58\u201328.",
+      "evidence": {
+        "visible": "TS infantry groups are visible on the central feature and beside the upper-right ruin. The previous large Daemon concentrations are no longer visible in these regions. The top match row reads TS 58\u201328.",
+        "interpretation": "The surviving spread provides a plausible route to convert the board position into late points.",
+        "unknown": "Causes of the missing Daemon models, final scoring allocation and whether individual late placements are already part of finishing the game.",
+        "confidence": "High for visible board regions; medium for model identities; low for causality between samples."
+      },
+      "board": {
+        "terrain": [
+          {
+            "x": 23,
+            "y": 10,
+            "w": 22,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 56,
+            "y": 17,
+            "w": 9,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 78,
+            "y": 9,
+            "w": 11,
+            "h": 27,
+            "r": 0
+          },
+          {
+            "x": 8,
+            "y": 24,
+            "w": 14,
+            "h": 26,
+            "r": 0
+          },
+          {
+            "x": 29,
+            "y": 38,
+            "w": 10,
+            "h": 23,
+            "r": -28
+          },
+          {
+            "x": 46,
+            "y": 44,
+            "w": 12,
+            "h": 15,
+            "r": 0
+          },
+          {
+            "x": 67,
+            "y": 42,
+            "w": 10,
+            "h": 20,
+            "r": -30
+          },
+          {
+            "x": 15,
+            "y": 68,
+            "w": 13,
+            "h": 24,
+            "r": 0
+          },
+          {
+            "x": 37,
+            "y": 73,
+            "w": 12,
+            "h": 8,
+            "r": 0
+          },
+          {
+            "x": 61,
+            "y": 77,
+            "w": 21,
+            "h": 16,
+            "r": 0
+          },
+          {
+            "x": 83,
+            "y": 59,
+            "w": 11,
+            "h": 25,
+            "r": 0
+          }
+        ],
+        "groups": [
+          {
+            "x": 48,
+            "y": 50,
+            "label": "TS centre group",
+            "side": "ts"
+          },
+          {
+            "x": 80,
+            "y": 33,
+            "label": "TS right group",
+            "side": "ts"
+          },
+          {
+            "x": 35,
+            "y": 80,
+            "label": "Disc riders?",
+            "side": "ts",
+            "uncertain": true
+          }
+        ]
+      },
+      "score": [
+        58,
+        28
+      ]
+    },
+    {
+      "second": 34800,
+      "label": "Closing match row \u00b7 99\u201338 / 20\u20130",
+      "image": "034800.jpg",
+      "alt": "On the top dashboard row, Martijn has 99 game points and 20 team points; Niklas has 38 and 0. The bottom 93\u201367 is a live aggregate for all eight games, not this match.",
+      "evidence": {
+        "visible": "On the top dashboard row, Martijn has 99 game points and 20 team points; Niklas has 38 and 0. The bottom 93\u201367 is a live aggregate for all eight games, not this match.",
+        "interpretation": "The closing match row independently corroborates the indexed TS win and explains its 20\u20130 notation.",
+        "unknown": "Detailed final-turn scoring. The live team aggregate is not the eventual team-round result.",
+        "confidence": "High: named top match row is readable, and 20\u20130 is independently corroborated by the index and Netherlands round-three results."
+      },
+      "score": [
+        99,
+        38
+      ]
+    }
+  ],
+  "roster": {
+    "image": "roster.jpg",
+    "second": 22800,
+    "label": "Partial broadcast roster \u00b7 Infernal Master + Rubrics"
+  },
+  "deployment": {
+    "terminators": "unknown",
+    "items": [
+      {
+        "unit": "Magnus",
+        "status": "On-board at first clear opening sample",
+        "evidence": "Visible on the left at 06:40:00, then behind the upper-left ruin at 07:00:00.",
+        "sources": [
+          {
+            "label": "Opening board",
+            "url": "https://www.youtube.com/watch?v=H0xPGlVtX_g&t=24000s"
+          }
+        ]
+      },
+      {
+        "unit": "Infernal Master + Rubric Marines",
+        "status": "Partial roster identification only",
+        "evidence": "The broadcast roster excerpt identifies this attached unit and Umbralefic Crystal. It does not establish that the later far-right group used the enhancement.",
+        "sources": [
+          {
+            "label": "Partial roster",
+            "url": "https://www.youtube.com/watch?v=H0xPGlVtX_g&t=22800s"
+          }
+        ]
+      },
+      {
+        "unit": "10 Scarab Occult Terminators + Terminator Sorcerer",
+        "status": "In list; starting reserve status unknown",
+        "evidence": "Complete WTC roster confirms the Terminator unit. The later far-right cream-based group is a possible match, but its identity and arrival mechanism are not established.",
+        "sources": [
+          {
+            "label": "Full WTC list",
+            "url": "https://listhammer.info/wtc?list=eePeC4PpNQmY"
+          },
+          {
+            "label": "Far-right group",
+            "url": "https://www.youtube.com/watch?v=H0xPGlVtX_g&t=32100s"
+          }
+        ]
+      }
+    ],
+    "caveat": "Full event roster recovered through the public WTC list endpoint. It establishes list membership, not starting reserves; the broadcast image remains only a partial roster card."
+  },
+  "lessons": [
+    {
+      "text": "Keep an outside lane available for Magnus. His sampled positions move from left-middle to upper-left and then upper-centre while the main Daemon mass is on the right.",
+      "seconds": [
+        24000,
+        25200,
+        28800
+      ]
+    },
+    {
+      "text": "Keep scoring units separate from the main monster fight. TS infantry persist on left-side lanes when large Daemons converge on Magnus at the top and another group presses the bottom.",
+      "seconds": [
+        28800,
+        30000
+      ]
+    },
+    {
+      "text": "Convert the spread into late board presence. TS models occupy centre and right by 09:30, followed by a 99\u201338 closing score. The precise arrival rule and casualty sequence remain unknown.",
+      "seconds": [
+        32100,
+        34200,
+        34800
+      ]
+    }
+  ],
+  "reviewedOn": "2026-09-19",
+  "tracking": {
+    "reviewedSeconds": [
+      22338,
+      22800,
+      22900,
+      23000,
+      23100,
+      23400,
+      24000,
+      24600,
+      25200,
+      25800,
+      26400,
+      26700,
+      27000,
+      27600,
+      28200,
+      28500,
+      28800,
+      29100,
+      29400,
+      30000,
+      30600,
+      31200,
+      31800,
+      32100,
+      32400,
+      33000,
+      33600,
+      34200,
+      34800,
+      35400,
+      36600,
+      37800
+    ],
+    "method": "Coarse contact sheet, then denser samples around first contact, major relocation, removal and closing score. Selected full-resolution frames inspected. Generic groups are not tracked as individual units; arrows only join confident visual re-identifications.",
+    "limitations": "Sampled visual analysis; missing actions, exact measurements and ability use remain unknown. No hidden models or off-screen casualties reconstructed.",
+    "rosterSources": [
+      "https://listhammer.info/wtc?list=eePeC4PpNQmY",
+      "https://listhammer.info/wtc?list=u9uqRKyG0gm9"
+    ],
+    "rosterRetrieval": {
+      "retrievedOn": "2026-09-19",
+      "publicEndpoints": [
+        "https://listhammer.info/api/wtc/list?playerId=eePeC4PpNQmY",
+        "https://listhammer.info/api/wtc/list?playerId=u9uqRKyG0gm9"
+      ],
+      "method": "Read-only requests to the same public list endpoints used by the linked event website. Exact weapon text stays in the linked source; roster composition and relevant upgrades are summarised here."
+    }
+  },
+  "lists": [
+    {
+      "player": "Martijn van der Most \u00b7 2,000 points",
+      "source": "https://listhammer.info/wtc?list=eePeC4PpNQmY",
+      "units": [
+        "Magnus the Red \u2014 455",
+        "Winged Daemon Prince \u2014 205; Eldritch Vortex of E\u2019Taph",
+        "Infernal Master \u2014 115; Umbralefic Crystal, attached to 5 Rubric Marines \u2014 100",
+        "2 Sorcerers \u2014 170 total, each attached to 5 Rubric Marines \u2014 200 total",
+        "Terminator Sorcerer \u2014 95, attached to 10 Scarab Occult Terminators \u2014 385",
+        "2 Chaos Spawn \u2014 65",
+        "2 \u00d7 3 spear Enlightened \u2014 100 total",
+        "2 \u00d7 3 bow Enlightened \u2014 110 total"
+      ],
+      "notes": "Grand Coven / Priority Assets. August event points; total checked at 2,000. Each Rubric squad has three warpflamers and one soulreaper cannon. Scarabs have two soulreaper cannons and two missile racks. No Rhino, Defiler, Mutalith or foot Tzaangors."
+    },
+    {
+      "player": "Niklas Fritschen \u00b7 2,000 points",
+      "source": "https://listhammer.info/wtc?list=u9uqRKyG0gm9",
+      "units": [
+        "Keeper of Secrets; The Masque",
+        "Tormentbringer + Hellflayer",
+        "Contorted Epitome, Syll\u2019Esske and Tranceweaver each lead 10 Daemonettes",
+        "3 additional units of 10 Daemonettes (60 total)",
+        "Fiends: 6 + 3 + 6; 5 Seekers"
+      ],
+      "notes": "Legion of Excess / Warptide, Priority Assets. Fast melee composition verified from event roster. Generic large-base groups in the footage may be Fiends or chariot models; they are not all Greater Daemons."
+    }
+  ],
+  "analysis": [
+    {
+      "heading": "What happened",
+      "text": "14 August 2026 \u00b7 11th edition \u00b7 99\u201338 VP, 20\u20130 team points. Van der Most has Magnus, ten Scarabs, Vortex Prince, three led Rubric squads and four small Enlightened units. Fritschen has sixty Daemonettes and fifteen Fiends, plus Keeper, chariot and characters. Magnus works an outside lane while smaller TS groups remain spread across separate pockets. This provides a different response to pressure from one compact central castle.",
+      "seconds": [
+        24000,
+        25200,
+        28800,
+        34800
+      ]
+    },
+    {
+      "heading": "Magnus opening and later movement",
+      "text": "At 06:40 Magnus is left-middle. By 07:00 he is behind the far-left ruin; by 08:00 he is in the upper lane as TS lead 39\u201316. These are observed early/later positions, not a verified pregame deployment. At 08:20 large Daemon models converge toward him while other pressure develops below.",
+      "seconds": [
+        24000,
+        25200,
+        28800,
+        30000
+      ]
+    },
+    {
+      "heading": "What is known about reserves",
+      "text": "The full roster confirms ten Scarabs and a Terminator Sorcerer. Crystal is on the Infernal Master, not the Terminator leader. A TS group appears far right by 08:55, but neither its unit identity nor its arrival mechanism is proven. Starting reserves, exact arrival turns and first actions remain unknown. The list does not license calling that movement a Scarab Crystal play.",
+      "seconds": [
+        22800,
+        32100
+      ]
+    },
+    {
+      "heading": "Transfer to your list",
+      "text": "Keep a side exit and firing lane for Magnus while other units contest the board. Your Crystal is on the Terminator leader and your small-unit count is lower, so you cannot simply copy the Rubric teleport threat and four Enlightened units from this roster.",
+      "seconds": [
+        25200,
+        32100,
+        34200
+      ]
+    }
+  ]
+}

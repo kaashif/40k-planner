@@ -1,5 +1,23 @@
 [
   {
+    "file": "opponent-roster.jpg",
+    "second": 16260,
+    "width": 1600,
+    "height": 900,
+    "sha256": "3a18a9f6e87f092433b65fc6a31cb618ba292953813d204401a46adb111c776f",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=16260s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
+    "file": "roster.jpg",
+    "second": 16290,
+    "width": 1600,
+    "height": 900,
+    "sha256": "5570453aafd255e3f13b769b7185a34e38189b4a091c9819518ee06b3c01c8f7",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=16290s",
+    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
     "file": "018000.jpg",
     "second": 18000,
     "width": 1600,
@@ -18,6 +36,24 @@
     "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
   },
   {
+    "file": "019575.jpg",
+    "second": 19575,
+    "width": 1600,
+    "height": 900,
+    "sha256": "7d2f452ba07fad4e0a0dc4421d9c8be6146c3d0ed224814c1fd9cffc65c95452",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=19575s",
+    "processing": "Full frame resized to 1600\u00d7900 maximum; JPEG quality 86. No crop or compositing."
+  },
+  {
+    "file": "019620.jpg",
+    "second": 19620,
+    "width": 1600,
+    "height": 900,
+    "sha256": "f4b8e84c208dfec2d4fe4d3aaad93fdaebcbfb1c462ecb727bb09b8e14b4dfd4",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=19620s",
+    "processing": "Full frame resized to 1600\u00d7900 maximum; JPEG quality 86. No crop or compositing."
+  },
+  {
     "file": "020400.jpg",
     "second": 20400,
     "width": 1600,
@@ -25,6 +61,15 @@
     "sha256": "4d77ab41ea1db906c80b88fc7de89ad2eba0109694cb94a056a95686a556c377",
     "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=20400s",
     "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
+  },
+  {
+    "file": "021420.jpg",
+    "second": 21420,
+    "width": 1600,
+    "height": 900,
+    "sha256": "bd6586181d1b6c0950d33e989c6adddf13577e4b6fcce415576da4978b5eee80",
+    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=21420s",
+    "processing": "Full frame resized to 1600\u00d7900 maximum; JPEG quality 86. No crop or compositing."
   },
   {
     "file": "022200.jpg",
@@ -96,24 +141,6 @@
     "height": 900,
     "sha256": "daf1f3cd9ed98e815947263b31e5f369ec5ca749d2bb2391fd4eb9d0a045c3ff",
     "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=25800s",
-    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
-  },
-  {
-    "file": "roster.jpg",
-    "second": 16290,
-    "width": 1600,
-    "height": 900,
-    "sha256": "5570453aafd255e3f13b769b7185a34e38189b4a091c9819518ee06b3c01c8f7",
-    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=16290s",
-    "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
-  },
-  {
-    "file": "opponent-roster.jpg",
-    "second": 16260,
-    "width": 1600,
-    "height": 900,
-    "sha256": "3a18a9f6e87f092433b65fc6a31cb618ba292953813d204401a46adb111c776f",
-    "source": "https://www.youtube.com/watch?v=D8l6VqiGTac&t=16260s",
     "processing": "Full broadcast frame resized to maximum 1600\u00d7900; no crop, marks, or compositing."
   }
 ]

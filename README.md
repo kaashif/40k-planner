@@ -66,3 +66,11 @@ npm run layouts:sync
 ```
 
 This refreshes all 45 maps and previews from current vector geometry, rebuilds the current reference PDF, and regenerates the planner's exact sight-blocking terrain masks. The August update changed terrain or objectives in 27 layouts; it did not materially change the Force Disposition deployment-zone shapes. The complete source mapping, tool installation, geometry interpretation, and verification procedure is in [`docs/layout-regeneration.md`](docs/layout-regeneration.md).
+
+### Fast melee study — 19 September 2026
+
+[Army checklist, event lists and evidence-linked lessons](docs/fast-melee-vod-study.md): two additional Magnus / Grand Coven wins over Blood Angels (21 August, 11th edition) and Slaanesh Daemons (14 August, 11th edition), shown first on the homepage. Includes the existing Emperor's Children win, a comparison of three TS builds, and a [dated VOD search inventory](public/vod/search-2026-09-19.json). New stills distinguish observation from interpretation and unknowns; closing VP and team-point totals are labelled separately.
+
+Validate with `node --test scripts/test-vod.mjs`, `npm run build` and `uv run --with playwright python scripts/check-vod-ui.py`. Publish reviewed stills with `uv run --with pillow python scripts/publish-vod-frames.py --game <game-id>` after sampling into `.cache/vod/<game-id>/`.
+
+Each VOD now has a dedicated `/vod/<game-id>/` page with fully expanded evidence. [Personal matchup plan: Magnus vs World Eaters](docs/magnus-vs-world-eaters.md) covers the supplied lists, deployment and reserve choices.
