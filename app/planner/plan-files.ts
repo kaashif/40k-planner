@@ -2,7 +2,7 @@ import type {PlannerMarker} from './planner-utils';
 import type {PivotLine} from './pivot-utils';
 import type {ThreatSettings} from './threat-utils';
 export const NAMED_PLANS_KEY='deployment-planner:named:v1';
-export type PlanFile={schemaVersion:1;name:string;layoutId:string;armyId?:string;rosterRevision?:number;intent?:string;markers:PlannerMarker[];deepStrikeMarkers?:PlannerMarker[];sightLines?:{label:string;from:[number,number];to:[number,number];clear:boolean;blockedAt:[number,number]|null}[];markupPaths?:{id:number;color:string;points:{x:number;y:number}[]}[];side?:'red'|'blue';threatSettings?:ThreatSettings;pivotLines?:PivotLine[];threatEnabled?:boolean;threatModelId?:number};
+export type PlanFile={schemaVersion:1;name:string;layoutId:string;armyId?:string;rosterRevision?:number;intent?:string;markers:PlannerMarker[];deepStrikeMarkers?:PlannerMarker[];sightLines?:{label:string;from:[number,number];to:[number,number];clear:boolean;blockedAt:[number,number]|null}[];markupPaths?:{kind?:'arrow';id:number;color:string;points:{x:number;y:number}[]}[];side?:'red'|'blue';threatSettings?:ThreatSettings;pivotLines?:PivotLine[];threatEnabled?:boolean;threatModelId?:number};
 export type NamedPlan=PlanFile&{planId:string;savedAt:string};
 export function validatePlan(value:unknown):PlanFile{
  if(!value||typeof value!=='object')throw new Error('Expected a deployment plan object.');
@@ -19,7 +19,7 @@ export function validatePlan(value:unknown):PlanFile{
   if(m.ruleTags!==undefined&&(!Array.isArray(m.ruleTags)||m.ruleTags.some(t=>typeof t!=='string')))throw new Error('Invalid rule tags.');
   ids.add(m.id);
  }
- if(p.markupPaths!==undefined){if(!Array.isArray(p.markupPaths))throw new Error('Invalid markup.');for(const path of p.markupPaths){if(!path||!Number.isInteger(path.id)||typeof path.color!=='string'||!Array.isArray(path.points)||path.points.some(point=>!point||!Number.isFinite(point.x)||!Number.isFinite(point.y)))throw new Error('Invalid markup path.');}}
+ if(p.markupPaths!==undefined){if(!Array.isArray(p.markupPaths))throw new Error('Invalid markup.');for(const path of p.markupPaths){if(!path||!Number.isInteger(path.id)||typeof path.color!=='string'||path.kind!==undefined&&path.kind!=='arrow'||!Array.isArray(path.points)||path.kind==='arrow'&&(path.points.length<1||path.points.length>2)||path.points.some(point=>!point||!Number.isFinite(point.x)||!Number.isFinite(point.y)))throw new Error('Invalid markup path.');}}
  if(p.sightLines!==undefined){if(!Array.isArray(p.sightLines))throw new Error('Invalid sight lines.');for(const line of p.sightLines){if(!line||typeof line.label!=='string'||typeof line.clear!=='boolean'||![line.from,line.to].every(point=>Array.isArray(point)&&point.length===2&&point.every(Number.isFinite))||line.blockedAt!==null&&(!Array.isArray(line.blockedAt)||line.blockedAt.length!==2||!line.blockedAt.every(Number.isFinite)))throw new Error('Invalid sight line.');}}
  if(p.side!==undefined&&!['blue','red'].includes(p.side))throw new Error('Invalid player side.');
  if(p.threatSettings!==undefined){const settings=p.threatSettings;if(!settings||!['move','scout','advance','charge','chargeBonus'].every(key=>Number.isFinite(settings[key as keyof ThreatSettings]))||!['useScout','useAdvance','advanceCharge'].every(key=>typeof settings[key as keyof ThreatSettings]==='boolean'))throw new Error('Invalid threat settings.');}

@@ -40,3 +40,7 @@ Enable **Pivot sight line**. Press anywhere on the board (including a model), dr
 These are manual visual guides and do not certify visibility through terrain. The existing **Visibility** overlay and checked sight-line data are separate tools. Pivot, freehand drawing and ruler modes are mutually exclusive.
 
 Validation: planner unit tests, CLI regression suite, production build/lint, and `scripts/check-army-planner.py` browser coverage (army switching, reserves, both opponents, mixed footprints, rule bands, pivots, saves/import/export, mobile layout).
+
+## Measured arrows
+
+Choose **Arrow**, select a bright colour using the colour swatch beside **Ruler**, then drag on the map. Each arrow displays its straight-line length in tabletop inches, updating during the drag. Arrows remain on the map and are included in autosave, named plans and JSON export/import. **Undo ink** removes the last arrow or freehand stroke; **Clear ink** removes both. Measurements are point-to-point and do not account for terrain or model bases.

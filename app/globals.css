@@ -648,3 +648,4 @@ button, summary { font: inherit; }
 @media(max-width:640px){.army-sidebar{width:185px;min-width:185px}.army-roster-unit,.opponent-unit{grid-template-columns:minmax(0,1fr) 26px 26px}.army-roster-unit strong,.opponent-unit strong{font-size:9px}.army-roster-unit span,.opponent-unit span{font-size:7px}.roster-reserve,.enemy-models label.roster-reserve{font-size:7px}.planner-context-row .planner-army-select select{width:155px}.planner-controls .threat-calculator{width:100%}.plan-manager-help{display:none}}
 .army-sidebar .side-toggle button{min-height:26px;padding:4px}.army-sidebar .opponent-unit>div{padding-block:0}
 .opponent-unit strong{line-height:11px}.opponent-unit span{line-height:10px}
+.measured-arrow text{font-size:1.5px;font-weight:800;text-anchor:middle;stroke:#101018;stroke-width:.4;paint-order:stroke;stroke-linejoin:round}.measured-arrow line{stroke-linecap:round}

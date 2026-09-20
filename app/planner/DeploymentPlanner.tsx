@@ -18,6 +18,7 @@ import {spawnOpponents,type OpponentUnit} from './opponent-utils';
 import {applyThreatRules} from './threat-rules';
 import ThreatCalculator from './ThreatCalculator';
 import ThreatOverlay from './ThreatOverlay';
+import MeasuredArrow from './MeasuredArrow';
 import {defaultThreat,type ThreatSettings} from './threat-utils';
 import {validatePlan,correctThousandSonsRoster,type PlanFile} from './plan-files';
 import { coherencyIssues, coherencyMeasurements, constrainMove, MM_PER_INCH, moveSelectedUnitsToDeepStrike, placeUnitLabels, TABLE_HEIGHT, TABLE_WIDTH, type PlannerMarker } from './planner-utils';
@@ -52,6 +53,7 @@ type PlannerImport = {
 };
 
 type MarkupPath = {
+  kind?: 'arrow';
   id: number;
   color: string;
   points: Array<{ x: number; y: number }>;
@@ -141,6 +143,7 @@ export default function DeploymentPlanner() {
   const [measureEnabled, setMeasureEnabled] = useState(false);
   const [movementEnabled, setMovementEnabled] = useState(false);
   const [boundedMoveEnabled, setBoundedMoveEnabled] = useState(false);
+  const [arrowEnabled, setArrowEnabled] = useState(false);
   const [markupEnabled, setMarkupEnabled] = useState(false);
   const [markupColor, setMarkupColor] = useState('#ffe071');
   const [markupPaths, setMarkupPaths] = useState<MarkupPath[]>([]);
@@ -315,7 +318,7 @@ export default function DeploymentPlanner() {
       const point = pointFromEvent(event);
       setMarkupPaths((current) => current.map((path) => path.id === markupDrag.current ? {
         ...path,
-        points: [...path.points, { x: point.x * TABLE_WIDTH, y: point.y * TABLE_HEIGHT }],
+        points: [...(path.kind==='arrow'?path.points.slice(0,1):path.points), { x: point.x * TABLE_WIDTH, y: point.y * TABLE_HEIGHT }],
       } : path));
     } else if (measureDrag.current) {
       const point = pointFromEvent(event);
@@ -329,18 +332,19 @@ export default function DeploymentPlanner() {
   }
 
   function onBoardPointerDown(event: PointerEvent<HTMLDivElement>) {
-    if (event.target !== event.currentTarget && !pivotEnabled) return;
+    if (event.target !== event.currentTarget && !pivotEnabled && !arrowEnabled) return;
     if(pivotEnabled){const point=pointFromEvent(event);event.currentTarget.setPointerCapture(event.pointerId);
       const existing=selectedPivot!==null&&pivotLines.find(p=>p.id===selectedPivot);
       if(existing){pivotDrag.current=existing.id;setPivotLines(lines=>lines.map(p=>p.id===existing.id?{...p,angle:Math.atan2(point.y*60-p.y,point.x*44-p.x)}:p));}
       else {const id=Math.max(0,...pivotLines.map(p=>p.id))+1;setPivotLines(lines=>[...lines,{id,x:point.x*44,y:point.y*60,angle:0,color:markupColor}]);setSelectedPivot(id);pivotDrag.current=id;}
       return;
     }
-    if (markupEnabled) {
+    if (markupEnabled || arrowEnabled) {
       event.currentTarget.setPointerCapture(event.pointerId);
       const point = pointFromEvent(event);
       const path: MarkupPath = {
         id: nextMarkupId.current++,
+        ...(arrowEnabled?{kind:'arrow' as const}:{}),
         color: markupColor,
         points: [{ x: point.x * TABLE_WIDTH, y: point.y * TABLE_HEIGHT }],
       };
@@ -568,11 +572,12 @@ export default function DeploymentPlanner() {
               <button className={screenSide === 'red' ? 'active red' : ''} onClick={() => setScreenSide('red')} title="Use red models for screening">R</button>
             </span>
             <button className={screenEnabled ? 'screen-toggle active' : 'screen-toggle'} onClick={() => setScreenEnabled((enabled) => !enabled)} title={`Show the area where enemy deep strike is denied by ${screenSide} models, measured 8″ from their base edges`}>Deep strike 8″</button>
-            <button className={measureEnabled ? 'measure-toggle active' : 'measure-toggle'} onClick={() => {setMeasureEnabled((enabled) => !enabled);setPivotEnabled(false);setMarkupEnabled(false);}} title="Drag between any two points to measure distance">Ruler</button>
+            <button className={measureEnabled ? 'measure-toggle active' : 'measure-toggle'} onClick={() => {setArrowEnabled(false);setMeasureEnabled((enabled) => !enabled);setPivotEnabled(false);setMarkupEnabled(false);}} title="Drag between any two points to measure distance">Ruler</button>
             <input className="toolbar-colour" aria-label="Markup colour" title="Markup colour" type="color" value={markupColor} onChange={(event) => setMarkupColor(event.target.value)} />
-            <button aria-pressed={pivotEnabled} onClick={()=>{setPivotEnabled(v=>!v);setMarkupEnabled(false);setMeasureEnabled(false);}}>Pivot sight line</button>
+            <button aria-pressed={pivotEnabled} onClick={()=>{setArrowEnabled(false);setPivotEnabled(v=>!v);setMarkupEnabled(false);setMeasureEnabled(false);}}>Pivot sight line</button>
             {pivotEnabled&&<><button onClick={()=>setSelectedPivot(null)}>New pivot</button><select aria-label="Selected pivot" value={selectedPivot??''} onChange={e=>setSelectedPivot(e.target.value?Number(e.target.value):null)}><option value="">Place new pivot</option>{pivotLines.map(p=><option key={p.id} value={p.id}>Pivot {p.id}</option>)}</select><button disabled={selectedPivot===null} onClick={()=>{setPivotLines(lines=>lines.filter(p=>p.id!==selectedPivot));setSelectedPivot(null);}}>Delete pivot</button></>}
-            <button className={markupEnabled ? 'markup-toggle active' : 'markup-toggle'} onClick={() => {setMarkupEnabled((enabled) => !enabled);setPivotEnabled(false);}} title="Draw routes, zones, and notes on the map">Draw</button>
+            <button className={markupEnabled ? 'markup-toggle active' : 'markup-toggle'} onClick={() => {setArrowEnabled(false);setMarkupEnabled((enabled) => !enabled);setPivotEnabled(false);}} title="Draw routes, zones, and notes on the map">Draw</button>
+            <button aria-pressed={arrowEnabled} onClick={()=>{setArrowEnabled(v=>!v);setMarkupEnabled(false);setPivotEnabled(false);setMeasureEnabled(false);}} title="Drag to draw an arrow with its straight-line length in inches; choose its colour beside Ruler">Arrow</button>
             <button disabled={markupPaths.length === 0} onClick={() => setMarkupPaths((current) => current.slice(0, -1))} title="Undo the last markup stroke">Undo ink</button>
             <button className="danger-button" disabled={markupPaths.length === 0} onClick={() => setMarkupPaths([])} title="Clear all markup">Clear ink</button>
             {selected && markerCoherencyIssues.has(selected.id) && <span className="coherency-chip" title={markerCoherencyIssues.get(selected.id)?.join('; ')}>Out of coherency</span>}
@@ -582,7 +587,7 @@ export default function DeploymentPlanner() {
           </div>
           <PlanManager getPlan={currentPlan} onOpen={openSavedPlan} requestedId={searchParams.get('plan')} ready={restoredLayout===storageKey} layoutId={layout.id} armyId={armyId}/>
           {pivotEnabled&&<p className="pivot-help">Click and drag to place a pivot and rotate its line in both directions. With a pivot selected, drag anywhere on the map to rotate it again. Choose New pivot to add another. Manual visual guide; terrain blocking is not calculated.</p>}
-          {threatEnabled&&selected&&!pivotEnabled&&!markupEnabled&&!measureEnabled&&<ThreatCalculator value={threatSettings} onChange={setThreatSettings} label={selected.label} ruleTags={selected.ruleTags}/>}
+          {threatEnabled&&selected&&!pivotEnabled&&!markupEnabled&&!measureEnabled&&!arrowEnabled&&<ThreatCalculator value={threatSettings} onChange={setThreatSettings} label={selected.label} ruleTags={selected.ruleTags}/>}
         </nav>
 
         <div className="planner-main-row">
@@ -609,7 +614,7 @@ export default function DeploymentPlanner() {
           <section className="battlefield-panel">
           <div
             ref={boardRef}
-            className={`battlefield${visibilityEnabled ? ' visibility-active' : ''}${measureEnabled ? ' measure-active' : ''}${markupEnabled ? ' markup-active' : ''}`}
+            className={`battlefield${visibilityEnabled ? ' visibility-active' : ''}${measureEnabled ? ' measure-active' : ''}${markupEnabled || arrowEnabled ? ' markup-active' : ''}`}
             onPointerDown={onBoardPointerDown}
             onPointerMove={onBoardPointerMove}
             onPointerUp={finishBoardPointer}
@@ -680,7 +685,7 @@ export default function DeploymentPlanner() {
             )}
             {markupPaths.length > 0 && (
               <svg className="markup-overlay" viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-label="Deployment markup">
-                {markupPaths.map((path) => (
+                {markupPaths.map((path) => path.kind==='arrow' ? <MeasuredArrow key={path.id} points={path.points} color={path.color}/> : (
                   <polyline
                     key={path.id}
                     points={path.points.map(({ x, y }) => `${x},${y}`).join(' ')}
@@ -729,7 +734,7 @@ export default function DeploymentPlanner() {
                 title={`${marker.label}, ${dimensions(marker.widthMm, marker.heightMm)}, ${marker.side}`}
                 aria-label={`${marker.label}, ${dimensions(marker.widthMm, marker.heightMm)}, ${marker.side}`}
                 onPointerDown={(event) => {
-                  if(pivotEnabled)return;
+                  if(pivotEnabled||arrowEnabled)return;
                   event.stopPropagation();
                   event.currentTarget.setPointerCapture(event.pointerId);
                   const additive = event.metaKey || event.ctrlKey;

@@ -194,7 +194,40 @@ try:
         assert sum(m['rosterUnitId']=='ts-bows-2' for m in fixed['markers'])==3
         page.get_by_role('button',name='Reset army off board',exact=True).click()
         assert page.locator('.base-marker').count()==0
+        # Persistent measured arrows use board inches, including at resized viewports.
+        for width,height,color in [(1440,1100,'#00ffff'),(1366,768,'#ff33cc')]:
+            page.set_viewport_size({'width':width,'height':height})
+            page.get_by_label('Markup colour',exact=True).fill(color)
+            if page.get_by_role('button',name='Arrow',exact=True).get_attribute('aria-pressed')!='true':
+                page.get_by_role('button',name='Arrow',exact=True).click()
+            rect=page.locator('.battlefield').bounding_box()
+            x,y=rect['x']+rect['width']*(.3 if color=='#00ffff' else .5),rect['y']+rect['height']*.3
+            page.mouse.move(x,y);page.mouse.down()
+            page.mouse.move(x+rect['width']*3/44,y+rect['height']*4/60,steps=10);page.mouse.up()
+            arrow=page.locator('.measured-arrow').last
+            assert arrow.get_attribute('data-length')=='5.0'
+            assert arrow.locator('text').text_content()=='5.0″'
+            assert arrow.locator('polygon').get_attribute('fill')==color
+        page.get_by_label('Plan name',exact=True).fill('Measured arrows')
+        page.get_by_role('button',name='Save new plan',exact=True).click()
+        page.reload(wait_until='networkidle')
+        assert page.locator('.measured-arrow').count()==2
+        page.screenshot(path=str(out/'measured-arrows.png'))
+        page.get_by_role('button',name='Undo ink',exact=True).click()
+        assert page.locator('.measured-arrow').count()==1
+        page.get_by_role('button',name='Clear ink',exact=True).click()
+        assert page.locator('.measured-arrow').count()==0
+        arrow_save=page.locator('.plan-manager select option').filter(has_text='Measured arrows').get_attribute('value')
+        page.locator('.plan-manager select').select_option(arrow_save)
+        page.get_by_role('button',name='Load saved plan',exact=True).click()
+        page.wait_for_function('document.querySelectorAll(".measured-arrow").length === 2')
+        with page.expect_download() as event:
+            page.get_by_role('button',name='Export JSON',exact=True).click()
+        event.value.save_as(out/'arrows.json')
+        page.get_by_role('button',name='Clear ink',exact=True).click()
+        page.get_by_label('Import deployment JSON',exact=True).set_input_files(out/'arrows.json')
+        page.wait_for_function('document.querySelectorAll(".measured-arrow").length === 2')
         assert not errors,errors
         browser.close()
-        print('PASS: corrected roster/migration, empty board, inline reserves, full-height sidebar, opponents, rules, pivots and saved plans')
+        print('PASS: corrected roster/migration, empty board, inline reserves, no-scroll roster, opponents, rules, pivots, measured arrows and saved plans')
 finally: server.shutdown()
