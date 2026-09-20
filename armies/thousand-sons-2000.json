@@ -8,8 +8,8 @@
   "forceDisposition": "Priority Assets",
   "reviewed": "2026-09-20",
   "notes": [
-    "Supplied app v2.6.0 / data v946 roster, preserving the intended 2,000-point header and both bow Enlightened entries.",
-    "Terminator Sorcerer joins Scarabs; Exalted Disc Sorcerer joins bow unit 1, as assumed in the analysed plan.",
+    "User-confirmed 2,000-point roster: one three-model bow Enlightened unit; the export repeated it in Attached Unit 3.",
+    "The Exalted Sorcerer on Disc is standalone. Terminator Sorcerer joins Scarabs; the two Sorcerers join their respective Rubrics.",
     "Base sizes and Movement characteristics checked against linked 11th-edition datasheets."
   ],
   "units": [
@@ -90,18 +90,6 @@
       "baseMm": 40,
       "movementInches": 10,
       "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Exalted-Sorcerer-on-Disc-of-Tzeentch",
-      "defaultDeepStrike": false,
-      "attachedTo": "ts-bows-1"
-    },
-    {
-      "id": "ts-bows-1",
-      "label": "B1",
-      "name": "Bow Enlightened · unit 1",
-      "points": 55,
-      "models": 3,
-      "baseMm": 40,
-      "movementInches": 10,
-      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Tzaangor-Enlightened-with-Fatecaster-Greatbows",
       "defaultDeepStrike": false
     },
     {
@@ -162,8 +150,8 @@
     },
     {
       "id": "ts-bows-2",
-      "label": "B2",
-      "name": "Bow Enlightened · unit 2",
+      "label": "B",
+      "name": "Bow Enlightened",
       "points": 55,
       "models": 3,
       "baseMm": 40,
@@ -182,5 +170,6 @@
       "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Tzaangors",
       "defaultDeepStrike": false
     }
-  ]
+  ],
+  "rosterRevision": 2
 }

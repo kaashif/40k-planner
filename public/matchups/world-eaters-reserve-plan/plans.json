@@ -42,8 +42,8 @@
           "y": 40
         },
         {
-          "id": "D+B1",
-          "label": "Exalted Disc Sorcerer + bow Enlightened bodyguard",
+          "id": "D",
+          "label": "Exalted Sorcerer on Disc \u00b7 standalone",
           "x": 28,
           "y": 41
         },
@@ -66,8 +66,8 @@
           "y": 40
         },
         {
-          "id": "B2",
-          "label": "Other bow Enlightened \u00b7 second lane / scoring",
+          "id": "B",
+          "label": "Bow Enlightened \u00b7 second lane / scoring",
           "x": 55,
           "y": 34
         }
@@ -84,7 +84,7 @@
         "x": 28,
         "y": 28
       },
-      "deployment": "Magnus starts behind the home ruin, near the rear edge. R2 is offset to its right; Tzaangors cover the forward approach. Keep the left exit of the home ruin clear for Magnus. R1 and the Disc group stage behind the small lower-left ruins, close enough to support the same central fight rather than disappearing into the far-left corner.",
+      "deployment": "Magnus starts behind the home ruin, near the rear edge. R2 is offset to its right; Tzaangors cover the forward approach. Keep the left exit of the home ruin clear for Magnus. R1 and the standalone Disc Sorcerer stage behind the small lower-left ruins, close enough to support the same central fight rather than disappearing into the far-left corner.",
       "risk": "A Magnus centre at (43,41) puts his nearest base edge only about 7\u2033 behind the line: beyond Angron\u2019s direct first-turn reach, but not beyond a fully scouting Eightbound unit opposite him. A blanket promise that everything is safe at the back is impossible here. Reposition against the actual Eightbound starts and cover their ground routes. The 100mm base also overlaps the rear edge of the home terrain footprint in this anchor example: it is not a guaranteed wholly-behind-the-footprint position. Confirm the actual wall blocks visibility, or change the pocket rather than assuming the artwork hides him.",
       "spawn": "Spawn stage near the lower central ruin. Use a legal normal move into range of the nearer central objective, then Maintain Control if eligible and able to keep control through the end of your turn. Do not advance and assume the action still works.",
       "arrival": "Keep a Scarab arrival option near the lower-left staging ruins, or use a deeper friendly-side landing if WE enter that pocket. The Prince candidate is behind the lower-right small ruins; reject it if the Forgefiends see around them or a surviving melee unit can charge it.",
@@ -126,8 +126,8 @@
           "y": 40
         },
         {
-          "id": "D+B1",
-          "label": "Exalted Disc Sorcerer + bow Enlightened bodyguard",
+          "id": "D",
+          "label": "Exalted Sorcerer on Disc \u00b7 standalone",
           "x": 44,
           "y": 42
         },
@@ -150,8 +150,8 @@
           "y": 41
         },
         {
-          "id": "B2",
-          "label": "Other bow Enlightened \u00b7 second lane / scoring",
+          "id": "B",
+          "label": "Bow Enlightened \u00b7 second lane / scoring",
           "x": 57,
           "y": 25
         }
@@ -168,7 +168,7 @@
         "x": 32,
         "y": 28
       },
-      "deployment": "Use the home ruin as the pivot: Magnus behind its southern/rear edge, R2 behind it, Tzaangors toward its northwestern approach. R1 and the Disc group use the lower route behind the small ruins. Do not split those groups between the two distant expansion objectives before seeing the enemy commitment.",
+      "deployment": "Use the home ruin as the pivot: Magnus behind its southern/rear edge, R2 behind it, Tzaangors toward its northwestern approach. R1 and the standalone Disc Sorcerer use the lower route behind the small ruins. Do not split those groups between the two distant expansion objectives before seeing the enemy commitment.",
       "risk": "Distance is diagonal here. Measure from actual enemy bases on both straight portions of the opposing quarter and its curved boundary. The forward Spawn, Enlightened and Tzaangors are deliberately more exposed than Magnus. A screen buys a response; it is not a second damage group.",
       "spawn": "The lower central triangle is the first objective to test with Spawn. Stage behind the small ruin near the lower edge of the arc and use its sheltered approach if the physical walls allow it. Swap to the other central objective only after the enemy lane and control situation justify it.",
       "arrival": "The Scarab candidate sits on the lower approach to the central fight; eleven bases must fit around the wall geometry. The Prince candidate is south of the upper-right crossbar terrain. If WE have already wrapped the right edge, ingress deeper behind home or use a different legal entry.",
@@ -210,8 +210,8 @@
           "y": 39
         },
         {
-          "id": "D+B1",
-          "label": "Exalted Disc Sorcerer + bow Enlightened bodyguard",
+          "id": "D",
+          "label": "Exalted Sorcerer on Disc \u00b7 standalone",
           "x": 56,
           "y": 31
         },
@@ -234,8 +234,8 @@
           "y": 9
         },
         {
-          "id": "B2",
-          "label": "Other bow Enlightened \u00b7 second lane / scoring",
+          "id": "B",
+          "label": "Bow Enlightened \u00b7 second lane / scoring",
           "x": 57,
           "y": 6
         }
@@ -252,7 +252,7 @@
         "x": 37,
         "y": 28
       },
-      "deployment": "Magnus sits on the far/right side of the central home ruin with R2 behind its lower-right corner. Tzaangors occupy the enemy-facing approach, while Robots hold the home area. R1 and the Disc group stage behind the lower-right small ruins; the unattached Enlightened cover the upper route.",
+      "deployment": "Magnus sits on the far/right side of the central home ruin with R2 behind its lower-right corner. Tzaangors occupy the enemy-facing approach, while Robots hold the home area. R1 and the standalone Disc Sorcerer stage behind the lower-right small ruins; the unattached Enlightened cover the upper route.",
       "risk": "With a 24\u2033 deployment gap, important nearest base edges more than 4\u2033 behind the x=42 line deny the full 28\u2033 direct scouting-Eightbound reach. Magnus at (54,21) has about 10\u2033 of setback to his nearest edge. That room is useful, but do not fill his route around the home ruin with friendly bases.",
       "spawn": "Spawn start near the lower end of the home ruin, ready to enter range of the lower central triangle with a normal move if the route is legal. This gives a scoring option without moving Magnus onto the central objective in the opening turn.",
       "arrival": "Keep a Scarab pocket toward the lower-right lane and move your own staging units aside before their arrival. The Prince\u2019s upper-side candidate threatens a later approach around the home ruin; its presence is conditional on both Forgefiend lanes and all nearby enemy bases. Do not force it if WE have occupied the upper expansion.",

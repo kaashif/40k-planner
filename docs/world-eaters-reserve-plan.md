@@ -30,7 +30,7 @@ This updates the earlier suggested on-board Scarab baseline with the user’s ch
 
 **Magnus group:** Tzaangors toward the enemy, Magnus in the protected rear pocket, Rubrics and their Sorcerer offset to one side. Keep a base-width exit clear for Magnus. Do not put Rubrics directly between the Tzaangors and Magnus so the attacker has an easy sequence of contacts. Build a compact coherent screen and check the endpoints available to an actual 100mm flying Angron base. Ground screening is not automatic flight protection. Check both Forgefiends from their actual positions, including Magnus’s wings and terrain visibility rules.
 
-**Support group:** R1 with its Sorcerer and the Exalted Disc Sorcerer nearby. The diagrams assume the Disc Sorcerer joins one bow Enlightened unit (D+B1); this is a bodyguard choice, not another free screening unit. Preserve Incandaeum for the decisive shooting turn. Use spear Enlightened and the other listed bow unit as the mobile screens. Both bow entries in the supplied roster are represented; the plan treats the roster as the user’s intended 2,000 points without removing a unit.
+**Support group:** R1 with its Sorcerer and the standalone Exalted Sorcerer on Disc nearby. D is the independent Disc Sorcerer; B is the single three-model bow Enlightened unit. Preserve Incandaeum for the decisive shooting turn. Use the spear and bow Enlightened as separate mobile screens.
 
 **Robots:** home control and rear/landing coverage. **Spawn:** central control/action when the route and control situation permit. Do not deploy every unit so deep that neither can do its assigned job.
 
@@ -50,7 +50,7 @@ The two gold arrival markers are **conditional places to inspect later**, not pr
 
 ### Layout A: Long edges · 20″ gap
 
-Magnus starts behind the home ruin, near the rear edge. R2 is offset to its right; Tzaangors cover the forward approach. Keep the left exit of the home ruin clear for Magnus. R1 and the Disc group stage behind the small lower-left ruins, close enough to support the same central fight rather than disappearing into the far-left corner.
+Magnus starts behind the home ruin, near the rear edge. R2 is offset to its right; Tzaangors cover the forward approach. Keep the left exit of the home ruin clear for Magnus. R1 and the standalone Disc Sorcerer stage behind the small lower-left ruins, close enough to support the same central fight rather than disappearing into the far-left corner.
 
 A Magnus centre at (43,41) puts his nearest base edge only about 7″ behind the line: beyond Angron’s direct first-turn reach, but not beyond a fully scouting Eightbound unit opposite him. A blanket promise that everything is safe at the back is impossible here. Reposition against the actual Eightbound starts and cover their ground routes. The 100mm base also overlaps the rear edge of the home terrain footprint in this anchor example: it is not a guaranteed wholly-behind-the-footprint position. Confirm the actual wall blocks visibility, or change the pocket rather than assuming the artwork hides him.
 
@@ -60,11 +60,11 @@ A Magnus centre at (43,41) puts his nearest base edge only about 7″ behind the
 | R2 | Rubrics + Sorcerer · Magnus group | (52, 38) |
 | T | Ten Tzaangors · forward ground screen | (43, 33.5) |
 | R1 | Rubrics + Sorcerer · support group | (22, 40) |
-| D+B1 | Exalted Disc Sorcerer + bow Enlightened bodyguard | (28, 41) |
+| D | Exalted Sorcerer on Disc · standalone | (28, 41) |
 | Rob | Sekhetar Robots · home / rear coverage | (40, 37) |
 | Sp | Two Chaos Spawn · central action | (29, 33.5) |
 | En | Spear Enlightened · first mobile screen | (8, 40) |
-| B2 | Other bow Enlightened · second lane / scoring | (55, 34) |
+| B | Bow Enlightened · second lane / scoring | (55, 34) |
 
 Spawn: Spawn stage near the lower central ruin. Use a legal normal move into range of the nearer central objective, then Maintain Control if eligible and able to keep control through the end of your turn. Do not advance and assume the action still works.
 
@@ -74,7 +74,7 @@ Response: If WE rush the right, Magnus and R2 answer with the arriving Scarabs s
 
 ### Layout B: Opposite quarters · 18″ minimum gap
 
-Use the home ruin as the pivot: Magnus behind its southern/rear edge, R2 behind it, Tzaangors toward its northwestern approach. R1 and the Disc group use the lower route behind the small ruins. Do not split those groups between the two distant expansion objectives before seeing the enemy commitment.
+Use the home ruin as the pivot: Magnus behind its southern/rear edge, R2 behind it, Tzaangors toward its northwestern approach. R1 and the standalone Disc Sorcerer use the lower route behind the small ruins. Do not split those groups between the two distant expansion objectives before seeing the enemy commitment.
 
 Distance is diagonal here. Measure from actual enemy bases on both straight portions of the opposing quarter and its curved boundary. The forward Spawn, Enlightened and Tzaangors are deliberately more exposed than Magnus. A screen buys a response; it is not a second damage group.
 
@@ -84,11 +84,11 @@ Distance is diagonal here. Measure from actual enemy bases on both straight port
 | R2 | Rubrics + Sorcerer · Magnus group | (51, 41) |
 | T | Ten Tzaangors · forward ground screen | (49, 29.5) |
 | R1 | Rubrics + Sorcerer · support group | (40, 40) |
-| D+B1 | Exalted Disc Sorcerer + bow Enlightened bodyguard | (44, 42) |
+| D | Exalted Sorcerer on Disc · standalone | (44, 42) |
 | Rob | Sekhetar Robots · home / rear coverage | (47, 36) |
 | Sp | Two Chaos Spawn · central action | (36, 34.5) |
 | En | Spear Enlightened · first mobile screen | (33.5, 41) |
-| B2 | Other bow Enlightened · second lane / scoring | (57, 25) |
+| B | Bow Enlightened · second lane / scoring | (57, 25) |
 
 Spawn: The lower central triangle is the first objective to test with Spawn. Stage behind the small ruin near the lower edge of the arc and use its sheltered approach if the physical walls allow it. Swap to the other central objective only after the enemy lane and control situation justify it.
 
@@ -98,7 +98,7 @@ Response: Concentrate on one central triangle. The curve can funnel several assa
 
 ### Layout C: Short edges · 24″ gap
 
-Magnus sits on the far/right side of the central home ruin with R2 behind its lower-right corner. Tzaangors occupy the enemy-facing approach, while Robots hold the home area. R1 and the Disc group stage behind the lower-right small ruins; the unattached Enlightened cover the upper route.
+Magnus sits on the far/right side of the central home ruin with R2 behind its lower-right corner. Tzaangors occupy the enemy-facing approach, while Robots hold the home area. R1 and the standalone Disc Sorcerer stage behind the lower-right small ruins; the unattached Enlightened cover the upper route.
 
 With a 24″ deployment gap, important nearest base edges more than 4″ behind the x=42 line deny the full 28″ direct scouting-Eightbound reach. Magnus at (54,21) has about 10″ of setback to his nearest edge. That room is useful, but do not fill his route around the home ruin with friendly bases.
 
@@ -108,11 +108,11 @@ With a 24″ deployment gap, important nearest base edges more than 4″ behind 
 | R2 | Rubrics + Sorcerer · Magnus group | (55, 28) |
 | T | Ten Tzaangors · forward ground screen | (43.5, 21) |
 | R1 | Rubrics + Sorcerer · support group | (55, 39) |
-| D+B1 | Exalted Disc Sorcerer + bow Enlightened bodyguard | (56, 31) |
+| D | Exalted Sorcerer on Disc · standalone | (56, 31) |
 | Rob | Sekhetar Robots · home / rear coverage | (49, 23) |
 | Sp | Two Chaos Spawn · central action | (43.5, 29) |
 | En | Spear Enlightened · first mobile screen | (52, 9) |
-| B2 | Other bow Enlightened · second lane / scoring | (57, 6) |
+| B | Bow Enlightened · second lane / scoring | (57, 6) |
 
 Spawn: Spawn start near the lower end of the home ruin, ready to enter range of the lower central triangle with a normal move if the route is legal. This gives a scoring option without moving Magnus onto the central objective in the opening turn.
 

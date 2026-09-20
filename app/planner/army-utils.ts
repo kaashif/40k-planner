@@ -21,3 +21,18 @@ export function stageArmy(army:Army,side:'blue'|'red'='blue'){
  });
  return {markers,deepStrikeMarkers};
 }
+
+/** Account for an entire attached unit directly from the roster, without putting it on the board. */
+export function setArmyReserve(army:Army,unitId:string,markers:PlannerMarker[],reserves:PlannerMarker[],enabled:boolean,nextId:number,side:'red'|'blue'){
+ const unit=army.units.find(u=>u.id===unitId);if(!unit)throw new Error('Unknown roster unit');
+ const group=unit.attachedTo??unit.id;
+ const members=army.units.filter(u=>(u.attachedTo??u.id)===group);
+ const ids=new Set(members.map(u=>u.id));
+ const belongs=(m:PlannerMarker)=>ids.has(rosterUnitId(m,army)??'');
+ if(!enabled)return {markers,deepStrikeMarkers:reserves.filter(m=>!belongs(m)),nextId};
+ const existing=[...markers,...reserves].filter(belongs);
+ const staged=stageArmy(army,side);
+ const candidates=[...staged.markers,...staged.deepStrikeMarkers];
+ for(const member of members){const count=existing.filter(m=>m.rosterUnitId===member.id).length;existing.push(...candidates.filter(m=>m.rosterUnitId===member.id).slice(count).map(m=>({...m,id:nextId++})));}
+ return {markers:markers.filter(m=>!belongs(m)),deepStrikeMarkers:[...reserves.filter(m=>!belongs(m)),...existing],nextId};
+}

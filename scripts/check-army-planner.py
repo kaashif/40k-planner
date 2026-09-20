@@ -26,36 +26,43 @@ try:
         page.on('response',lambda r:errors.append(f'{r.status}: {r.url}') if r.status>=400 else None)
         origin=f'http://127.0.0.1:{server.server_port}/40k-planner/'
         page.goto(origin+'planner/',wait_until='networkidle')
-        page.wait_for_function('document.querySelectorAll(".base-marker").length === 37')
+        assert page.locator('.base-marker').count()==0
+        assert page.locator('.army-roster-unit').count()==14
         assert page.get_by_label('Army',exact=True).input_value()=='thousand-sons'
+        assert '46 army models not placed' in page.locator('.army-warning').inner_text()
+        scarabs=page.get_by_label('Deep strike Scarab Occult Terminators',exact=True)
+        leader=page.get_by_label('Deep strike Terminator Sorcerer · Umbralefic Crystal',exact=True)
+        prince=page.get_by_label('Deep strike Winged Daemon Prince · Eldritch Vortex of E’Taph',exact=True)
+        scarabs.check();prince.check()
+        assert leader.is_checked()
+        assert page.get_by_role('button',name='Add Scarab Occult Terminators',exact=True).is_disabled()
+        assert page.locator('.base-marker').count()==0
         assert '12 in deep strike' in page.locator('.deep-strike-status').inner_text()
-        assert page.locator('.army-warning').count()==0
-        assert page.locator('.army-roster-unit').count()==15
-        magnus=page.get_by_role('button',name='Magnus the Red, 100mm, blue',exact=True)
-        assert magnus.count()==1
-        assert abs(float(magnus.evaluate('(e)=>e.style.width').strip('%'))-100/25.4/44*100)<.001
-        page.get_by_role('button',name='Return DS',exact=True).click()
-        assert page.locator('.base-marker').count()==49
-        page.locator('.battlefield').click(position={'x':2,'y':2})
-        page.get_by_role('button',name='Scarab Occult Terminators, 40mm, blue',exact=True).first.click()
-        page.get_by_role('button',name='Deep strike',exact=True).click()
-        assert page.locator('.base-marker').count()==38
-        assert '11 in deep strike' in page.locator('.deep-strike-status').inner_text()
+        for name in ['Magnus the Red','Exalted Sorcerer on Disc · Incandaeum','Bow Enlightened']:
+            page.get_by_role('button',name='Add '+name,exact=True).click()
+        assert page.locator('.base-marker').count()==5
+        disc=page.get_by_label('Deep strike Exalted Sorcerer on Disc · Incandaeum',exact=True)
+        disc.check()
+        assert page.get_by_role('button',name='Bow Enlightened, 40mm, blue',exact=True).count()==3
+        assert '13 in deep strike' in page.locator('.deep-strike-status').inner_text()
+        disc.uncheck()
+        page.get_by_role('button',name='Add Exalted Sorcerer on Disc · Incandaeum',exact=True).click()
+        leader.uncheck();assert not scarabs.is_checked();leader.check();assert scarabs.is_checked()
         key='deployment-planner:v3:thousand-sons:purge-the-foe-vs-priority-assets-a'
         page.reload(wait_until='networkidle')
-        assert page.locator('.base-marker').count()==38
-        assert '11 in deep strike' in page.locator('.deep-strike-status').inner_text()
+        assert page.locator('.base-marker').count()==5
+        assert '12 in deep strike' in page.locator('.deep-strike-status').inner_text()
+        assert page.locator('.deep-strike-list').count()==0
+        assert page.locator('.army-roster').evaluate('(e)=>e.scrollHeight <= e.clientHeight+1')
+        assert page.locator('.army-sidebar').bounding_box()['height']>1000
         saved=page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',key)
         page.get_by_label('Army',exact=True).select_option('necrons')
         page.wait_for_function('document.querySelectorAll(".army-roster-unit").length === 12')
-        page.get_by_role('button',name='Load army staging',exact=True).click()
-        assert page.locator('.base-marker').count()==35
+        assert page.locator('.base-marker').count()==0
         page.get_by_label('Army',exact=True).select_option('thousand-sons')
-        page.wait_for_function('document.querySelectorAll(".base-marker").length === 38')
+        page.wait_for_function('document.querySelectorAll(".base-marker").length === 5')
         restored=page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',key)
         assert restored['markers']==saved['markers'] and restored['deepStrikeMarkers']==saved['deepStrikeMarkers']
-        page.get_by_role('button',name='Load army staging',exact=True).click()
-        assert page.locator('.base-marker').count()==37
         page.get_by_role('button',name='Enemy models',exact=True).click()
         page.get_by_role('button',name='Add Angron',exact=True).click()
         assert page.locator('.base-marker.red').count()==1
@@ -84,7 +91,7 @@ try:
         page.get_by_role('button',name='Load saved plan',exact=True).click()
         page.wait_for_url('**layout=purge-the-foe-vs-priority-assets-a**plan=**')
         page.wait_for_function('document.querySelectorAll(".base-marker.red").length === 1')
-        assert page.locator('.base-marker').count()==38
+        assert page.locator('.base-marker').count()==6
         page.get_by_label('Import deployment JSON',exact=True).set_input_files(out/'export.json')
         page.wait_for_function('document.querySelector(".plan-manager-message").textContent.includes("Imported")')
         assert page.locator('.base-marker.red').count()==1
@@ -112,8 +119,13 @@ try:
         assert 'Max charge: 36″' in page.locator('.threat-legend').inner_text()
         page.set_viewport_size({'width':1440,'height':1100})
         page.goto(origin+'planner/',wait_until='networkidle')
-        page.get_by_role('button',name='Load army staging',exact=True).click()
+        page.get_by_role('button',name='Reset army off board',exact=True).click()
         page.get_by_role('button',name='Enemy models',exact=True).click()
+        enemy_reserve=page.get_by_label('Deep strike Slaughterbound with Battle-lust + 3 Exalted Eightbound',exact=True)
+        enemy_reserve.check()
+        assert page.locator('.base-marker.red').count()==1
+        assert '4 in deep strike' in page.locator('.deep-strike-status').inner_text()
+        enemy_reserve.uncheck()
         page.get_by_role('button',name='Add whole opponent list',exact=True).click()
         assert page.locator('.base-marker.red').count()==59
         page.get_by_role('button',name='Add whole opponent list',exact=True).click()
@@ -148,7 +160,21 @@ try:
         assert page.locator('.base-marker.red').count()==97
         assert 'Max charge: 23″' in page.locator('.threat-legend').inner_text()
         page.screenshot(path=str(out/'opponents-pivot.png'),full_page=True)
+        # Upgrade an old auto-draft, with both bow units and the incorrect attached Disc.
+        legacy={'markers':[], 'deepStrikeMarkers':[], 'markupPaths':[], 'sightLines':[], 'planName':'Legacy test'}
+        for i in range(7):
+            unit='ts-disc' if i==0 else 'ts-bows-1' if i<4 else 'ts-bows-2'
+            legacy['markers'].append({'id':i+1,'x':.2+i*.06,'y':.5,'widthMm':40,'heightMm':40,'side':'blue','label':'Disc' if i==0 else 'Bow','rosterUnitId':unit,'unitId':'ts-bows-1' if i<4 else 'ts-bows-2','moveInches':10})
+        page.evaluate('(v)=>localStorage.setItem(v.key,JSON.stringify(v.data))',{'key':key,'data':legacy})
+        page.reload(wait_until='networkidle')
+        assert page.locator('.base-marker').count()==4
+        fixed=page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',key)
+        assert fixed['rosterRevision']==2
+        assert fixed['markers'][0]['unitId']=='ts-disc'
+        assert sum(m['rosterUnitId']=='ts-bows-2' for m in fixed['markers'])==3
+        page.get_by_role('button',name='Reset army off board',exact=True).click()
+        assert page.locator('.base-marker').count()==0
         assert not errors,errors
         browser.close()
-        print('PASS: TS roster, both opponent lists, mixed footprints, rule bands, pivot rotation, named saves, JSON import/export and responsive UI')
+        print('PASS: corrected roster/migration, empty board, inline reserves, full-height sidebar, opponents, rules, pivots and saved plans')
 finally: server.shutdown()

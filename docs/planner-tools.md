@@ -4,13 +4,13 @@ The homepage links to every tool and keeps the VOD game table. `/vod/` also prov
 
 ## Armies
 
-The planner defaults to [the supplied Thousand Sons roster](thousand-sons-planner-roster.md), with 12 models in deep strike (Prince, Scarabs and Terminator Sorcerer). Starting positions are a roster tray, not a validated deployment.
+The planner defaults to [the supplied Thousand Sons roster](thousand-sons-planner-roster.md), with an empty board and all units in the full-height sidebar. Add models when ready; a Deep strike checkbox in each row counts the unit as deployed in reserve without putting it on the board. Attached leaders/bodyguards are handled together. Uncheck before adding arrivals. **Reset army off board** clears your army’s board/reserve placement while preserving enemies and drawings.
 
 **Enemy models** offers Joe's World Eaters and Zak's AdMech, by individual unit or whole list. Only missing models are added; attached WE groups and mixed bases are preserved. The opposing colour is selected automatically. Placement avoids other models but ignores terrain and deployment zones. [Rules and footprint audit](opponent-list-rules.md) documents sources, hull estimates, unspecified attachments and conditional buffs. Select every intended member then **Group selected** for a new attachment.
 
 ## Named plans
 
-**Save new plan** stores a named snapshot; **Update selected save** replaces the selected snapshot. **Load saved plan** switches to its army/layout. Saved data includes both armies, reserves, group IDs, footprints, movement/Scout values, rule tags, markup, pivot lines and the current threat settings. Selecting a different model initialises a fresh threat scenario for that model.
+**Save new plan** stores a named snapshot; **Update selected save** replaces the selected snapshot. **Load saved plan** switches to its army/layout. Saved data includes both armies, reserves, group IDs, footprints, movement/Scout values, rule tags, markup, pivot lines and the current threat settings. Old Thousand Sons saves are corrected on load to one bow unit and a standalone Disc Sorcerer. Selecting a different model initialises a fresh threat scenario for that model.
 
 Browser local storage holds named saves and separate army/layout drafts; legacy Necron drafts are preserved. **Export JSON** gives a portable backup; **Import JSON** validates it and creates a named copy. These saves are not automatically written to the repository or shared across browsers. The plans library lists named snapshots and per-layout drafts.
 

@@ -2,7 +2,7 @@ import type {PlannerMarker} from './planner-utils';
 import type {PivotLine} from './pivot-utils';
 import type {ThreatSettings} from './threat-utils';
 export const NAMED_PLANS_KEY='deployment-planner:named:v1';
-export type PlanFile={schemaVersion:1;name:string;layoutId:string;armyId?:string;intent?:string;markers:PlannerMarker[];deepStrikeMarkers?:PlannerMarker[];sightLines?:{label:string;from:[number,number];to:[number,number];clear:boolean;blockedAt:[number,number]|null}[];markupPaths?:{id:number;color:string;points:{x:number;y:number}[]}[];side?:'red'|'blue';threatSettings?:ThreatSettings;pivotLines?:PivotLine[];threatEnabled?:boolean;threatModelId?:number};
+export type PlanFile={schemaVersion:1;name:string;layoutId:string;armyId?:string;rosterRevision?:number;intent?:string;markers:PlannerMarker[];deepStrikeMarkers?:PlannerMarker[];sightLines?:{label:string;from:[number,number];to:[number,number];clear:boolean;blockedAt:[number,number]|null}[];markupPaths?:{id:number;color:string;points:{x:number;y:number}[]}[];side?:'red'|'blue';threatSettings?:ThreatSettings;pivotLines?:PivotLine[];threatEnabled?:boolean;threatModelId?:number};
 export type NamedPlan=PlanFile&{planId:string;savedAt:string};
 export function validatePlan(value:unknown):PlanFile{
  if(!value||typeof value!=='object')throw new Error('Expected a deployment plan object.');
@@ -26,10 +26,23 @@ export function validatePlan(value:unknown):PlanFile{
  if(p.pivotLines!==undefined&&(!Array.isArray(p.pivotLines)||p.pivotLines.some(l=>!l||!Number.isInteger(l.id)||![l.x,l.y,l.angle].every(Number.isFinite)||l.x<0||l.x>44||l.y<0||l.y>60||typeof l.color!=='string')))throw new Error('Invalid pivot sight lines.');
  if(p.threatSettings){const s=p.threatSettings;if(s.advanceBonus!==undefined&&!Number.isFinite(s.advanceBonus)||s.rerollCharge!==undefined&&typeof s.rerollCharge!=='boolean'||s.rerollAdvance!==undefined&&typeof s.rerollAdvance!=='boolean'||s.activeRules!==undefined&&(!Array.isArray(s.activeRules)||s.activeRules.some(r=>typeof r!=='string')))throw new Error('Invalid threat modifiers.');}
  if(p.threatEnabled!==undefined&&typeof p.threatEnabled!=='boolean'||p.threatModelId!==undefined&&!Number.isInteger(p.threatModelId))throw new Error('Invalid threat selection.');
- return p;
+ return p.armyId==='thousand-sons'?correctThousandSonsRoster(p):p;
 }
 export function readNamedPlans(raw:string|null):NamedPlan[]{
  if(!raw)return [];
  const items:unknown=JSON.parse(raw);if(!Array.isArray(items))throw new Error('Saved plans could not be read.');
  return items.map(item=>{const p=validatePlan(item) as NamedPlan;if(typeof p.planId!=='string'||typeof p.savedAt!=='string')throw new Error('Saved plan metadata could not be read.');return p;});
+}
+
+/** Correct only pre-revision-2 Thousand Sons saves; preserve positions and unrelated data. */
+export function correctThousandSonsRoster<T extends {markers:PlannerMarker[];deepStrikeMarkers?:PlannerMarker[];rosterRevision?:number}>(plan:T):T{
+ if((plan.rosterRevision??1)>=2)return plan;
+ const all=[...plan.markers,...(plan.deepStrikeMarkers??[])];
+ const hasBow2=all.some(m=>m.rosterUnitId==='ts-bows-2');
+ const fix=(models:PlannerMarker[])=>models.filter(m=>!hasBow2||m.rosterUnitId!=='ts-bows-1').map(m=>{
+  if(m.rosterUnitId==='ts-disc')return {...m,unitId:'ts-disc'};
+  if(m.rosterUnitId==='ts-bows-1'||m.rosterUnitId==='ts-bows-2')return {...m,rosterUnitId:'ts-bows-2',unitId:m.unitId==='ts-bows-1'?'ts-bows-2':m.unitId,label:'Bow Enlightened'};
+  return m;
+ });
+ return {...plan,markers:fix(plan.markers),deepStrikeMarkers:fix(plan.deepStrikeMarkers??[]),rosterRevision:2};
 }

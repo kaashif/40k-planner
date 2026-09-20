@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import layoutsData from '../../public/reference/11th-edition/data/event-layouts.json';
 import necrons from '../../armies/necrons-2000.json';
 import thousandSons from '../../armies/thousand-sons-2000.json';
-import { rosterUnitId, stageArmy, type Army } from './army-utils';
+import { rosterUnitId, setArmyReserve, type Army } from './army-utils';
 import deploymentPlans from '../../public/reference/11th-edition/plans/index.json';
 import TerrainVisibility from './TerrainVisibility';
 import MapAuditOverlay from './MapAuditOverlay';
@@ -19,7 +19,7 @@ import {applyThreatRules} from './threat-rules';
 import ThreatCalculator from './ThreatCalculator';
 import ThreatOverlay from './ThreatOverlay';
 import {defaultThreat,type ThreatSettings} from './threat-utils';
-import {validatePlan,type PlanFile} from './plan-files';
+import {validatePlan,correctThousandSonsRoster,type PlanFile} from './plan-files';
 import { coherencyIssues, coherencyMeasurements, constrainMove, MM_PER_INCH, moveSelectedUnitsToDeepStrike, placeUnitLabels, TABLE_HEIGHT, TABLE_WIDTH, type PlannerMarker } from './planner-utils';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
@@ -58,6 +58,7 @@ type MarkupPath = {
 };
 
 type SavedPlanner = {
+  rosterRevision?:number;
   markers: BaseMarker[];
   deepStrikeMarkers?: BaseMarker[];
   planName: string;
@@ -208,6 +209,7 @@ export default function DeploymentPlanner() {
         }
       }
       if (data) {
+        if(armyId==='thousand-sons')data=correctThousandSonsRoster(data);
         setMarkers(Array.isArray(data.markers) ? data.markers : []);
         setDeepStrikeMarkers(Array.isArray(data.deepStrikeMarkers) ? data.deepStrikeMarkers : []);
         setPlanName(data.planName || 'Saved deployment');
@@ -230,10 +232,11 @@ export default function DeploymentPlanner() {
         if (typeof data.auditEnabled === 'boolean') setAuditEnabled(data.auditEnabled);
         if (typeof data.infiltrateEnabled === 'boolean') setInfiltrateEnabled(data.infiltrateEnabled);
         if (data.measurement) setMeasurement(data.measurement);
-        setSelectedIds(Array.isArray(data.selectedIds) ? data.selectedIds.filter((id) => data.markers.some((marker) => marker.id === id)) : []);
+        const restoredMarkers=data.markers;
+        setSelectedIds(Array.isArray(data.selectedIds) ? data.selectedIds.filter((id) => restoredMarkers.some((marker) => marker.id === id)) : []);
         setLastSavedAt(restoredBackup ? 'restored' : data.savedAt || 'restored');
       } else {
-        const staged = armyId === 'thousand-sons' ? stageArmy(armyData) : {markers:[],deepStrikeMarkers:[]};
+        const staged = {markers:[],deepStrikeMarkers:[]};
         setMarkers(staged.markers);
         setDeepStrikeMarkers(staged.deepStrikeMarkers);
         setPlanName('');
@@ -256,7 +259,7 @@ export default function DeploymentPlanner() {
     const saved: SavedPlanner = {
       markers, deepStrikeMarkers, planName, planIntent, sightLines, markupPaths, pivotLines, threatSettings, threatEnabled, side, visibilityEnabled, screenEnabled,
       screenSide, measureEnabled, movementEnabled, boundedMoveEnabled, markupEnabled, markupColor, auditEnabled, infiltrateEnabled,
-      measurement, selectedIds, savedAt,
+      measurement, selectedIds, savedAt,rosterRevision:2,
     };
     const serialized = JSON.stringify(saved);
     const previous = localStorage.getItem(storageKey);
@@ -391,11 +394,17 @@ export default function DeploymentPlanner() {
     setSelectedIds([]);
   }
 
-  function returnDeepStrike() {
-    if (deepStrikeMarkers.length === 0) return;
-    setMarkers((current) => [...current, ...deepStrikeMarkers]);
-    setSelectedIds(deepStrikeMarkers.map(({ id }) => id));
-    setDeepStrikeMarkers([]);
+  function toggleArmyReserve(unitId:string,enabled:boolean) {
+    const result=setArmyReserve(armyData,unitId,markers,deepStrikeMarkers,enabled,nextId.current,side);
+    nextId.current=result.nextId;setMarkers(result.markers);setDeepStrikeMarkers(result.deepStrikeMarkers);setSelectedIds([]);
+  }
+
+  function toggleEnemyReserve(listId:string,unit:OpponentUnit,enabled:boolean){
+    const rosterId=`${listId}:${unit.id}`;
+    if(!enabled){setDeepStrikeMarkers(ms=>ms.filter(m=>m.rosterUnitId!==rosterId));return;}
+    try{const result=spawnOpponents(listId,[unit],markers,deepStrikeMarkers,nextId.current,side==='blue'?'red':'blue');nextId.current=result.nextId;
+    setDeepStrikeMarkers(ms=>[...ms,...markers.filter(m=>m.rosterUnitId===rosterId),...result.added]);setMarkers(ms=>ms.filter(m=>m.rosterUnitId!==rosterId));setSelectedIds([]);
+    }catch(error){setImportError(error instanceof Error?error.message:'Could not reserve opponent unit.');}
   }
 
   function addArmyUnit(unit: (typeof armyData.units)[number]) {
@@ -420,11 +429,8 @@ export default function DeploymentPlanner() {
   }
 
   function loadArmy() {
-    const staged = stageArmy(armyData, side);
-    setMarkers(staged.markers); setDeepStrikeMarkers(staged.deepStrikeMarkers);
-    nextId.current = staged.markers.length + staged.deepStrikeMarkers.length + 1;
-    setPlanName('Roster staging'); setPlanIntent('Drag models into deployment positions.');
-    setSelectedIds([]); setSightLines([]); setMarkupPaths([]);setPivotLines([]);setSelectedPivot(null); setSuggestionVisible(true);
+    setMarkers(ms=>ms.filter(m=>!rosterUnitId(m,armyData)));setDeepStrikeMarkers(ms=>ms.filter(m=>!rosterUnitId(m,armyData)));
+    setSelectedIds([]);setSuggestionVisible(true);
   }
 
   function addEnemy(listId:string,units:OpponentUnit[]) {
@@ -444,7 +450,7 @@ export default function DeploymentPlanner() {
   }
 
   const loadPlan = useCallback((data: PlannerImport & Partial<PlanFile>) => {
-    validatePlan(data);
+    data=validatePlan(data);
     if (data.schemaVersion !== 1 || !Array.isArray(data.markers)) throw new Error('Unsupported deployment-plan file.');
     if (data.layoutId !== layout.id) throw new Error(`This plan is for ${data.layoutId}, not ${layout.id}.`);
     const imported = data.markers.map((marker) => ({
@@ -497,7 +503,7 @@ export default function DeploymentPlanner() {
     if(data.layoutId!==layout.id||targetArmy!==armyId){router.push(`/planner/?layout=${encodeURIComponent(data.layoutId)}&army=${targetArmy}&plan=${encodeURIComponent(id)}`);return;}
     loadPlan(data);
   },[armyId,layout.id,loadPlan,router]);
-  function currentPlan():PlanFile{return {schemaVersion:1,armyId,name:planName||armyData.name,layoutId:layout.id,intent:planIntent,markers:markers.map(m=>({...m,x:m.x*TABLE_WIDTH,y:m.y*TABLE_HEIGHT})),deepStrikeMarkers:deepStrikeMarkers.map(m=>({...m,x:m.x*TABLE_WIDTH,y:m.y*TABLE_HEIGHT})),sightLines,markupPaths,pivotLines,side,threatSettings,threatEnabled,threatModelId:selectedId??undefined};}
+  function currentPlan():PlanFile{return {schemaVersion:1,armyId,rosterRevision:2,name:planName||armyData.name,layoutId:layout.id,intent:planIntent,markers:markers.map(m=>({...m,x:m.x*TABLE_WIDTH,y:m.y*TABLE_HEIGHT})),deepStrikeMarkers:deepStrikeMarkers.map(m=>({...m,x:m.x*TABLE_WIDTH,y:m.y*TABLE_HEIGHT})),sightLines,markupPaths,pivotLines,side,threatSettings,threatEnabled,threatModelId:selectedId??undefined};}
 
   return (
     <main className="planner-shell">
@@ -548,7 +554,6 @@ export default function DeploymentPlanner() {
             <button disabled={!markers.some((marker) => selectedIdSet.has(marker.id) && marker.widthMm !== marker.heightMm)} onClick={rotateSelected} title="Rotate selected oval bases 90°">Rotate</button>
             <button className="danger-button" disabled={selectedIds.length === 0} onClick={removeSelected} title="Remove selected models">Remove</button>
             <button className="deep-strike-toggle" disabled={selectedIds.length === 0} onClick={markSelectedDeepStrike} title="Move every model in the selected unit or units into deep strike">Deep strike</button>
-            <button disabled={deepStrikeMarkers.length === 0} onClick={returnDeepStrike} title="Return all deep-strike units to their previous positions">Return DS</button>
             <button disabled={markers.length === 0} onClick={() => { setMarkers([]); setSelectedIds([]); setSightLines([]); setPlanName(''); setPlanIntent(''); }} title="Remove every model">Clear models</button>
             <span className="toolstrip-divider" />
             <button disabled={!selected} aria-pressed={threatEnabled} onClick={()=>setThreatEnabled(v=>!v)}>Threat ranges</button>
@@ -584,26 +589,23 @@ export default function DeploymentPlanner() {
             <div className="army-sidebar-title"><strong>{armyData.faction}</strong><span>{armyData.pointsLimit} pts</span></div>
             <label className="planner-army-select">Army<select aria-label="Army" value={armyId} onChange={event=>router.push(`/planner/?layout=${layout.id}&army=${event.target.value}`)}><option value="thousand-sons">Somehow...Magnus returned</option><option value="necrons">Brighton Necrons</option></select></label>
             <p className="planner-roster-note">{armyData.name}</p>
-            <button onClick={loadArmy}>Load army staging</button>
-            <p className="planner-roster-note">Staging is a model tray: drag units into legal deployment positions. {armyId === 'thousand-sons' && 'Scarabs + leader and Prince start in deep strike.'}</p>
+            <button onClick={loadArmy}>Reset army off board</button>
+            <p className="planner-roster-note">All units start off board. Add units to place them, or check Deep strike to count them as deployed in reserve. Attached leaders follow their bodyguard. Uncheck Deep strike before adding arrivals. Check reserve eligibility in the rules.</p>
             <div className="side-toggle" aria-label="Base side">
               <button className={side === 'blue' ? 'active blue' : ''} onClick={() => setSide('blue')}>Blue</button>
               <button className={side === 'red' ? 'active red' : ''} onClick={() => setSide('red')}>Red</button>
             </div>
             <div className="side-toggle" aria-label="Model catalogue"><button aria-pressed={!showEnemy} onClick={()=>setShowEnemy(false)}>Your army</button><button aria-pressed={showEnemy} onClick={()=>setShowEnemy(true)}>Enemy models</button></div>
-            {showEnemy?<EnemyModels onAdd={addEnemy} markers={[...markers,...deepStrikeMarkers]}/>:<div className="army-roster">
+            {showEnemy?<EnemyModels onAdd={addEnemy} onReserve={toggleEnemyReserve} reserves={deepStrikeMarkers} markers={[...markers,...deepStrikeMarkers]}/>:<div className="army-roster">
               {armyData.units.map((unit) => (
-                <div className="army-roster-unit" key={unit.id}>
-                  <div><strong title={unit.name}>{unit.name}</strong><span>{accountedByArmyUnit.get(unit.id) ?? 0}/{unit.models} placed/DS · {unit.points} pts · ⌀{unit.baseMm}mm · M {unit.movementInches}″</span>{unit.source && <a href={unit.source} target="_blank" rel="noreferrer" className="planner-base-source">Base / M ↗</a>}</div>
+                <div className="army-roster-unit" key={unit.id} data-roster-unit={unit.id}>
+                  <div><strong title={unit.name}>{unit.name}</strong><span>{accountedByArmyUnit.get(unit.id) ?? 0}/{unit.models} deployed · {unit.points} pts · ⌀{unit.baseMm}mm · M {unit.movementInches}″</span>{unit.source && <a href={unit.source} target="_blank" rel="noreferrer" className="planner-base-source">Base / M ↗</a>}<label className="roster-reserve"><input type="checkbox" aria-label={`Deep strike ${unit.name}`} checked={deepStrikeMarkers.filter(m=>rosterUnitId(m,armyData)===unit.id).length>=unit.models} onChange={e=>toggleArmyReserve(unit.id,e.target.checked)}/> Deep strike</label></div>
                   <button aria-label={`Add ${unit.name}`} disabled={(accountedByArmyUnit.get(unit.id) ?? 0) >= unit.models} onClick={() => addArmyUnit(unit)}>Add</button>
                 </div>
               ))}
             </div>
             }
-            {deepStrikeMarkers.length > 0 && <div className="deep-strike-list">
-              <strong>Deep strike</strong>
-              {[...new Set(deepStrikeMarkers.map(({ label }) => label))].map((label) => <span key={label}>{label}</span>)}
-            </div>}
+
           </aside>
 
           <section className="battlefield-panel">

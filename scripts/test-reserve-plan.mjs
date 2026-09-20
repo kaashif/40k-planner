@@ -12,7 +12,7 @@ test('reserve plan fits the user’s 2,000-point battle and covers all variants'
 for(const plan of data.layouts){
  test(`${plan.variant}: deployment anchors and whole Magnus base fit the assigned zone`,()=>{
   const zone=geometry.find(l=>l.variant===plan.variant).zones.find(z=>z.type==='player');
-  assert.deepEqual(plan.units.map(u=>u.id).sort(),['M','R1','R2','T','D+B1','Rob','Sp','En','B2'].sort());
+  assert.deepEqual(plan.units.map(u=>u.id).sort(),['M','R1','R2','T','D','Rob','Sp','En','B'].sort());
   for(const unit of plan.units){assert(inside(unit.x,unit.y,zone.points),`${unit.id} outside zone`);if(unit.id==='M')for(let degree=0;degree<360;degree++){const rad=degree*Math.PI/180;assert(inside(unit.x+Math.cos(rad)*100/25.4/2,unit.y+Math.sin(rad)*100/25.4/2,zone.points),'Magnus base crosses zone');}}
  });
  test(`${plan.variant}: terrain PNG and source match the reviewed revision`,()=>{

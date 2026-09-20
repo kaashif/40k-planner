@@ -6,13 +6,13 @@ Prepared 19 September 2026. This is a practice plan derived from the linked Augu
 
 ## Your roster and the comparison
 
-Preserve the supplied roster as intended **2,000 points**, Grand Coven / Priority Assets, app v2.6.0, data v946. The pasted entries arithmetically total 2,055, including two 55-point bow Enlightened units; the user confirmed the intended total is 2,000. No unit has been removed or points silently corrected. Any formal reserve-limit calculation needs the reconciled app roster.
+The user-confirmed roster is **2,000 points**, Grand Coven / Priority Assets, app v2.6.0, data v946. It has one three-model bow Enlightened unit and a standalone Exalted Sorcerer on Disc; the repeated bow entry in the export is not a second unit.
 
 - Magnus (455); winged Prince with Vortex (205).
 - Two Sorcerers (95 each), each with five Rubrics (100 each; three flamers and one soulreaper).
 - Exalted Sorcerer on Disc with Incandaeum (105).
 - Terminator Sorcerer with Crystal (130), assumed attached to ten Scarabs (385; two soulreapers and two missile racks). The pasted export does not explicitly attach these.
-- Two Spawn (65), two Sekhetar Robots (85), three spear Enlightened (50), two listed three-model bow Enlightened units (55 each), ten Tzaangors (75).
+- Two Spawn (65), two Sekhetar Robots (85), three spear Enlightened (50), one three-model bow Enlightened unit (55), ten Tzaangors (75).
 
 The opposing supplied Berzerker Warband / Purge the Foe entries total 2,000: Angron; two Slaughterbound-led three-Exalted-Eightbound units (one with Battle-lust); Khârn with ten Berzerkers and a Rhino; two three-Eightbound units; two Forgefiends with Hades autocannons and an ectoplasma cannon each; two Spawn; eight Goremongers; two ten-Jakhal units. Do not substitute triple-ectoplasma Forgefiends when assessing this opponent.
 

@@ -69,6 +69,6 @@ A nearest base edge around 5 inches behind x=42 puts the target around 29 inches
 
 ## Diagram limits
 
-The interactive page shows a selectable Angron or regular-Eightbound threat from a specified example starting position. The dashed envelope extends to the target's nearest base edge and includes the enemy model's radius when drawn from its centre. Magnus uses a 100mm base; other friendly markers are **group anchors**, not full unit footprints. Both bow units in the user's export are retained. The Prince is in reserve.
+The interactive page shows a selectable Angron or regular-Eightbound threat from a specified example starting position. The dashed envelope extends to the target's nearest base edge and includes the enemy model's radius when drawn from its centre. Magnus uses a 100mm base; other friendly markers are **group anchors**, not full unit footprints. The corrected roster has one three-model bow Enlightened unit and a standalone Disc Sorcerer. The Prince is in reserve.
 
 The envelope is a straight-line upper bound. It does not pathfind through walls or certify legal charges, visibility, coherency, objective control, or complete deployment legality. Compare the full terrain artwork and physical model bases before placing units. Large infantry groups may extend forward of their anchor. Avoid giving the Forgefiends a free firing lane merely to meet a melee-distance target. A ruin that obscures shooting is not automatically a charge barrier, particularly for flying Angron.
