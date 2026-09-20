@@ -54,7 +54,17 @@ try:
         assert '12 in deep strike' in page.locator('.deep-strike-status').inner_text()
         assert page.locator('.deep-strike-list').count()==0
         assert page.locator('.army-roster').evaluate('(e)=>e.scrollHeight <= e.clientHeight+1')
-        assert page.locator('.army-sidebar').bounding_box()['height']>1000
+        assert page.locator('.planner-context-row select[aria-label="Army"]').count()==1
+        assert page.locator('.army-sidebar-title,.planner-roster-note').count()==0
+        for width,height in [(1440,1100),(1366,768)]:
+            page.set_viewport_size({'width':width,'height':height})
+            assert page.evaluate('document.documentElement.scrollHeight <= innerHeight'), (width,height)
+            assert page.locator('.army-roster').evaluate('(e)=>e.scrollHeight <= e.clientHeight+1')
+            for control in page.locator('.army-roster button,.army-roster input').all():
+                bounds=control.bounding_box()
+                assert bounds['y']>=0 and bounds['y']+bounds['height']<=height
+            page.screenshot(path=str(out/f'roster-{width}.png'))
+        page.set_viewport_size({'width':1440,'height':1100})
         saved=page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',key)
         page.get_by_label('Army',exact=True).select_option('necrons')
         page.wait_for_function('document.querySelectorAll(".army-roster-unit").length === 12 && document.querySelectorAll(".base-marker").length === 0')
@@ -64,6 +74,16 @@ try:
         restored=page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',key)
         assert restored['markers']==saved['markers'] and restored['deepStrikeMarkers']==saved['deepStrikeMarkers']
         page.get_by_role('button',name='Enemy models',exact=True).click()
+        for opponent in ['joe','zak']:
+            page.get_by_label('Opponent list',exact=True).select_option(opponent)
+            page.set_viewport_size({'width':1366,'height':768})
+            page.screenshot(path=str(out/f'opponent-{opponent}.png'))
+            assert page.locator('.opponent-roster').evaluate('(e)=>e.scrollHeight <= e.clientHeight+1')
+            for control in page.locator('.opponent-roster button,.opponent-roster input').all():
+                bounds=control.bounding_box()
+                assert bounds['y']>=0 and bounds['y']+bounds['height']<=768
+        page.get_by_label('Opponent list',exact=True).select_option('joe')
+        page.set_viewport_size({'width':1440,'height':1100})
         page.get_by_role('button',name='Add Angron',exact=True).click()
         assert page.locator('.base-marker.red').count()==1
         page.get_by_role('button',name='Threat ranges',exact=True).click()

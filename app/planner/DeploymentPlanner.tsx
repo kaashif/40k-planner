@@ -512,6 +512,7 @@ export default function DeploymentPlanner() {
           <div className="planner-context-row">
             <Link className="planner-back-link" href="/">← All tools</Link>
             <Link className="planner-back-link" href="/missions/">Missions</Link>
+            <label className="planner-army-select">Army<select aria-label="Army" value={armyId} onChange={event=>router.push(`/planner/?layout=${layout.id}&army=${event.target.value}`)}><option value="thousand-sons">Somehow...Magnus returned</option><option value="necrons">Brighton Necrons</option></select></label>
             <label className="matchup-selector">
               <span>First objective</span>
               <select aria-label="First objective" value={firstDisposition} onChange={(event) => navigateMatchup(event.target.value, secondDisposition, layout.layout)}>
@@ -581,25 +582,22 @@ export default function DeploymentPlanner() {
           </div>
           <PlanManager getPlan={currentPlan} onOpen={openSavedPlan} requestedId={searchParams.get('plan')} ready={restoredLayout===storageKey} layoutId={layout.id} armyId={armyId}/>
           {pivotEnabled&&<p className="pivot-help">Click and drag to place a pivot and rotate its line in both directions. With a pivot selected, drag anywhere on the map to rotate it again. Choose New pivot to add another. Manual visual guide; terrain blocking is not calculated.</p>}
-          {threatEnabled&&selected&&<ThreatCalculator value={threatSettings} onChange={setThreatSettings} label={selected.label} ruleTags={selected.ruleTags}/>}
+          {threatEnabled&&selected&&!pivotEnabled&&!markupEnabled&&!measureEnabled&&<ThreatCalculator value={threatSettings} onChange={setThreatSettings} label={selected.label} ruleTags={selected.ruleTags}/>}
         </nav>
 
         <div className="planner-main-row">
           <aside className="army-sidebar">
-            <div className="army-sidebar-title"><strong>{armyData.faction}</strong><span>{armyData.pointsLimit} pts</span></div>
-            <label className="planner-army-select">Army<select aria-label="Army" value={armyId} onChange={event=>router.push(`/planner/?layout=${layout.id}&army=${event.target.value}`)}><option value="thousand-sons">Somehow...Magnus returned</option><option value="necrons">Brighton Necrons</option></select></label>
-            <p className="planner-roster-note">{armyData.name}</p>
             <button onClick={loadArmy}>Reset army off board</button>
-            <p className="planner-roster-note">All units start off board. Add units to place them, or check Deep strike to count them as deployed in reserve. Attached leaders follow their bodyguard. Uncheck Deep strike before adding arrivals. Check reserve eligibility in the rules.</p>
             <div className="side-toggle" aria-label="Base side">
               <button className={side === 'blue' ? 'active blue' : ''} onClick={() => setSide('blue')}>Blue</button>
               <button className={side === 'red' ? 'active red' : ''} onClick={() => setSide('red')}>Red</button>
             </div>
             <div className="side-toggle" aria-label="Model catalogue"><button aria-pressed={!showEnemy} onClick={()=>setShowEnemy(false)}>Your army</button><button aria-pressed={showEnemy} onClick={()=>setShowEnemy(true)}>Enemy models</button></div>
-            {showEnemy?<EnemyModels onAdd={addEnemy} onReserve={toggleEnemyReserve} reserves={deepStrikeMarkers} markers={[...markers,...deepStrikeMarkers]}/>:<div className="army-roster">
+            {showEnemy?<EnemyModels onAdd={addEnemy} onReserve={toggleEnemyReserve} reserves={deepStrikeMarkers} markers={[...markers,...deepStrikeMarkers]}/>:<div className="army-roster" style={{gridTemplateRows:`repeat(${armyData.units.length}, minmax(0, 1fr))`}}>
               {armyData.units.map((unit) => (
                 <div className="army-roster-unit" key={unit.id} data-roster-unit={unit.id}>
-                  <div><strong title={unit.name}>{unit.name}</strong><span>{accountedByArmyUnit.get(unit.id) ?? 0}/{unit.models} deployed · {unit.points} pts · ⌀{unit.baseMm}mm · M {unit.movementInches}″</span>{unit.source && <a href={unit.source} target="_blank" rel="noreferrer" className="planner-base-source">Base / M ↗</a>}<label className="roster-reserve"><input type="checkbox" aria-label={`Deep strike ${unit.name}`} checked={deepStrikeMarkers.filter(m=>rosterUnitId(m,armyData)===unit.id).length>=unit.models} onChange={e=>toggleArmyReserve(unit.id,e.target.checked)}/> Deep strike</label></div>
+                  <div><strong title={unit.name}>{unit.name}</strong><span>{accountedByArmyUnit.get(unit.id) ?? 0}/{unit.models} · {unit.points} pts · {unit.baseMm}mm · M{unit.movementInches}″ {unit.source&&<a href={unit.source} target="_blank" rel="noreferrer" title="Base and movement source">↗</a>}</span></div>
+                  <label className="roster-reserve" title="Deep strike"><input type="checkbox" aria-label={`Deep strike ${unit.name}`} checked={deepStrikeMarkers.filter(m=>rosterUnitId(m,armyData)===unit.id).length>=unit.models} onChange={e=>toggleArmyReserve(unit.id,e.target.checked)}/> DS</label>
                   <button aria-label={`Add ${unit.name}`} disabled={(accountedByArmyUnit.get(unit.id) ?? 0) >= unit.models} onClick={() => addArmyUnit(unit)}>Add</button>
                 </div>
               ))}

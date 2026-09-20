@@ -4,7 +4,7 @@ The homepage links to every tool and keeps the VOD game table. `/vod/` also prov
 
 ## Armies
 
-The planner defaults to [the supplied Thousand Sons roster](thousand-sons-planner-roster.md), with an empty board and all units in the full-height sidebar. Add models when ready; a Deep strike checkbox in each row counts the unit as deployed in reserve without putting it on the board. Attached leaders/bodyguards are handled together. Uncheck before adding arrivals. **Reset army off board** clears your army’s board/reserve placement while preserving enemies and drawings.
+The planner defaults to [the supplied Thousand Sons roster](thousand-sons-planner-roster.md), with an empty board and all units in a compact sidebar that fits the viewport without scrolling. The army selector is in the top bar. Add models when ready; a **DS** (Deep strike) checkbox in each row counts the unit as deployed in reserve without putting it on the board. Attached leaders/bodyguards are handled together. Uncheck before adding arrivals. **Reset army off board** clears your army’s board/reserve placement while preserving enemies and drawings.
 
 **Enemy models** offers Joe's World Eaters and Zak's AdMech, by individual unit or whole list. Only missing models are added; attached WE groups and mixed bases are preserved. The opposing colour is selected automatically. Placement avoids other models but ignores terrain and deployment zones. [Rules and footprint audit](opponent-list-rules.md) documents sources, hull estimates, unspecified attachments and conditional buffs. Select every intended member then **Group selected** for a new attachment.
 
