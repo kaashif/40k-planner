@@ -64,3 +64,9 @@ The percentile box also has Advance/Charge reroll checkboxes and mean raw dice r
 The left **Overall probability** slider now chooses one probability for the complete charge-reaching sequence. The large **Total reach** value and purple arrow endpoint update together. With Advance and Charge enabled, this comes from the joint Advance/charge distribution, with both enabled rerolls accounted for; it does not add separate percentile distances or multiply two 50% targets. Scout and normal Move have fixed arrow segments. Phase-specific comparison values remain in the right-hand details.
 
 For example, with Move 10″, Scout 8″ enabled, and unmodified Advance and Charge, the 50% total is 28.5″ (18″ fixed plus the 10.5″ median of D6 + 2D6). At 80% it is 26″. The 80% total differs from adding independently calculated 80% Advance and 80% charge results.
+
+## Explicit phase segments
+
+The arrow now reads **Scout → Move → Advance (D6) → Charge (2D6)**. Labels show each phase’s own distance; only the final endpoint label shows the cumulative total and selected probability. For the Spawn at 50% with no rerolls: Scout 8″, Move 10″, Advance 3.5″, Charge 7″; total 28.5″.
+
+An overall percentile does not uniquely determine the individual dice. The illustrated split uses the conditional mean Advance among outcomes at the selected total, interpolating adjacent totals for midpoint medians. Reroll decisions match the target-success calculation. The Advance/Charge split is illustrative, not separate percentile guarantees; the final endpoint remains the actual joint-probability threshold. Right-hand scenario values now explicitly say **Advance +6″ (24″ total)** instead of suggesting a 24″ Advance roll.

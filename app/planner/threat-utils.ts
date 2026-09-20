@@ -1,3 +1,4 @@
+export type ThreatBand={name:string;range:number;color:string;label?:string;detail?:string};
 export type ThreatSettings={percentile?:number;directionAngle?:number;move:number;scout:number;useScout:boolean;advance:number;useAdvance:boolean;advanceCharge:boolean;charge:number;chargeBonus:number;advanceBonus?:number;rerollCharge?:boolean;rerollAdvance?:boolean;activeRules?:string[]};
 export const defaultThreat:ThreatSettings={move:14,scout:0,useScout:false,advance:6,useAdvance:false,advanceCharge:false,charge:12,chargeBonus:0};
 export function threatRanges(s:ThreatSettings){
@@ -48,7 +49,7 @@ export function selectedProbabilityRange(s:ThreatSettings,kind:'advance'|'charge
  const result=probabilityRange(s,kind,threshold);
  return threshold===.5&&result>0&&Math.abs(reachChance(result,s,kind)-.5)<1e-10?result-.5:result;
 }
-export function threatBands(s:ThreatSettings){const p=s.percentile??50;return [
+export function threatBands(s:ThreatSettings):ThreatBand[]{const p=s.percentile??50;return [
  ...(s.useScout&&s.scout>0?[{name:'Scout (fixed)',range:s.scout,color:'#ffffff'}]:[]),
  {name:'Max charge',range:probabilityRange(s,'charge',1e-10),color:'#ff7baa'},
  {name:`${p}% charge`,range:selectedProbabilityRange(s,'charge'),color:'#bb8cff'},
@@ -88,12 +89,49 @@ export function meanRoll(kind:'advance'|'charge',reroll=false){
  return reroll?rolls.reduce((sum,roll)=>sum+Math.max(roll,mean),0)/rolls.length:mean;
 }
 
-/** One joint outcome, with deterministic Scout and movement separated on the arrow. */
-export function overallThreatBands(s:ThreatSettings){
- const scout=s.useScout?s.scout:0,total=selectedProbabilityRange(s,'charge');
+/** Illustrative phase split: conditional mean Advance among outcomes at the total threshold.
+ * Interpolate adjacent attainable totals for a midpoint median. This is not a pair of independent percentiles.
+ */
+export function overallPhaseSplit(s:ThreatSettings){
+ const fixed=(s.useScout?s.scout:0)+s.move,total=selectedProbabilityRange(s,'charge');
+ if(!total)return {advance:0,charge:0,total};
+ if(!(s.useAdvance&&s.advanceCharge))return {advance:0,charge:total-fixed,total};
+ const bonus=s.advanceBonus??0;
+ const success=(a:number)=>chargeChance(total,{...s,move:fixed+a+bonus,useScout:false,useAdvance:false},s.rerollCharge);
+ const successMean=Array.from({length:6},(_,i)=>success(i+1)).reduce((a,b)=>a+b,0)/6;
+ const weights=Array(6).fill(0) as number[];
+ for(let a=1;a<=6;a++){
+  if(s.rerollAdvance&&success(a)<successMean){for(let j=0;j<6;j++)weights[j]+=1/36;}
+  else weights[a-1]+=1/6;
+ }
+ const distribution=new Map<number,{mass:number;advance:number}>();
+ for(let a=1;a<=6;a++)for(let roll=2;roll<=12;roll++){
+  const probability=weights[a-1]*(6-Math.abs(7-roll))/36;
+  const failed=total-fixed-a-bonus>12||roll+s.chargeBonus<Math.max(2.000001,total-fixed-a-bonus);
+  const add=(chargeRoll:number,mass:number)=>{
+   const charge=Math.min(12,chargeRoll+s.chargeBonus);if(charge<=2)return;
+   const distance=fixed+a+bonus+charge,old=distribution.get(distance)??{mass:0,advance:0};
+   distribution.set(distance,{mass:old.mass+mass,advance:old.advance+(a+bonus)*mass});
+  };
+  if(s.rerollCharge&&failed){for(let r=2;r<=12;r++)add(r,probability*(6-Math.abs(7-r))/36);}
+  else add(roll,probability);
+ }
+ const keys=[...distribution.keys()].sort((a,b)=>a-b);
+ const low=keys.filter(n=>n<=total).at(-1)??keys[0],high=keys.find(n=>n>=total)??keys.at(-1)!;
+ const mean=(n:number)=>{const d=distribution.get(n)!;return d.advance/d.mass;};
+ const advance=high===low?mean(low):mean(low)+(mean(high)-mean(low))*(total-low)/(high-low);
+ return {advance,charge:total-fixed-advance,total};
+}
+
+/** Phase distances are increments; ring radii and the final probability remain cumulative. */
+export function overallThreatBands(s:ThreatSettings):ThreatBand[]{
+ const scout=s.useScout?s.scout:0,{advance,charge,total}=overallPhaseSplit(s);
+ const fmt=(n:number)=>Number(n.toFixed(2));
+ const modifier=(n:number)=>n?` ${n>0?'+':'−'} ${Math.abs(n)}`:'';
  return [
-  ...(scout>0?[{name:'Scout (fixed)',range:scout,color:'#ffffff'}]:[]),
-  ...(s.move>0?[{name:'Move (fixed)',range:scout+s.move,color:'#75d5ff'}]:[]),
-  ...(total>0?[{name:`${s.percentile??50}% total`,range:total,color:'#d49cff'}]:[]),
+  ...(scout>0?[{name:'Scout (fixed)',range:scout,color:'#ffffff',label:`Scout ${scout}″ · fixed`}]:[]),
+  ...(s.move>0?[{name:'Move (fixed)',range:scout+s.move,color:'#75d5ff',label:`Move ${s.move}″ · fixed`}]:[]),
+  ...(advance>0?[{name:'Advance (D6)',range:scout+s.move+advance,color:'#ffd16f',label:`Advance ${fmt(advance)}″ (D6${modifier(s.advanceBonus??0)})`}]:[]),
+  ...(total>0?[{name:`${s.percentile??50}% total`,range:total,color:'#d49cff',label:`Charge ${fmt(charge)}″ (2D6${modifier(s.chargeBonus)})`,detail:`${s.percentile??50}% total: ${fmt(total)}″`}]:[]),
  ];
 }

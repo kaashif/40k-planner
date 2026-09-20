@@ -15,6 +15,7 @@ export default function ThreatPercentile({value,onChange,ruleTags=[]}:{value:Thr
   </div>
   <small className="mean-rolls" title="Mean raw dice before modifiers, rerolling a below-average result once. Percentile bands instead optimise the chance to reach each target distance.">Mean dice: Advance {meanRoll('advance',effective.rerollAdvance).toFixed(2)}″ · Charge {meanRoll('charge',effective.rerollCharge).toFixed(2)}″</small>
   <small className="overall-sequence" title="One joint probability across the entire sequence, including enabled rerolls. Scout and normal movement are fixed; Advance is included only when Advance and Charge is permitted.">{sequence} · one combined probability</small>
+  <small className="phase-split-note">Dice segments illustrate one split of that total.</small>
   <small title="50% shows median reach. With an unmodified D6 the median and mean Advance are both 3.5 inches; rerolls can make the mean and median differ.">Chance to reach: higher % = safer, shorter reach.</small>
  </section>;
 }

@@ -85,8 +85,23 @@ test('Overall slider selects the joint Advance + charge outcome and moves only t
  assert(Math.abs(reachChance(28.5,s,'charge')-.5)<1e-10);
  const safer={...s,percentile:80};assert.equal(selectedProbabilityRange(safer,'charge'),26);
  assert(reachChance(26,safer,'charge')>=.8);assert(reachChance(27,safer,'charge')<.8);
- assert.deepEqual(overallThreatBands(s).map(b=>b.range),[8,18,28.5]);
- assert.deepEqual(overallThreatBands(safer).map(b=>b.range),[8,18,26]);
+ assert.deepEqual(overallThreatBands(s).map(b=>b.range),[8,18,21.5,28.5]);
+ assert.deepEqual(overallThreatBands(safer).map(b=>b.range),[8,18,20.5,26]);
  assert.equal(threatSegments(safer,true).at(-1)?.range,26);
  assert.equal(selectedProbabilityRange({...s,advanceCharge:false},'charge'),25);
+});
+
+ test('Phase segments show their own distances and preserve the total at 1%, 50% and 80%',async()=>{
+ const {overallPhaseSplit,overallThreatBands}=await import('./threat-utils.ts');
+ for(const percentile of [1,50,80])for(const rerollAdvance of [false,true])for(const rerollCharge of [false,true]){
+  const s={...defaultThreat,move:10,scout:8,useScout:true,useAdvance:true,advanceCharge:true,percentile,rerollAdvance,rerollCharge};
+  const split=overallPhaseSplit(s);
+  assert(split.advance>=1&&split.advance<=6);assert(split.charge>=2&&split.charge<=12);
+  assert(Math.abs(18+split.advance+split.charge-split.total)<1e-8);
+  const bands=overallThreatBands(s);
+  assert.equal(bands[0].label,'Scout 8″ · fixed');assert.equal(bands[1].label,'Move 10″ · fixed');
+  assert(bands[2].label?.includes('(D6)'));assert(bands[3].label?.includes('(2D6)'));
+ }
+ const s={...defaultThreat,move:10,scout:8,useScout:true,useAdvance:true,advanceCharge:true,percentile:50};
+ assert.deepEqual(overallPhaseSplit(s),{advance:3.5,charge:7,total:28.5});
 });

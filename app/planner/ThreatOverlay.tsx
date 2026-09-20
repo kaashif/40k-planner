@@ -17,7 +17,7 @@ export default function ThreatOverlay({marker,settings,onAngleChange}:{marker:Pl
  const handleRadius=Math.max(0,Math.min(Math.max(marker.widthMm,marker.heightMm)/50.8+3,edgeX,edgeY));
  return <svg ref={svg} className="threat-overlay" viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-label={`${marker.label} threat ranges`}>
   <g transform={`translate(${marker.x*TABLE_WIDTH} ${marker.y*TABLE_HEIGHT})`}>
-   {bands.map(({name,range,color})=><path key={name} data-band={name} d={threatOutline(marker.widthMm,marker.heightMm,range,marker.shape)} fill={color} fillOpacity=".025" stroke={color} strokeWidth=".38" strokeDasharray={name.includes('advance')?'.8 .4':undefined}><title>{`${name}: ${range} inches from base edge`}</title></path>)}
+   {bands.map(({name,range,color})=><path key={name} data-band={name} d={threatOutline(marker.widthMm,marker.heightMm,range,marker.shape)} fill={color} fillOpacity=".025" stroke={color} strokeWidth=".38" strokeDasharray={name.toLowerCase().includes('advance')?'.8 .4':undefined}><title>{`${name}: ${range} inches from base edge`}</title></path>)}
    {threatSegments(settings,true).map(({range,bands:labels},i,segments)=>{
     const end=threatRayEndpoint(marker.widthMm,marker.heightMm,range,angle,marker.shape);
     const previous=i?threatRayEndpoint(marker.widthMm,marker.heightMm,segments[i-1].range,angle,marker.shape):{x:0,y:0};
@@ -35,7 +35,8 @@ export default function ThreatOverlay({marker,settings,onAngleChange}:{marker:Pl
       <polygon points={`${length},0 ${length-head},.45 ${length-head},-.45`} fill={color} stroke="#0a1018" strokeWidth=".12"/>
       <line className="threat-label-leader" x1={length} y1="0" x2={length} y2={labelY} stroke={color} strokeWidth=".1"/>
       <text x={length} y={labelY} transform={flip?`rotate(180 ${length} ${labelY})`:undefined}>
-       {labels.map((b,j)=><tspan key={b.name} x={length} dy={j?1.25:0} fill={b.color}>{b.name} {range}″</tspan>)}
+       {labels.map((b,j)=><tspan key={b.name} x={length} dy={j?1.25:0} fill={b.color}>{b.label??`${b.name} ${range}″`}</tspan>)}
+       {labels.filter(b=>b.detail).map(b=><tspan key={`${b.name}-total`} x={length} dy="1.25" fill={b.color}>{b.detail}</tspan>)}
       </text>
      </g>
     </g>;

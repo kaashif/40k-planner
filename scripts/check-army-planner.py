@@ -89,7 +89,7 @@ try:
         page.get_by_role('button',name='Threat ranges',exact=True).click()
         assert 'Charge threat 26″' in page.locator('.threat-results').inner_text()
         page.get_by_label('Include Advance',exact=True).check()
-        assert 'Advance 20″' in page.locator('.threat-results').inner_text()
+        assert 'Advance +6″ (20″ total)' in page.locator('.threat-results').inner_text()
         assert 'Charge threat 26″' in page.locator('.threat-results').inner_text()
         page.get_by_label('Advance and charge permitted',exact=True).check()
         assert 'Charge threat 32″' in page.locator('.threat-results').inner_text()
@@ -206,6 +206,13 @@ try:
         assert page.get_by_role('button',name='Ranger with arquebus, 60×35.5mm, red',exact=True).count()==1
         page.get_by_role('button',name='Chaos Spawn, 50mm, red',exact=True).first.click()
         assert page.locator('.threat-ray[data-band="Scout (fixed)"]').count()==1
+        assert 'Move 10″ · fixed' in page.locator('.threat-ray[data-band="Move (fixed)"]').text_content()
+        assert 'Advance 3.5″ (D6)' in page.locator('.threat-ray[data-band="Advance (D6)"]').text_content()
+        assert 'Charge 7″ (2D6)' in page.locator('.threat-ray[data-band="50% total"]').text_content()
+        page.get_by_role('slider',name='Overall reach probability',exact=True).fill('1')
+        assert 'Advance +6″ (24″ total)' in page.locator('.threat-results').inner_text()
+        assert 'Advance 24″' not in page.locator('.threat-overlay').text_content()
+        page.get_by_role('slider',name='Overall reach probability',exact=True).fill('50')
         assert 'Total reach 28.5″' in page.locator('.percentile-distances').inner_text()
         fixed_before=page.locator('.threat-ray[data-band="Scout (fixed)"]').get_attribute('data-end')
         page.get_by_role('slider',name='Overall reach probability',exact=True).fill('80')

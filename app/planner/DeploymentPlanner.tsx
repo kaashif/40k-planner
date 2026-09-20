@@ -815,7 +815,7 @@ export default function DeploymentPlanner() {
             )}
           </div>
           </section>
-          {threatEnabled&&selected&&threatSettingsVisible&&<aside className="threat-sidebar" aria-label="Threat settings"><p className="threat-direction-help">Drag the white handle around the model to rotate the arrows. The purple endpoint is the overall probability selected on the left; Scout and Move are fixed segments. Distances are from the base edge.</p><ThreatCalculator value={threatSettings} onChange={setThreatSettings} label={selected.label} ruleTags={selected.ruleTags}/></aside>}
+          {threatEnabled&&selected&&threatSettingsVisible&&<aside className="threat-sidebar" aria-label="Threat settings"><p className="threat-direction-help">Drag the white handle around the model to rotate the arrows. The purple endpoint is the overall probability selected on the left; Scout and Move are fixed; Advance (D6) and Charge (2D6) show their own distances. The dice split is illustrative; probability applies to the total.</p><ThreatCalculator value={threatSettings} onChange={setThreatSettings} label={selected.label} ruleTags={selected.ruleTags}/></aside>}
         </div>
       </div>
     </main>
