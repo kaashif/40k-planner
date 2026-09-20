@@ -70,3 +70,7 @@ For example, with Move 10″, Scout 8″ enabled, and unmodified Advance and Cha
 The arrow now reads **Scout → Move → Advance (D6) → Charge (2D6)**. Labels show each phase’s own distance; only the final endpoint label shows the cumulative total and selected probability. For the Spawn at 50% with no rerolls: Scout 8″, Move 10″, Advance 3.5″, Charge 7″; total 28.5″.
 
 An overall percentile does not uniquely determine the individual dice. The illustrated split uses the conditional mean Advance among outcomes at the selected total, interpolating adjacent totals for midpoint medians. Reroll decisions match the target-success calculation. The Advance/Charge split is illustrative, not separate percentile guarantees; the final endpoint remains the actual joint-probability threshold. Right-hand scenario values now explicitly say **Advance +6″ (24″ total)** instead of suggesting a 24″ Advance roll.
+
+## Select and delete drawings
+
+Choose **Select** (hand-pointer icon), then click a measured arrow or freehand stroke. The selected mark gains a dashed highlight; **Delete** or **Backspace** removes only that mark. Click empty map space or press **Escape** to deselect. Keyboard users can tab to a mark and press Enter/Space to select it. Delete/Backspace in text fields continue to edit text. Drawing deletions persist in the automatic draft and can be saved/exported as usual. **Draw** now uses a thick 6 px stroke that remains visible at different map sizes.

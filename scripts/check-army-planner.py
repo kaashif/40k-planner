@@ -292,6 +292,32 @@ try:
         page.get_by_role('button',name='Clear ink',exact=True).click()
         page.get_by_label('Import deployment JSON',exact=True).set_input_files(out/'arrows.json')
         page.wait_for_function('document.querySelectorAll(".measured-arrow").length === 2')
+        # Select individual arrows and drawings without deleting text or neighbouring marks.
+        page.get_by_role('button',name='Select',exact=True).click()
+        hit=page.locator('.markup-hit').first.bounding_box()
+        page.mouse.click(hit['x']+hit['width']/2,hit['y']+hit['height']/2)
+        assert page.locator('.selected-markup').count()==1
+        name=page.get_by_label('Plan name',exact=True)
+        name.fill('Text must be editable');name.press('ControlOrMeta+a');name.press('Backspace')
+        assert page.locator('.measured-arrow').count()==2
+        page.mouse.click(hit['x']+hit['width']/2,hit['y']+hit['height']/2)
+        page.keyboard.press('Delete')
+        assert page.locator('.measured-arrow').count()==1
+        page.reload(wait_until='networkidle')
+        assert page.locator('.measured-arrow').count()==1
+        page.get_by_role('button',name='Draw',exact=True).click()
+        rect=page.locator('.battlefield').bounding_box()
+        x,y=rect['x']+rect['width']*.25,rect['y']+rect['height']*.55
+        page.mouse.move(x,y);page.mouse.down();page.mouse.move(x+65,y+45,steps=10);page.mouse.up()
+        assert page.locator('.freehand-stroke').count()==1
+        assert page.locator('.freehand-stroke').evaluate('(e)=>getComputedStyle(e).strokeWidth')=='6px'
+        page.get_by_role('button',name='Select',exact=True).click()
+        page.mouse.click(x+32.5,y+22.5)
+        assert page.locator('.selected-markup .freehand-stroke').count()==1
+        page.screenshot(path=str(out/'select-drawings.png'))
+        page.keyboard.press('Backspace')
+        assert page.locator('.freehand-stroke').count()==0
+        assert page.locator('.measured-arrow').count()==1
         assert not errors,errors
         browser.close()
         print('PASS: corrected roster/migration, empty board, inline reserves, no-scroll roster, opponents, rules, pivots, measured arrows and saved plans')

@@ -149,6 +149,19 @@ export default function DeploymentPlanner() {
   const [markupEnabled, setMarkupEnabled] = useState(false);
   const [markupColor, setMarkupColor] = useState('#ffe071');
   const [markupPaths, setMarkupPaths] = useState<MarkupPath[]>([]);
+  const [selectedMarkup,setSelectedMarkup] = useState<number|null>(null);
+  const selectEnabled=!arrowEnabled&&!markupEnabled&&!pivotEnabled&&!measureEnabled;
+  useEffect(()=>{
+    const onKey=(event:KeyboardEvent)=>{
+      const target=event.target;
+      if(event.defaultPrevented||!selectEnabled||selectedMarkup===null||target instanceof HTMLElement&&(target.isContentEditable||['INPUT','TEXTAREA','SELECT'].includes(target.tagName)))return;
+      if(event.key==='Escape'){setSelectedMarkup(null);return;}
+      if(event.key==='Delete'||event.key==='Backspace'){
+        event.preventDefault();setMarkupPaths(paths=>paths.filter(path=>path.id!==selectedMarkup));setSelectedMarkup(null);
+      }
+    };
+    window.addEventListener('keydown',onKey);return ()=>window.removeEventListener('keydown',onKey);
+  },[selectEnabled,selectedMarkup]);
   const [auditEnabled, setAuditEnabled] = useState(false);
   const [infiltrateEnabled, setInfiltrateEnabled] = useState(false);
   const [suggestionVisible, setSuggestionVisible] = useState(true);
@@ -197,6 +210,7 @@ export default function DeploymentPlanner() {
 
   useEffect(() => {
     setRestoredLayout('');
+    setSelectedMarkup(null);
     setSuggestionVisible(true);
     try {
       const primary = localStorage.getItem(storageKey);
@@ -334,6 +348,7 @@ export default function DeploymentPlanner() {
   }
 
   function onBoardPointerDown(event: PointerEvent<HTMLDivElement>) {
+    if(selectEnabled)setSelectedMarkup(null);
     if (event.target !== event.currentTarget && !pivotEnabled && !arrowEnabled) return;
     if(pivotEnabled){const point=pointFromEvent(event);event.currentTarget.setPointerCapture(event.pointerId);
       const existing=selectedPivot!==null&&pivotLines.find(p=>p.id===selectedPivot);
@@ -474,6 +489,7 @@ export default function DeploymentPlanner() {
     nextId.current = Math.max(0, ...imported.map(({ id }) => id), ...importedDeepStrike.map(({ id }) => id)) + 1;
     setPivotLines(data.pivotLines??[]);setSelectedPivot(null);
     setSightLines(data.sightLines || []);
+    setSelectedMarkup(null);
     setMarkupPaths(data.markupPaths || []);
     nextMarkupId.current=Math.max(0,...(data.markupPaths||[]).map(p=>p.id))+1;
     if(data.side)setSide(data.side);
@@ -579,6 +595,7 @@ export default function DeploymentPlanner() {
             <input className="toolbar-colour" aria-label="Markup colour" title="Markup colour" type="color" value={markupColor} onChange={(event) => setMarkupColor(event.target.value)} />
             <button aria-pressed={pivotEnabled} onClick={()=>{setArrowEnabled(false);setPivotEnabled(v=>!v);setMarkupEnabled(false);setMeasureEnabled(false);}}>Pivot sight line</button>
             {pivotEnabled&&<><button onClick={()=>setSelectedPivot(null)}>New pivot</button><select aria-label="Selected pivot" value={selectedPivot??''} onChange={e=>setSelectedPivot(e.target.value?Number(e.target.value):null)}><option value="">Place new pivot</option>{pivotLines.map(p=><option key={p.id} value={p.id}>Pivot {p.id}</option>)}</select><button disabled={selectedPivot===null} onClick={()=>{setPivotLines(lines=>lines.filter(p=>p.id!==selectedPivot));setSelectedPivot(null);}}>Delete pivot</button></>}
+            <button aria-label="Select" aria-pressed={selectEnabled} onClick={()=>{setArrowEnabled(false);setMarkupEnabled(false);setPivotEnabled(false);setMeasureEnabled(false);}} title="Select an arrow or drawing, then press Delete or Backspace"><svg className="select-hand-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 13V4a2 2 0 0 1 4 0v6-2a2 2 0 0 1 4 0v3-1a2 2 0 0 1 4 0v6c0 4-2 6-6 6h-1c-2 0-3-1-4-2l-5-6a2 2 0 0 1 3-3l1 2Z"/></svg>Select</button>
             <button className={markupEnabled ? 'markup-toggle active' : 'markup-toggle'} onClick={() => {setArrowEnabled(false);setMarkupEnabled((enabled) => !enabled);setPivotEnabled(false);}} title="Draw routes, zones, and notes on the map">Draw</button>
             <button aria-pressed={arrowEnabled} onClick={()=>{setArrowEnabled(v=>!v);setMarkupEnabled(false);setPivotEnabled(false);setMeasureEnabled(false);}} title="Drag to draw an arrow with its straight-line length in inches; choose its colour beside Ruler">Arrow</button>
             <button disabled={markupPaths.length === 0} onClick={() => setMarkupPaths((current) => current.slice(0, -1))} title="Undo the last markup stroke">Undo ink</button>
@@ -688,14 +705,14 @@ export default function DeploymentPlanner() {
               />
             )}
             {markupPaths.length > 0 && (
-              <svg className="markup-overlay" viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-label="Deployment markup">
-                {markupPaths.map((path) => path.kind==='arrow' ? <MeasuredArrow key={path.id} points={path.points} color={path.color}/> : (
-                  <polyline
-                    key={path.id}
-                    points={path.points.map(({ x, y }) => `${x},${y}`).join(' ')}
-                    stroke={path.color}
-                  />
-                ))}
+              <svg className={`markup-overlay${selectEnabled?' select-mode':''}`} viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-label="Deployment markup">
+                {markupPaths.map(path=><g key={path.id} data-markup-id={path.id} className={selectEnabled&&selectedMarkup===path.id?'selected-markup':''}
+                  role="button" tabIndex={selectEnabled?0:-1} aria-label={`Select ${path.kind==='arrow'?'arrow':'drawing'} ${path.id}`} aria-pressed={selectEnabled&&selectedMarkup===path.id}
+                  onPointerDown={event=>{if(selectEnabled){event.stopPropagation();event.currentTarget.focus();setSelectedMarkup(path.id);}}}
+                  onKeyDown={event=>{if(selectEnabled&&(event.key==='Enter'||event.key===' ')){event.preventDefault();setSelectedMarkup(path.id);}}}>
+                  {path.kind==='arrow'?<MeasuredArrow points={path.points} color={path.color}/>:<polyline className="freehand-stroke" points={path.points.map(({x,y})=>`${x},${y}`).join(' ')} stroke={path.color}/>}
+                  {selectEnabled&&<polyline className="markup-hit" points={path.points.map(({x,y})=>`${x},${y}`).join(' ')} />}
+                </g>)}
               </svg>
             )}
             {suggestionVisible && coherencyLines.length > 0 && (
@@ -738,6 +755,7 @@ export default function DeploymentPlanner() {
                 title={`${marker.label}, ${dimensions(marker.widthMm, marker.heightMm)}, ${marker.side}`}
                 aria-label={`${marker.label}, ${dimensions(marker.widthMm, marker.heightMm)}, ${marker.side}`}
                 onPointerDown={(event) => {
+                  setSelectedMarkup(null);
                   if(pivotEnabled||arrowEnabled)return;
                   event.stopPropagation();
                   event.currentTarget.setPointerCapture(event.pointerId);
@@ -776,7 +794,7 @@ export default function DeploymentPlanner() {
                 key={label.key}
                 className={`unit-name-label ${label.side}${label.markerIds.every((id) => selectedIdSet.has(id)) ? ' selected' : ''}`}
                 style={{ left: `${label.x * 100}%`, top: `${label.y * 100}%` }}
-                onPointerDown={(event) => event.stopPropagation()}
+                onPointerDown={(event) => {setSelectedMarkup(null);event.stopPropagation();}}
                 onClick={(event) => {
                   const allSelected = label.markerIds.every((id) => selectedIdSet.has(id));
                   if (event.metaKey || event.ctrlKey) {
