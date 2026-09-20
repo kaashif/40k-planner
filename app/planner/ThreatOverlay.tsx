@@ -1,5 +1,46 @@
-import {threatOutline,threatBands,type ThreatSettings} from './threat-utils';
+'use client';
+import {useRef,type PointerEvent} from 'react';
+import {threatOutline,threatBands,threatRayEndpoint,type ThreatSettings} from './threat-utils';
 import {TABLE_WIDTH,TABLE_HEIGHT,type PlannerMarker} from './planner-utils';
-export default function ThreatOverlay({marker,settings}:{marker:PlannerMarker;settings:ThreatSettings}){
- return <svg className="threat-overlay" viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-label={`${marker.label} threat ranges`}><g transform={`translate(${marker.x*TABLE_WIDTH} ${marker.y*TABLE_HEIGHT})`}>{threatBands(settings).sort((a,b)=>b.range-a.range).map(({name,range,color})=><path key={name} data-band={name} d={threatOutline(marker.widthMm,marker.heightMm,range,marker.shape)} fill={color} fillOpacity=".025" stroke={color} strokeWidth=".16" strokeDasharray={name.includes('advance')?'.6 .3':undefined}><title>{`${name}: ${range} inches from base edge`}</title></path>)}</g></svg>;
+export default function ThreatOverlay({marker,settings,onAngleChange}:{marker:PlannerMarker;settings:ThreatSettings;onAngleChange:(angle:number)=>void}){
+ const dragging=useRef(false),svg=useRef<SVGSVGElement>(null);
+ const angle=settings.directionAngle??Math.atan2((.5-marker.y)*TABLE_HEIGHT,(.5-marker.x)*TABLE_WIDTH);
+ const bands=threatBands(settings).sort((a,b)=>b.range-a.range);
+ const rotate=(event:PointerEvent<SVGCircleElement>)=>{
+  const matrix=svg.current?.getScreenCTM();if(!matrix)return;
+  const point=new DOMPoint(event.clientX,event.clientY).matrixTransform(matrix.inverse());
+  onAngleChange(Math.atan2(point.y-marker.y*TABLE_HEIGHT,point.x-marker.x*TABLE_WIDTH));
+ };
+ const cx=marker.x*TABLE_WIDTH,cy=marker.y*TABLE_HEIGHT,c=Math.cos(angle),s=Math.sin(angle);
+ const edgeX=Math.abs(c)<1e-9?Infinity:(c>0?TABLE_WIDTH-1-cx:cx-1)/Math.abs(c);
+ const edgeY=Math.abs(s)<1e-9?Infinity:(s>0?TABLE_HEIGHT-1-cy:cy-1)/Math.abs(s);
+ const handleRadius=Math.max(0,Math.min(Math.max(marker.widthMm,marker.heightMm)/50.8+3,edgeX,edgeY));
+ return <svg ref={svg} className="threat-overlay" viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-label={`${marker.label} threat ranges`}>
+  <g transform={`translate(${marker.x*TABLE_WIDTH} ${marker.y*TABLE_HEIGHT})`}>
+   {bands.map(({name,range,color})=><path key={name} data-band={name} d={threatOutline(marker.widthMm,marker.heightMm,range,marker.shape)} fill={color} fillOpacity=".025" stroke={color} strokeWidth=".38" strokeDasharray={name.includes('advance')?'.8 .4':undefined}><title>{`${name}: ${range} inches from base edge`}</title></path>)}
+   {bands.map(({name,range,color},i)=>{
+    const direction=angle+(i-(bands.length-1)/2)*Math.PI/30;
+    const end=threatRayEndpoint(marker.widthMm,marker.heightMm,range,direction,marker.shape);
+    const length=Math.hypot(end.x,end.y),head=Math.min(1.2,length*.2);
+    const degrees=direction*180/Math.PI;
+    return <g key={name} className="threat-ray" data-band={name} data-end-x={end.x} data-end-y={end.y}>
+     <title>{`${name}: ${range}″ from base edge`}</title>
+     <g transform={`rotate(${degrees})`}>
+      <line x1="0" y1="0" x2={length-head*.7} y2="0" stroke="#0a1018" strokeWidth=".58"/>
+      <line x1="0" y1="0" x2={length-head*.7} y2="0" stroke={color} strokeWidth=".3"/>
+      <polygon points={`${length},0 ${length-head},.5 ${length-head},-.5`} fill={color} stroke="#0a1018" strokeWidth=".12"/>
+      <text x={length*.73} y="-.5" fill={color} transform={Math.cos(direction)<0?`rotate(180 ${length*.73} -.5)`:undefined}>{name} {range}″</text>
+     </g>
+    </g>;
+   })}
+   <circle className="threat-rotate-handle" role="slider" tabIndex={0} aria-label="Rotate threat arrows" aria-valuemin={0} aria-valuemax={360} aria-valuenow={Math.round(((angle*180/Math.PI)%360+360)%360)} aria-valuetext="Drag around the model, or use arrow keys to rotate" cx={Math.cos(angle)*handleRadius} cy={Math.sin(angle)*handleRadius} r=".8"
+    onPointerDown={e=>{e.stopPropagation();e.preventDefault();dragging.current=true;e.currentTarget.setPointerCapture(e.pointerId);rotate(e);}}
+    onPointerMove={e=>{if(dragging.current){e.stopPropagation();rotate(e);}}}
+    onPointerUp={e=>{e.stopPropagation();dragging.current=false;if(e.currentTarget.hasPointerCapture(e.pointerId))e.currentTarget.releasePointerCapture(e.pointerId);}}
+    onPointerCancel={()=>{dragging.current=false;}} onLostPointerCapture={()=>{dragging.current=false;}}
+    onKeyDown={e=>{if(['ArrowLeft','ArrowDown','ArrowRight','ArrowUp'].includes(e.key)){e.preventDefault();e.stopPropagation();onAngleChange(angle+(['ArrowLeft','ArrowDown'].includes(e.key)?-1:1)*Math.PI/36);}}}>
+    <title>Drag to rotate all threat arrows around this model</title>
+   </circle>
+  </g>
+ </svg>;
 }

@@ -127,6 +127,7 @@ export default function DeploymentPlanner() {
   const markupDrag = useRef<number | null>(null);
   const boxDrag = useRef<null | { start: { x: number; y: number }; additive: boolean }>(null);
   const [showEnemy,setShowEnemy] = useState(false);
+  const [threatSettingsVisible,setThreatSettingsVisible] = useState(true);
   const [threatEnabled,setThreatEnabled] = useState(false);
   const [threatSettings,setThreatSettings] = useState<ThreatSettings>(defaultThreat);
   const [markers, setMarkers] = useState<BaseMarker[]>([]);
@@ -561,7 +562,8 @@ export default function DeploymentPlanner() {
             <button className="deep-strike-toggle" disabled={selectedIds.length === 0} onClick={markSelectedDeepStrike} title="Move every model in the selected unit or units into deep strike">Deep strike</button>
             <button disabled={markers.length === 0} onClick={() => { setMarkers([]); setSelectedIds([]); setSightLines([]); setPlanName(''); setPlanIntent(''); }} title="Remove every model">Clear models</button>
             <span className="toolstrip-divider" />
-            <button disabled={!selected} aria-pressed={threatEnabled} onClick={()=>setThreatEnabled(v=>!v)}>Threat ranges</button>
+            <button disabled={!selected} aria-pressed={threatEnabled} onClick={()=>{setThreatEnabled(v=>!v);setThreatSettingsVisible(true);}}>Threat ranges</button>
+            {threatEnabled&&selected&&<button onClick={()=>setThreatSettingsVisible(v=>!v)}>{threatSettingsVisible?'Hide threat settings':'Show threat settings'}</button>}
             <button className={auditEnabled ? 'audit-toggle active' : 'audit-toggle'} onClick={() => setAuditEnabled((enabled) => !enabled)} title="Show the deployment zones and sight-blocking geometry the planner reads">Map check</button>
             <button className={infiltrateEnabled ? 'infiltrate-toggle active' : 'infiltrate-toggle'} onClick={() => setInfiltrateEnabled((enabled) => !enabled)} title={`Show every position within 8″ of the opponent's ${side === 'blue' ? 'red' : 'blue'} deployment zone`}>Infiltrate 8″</button>
             <button className={visibilityEnabled ? 'los-toggle active' : 'los-toggle'} disabled={!selected} onClick={() => setVisibilityEnabled((enabled) => !enabled)} title="Show positions visible from the selected base">Visibility</button>
@@ -587,7 +589,7 @@ export default function DeploymentPlanner() {
           </div>
           <PlanManager getPlan={currentPlan} onOpen={openSavedPlan} requestedId={searchParams.get('plan')} ready={restoredLayout===storageKey} layoutId={layout.id} armyId={armyId}/>
           {pivotEnabled&&<p className="pivot-help">Click and drag to place a pivot and rotate its line in both directions. With a pivot selected, drag anywhere on the map to rotate it again. Choose New pivot to add another. Manual visual guide; terrain blocking is not calculated.</p>}
-          {threatEnabled&&selected&&!pivotEnabled&&!markupEnabled&&!measureEnabled&&!arrowEnabled&&<ThreatCalculator value={threatSettings} onChange={setThreatSettings} label={selected.label} ruleTags={selected.ruleTags}/>}
+
         </nav>
 
         <div className="planner-main-row">
@@ -622,7 +624,7 @@ export default function DeploymentPlanner() {
           >
             <img src={`${referenceRoot}/maps/layout-${page}.jpg`} alt={`Map-only view of layout ${layout.layout}`} draggable={false} />
             <svg className="pivot-overlay" viewBox="0 0 44 60" aria-label="Pivot sight lines">{pivotLines.map(p=>{const [a,b]=pivotEndpoints(p);return <g key={p.id} data-pivot={p.id}><line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={p.color} strokeWidth=".14"/><circle cx={p.x} cy={p.y} r=".4" fill={p.color} stroke={selectedPivot===p.id?'white':'#111'} strokeWidth=".12"/><title>Pivot {p.id} · {(p.angle*180/Math.PI).toFixed(1)}°</title></g>})}</svg>
-            {threatEnabled&&selected&&<ThreatOverlay marker={selected} settings={applyThreatRules(threatSettings,selected.ruleTags??[])}/>}
+            {threatEnabled&&selected&&<ThreatOverlay marker={selected} settings={applyThreatRules(threatSettings,selected.ruleTags??[])} onAngleChange={directionAngle=>setThreatSettings(s=>({...s,directionAngle}))}/>}
             {auditEnabled && (
               <MapAuditOverlay
                 mapUrl={`${referenceRoot}/maps/layout-${page}.jpg`}
@@ -811,6 +813,7 @@ export default function DeploymentPlanner() {
             )}
           </div>
           </section>
+          {threatEnabled&&selected&&threatSettingsVisible&&<aside className="threat-sidebar" aria-label="Threat settings"><p className="threat-direction-help">Drag the white handle around the model to rotate the arrows. Distances are measured from the base edge.</p><ThreatCalculator value={threatSettings} onChange={setThreatSettings} label={selected.label} ruleTags={selected.ruleTags}/></aside>}
         </div>
       </div>
     </main>

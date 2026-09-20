@@ -44,3 +44,9 @@ Validation: planner unit tests, CLI regression suite, production build/lint, and
 ## Measured arrows
 
 Choose **Arrow**, select a bright colour using the colour swatch beside **Ruler**, then drag on the map. Each arrow displays its straight-line length in tabletop inches, updating during the drag. Arrows remain on the map and are included in autosave, named plans and JSON export/import. **Undo ink** removes the last arrow or freehand stroke; **Clear ink** removes both. Measurements are point-to-point and do not account for terrain or model bases.
+
+## Rotating threat arrows
+
+Threat ranges use thicker coloured rings and a matching fan of six arrows for maximum, 50% and 80% Advance/charge reach. Drag the white handle around the selected model to rotate the fan; the focused handle also accepts arrow keys in 5° steps. Arrow tips meet the appropriate ring, including oval bases and vehicle hulls. Labels retain the base-edge threat distance, even though the arrows start at the model centre. Direction is included in saved plans and JSON.
+
+Threat settings open in a separate right-hand sidebar that does not cover the board. **Hide threat settings** keeps the rings and arrows visible while freeing map space; **Show threat settings** brings the sidebar back.

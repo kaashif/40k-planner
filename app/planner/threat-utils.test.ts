@@ -31,3 +31,18 @@ test('Probability bands use dice distributions, not percentages of max distance'
  assert.equal(probabilityRange(a,'charge',1e-10),32);
  assert(reachChance(25,{...a,rerollAdvance:true},'charge')>reachChance(25,a,'charge'));
 });
+
+test('Rotating arrows terminate on circular, oval and hull range boundaries',async()=>{
+ const {threatRayEndpoint}=await import('./threat-utils.ts');
+ for(const angle of [0,.7,Math.PI/2,Math.PI,4.2]){
+  const p=threatRayEndpoint(50.8,50.8,12,angle);
+  assert(Math.abs(Math.hypot(p.x,p.y)-13)<1e-8);
+  assert(Math.abs(p.x*Math.sin(angle)-p.y*Math.cos(angle))<1e-8);
+  const h=threatRayEndpoint(101.6,50.8,7,angle,'hull');
+  assert(Math.abs(Math.hypot(Math.max(0,Math.abs(h.x)-2),Math.max(0,Math.abs(h.y)-1))-7)<1e-8);
+ }
+ const t=.7,a=120/50.8,b=92/50.8,r=10,n=Math.hypot(Math.cos(t)/a,Math.sin(t)/b);
+ const expected={x:a*Math.cos(t)+r*Math.cos(t)/a/n,y:b*Math.sin(t)+r*Math.sin(t)/b/n};
+ const p=threatRayEndpoint(120,92,r,Math.atan2(expected.y,expected.x));
+ assert(Math.hypot(p.x-expected.x,p.y-expected.y)<1e-8);
+});

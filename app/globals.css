@@ -649,3 +649,7 @@ button, summary { font: inherit; }
 .army-sidebar .side-toggle button{min-height:26px;padding:4px}.army-sidebar .opponent-unit>div{padding-block:0}
 .opponent-unit strong{line-height:11px}.opponent-unit span{line-height:10px}
 .measured-arrow text{font-size:1.5px;font-weight:800;text-anchor:middle;stroke:#101018;stroke-width:.4;paint-order:stroke;stroke-linejoin:round}.measured-arrow line{stroke-linecap:round}
+.threat-ray text{font-size:1.05px;font-weight:800;text-anchor:middle;stroke:#0a1018;stroke-width:.3;paint-order:stroke}.threat-ray line{stroke-linecap:round}.threat-rotate-handle{pointer-events:all;touch-action:none;cursor:grab;fill:#fff;stroke:#101826;stroke-width:.25;filter:drop-shadow(0 0 2px #fff)}.threat-rotate-handle:active{cursor:grabbing}.threat-rotate-handle:focus{stroke:#ffea00;stroke-width:.4}
+.threat-sidebar{width:clamp(130px,25vw,360px);flex:none;min-width:0;min-height:0;overflow:auto;border:1px solid var(--line);background:#162630;overscroll-behavior:contain}.threat-sidebar .threat-calculator{border:0;margin:0;padding:10px;font-size:11px}.threat-sidebar .threat-inputs{gap:8px}.threat-sidebar .threat-inputs label{flex-wrap:wrap}.threat-sidebar .threat-calculator p{font-size:10px}.threat-direction-help{margin:0;padding:10px;border-bottom:1px solid var(--line);font-size:11px;color:#f6e39b}
+.threat-overlay{z-index:9}
+.threat-rotate-handle:focus{outline:none}

@@ -1,4 +1,4 @@
-export type ThreatSettings={move:number;scout:number;useScout:boolean;advance:number;useAdvance:boolean;advanceCharge:boolean;charge:number;chargeBonus:number;advanceBonus?:number;rerollCharge?:boolean;rerollAdvance?:boolean;activeRules?:string[]};
+export type ThreatSettings={directionAngle?:number;move:number;scout:number;useScout:boolean;advance:number;useAdvance:boolean;advanceCharge:boolean;charge:number;chargeBonus:number;advanceBonus?:number;rerollCharge?:boolean;rerollAdvance?:boolean;activeRules?:string[]};
 export const defaultThreat:ThreatSettings={move:14,scout:0,useScout:false,advance:6,useAdvance:false,advanceCharge:false,charge:12,chargeBonus:0};
 export function threatRanges(s:ThreatSettings){
  const scout=s.useScout?s.scout:0;
@@ -50,3 +50,18 @@ export function threatBands(s:ThreatSettings){return [
  {name:'50% advance',range:probabilityRange(s,'advance',.5),color:'#f3ef80'},
  {name:'80% advance',range:probabilityRange(s,'advance',.8),color:'#92e5a1'},
 ];}
+
+/** Centre-to-ring ray intersection, including the base footprint and its offset. */
+export function threatRayEndpoint(widthMm:number,heightMm:number,range:number,angle:number,shape?:string){
+ const a=widthMm/50.8,b=heightMm/50.8,c=Math.cos(angle),s=Math.sin(angle);
+ if(shape==='hull'){
+  let low=0,high=Math.hypot(a,b)+range;
+  for(let i=0;i<50;i++){const r=(low+high)/2;if(Math.hypot(Math.max(0,Math.abs(r*c)-a),Math.max(0,Math.abs(r*s)-b))>range)high=r;else low=r;}
+  return {x:c*low,y:s*low};
+ }
+ const target=Math.atan2(Math.abs(s),Math.abs(c));
+ let low=0,high=Math.PI/2;
+ const point=(t:number)=>{const x=Math.cos(t),y=Math.sin(t),n=Math.hypot(x/a,y/b);return {x:a*x+range*x/a/n,y:b*y+range*y/b/n};};
+ for(let i=0;i<50;i++){const t=(low+high)/2,p=point(t);if(Math.atan2(p.y,p.x)<target)low=t;else high=t;}
+ const p=point((low+high)/2);return {x:Math.sign(c)*p.x,y:Math.sign(s)*p.y};
+}

@@ -24,6 +24,7 @@ export function validatePlan(value:unknown):PlanFile{
  if(p.side!==undefined&&!['blue','red'].includes(p.side))throw new Error('Invalid player side.');
  if(p.threatSettings!==undefined){const settings=p.threatSettings;if(!settings||!['move','scout','advance','charge','chargeBonus'].every(key=>Number.isFinite(settings[key as keyof ThreatSettings]))||!['useScout','useAdvance','advanceCharge'].every(key=>typeof settings[key as keyof ThreatSettings]==='boolean'))throw new Error('Invalid threat settings.');}
  if(p.pivotLines!==undefined&&(!Array.isArray(p.pivotLines)||p.pivotLines.some(l=>!l||!Number.isInteger(l.id)||![l.x,l.y,l.angle].every(Number.isFinite)||l.x<0||l.x>44||l.y<0||l.y>60||typeof l.color!=='string')))throw new Error('Invalid pivot sight lines.');
+ if(p.threatSettings?.directionAngle!==undefined&&!Number.isFinite(p.threatSettings.directionAngle))throw new Error('Invalid threat direction.');
  if(p.threatSettings){const s=p.threatSettings;if(s.advanceBonus!==undefined&&!Number.isFinite(s.advanceBonus)||s.rerollCharge!==undefined&&typeof s.rerollCharge!=='boolean'||s.rerollAdvance!==undefined&&typeof s.rerollAdvance!=='boolean'||s.activeRules!==undefined&&(!Array.isArray(s.activeRules)||s.activeRules.some(r=>typeof r!=='string')))throw new Error('Invalid threat modifiers.');}
  if(p.threatEnabled!==undefined&&typeof p.threatEnabled!=='boolean'||p.threatModelId!==undefined&&!Number.isInteger(p.threatModelId))throw new Error('Invalid threat selection.');
  return p.armyId==='thousand-sons'?correctThousandSonsRoster(p):p;

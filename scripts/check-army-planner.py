@@ -95,6 +95,25 @@ try:
         assert 'Charge threat 32″' in page.locator('.threat-results').inner_text()
         page.get_by_label('Advance and charge permitted',exact=True).uncheck()
         assert page.locator('.threat-overlay path').count()==6
+        assert page.locator('.threat-ray').count()==6
+        assert page.locator('.threat-overlay path').first.get_attribute('stroke-width')=='.38'
+        sidebar=page.locator('.threat-sidebar').bounding_box()
+        board=page.locator('.battlefield').bounding_box()
+        assert sidebar['x']>=board['x']+board['width']-1
+        assert page.locator('.planner-controls .threat-calculator').count()==0
+        handle=page.get_by_role('slider',name='Rotate threat arrows')
+        model=page.get_by_role('button',name='Angron, 100mm, red',exact=True)
+        model_before=model.bounding_box()
+        cx,cy=model_before['x']+model_before['width']/2,model_before['y']+model_before['height']/2
+        h=handle.bounding_box()
+        page.mouse.move(h['x']+h['width']/2,h['y']+h['height']/2);page.mouse.down()
+        page.mouse.move(cx,cy-board['height']*5/60,steps=12);page.mouse.up()
+        page.screenshot(path=str(out/'threat-rotation-debug.png'))
+        assert abs(int(handle.get_attribute('aria-valuenow'))-270)<=1, {'angle':handle.get_attribute('aria-valuenow'),'handle':h,'model':model_before,'board':board}
+        assert model.bounding_box()==model_before
+        handle.press('ArrowRight')
+        assert abs(int(handle.get_attribute('aria-valuenow'))-275)<=1
+        page.screenshot(path=str(out/'threat-sidebar-arrows.png'))
         page.get_by_label('Plan name',exact=True).fill('PA A with Angron')
         page.get_by_role('button',name='Save new plan',exact=True).click()
         assert 'Saved PA A with Angron' in page.locator('.plan-manager-message').inner_text()
@@ -105,6 +124,7 @@ try:
         exported=json.loads((out/'export.json').read_text())
         assert sum(m['side']=='red' for m in exported['markers'])==1
         assert len(exported['deepStrikeMarkers'])==12
+        assert abs(exported['threatSettings']['directionAngle']*180/3.141592653589793+85)<1
         page.screenshot(path=str(out/'threat-planner.png'),full_page=True)
         page.get_by_label('Layout',exact=True).select_option('B')
         page.wait_for_url('**layout=purge-the-foe-vs-priority-assets-b**')
