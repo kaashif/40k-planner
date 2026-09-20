@@ -126,6 +126,7 @@ export default function DeploymentPlanner() {
   const pivotDrag=useRef<number|null>(null);
   const loadedThreatId=useRef<number|null>(null);
   const markupDrag = useRef<number | null>(null);
+  const reverseArrowDrag = useRef(false);
   const boxDrag = useRef<null | { start: { x: number; y: number }; additive: boolean }>(null);
   const [showEnemy,setShowEnemy] = useState(false);
   const [threatSettingsVisible,setThreatSettingsVisible] = useState(true);
@@ -146,6 +147,7 @@ export default function DeploymentPlanner() {
   const [movementEnabled, setMovementEnabled] = useState(false);
   const [boundedMoveEnabled, setBoundedMoveEnabled] = useState(false);
   const [arrowEnabled, setArrowEnabled] = useState(false);
+  const [arrowTipFirst,setArrowTipFirst] = useState(false);
   const [markupEnabled, setMarkupEnabled] = useState(false);
   const [markupColor, setMarkupColor] = useState('#ffe071');
   const [markupPaths, setMarkupPaths] = useState<MarkupPath[]>([]);
@@ -332,9 +334,12 @@ export default function DeploymentPlanner() {
       moveMarker(dragId.current, pointFromEvent(event));
     } else if (markupDrag.current !== null) {
       const point = pointFromEvent(event);
+      const reverse=reverseArrowDrag.current;
       setMarkupPaths((current) => current.map((path) => path.id === markupDrag.current ? {
         ...path,
-        points: [...(path.kind==='arrow'?path.points.slice(0,1):path.points), { x: point.x * TABLE_WIDTH, y: point.y * TABLE_HEIGHT }],
+        points: path.kind==='arrow'&&reverse
+          ? [{x:point.x*TABLE_WIDTH,y:point.y*TABLE_HEIGHT},path.points.at(-1)!]
+          : [...(path.kind==='arrow'?path.points.slice(0,1):path.points), { x: point.x * TABLE_WIDTH, y: point.y * TABLE_HEIGHT }],
       } : path));
     } else if (measureDrag.current) {
       const point = pointFromEvent(event);
@@ -365,6 +370,7 @@ export default function DeploymentPlanner() {
         color: markupColor,
         points: [{ x: point.x * TABLE_WIDTH, y: point.y * TABLE_HEIGHT }],
       };
+      reverseArrowDrag.current=arrowEnabled&&arrowTipFirst;
       markupDrag.current = path.id;
       setMarkupPaths((current) => [...current, path]);
       return;
@@ -395,6 +401,7 @@ export default function DeploymentPlanner() {
     dragOrigin.current = null;
     measureDrag.current = false;
     markupDrag.current = null;
+    reverseArrowDrag.current=false;
     pivotDrag.current=null;
     boxDrag.current = null;
     setSelectionBox(null);
@@ -598,6 +605,7 @@ export default function DeploymentPlanner() {
             <button aria-label="Select" aria-pressed={selectEnabled} onClick={()=>{setArrowEnabled(false);setMarkupEnabled(false);setPivotEnabled(false);setMeasureEnabled(false);}} title="Select an arrow or drawing, then press Delete or Backspace"><svg className="select-hand-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 13V4a2 2 0 0 1 4 0v6-2a2 2 0 0 1 4 0v3-1a2 2 0 0 1 4 0v6c0 4-2 6-6 6h-1c-2 0-3-1-4-2l-5-6a2 2 0 0 1 3-3l1 2Z"/></svg>Select</button>
             <button className={markupEnabled ? 'markup-toggle active' : 'markup-toggle'} onClick={() => {setArrowEnabled(false);setMarkupEnabled((enabled) => !enabled);setPivotEnabled(false);}} title="Draw routes, zones, and notes on the map">Draw</button>
             <button aria-pressed={arrowEnabled} onClick={()=>{setArrowEnabled(v=>!v);setMarkupEnabled(false);setPivotEnabled(false);setMeasureEnabled(false);}} title="Drag to draw an arrow with its straight-line length in inches; choose its colour beside Ruler">Arrow</button>
+            {arrowEnabled&&<label className="arrow-direction" title="Place the arrowhead first, then drag back to the tail"><input type="checkbox" aria-label="Draw arrows tip first" checked={arrowTipFirst} onChange={e=>setArrowTipFirst(e.target.checked)}/>Tip first</label>}
             <button disabled={markupPaths.length === 0} onClick={() => setMarkupPaths((current) => current.slice(0, -1))} title="Undo the last markup stroke">Undo ink</button>
             <button className="danger-button" disabled={markupPaths.length === 0} onClick={() => setMarkupPaths([])} title="Clear all markup">Clear ink</button>
             {selected && markerCoherencyIssues.has(selected.id) && <span className="coherency-chip" title={markerCoherencyIssues.get(selected.id)?.join('; ')}>Out of coherency</span>}

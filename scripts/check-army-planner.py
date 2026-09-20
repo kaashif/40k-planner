@@ -265,6 +265,7 @@ try:
             page.get_by_label('Markup colour',exact=True).fill(color)
             if page.get_by_role('button',name='Arrow',exact=True).get_attribute('aria-pressed')!='true':
                 page.get_by_role('button',name='Arrow',exact=True).click()
+            page.get_by_label('Draw arrows tip first',exact=True).set_checked(color=='#ff33cc')
             rect=page.locator('.battlefield').bounding_box()
             x,y=rect['x']+rect['width']*(.3 if color=='#00ffff' else .5),rect['y']+rect['height']*.3
             page.mouse.move(x,y);page.mouse.down()
@@ -289,6 +290,13 @@ try:
         with page.expect_download() as event:
             page.get_by_role('button',name='Export JSON',exact=True).click()
         event.value.save_as(out/'arrows.json')
+        arrow_paths=json.loads((out/'arrows.json').read_text())['markupPaths']
+        forward,reverse=arrow_paths
+        assert forward['points'][0]['x']<forward['points'][1]['x']
+        assert reverse['points'][0]['x']>reverse['points'][1]['x']
+        assert reverse['points'][0]['y']>reverse['points'][1]['y']
+        assert abs(reverse['points'][1]['x']-22)<.1
+        assert abs(reverse['points'][1]['y']-18)<.1
         page.get_by_role('button',name='Clear ink',exact=True).click()
         page.get_by_label('Import deployment JSON',exact=True).set_input_files(out/'arrows.json')
         page.wait_for_function('document.querySelectorAll(".measured-arrow").length === 2')

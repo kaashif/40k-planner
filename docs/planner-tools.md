@@ -74,3 +74,7 @@ An overall percentile does not uniquely determine the individual dice. The illus
 ## Select and delete drawings
 
 Choose **Select** (hand-pointer icon), then click a measured arrow or freehand stroke. The selected mark gains a dashed highlight; **Delete** or **Backspace** removes only that mark. Click empty map space or press **Escape** to deselect. Keyboard users can tab to a mark and press Enter/Space to select it. Delete/Backspace in text fields continue to edit text. Drawing deletions persist in the automatic draft and can be saved/exported as usual. **Draw** now uses a thick 6 px stroke that remains visible at different map sizes.
+
+## Draw arrows from the tip
+
+Enable **Arrow**, then tick **Tip first**. Press at the desired arrowhead and drag back to the tail; the head stays at your initial click while the length updates. Untick to draw tail-to-tip again. Both modes save the same standard tail/head coordinates, so direction survives drafts, named saves and JSON import/export.
