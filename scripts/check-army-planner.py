@@ -1,0 +1,154 @@
+"""uv run --with playwright python scripts/check-army-planner.py"""
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+import json, os, threading
+from playwright.sync_api import sync_playwright
+root=Path(__file__).resolve().parents[1]
+class Handler(SimpleHTTPRequestHandler):
+    def do_GET(self):
+        if self.path.startswith('/40k-planner/'): self.path=self.path[len('/40k-planner'):]
+        try: super().do_GET()
+        except (BrokenPipeError,ConnectionResetError): pass
+    def do_HEAD(self):
+        if self.path.startswith('/40k-planner/'): self.path=self.path[len('/40k-planner'):]
+        super().do_HEAD()
+    def log_message(self,*_): pass
+server=ThreadingHTTPServer(('127.0.0.1',0),partial(Handler,directory=str(root/'out')))
+threading.Thread(target=server.serve_forever,daemon=True).start()
+out=root/'.cache/army-planner';out.mkdir(parents=True,exist_ok=True)
+try:
+    with sync_playwright() as p:
+        browser=p.chromium.launch(executable_path=os.environ.get('VOD_TEST_BROWSER'))
+        page=browser.new_page(viewport={'width':1440,'height':1100})
+        errors=[]
+        page.on('pageerror',lambda e:errors.append(str(e)))
+        page.on('response',lambda r:errors.append(f'{r.status}: {r.url}') if r.status>=400 else None)
+        origin=f'http://127.0.0.1:{server.server_port}/40k-planner/'
+        page.goto(origin+'planner/',wait_until='networkidle')
+        page.wait_for_function('document.querySelectorAll(".base-marker").length === 37')
+        assert page.get_by_label('Army',exact=True).input_value()=='thousand-sons'
+        assert '12 in deep strike' in page.locator('.deep-strike-status').inner_text()
+        assert page.locator('.army-warning').count()==0
+        assert page.locator('.army-roster-unit').count()==15
+        magnus=page.get_by_role('button',name='Magnus the Red, 100mm, blue',exact=True)
+        assert magnus.count()==1
+        assert abs(float(magnus.evaluate('(e)=>e.style.width').strip('%'))-100/25.4/44*100)<.001
+        page.get_by_role('button',name='Return DS',exact=True).click()
+        assert page.locator('.base-marker').count()==49
+        page.locator('.battlefield').click(position={'x':2,'y':2})
+        page.get_by_role('button',name='Scarab Occult Terminators, 40mm, blue',exact=True).first.click()
+        page.get_by_role('button',name='Deep strike',exact=True).click()
+        assert page.locator('.base-marker').count()==38
+        assert '11 in deep strike' in page.locator('.deep-strike-status').inner_text()
+        key='deployment-planner:v3:thousand-sons:purge-the-foe-vs-priority-assets-a'
+        page.reload(wait_until='networkidle')
+        assert page.locator('.base-marker').count()==38
+        assert '11 in deep strike' in page.locator('.deep-strike-status').inner_text()
+        saved=page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',key)
+        page.get_by_label('Army',exact=True).select_option('necrons')
+        page.wait_for_function('document.querySelectorAll(".army-roster-unit").length === 12')
+        page.get_by_role('button',name='Load army staging',exact=True).click()
+        assert page.locator('.base-marker').count()==35
+        page.get_by_label('Army',exact=True).select_option('thousand-sons')
+        page.wait_for_function('document.querySelectorAll(".base-marker").length === 38')
+        restored=page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',key)
+        assert restored['markers']==saved['markers'] and restored['deepStrikeMarkers']==saved['deepStrikeMarkers']
+        page.get_by_role('button',name='Load army staging',exact=True).click()
+        assert page.locator('.base-marker').count()==37
+        page.get_by_role('button',name='Enemy models',exact=True).click()
+        page.get_by_role('button',name='Add Angron',exact=True).click()
+        assert page.locator('.base-marker.red').count()==1
+        page.get_by_role('button',name='Threat ranges',exact=True).click()
+        assert 'Charge threat 26″' in page.locator('.threat-results').inner_text()
+        page.get_by_label('Include Advance',exact=True).check()
+        assert 'Advance 20″' in page.locator('.threat-results').inner_text()
+        assert 'Charge threat 26″' in page.locator('.threat-results').inner_text()
+        page.get_by_label('Advance and charge permitted',exact=True).check()
+        assert 'Charge threat 32″' in page.locator('.threat-results').inner_text()
+        page.get_by_label('Advance and charge permitted',exact=True).uncheck()
+        assert page.locator('.threat-overlay path').count()==6
+        page.get_by_label('Plan name',exact=True).fill('PA A with Angron')
+        page.get_by_role('button',name='Save new plan',exact=True).click()
+        assert 'Saved PA A with Angron' in page.locator('.plan-manager-message').inner_text()
+        with page.expect_download() as event:
+            page.get_by_role('button',name='Export JSON',exact=True).click()
+        download=event.value
+        download.save_as(out/'export.json')
+        exported=json.loads((out/'export.json').read_text())
+        assert sum(m['side']=='red' for m in exported['markers'])==1
+        assert len(exported['deepStrikeMarkers'])==12
+        page.screenshot(path=str(out/'threat-planner.png'),full_page=True)
+        page.get_by_label('Layout',exact=True).select_option('B')
+        page.wait_for_url('**layout=purge-the-foe-vs-priority-assets-b**')
+        page.get_by_role('button',name='Load saved plan',exact=True).click()
+        page.wait_for_url('**layout=purge-the-foe-vs-priority-assets-a**plan=**')
+        page.wait_for_function('document.querySelectorAll(".base-marker.red").length === 1')
+        assert page.locator('.base-marker').count()==38
+        page.get_by_label('Import deployment JSON',exact=True).set_input_files(out/'export.json')
+        page.wait_for_function('document.querySelector(".plan-manager-message").textContent.includes("Imported")')
+        assert page.locator('.base-marker.red').count()==1
+        page.get_by_role('button',name='Angron, 100mm, red',exact=True).click()
+        page.screenshot(path=str(out/'desktop.png'),full_page=True)
+        page.set_viewport_size({'width':390,'height':844})
+        page.screenshot(path=str(out/'mobile.png'),full_page=True)
+        if not page.evaluate('document.documentElement.scrollWidth <= window.innerWidth'):
+            print(page.evaluate('''Array.from(document.querySelectorAll("body *")).filter(e=>e.getBoundingClientRect().right>innerWidth+1).map(e=>[e.tagName,e.className,e.getBoundingClientRect().width]).slice(0,30)'''))
+        assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
+        page.goto(origin+'plans/',wait_until='networkidle')
+        assert page.get_by_label('Army',exact=True).input_value()=='thousand-sons'
+        assert '2 layouts saved locally' in page.locator('.plan-library-summary').inner_text()
+        page.get_by_label('Army',exact=True).select_option('necrons')
+        assert '1 layouts saved locally' in page.locator('.plan-library-summary').inner_text()
+        assert page.locator('.named-plan-library li').count()==2
+        page.goto(origin,wait_until='networkidle')
+        assert page.locator('.tool-directory a').count()==9
+        assert page.locator('.vod-game-table tbody tr').count()==5
+        page.screenshot(path=str(out/'homepage.png'),full_page=True)
+        page.goto(origin+'threat-ranges/',wait_until='networkidle')
+        assert 'Charge threat 26″' in page.locator('.threat-results').inner_text()
+        assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
+        page.get_by_label('Threat unit',exact=True).select_option('joe:spawn')
+        assert 'Max charge: 36″' in page.locator('.threat-legend').inner_text()
+        page.set_viewport_size({'width':1440,'height':1100})
+        page.goto(origin+'planner/',wait_until='networkidle')
+        page.get_by_role('button',name='Load army staging',exact=True).click()
+        page.get_by_role('button',name='Enemy models',exact=True).click()
+        page.get_by_role('button',name='Add whole opponent list',exact=True).click()
+        assert page.locator('.base-marker.red').count()==59
+        page.get_by_role('button',name='Add whole opponent list',exact=True).click()
+        assert page.locator('.base-marker.red').count()==59
+        page.get_by_role('button',name='Slaughterbound, 50mm, red',exact=True).first.click()
+        if page.get_by_role('button',name='Threat ranges',exact=True).get_attribute('aria-pressed')!='true':page.get_by_role('button',name='Threat ranges',exact=True).click()
+        page.get_by_label('Unbridled Bloodlust active:',exact=False).check()
+        assert '50% charge: 20″' in page.locator('.threat-legend').inner_text()
+        assert '80% charge: 19″' in page.locator('.threat-legend').inner_text()
+        page.get_by_label('Opponent list',exact=True).select_option('zak')
+        page.get_by_label('Rangers include one arquebus',exact=True).check()
+        page.get_by_role('button',name='Add whole opponent list',exact=True).click()
+        assert page.locator('.base-marker.red').count()==97
+        assert page.get_by_role('button',name='Ranger with arquebus, 60×35.5mm, red',exact=True).count()==1
+        page.get_by_role('button',name='Kastelan Robot, 60mm, red',exact=True).first.click()
+        page.get_by_label('Motive Imperative',exact=False).check()
+        assert 'Max charge: 23″' in page.locator('.threat-legend').inner_text()
+        assert 'Max advance: 18″' in page.locator('.threat-legend').inner_text()
+        page.get_by_role('button',name='Pivot sight line',exact=True).click()
+        board=page.locator('.battlefield');board.scroll_into_view_if_needed();rect=board.bounding_box()
+        x,y=rect['x']+rect['width']*.5,rect['y']+rect['height']*.5
+        page.mouse.move(x,y);page.mouse.down();page.mouse.move(x+100,y+70,steps=10);page.mouse.up()
+        assert page.locator('[data-pivot]').count()==1
+        before=page.locator('[data-pivot] circle').get_attribute('cx')
+        page.mouse.move(x+80,y);page.mouse.down();page.mouse.move(x,y+100,steps=10);page.mouse.up()
+        assert page.locator('[data-pivot] circle').get_attribute('cx')==before
+        line=page.locator('[data-pivot] line');assert abs(float(line.get_attribute('x1'))-float(line.get_attribute('x2')))<.05
+        page.get_by_label('Plan name',exact=True).fill('Both enemies with pivot')
+        page.get_by_role('button',name='Save new plan',exact=True).click()
+        page.reload(wait_until='networkidle')
+        assert page.locator('[data-pivot]').count()==1
+        assert page.locator('.base-marker.red').count()==97
+        assert 'Max charge: 23″' in page.locator('.threat-legend').inner_text()
+        page.screenshot(path=str(out/'opponents-pivot.png'),full_page=True)
+        assert not errors,errors
+        browser.close()
+        print('PASS: TS roster, both opponent lists, mixed footprints, rule bands, pivot rotation, named saves, JSON import/export and responsive UI')
+finally: server.shutdown()

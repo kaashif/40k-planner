@@ -1,0 +1,276 @@
+{
+  "id": "zak",
+  "name": "Zak — Adeptus Mechanicus",
+  "faction": "Adeptus Mechanicus",
+  "detachments": "Cohort Cybernetica + Lords of the Forge",
+  "edition": 11,
+  "reviewed": "2026-09-20",
+  "note": "Attachments and enhancement names were not supplied. Units are separate; select models and group them after deciding attachments. Supplied points preserved.",
+  "units": [
+    {
+      "id": "cawl",
+      "name": "Belisarius Cawl",
+      "points": 220,
+      "models": [
+        {
+          "name": "Belisarius Cawl",
+          "count": 1,
+          "widthMm": 105,
+          "heightMm": 70,
+          "move": 8,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/adeptus-mechanicus/Belisarius-Cawl",
+      "rules": [],
+      "note": ""
+    },
+    {
+      "id": "thulia",
+      "name": "Thulia Ghuld · Warlord",
+      "points": 180,
+      "models": [
+        {
+          "name": "Thulia Ghuld · Warlord",
+          "count": 1,
+          "widthMm": 80,
+          "heightMm": 80,
+          "move": 8,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/adeptus-mechanicus/Thulia-Ghuld",
+      "rules": [
+        "thulia"
+      ],
+      "note": ""
+    },
+    {
+      "id": "datasmith-1",
+      "name": "Cybernetica Datasmith 1",
+      "points": 50,
+      "models": [
+        {
+          "name": "Cybernetica Datasmith 1",
+          "count": 1,
+          "widthMm": 32,
+          "heightMm": 32,
+          "move": 8,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/adeptus-mechanicus/Cybernetica-Datasmith",
+      "rules": [
+        "vehicle"
+      ],
+      "note": "M8 includes Cohort Cybernetica +2. Attachment/enhancement unspecified."
+    },
+    {
+      "id": "datasmith-2",
+      "name": "Cybernetica Datasmith 2",
+      "points": 25,
+      "models": [
+        {
+          "name": "Cybernetica Datasmith 2",
+          "count": 1,
+          "widthMm": 32,
+          "heightMm": 32,
+          "move": 8,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/adeptus-mechanicus/Cybernetica-Datasmith",
+      "rules": [
+        "vehicle"
+      ],
+      "note": "M8 includes Cohort Cybernetica +2. Attachment/enhancement unspecified."
+    },
+    {
+      "id": "enginseer",
+      "name": "Tech-Priest Enginseer",
+      "points": 75,
+      "models": [
+        {
+          "name": "Tech-Priest Enginseer",
+          "count": 1,
+          "widthMm": 32,
+          "heightMm": 32,
+          "move": 6,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/adeptus-mechanicus/Tech-priest-Enginseer",
+      "rules": [],
+      "note": "Enhancement unspecified; points preserved."
+    },
+    {
+      "id": "technoarcheologist",
+      "name": "Technoarcheologist",
+      "points": 45,
+      "models": [
+        {
+          "name": "Technoarcheologist",
+          "count": 1,
+          "widthMm": 32,
+          "heightMm": 32,
+          "move": 6,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/adeptus-mechanicus/Technoarcheologist",
+      "rules": [],
+      "note": ""
+    },
+    {
+      "id": "rangers",
+      "name": "10 Skitarii Rangers",
+      "points": 85,
+      "models": [
+        {
+          "name": "Skitarii Ranger",
+          "count": 10,
+          "widthMm": 25,
+          "heightMm": 25,
+          "move": 6,
+          "scout": 6
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/adeptus-mechanicus/Skitarii-Rangers",
+      "rules": [
+        "thulia"
+      ],
+      "note": "Weapons unspecified: default all 25 mm; enable arquebus below for one 60 × 35.5 mm base."
+    },
+    {
+      "id": "servitors",
+      "name": "9 Servitor Battleclade",
+      "points": 65,
+      "models": [
+        {
+          "name": "Underseer / Gun Servitor",
+          "count": 3,
+          "widthMm": 32,
+          "heightMm": 32,
+          "move": 6,
+          "scout": 0
+        },
+        {
+          "name": "Combat Servitor",
+          "count": 6,
+          "widthMm": 25,
+          "heightMm": 25,
+          "move": 6,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/adeptus-mechanicus/Servitor-Battleclade",
+      "rules": []
+    },
+    {
+      "id": "ironstriders",
+      "name": "3 Ironstrider Ballistarii",
+      "points": 280,
+      "models": [
+        {
+          "name": "Ironstrider Ballistarius",
+          "count": 3,
+          "widthMm": 105,
+          "heightMm": 70,
+          "move": 10,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/adeptus-mechanicus/Ironstrider-Ballistarii",
+      "rules": [
+        "vehicle",
+        "thulia"
+      ]
+    },
+    {
+      "id": "kastelans-1",
+      "name": "4 Kastelan Robots 1",
+      "points": 300,
+      "models": [
+        {
+          "name": "Kastelan Robot",
+          "count": 4,
+          "widthMm": 60,
+          "heightMm": 60,
+          "move": 8,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/adeptus-mechanicus/Kastelan-Robots",
+      "rules": [
+        "vehicle"
+      ],
+      "note": "M8 includes Cohort Cybernetica +2. Datasmiths are separate until you group them."
+    },
+    {
+      "id": "kastelans-2",
+      "name": "4 Kastelan Robots 2",
+      "points": 330,
+      "models": [
+        {
+          "name": "Kastelan Robot",
+          "count": 4,
+          "widthMm": 60,
+          "heightMm": 60,
+          "move": 8,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/adeptus-mechanicus/Kastelan-Robots",
+      "rules": [
+        "vehicle"
+      ],
+      "note": "M8 includes Cohort Cybernetica +2. Datasmiths are separate until you group them."
+    },
+    {
+      "id": "skorpius-1",
+      "name": "Skorpius Disintegrator 1",
+      "points": 170,
+      "models": [
+        {
+          "name": "Skorpius Disintegrator",
+          "count": 1,
+          "widthMm": 90,
+          "heightMm": 155,
+          "move": 10,
+          "scout": 0,
+          "shape": "hull"
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/adeptus-mechanicus/Skorpius-Disintegrator",
+      "rules": [
+        "vehicle",
+        "thulia"
+      ],
+      "note": "155 mm long × 90 mm wide: owner measurement, 23 January 2021; rectangular planning envelope.",
+      "hullSource": "https://www.reddit.com/r/AdeptusMechanicus/comments/l3ag6s/"
+    },
+    {
+      "id": "skorpius-2",
+      "name": "Skorpius Disintegrator 2",
+      "points": 170,
+      "models": [
+        {
+          "name": "Skorpius Disintegrator",
+          "count": 1,
+          "widthMm": 90,
+          "heightMm": 155,
+          "move": 10,
+          "scout": 0,
+          "shape": "hull"
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/adeptus-mechanicus/Skorpius-Disintegrator",
+      "rules": [
+        "vehicle",
+        "thulia"
+      ],
+      "note": "155 mm long × 90 mm wide: owner measurement, 23 January 2021; rectangular planning envelope.",
+      "hullSource": "https://www.reddit.com/r/AdeptusMechanicus/comments/l3ag6s/"
+    }
+  ]
+}

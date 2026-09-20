@@ -1,14 +1,25 @@
 'use client';
 
 import Link from 'next/link';
-import { ChangeEvent, PointerEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { PointerEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import layoutsData from '../../public/reference/11th-edition/data/event-layouts.json';
-import armyData from '../../armies/necrons-2000.json';
+import necrons from '../../armies/necrons-2000.json';
+import thousandSons from '../../armies/thousand-sons-2000.json';
+import { rosterUnitId, stageArmy, type Army } from './army-utils';
 import deploymentPlans from '../../public/reference/11th-edition/plans/index.json';
 import TerrainVisibility from './TerrainVisibility';
 import MapAuditOverlay from './MapAuditOverlay';
 import InfiltrateOverlay from './InfiltrateOverlay';
+import PlanManager from './PlanManager';
+import {pivotEndpoints,type PivotLine} from './pivot-utils';
+import EnemyModels from './EnemyModels';
+import {spawnOpponents,type OpponentUnit} from './opponent-utils';
+import {applyThreatRules} from './threat-rules';
+import ThreatCalculator from './ThreatCalculator';
+import ThreatOverlay from './ThreatOverlay';
+import {defaultThreat,type ThreatSettings} from './threat-utils';
+import {validatePlan,type PlanFile} from './plan-files';
 import { coherencyIssues, coherencyMeasurements, constrainMove, MM_PER_INCH, moveSelectedUnitsToDeepStrike, placeUnitLabels, TABLE_HEIGHT, TABLE_WIDTH, type PlannerMarker } from './planner-utils';
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
@@ -53,6 +64,7 @@ type SavedPlanner = {
   planIntent?: string;
   sightLines: SightLine[];
   markupPaths: MarkupPath[];
+  pivotLines?: PivotLine[];
   side?: Side;
   visibilityEnabled?: boolean;
   screenEnabled?: boolean;
@@ -67,6 +79,8 @@ type SavedPlanner = {
   measurement?: null | { start: { x: number; y: number }; end: { x: number; y: number } };
   selectedIds?: number[];
   savedAt?: string;
+  threatSettings?:ThreatSettings;
+  threatEnabled?:boolean;
 };
 
 function dimensions(widthMm: number, heightMm: number) {
@@ -77,20 +91,19 @@ function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(maximum, Math.max(minimum, value));
 }
 
-function armyUnitIdForMarker(marker: BaseMarker) {
-  return armyData.units.find((unit) => marker.unitId === unit.id || marker.unitId?.startsWith(`manual-${unit.id}-`))?.id;
-}
-
 export default function DeploymentPlanner() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const armyId = searchParams.get('army') === 'necrons' ? 'necrons' : 'thousand-sons';
+  const armyData: Army = armyId === 'necrons' ? necrons : thousandSons;
   const requestedId = searchParams.get('layout');
-  const layout = layoutsData.layouts.find(({ id }) => id === requestedId) ?? layoutsData.layouts[0];
+  const layout = layoutsData.layouts.find(({ id }) => id === requestedId) ?? (armyId === 'thousand-sons' ? layoutsData.layouts.find(l=>l.id==='purge-the-foe-vs-priority-assets-a')! : layoutsData.layouts[0]);
   const requestedFirst = dispositions.find((name) => dispositionId(name) === searchParams.get('first'));
   const requestedSecond = dispositions.find((name) => dispositionId(name) === searchParams.get('second'));
   const firstDisposition = requestedFirst ?? layout.attacker.forceDisposition;
   const secondDisposition = requestedSecond ?? layout.defender.forceDisposition;
-  const bundledPlan = deploymentPlans.plans.find(({ layoutId }) => layoutId === layout.id);
+  const bundledPlan = armyId === 'necrons' ? deploymentPlans.plans.find(({ layoutId }) => layoutId === layout.id) : undefined;
+  const storageKey = armyId === 'necrons' ? `deployment-planner:v2:${layout.id}` : `deployment-planner:v3:${armyId}:${layout.id}`;
   const page = String(layout.pdfPage).padStart(2, '0');
   const boardRef = useRef<HTMLDivElement>(null);
   const nextId = useRef(1);
@@ -103,9 +116,16 @@ export default function DeploymentPlanner() {
     markers: Array<{ id: number; x: number; y: number; widthMm: number; heightMm: number; moveInches?: number }>;
   } | null>(null);
   const measureDrag = useRef(false);
+  const [pivotEnabled,setPivotEnabled]=useState(false);
+  const [pivotLines,setPivotLines]=useState<PivotLine[]>([]);
+  const [selectedPivot,setSelectedPivot]=useState<number|null>(null);
+  const pivotDrag=useRef<number|null>(null);
+  const loadedThreatId=useRef<number|null>(null);
   const markupDrag = useRef<number | null>(null);
   const boxDrag = useRef<null | { start: { x: number; y: number }; additive: boolean }>(null);
-  const importRef = useRef<HTMLInputElement>(null);
+  const [showEnemy,setShowEnemy] = useState(false);
+  const [threatEnabled,setThreatEnabled] = useState(false);
+  const [threatSettings,setThreatSettings] = useState<ThreatSettings>(defaultThreat);
   const [markers, setMarkers] = useState<BaseMarker[]>([]);
   const [deepStrikeMarkers, setDeepStrikeMarkers] = useState<BaseMarker[]>([]);
   const [planName, setPlanName] = useState('');
@@ -146,31 +166,32 @@ export default function DeploymentPlanner() {
   const selectedId = selectedIds.at(-1) ?? null;
   const selectedIdSet = useMemo(() => new Set(selectedIds), [selectedIds]);
   const selected = markers.find(({ id }) => id === selectedId) ?? null;
+  const selectedMove=selected?.moveInches??14, selectedScout=selected?.scoutInches??0;
+  useEffect(()=>{if(loadedThreatId.current!==null&&loadedThreatId.current===selectedId){loadedThreatId.current=null;return;}loadedThreatId.current=null;if(selectedId!==null)setThreatSettings({...defaultThreat,move:selectedMove,scout:selectedScout,useScout:selectedScout>0,useAdvance:selected?.ruleTags?.includes('advance-charge')??false});},[selectedId,selectedMove,selectedScout,selected?.ruleTags]);
   const markerCoherencyIssues = useMemo(() => coherencyIssues(markers), [markers]);
   const coherencyLines = useMemo(() => coherencyMeasurements(markers), [markers]);
   const unitLabels = useMemo(() => placeUnitLabels(suggestionVisible ? markers : []), [markers, suggestionVisible]);
   const accountedByArmyUnit = useMemo(() => {
     const counts = new Map<string, number>();
     for (const marker of [...markers, ...deepStrikeMarkers]) {
-      const armyUnitId = armyUnitIdForMarker(marker);
+      const armyUnitId = rosterUnitId(marker, armyData);
       if (armyUnitId) counts.set(armyUnitId, (counts.get(armyUnitId) ?? 0) + 1);
     }
     return counts;
-  }, [deepStrikeMarkers, markers]);
-  const unplacedModels = useMemo(() => armyData.units.reduce((total, unit) => total + Math.max(0, unit.models - (accountedByArmyUnit.get(unit.id) ?? 0)), 0), [accountedByArmyUnit]);
+  }, [armyData, deepStrikeMarkers, markers]);
+  const unplacedModels = useMemo(() => armyData.units.reduce((total, unit) => total + Math.max(0, unit.models - (accountedByArmyUnit.get(unit.id) ?? 0)), 0), [accountedByArmyUnit, armyData]);
 
   function navigateMatchup(first: string, second: string, letter: string) {
     const match = layoutsData.layouts.find((candidate) => candidate.layout === letter && (
       (candidate.attacker.forceDisposition === first && candidate.defender.forceDisposition === second)
       || (candidate.attacker.forceDisposition === second && candidate.defender.forceDisposition === first)
     ));
-    if (match) router.push(`/planner/?layout=${match.id}&first=${dispositionId(first)}&second=${dispositionId(second)}`);
+    if (match) router.push(`/planner/?layout=${match.id}&army=${armyId}&first=${dispositionId(first)}&second=${dispositionId(second)}`);
   }
 
   useEffect(() => {
     setRestoredLayout('');
     setSuggestionVisible(true);
-    const storageKey = `deployment-planner:v2:${layout.id}`;
     try {
       const primary = localStorage.getItem(storageKey);
       const backup = localStorage.getItem(`${storageKey}:backup`);
@@ -190,10 +211,12 @@ export default function DeploymentPlanner() {
         setMarkers(Array.isArray(data.markers) ? data.markers : []);
         setDeepStrikeMarkers(Array.isArray(data.deepStrikeMarkers) ? data.deepStrikeMarkers : []);
         setPlanName(data.planName || 'Saved deployment');
+        if(data.threatSettings){setThreatSettings(data.threatSettings);loadedThreatId.current=data.selectedIds?.at(-1)??null;}setThreatEnabled(data.threatEnabled??false);
         setPlanIntent(data.planIntent || '');
+        setPivotLines(data.pivotLines??[]);setSelectedPivot(null);
         setSightLines(Array.isArray(data.sightLines) ? data.sightLines : []);
         setMarkupPaths(Array.isArray(data.markupPaths) ? data.markupPaths : []);
-        nextId.current = Math.max(0, ...(data.markers || []).map(({ id }) => id)) + 1;
+        nextId.current = Math.max(0, ...[...(data.markers || []), ...(data.deepStrikeMarkers || [])].map(({ id }) => id)) + 1;
         nextMarkupId.current = Math.max(0, ...(data.markupPaths || []).map(({ id }) => id)) + 1;
         if (data.side) setSide(data.side);
         if (typeof data.visibilityEnabled === 'boolean') setVisibilityEnabled(data.visibilityEnabled);
@@ -210,28 +233,28 @@ export default function DeploymentPlanner() {
         setSelectedIds(Array.isArray(data.selectedIds) ? data.selectedIds.filter((id) => data.markers.some((marker) => marker.id === id)) : []);
         setLastSavedAt(restoredBackup ? 'restored' : data.savedAt || 'restored');
       } else {
-        setMarkers([]);
-        setDeepStrikeMarkers([]);
+        const staged = armyId === 'thousand-sons' ? stageArmy(armyData) : {markers:[],deepStrikeMarkers:[]};
+        setMarkers(staged.markers);
+        setDeepStrikeMarkers(staged.deepStrikeMarkers);
         setPlanName('');
         setPlanIntent('');
-        setSightLines([]);
+        setSightLines([]);setPivotLines([]);setSelectedPivot(null);
         setMarkupPaths([]);
         setSelectedIds([]);
-        nextId.current = 1;
+        nextId.current = staged.markers.length + staged.deepStrikeMarkers.length + 1;
         nextMarkupId.current = 1;
       }
     } catch {
       localStorage.removeItem(storageKey);
     }
-    setRestoredLayout(layout.id);
-  }, [layout.id]);
+    setRestoredLayout(storageKey);
+  }, [armyData, armyId, storageKey]);
 
   useEffect(() => {
-    if (restoredLayout !== layout.id) return;
-    const storageKey = `deployment-planner:v2:${layout.id}`;
+    if (restoredLayout !== storageKey) return;
     const savedAt = new Date().toISOString();
     const saved: SavedPlanner = {
-      markers, deepStrikeMarkers, planName, planIntent, sightLines, markupPaths, side, visibilityEnabled, screenEnabled,
+      markers, deepStrikeMarkers, planName, planIntent, sightLines, markupPaths, pivotLines, threatSettings, threatEnabled, side, visibilityEnabled, screenEnabled,
       screenSide, measureEnabled, movementEnabled, boundedMoveEnabled, markupEnabled, markupColor, auditEnabled, infiltrateEnabled,
       measurement, selectedIds, savedAt,
     };
@@ -240,7 +263,7 @@ export default function DeploymentPlanner() {
     if (previous && previous !== serialized) localStorage.setItem(`${storageKey}:backup`, previous);
     localStorage.setItem(storageKey, serialized);
     setLastSavedAt(savedAt);
-  }, [auditEnabled, boundedMoveEnabled, deepStrikeMarkers, infiltrateEnabled, layout.id, markers, markupColor, markupEnabled, markupPaths, measureEnabled, measurement, movementEnabled, planIntent, planName, restoredLayout, screenEnabled, screenSide, selectedIds, side, sightLines, visibilityEnabled]);
+  }, [auditEnabled, boundedMoveEnabled, deepStrikeMarkers, infiltrateEnabled, storageKey, markers, markupColor, markupEnabled, markupPaths, measureEnabled, measurement, movementEnabled, planIntent, planName, pivotLines, threatSettings, threatEnabled, restoredLayout, screenEnabled, screenSide, selectedIds, side, sightLines, visibilityEnabled]);
 
   function pointFromEvent(event: PointerEvent) {
     const bounds = boardRef.current!.getBoundingClientRect();
@@ -281,6 +304,8 @@ export default function DeploymentPlanner() {
   }
 
   function onBoardPointerMove(event: PointerEvent<HTMLDivElement>) {
+    if(pivotDrag.current!==null){const point=pointFromEvent(event);setPivotLines(lines=>lines.map(p=>p.id===pivotDrag.current?{...p,angle:Math.atan2(point.y*60-p.y,point.x*44-p.x)}:p));return;}
+
     if (dragId.current !== null) {
       moveMarker(dragId.current, pointFromEvent(event));
     } else if (markupDrag.current !== null) {
@@ -301,7 +326,13 @@ export default function DeploymentPlanner() {
   }
 
   function onBoardPointerDown(event: PointerEvent<HTMLDivElement>) {
-    if (event.target !== event.currentTarget) return;
+    if (event.target !== event.currentTarget && !pivotEnabled) return;
+    if(pivotEnabled){const point=pointFromEvent(event);event.currentTarget.setPointerCapture(event.pointerId);
+      const existing=selectedPivot!==null&&pivotLines.find(p=>p.id===selectedPivot);
+      if(existing){pivotDrag.current=existing.id;setPivotLines(lines=>lines.map(p=>p.id===existing.id?{...p,angle:Math.atan2(point.y*60-p.y,point.x*44-p.x)}:p));}
+      else {const id=Math.max(0,...pivotLines.map(p=>p.id))+1;setPivotLines(lines=>[...lines,{id,x:point.x*44,y:point.y*60,angle:0,color:markupColor}]);setSelectedPivot(id);pivotDrag.current=id;}
+      return;
+    }
     if (markupEnabled) {
       event.currentTarget.setPointerCapture(event.pointerId);
       const point = pointFromEvent(event);
@@ -340,6 +371,7 @@ export default function DeploymentPlanner() {
     dragOrigin.current = null;
     measureDrag.current = false;
     markupDrag.current = null;
+    pivotDrag.current=null;
     boxDrag.current = null;
     setSelectionBox(null);
     setLiveMove(null);
@@ -367,10 +399,11 @@ export default function DeploymentPlanner() {
   }
 
   function addArmyUnit(unit: (typeof armyData.units)[number]) {
-    const groupId = `manual-${unit.id}-${nextId.current}`;
+    const groupId = unit.attachedTo ?? unit.id;
+    const remaining = unit.models - (accountedByArmyUnit.get(unit.id) ?? 0);
     const columns = Math.min(3, unit.models);
     const spacing = Math.max(2.2, unit.baseMm / MM_PER_INCH + .65);
-    const added = Array.from({ length: unit.models }, (_, index): BaseMarker => ({
+    const added = Array.from({ length: remaining }, (_, index): BaseMarker => ({
       id: nextId.current++,
       x: clamp((18 + (index % columns) * spacing) / TABLE_WIDTH, .05, .95),
       y: clamp((38 + Math.floor(index / columns) * spacing) / TABLE_HEIGHT, .05, .95),
@@ -379,10 +412,25 @@ export default function DeploymentPlanner() {
       label: unit.name,
       side,
       unitId: groupId,
+      rosterUnitId: unit.id,
       moveInches: unit.movementInches,
     }));
     setMarkers((current) => [...current, ...added]);
     setSelectedIds(added.map(({ id }) => id));
+  }
+
+  function loadArmy() {
+    const staged = stageArmy(armyData, side);
+    setMarkers(staged.markers); setDeepStrikeMarkers(staged.deepStrikeMarkers);
+    nextId.current = staged.markers.length + staged.deepStrikeMarkers.length + 1;
+    setPlanName('Roster staging'); setPlanIntent('Drag models into deployment positions.');
+    setSelectedIds([]); setSightLines([]); setMarkupPaths([]);setPivotLines([]);setSelectedPivot(null); setSuggestionVisible(true);
+  }
+
+  function addEnemy(listId:string,units:OpponentUnit[]) {
+    try {const result=spawnOpponents(listId,units,markers,deepStrikeMarkers,nextId.current,side==='blue'?'red':'blue');
+    nextId.current=result.nextId;setMarkers(current=>[...current,...result.added]);setSelectedIds(result.added.slice(-1).map(m=>m.id));setSuggestionVisible(true);setImportError('');
+    }catch(error){setImportError(error instanceof Error?error.message:'Could not stage opponent.');}
   }
 
   function rotateSelected() {
@@ -395,7 +443,8 @@ export default function DeploymentPlanner() {
     } : marker));
   }
 
-  const loadPlan = useCallback((data: PlannerImport) => {
+  const loadPlan = useCallback((data: PlannerImport & Partial<PlanFile>) => {
+    validatePlan(data);
     if (data.schemaVersion !== 1 || !Array.isArray(data.markers)) throw new Error('Unsupported deployment-plan file.');
     if (data.layoutId !== layout.id) throw new Error(`This plan is for ${data.layoutId}, not ${layout.id}.`);
     const imported = data.markers.map((marker) => ({
@@ -411,10 +460,15 @@ export default function DeploymentPlanner() {
     setMarkers(imported);
     setDeepStrikeMarkers(importedDeepStrike);
     nextId.current = Math.max(0, ...imported.map(({ id }) => id), ...importedDeepStrike.map(({ id }) => id)) + 1;
+    setPivotLines(data.pivotLines??[]);setSelectedPivot(null);
     setSightLines(data.sightLines || []);
+    setMarkupPaths(data.markupPaths || []);
+    nextMarkupId.current=Math.max(0,...(data.markupPaths||[]).map(p=>p.id))+1;
+    if(data.side)setSide(data.side);
+    if(data.threatSettings)setThreatSettings(data.threatSettings);
     setPlanName(data.name || 'Imported plan');
     setPlanIntent(data.intent || '');
-    setSelectedIds([]);
+    const threatId=imported.find(m=>m.id===data.threatModelId)?.id;loadedThreatId.current=threatId??null;setSelectedIds(threatId!==undefined?[threatId]:[]);setThreatEnabled(data.threatEnabled??false);
     setSuggestionVisible(true);
     setImportError('');
   }, [layout.id]);
@@ -431,46 +485,43 @@ export default function DeploymentPlanner() {
   }, [bundledPlan, loadPlan]);
 
   useEffect(() => {
-    const hasSavedDeployment = localStorage.getItem(`deployment-planner:v2:${layout.id}`) !== null;
+    const hasSavedDeployment = localStorage.getItem(storageKey) !== null;
     if ((searchParams.get('suggestion') === '1' || !hasSavedDeployment) && bundledPlan) {
       void loadExample();
     }
-  }, [bundledPlan, layout.id, loadExample, searchParams]);
+  }, [bundledPlan, storageKey, loadExample, searchParams]);
 
-  async function importPlan(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    try {
-      loadPlan(JSON.parse(await file.text()));
-    } catch (error) {
-      setImportError(error instanceof Error ? error.message : 'Could not import plan.');
-    } finally {
-      event.target.value = '';
-    }
-  }
+  const openSavedPlan = useCallback((data:PlanFile,id:string)=>{
+    if(!layoutsData.layouts.some(l=>l.id===data.layoutId))throw new Error('Unknown layout in saved plan.');
+    const targetArmy=data.armyId??'necrons';
+    if(data.layoutId!==layout.id||targetArmy!==armyId){router.push(`/planner/?layout=${encodeURIComponent(data.layoutId)}&army=${targetArmy}&plan=${encodeURIComponent(id)}`);return;}
+    loadPlan(data);
+  },[armyId,layout.id,loadPlan,router]);
+  function currentPlan():PlanFile{return {schemaVersion:1,armyId,name:planName||armyData.name,layoutId:layout.id,intent:planIntent,markers:markers.map(m=>({...m,x:m.x*TABLE_WIDTH,y:m.y*TABLE_HEIGHT})),deepStrikeMarkers:deepStrikeMarkers.map(m=>({...m,x:m.x*TABLE_WIDTH,y:m.y*TABLE_HEIGHT})),sightLines,markupPaths,pivotLines,side,threatSettings,threatEnabled,threatModelId:selectedId??undefined};}
 
   return (
     <main className="planner-shell">
       <div className="planner-workspace">
         <nav className="planner-controls" aria-label="Deployment planner controls">
           <div className="planner-context-row">
-            <Link className="planner-back-link" href="/missions/">← Missions</Link>
+            <Link className="planner-back-link" href="/">← All tools</Link>
+            <Link className="planner-back-link" href="/missions/">Missions</Link>
             <label className="matchup-selector">
               <span>First objective</span>
-              <select value={firstDisposition} onChange={(event) => navigateMatchup(event.target.value, secondDisposition, layout.layout)}>
+              <select aria-label="First objective" value={firstDisposition} onChange={(event) => navigateMatchup(event.target.value, secondDisposition, layout.layout)}>
                 {dispositions.map((name) => <option key={name} value={name}>{name}</option>)}
               </select>
             </label>
             <span className="matchup-versus">vs</span>
             <label className="matchup-selector">
               <span>Second objective</span>
-              <select value={secondDisposition} onChange={(event) => navigateMatchup(firstDisposition, event.target.value, layout.layout)}>
+              <select aria-label="Second objective" value={secondDisposition} onChange={(event) => navigateMatchup(firstDisposition, event.target.value, layout.layout)}>
                 {dispositions.map((name) => <option key={name} value={name}>{name}</option>)}
               </select>
             </label>
             <label className="layout-selector">
               <span>Layout</span>
-              <select value={layout.layout} onChange={(event) => navigateMatchup(firstDisposition, secondDisposition, event.target.value)}>
+              <select aria-label="Layout" value={layout.layout} onChange={(event) => navigateMatchup(firstDisposition, secondDisposition, event.target.value)}>
                 {['A', 'B', 'C'].map((letter) => <option key={letter} value={letter}>{letter}</option>)}
               </select>
             </label>
@@ -489,18 +540,18 @@ export default function DeploymentPlanner() {
             {bundledPlan && <button onClick={loadExample} title="Replace the board with the bundled suggested deployment">Load suggestion</button>}
             {bundledPlan && planName && <button className={suggestionVisible ? 'suggestion-toggle active' : 'suggestion-toggle'} aria-pressed={suggestionVisible} onClick={() => { setSuggestionVisible((visible) => !visible); setSelectedIds([]); }} title="Show or hide the suggested deployment without deleting it">{suggestionVisible ? 'Hide suggestion' : 'Show suggestion'}</button>}
             <Link className="toolbar-link" href="/plans/" title="View every saved deployment plan">All plans</Link>
-            <button onClick={() => importRef.current?.click()} title="Import a planner JSON file">Import</button>
-            <input ref={importRef} type="file" accept="application/json,.json" hidden onChange={importPlan} />
             <span className="toolstrip-divider" />
             <span className="selection-chip" title={selected ? `${selected.moveInches ? `M ${selected.moveInches}″ · ` : ''}drag any selected model to move the group` : 'Click a model, unit label, or drag a box; Ctrl/Cmd-click toggles models'}>
               {selectedIds.length > 1 ? `${selectedIds.length} selected` : selected ? selected.label : 'No selection'}
             </span>
+            <button disabled={selectedIds.length<2||new Set(markers.filter(m=>selectedIdSet.has(m.id)).map(m=>m.side)).size!==1} onClick={()=>{const group=markers.filter(m=>selectedIdSet.has(m.id));const tags=[...new Set(group.flatMap(m=>m.ruleTags??[]))];const scout=Math.min(...group.map(m=>m.scoutInches??0));setMarkers(ms=>ms.map(m=>selectedIdSet.has(m.id)?{...m,unitId:`group-${selectedIds[0]}`,ruleTags:tags,scoutInches:scout}:m));}} title="Select all models in the bodyguard and leader first. Groups share coherency and reserve selection.">Group selected</button>
             <button disabled={!markers.some((marker) => selectedIdSet.has(marker.id) && marker.widthMm !== marker.heightMm)} onClick={rotateSelected} title="Rotate selected oval bases 90°">Rotate</button>
             <button className="danger-button" disabled={selectedIds.length === 0} onClick={removeSelected} title="Remove selected models">Remove</button>
             <button className="deep-strike-toggle" disabled={selectedIds.length === 0} onClick={markSelectedDeepStrike} title="Move every model in the selected unit or units into deep strike">Deep strike</button>
             <button disabled={deepStrikeMarkers.length === 0} onClick={returnDeepStrike} title="Return all deep-strike units to their previous positions">Return DS</button>
             <button disabled={markers.length === 0} onClick={() => { setMarkers([]); setSelectedIds([]); setSightLines([]); setPlanName(''); setPlanIntent(''); }} title="Remove every model">Clear models</button>
             <span className="toolstrip-divider" />
+            <button disabled={!selected} aria-pressed={threatEnabled} onClick={()=>setThreatEnabled(v=>!v)}>Threat ranges</button>
             <button className={auditEnabled ? 'audit-toggle active' : 'audit-toggle'} onClick={() => setAuditEnabled((enabled) => !enabled)} title="Show the deployment zones and sight-blocking geometry the planner reads">Map check</button>
             <button className={infiltrateEnabled ? 'infiltrate-toggle active' : 'infiltrate-toggle'} onClick={() => setInfiltrateEnabled((enabled) => !enabled)} title={`Show every position within 8″ of the opponent's ${side === 'blue' ? 'red' : 'blue'} deployment zone`}>Infiltrate 8″</button>
             <button className={visibilityEnabled ? 'los-toggle active' : 'los-toggle'} disabled={!selected} onClick={() => setVisibilityEnabled((enabled) => !enabled)} title="Show positions visible from the selected base">Visibility</button>
@@ -511,9 +562,11 @@ export default function DeploymentPlanner() {
               <button className={screenSide === 'red' ? 'active red' : ''} onClick={() => setScreenSide('red')} title="Use red models for screening">R</button>
             </span>
             <button className={screenEnabled ? 'screen-toggle active' : 'screen-toggle'} onClick={() => setScreenEnabled((enabled) => !enabled)} title={`Show the area where enemy deep strike is denied by ${screenSide} models, measured 8″ from their base edges`}>Deep strike 8″</button>
-            <button className={measureEnabled ? 'measure-toggle active' : 'measure-toggle'} onClick={() => setMeasureEnabled((enabled) => !enabled)} title="Drag between any two points to measure distance">Ruler</button>
+            <button className={measureEnabled ? 'measure-toggle active' : 'measure-toggle'} onClick={() => {setMeasureEnabled((enabled) => !enabled);setPivotEnabled(false);setMarkupEnabled(false);}} title="Drag between any two points to measure distance">Ruler</button>
             <input className="toolbar-colour" aria-label="Markup colour" title="Markup colour" type="color" value={markupColor} onChange={(event) => setMarkupColor(event.target.value)} />
-            <button className={markupEnabled ? 'markup-toggle active' : 'markup-toggle'} onClick={() => setMarkupEnabled((enabled) => !enabled)} title="Draw routes, zones, and notes on the map">Draw</button>
+            <button aria-pressed={pivotEnabled} onClick={()=>{setPivotEnabled(v=>!v);setMarkupEnabled(false);setMeasureEnabled(false);}}>Pivot sight line</button>
+            {pivotEnabled&&<><button onClick={()=>setSelectedPivot(null)}>New pivot</button><select aria-label="Selected pivot" value={selectedPivot??''} onChange={e=>setSelectedPivot(e.target.value?Number(e.target.value):null)}><option value="">Place new pivot</option>{pivotLines.map(p=><option key={p.id} value={p.id}>Pivot {p.id}</option>)}</select><button disabled={selectedPivot===null} onClick={()=>{setPivotLines(lines=>lines.filter(p=>p.id!==selectedPivot));setSelectedPivot(null);}}>Delete pivot</button></>}
+            <button className={markupEnabled ? 'markup-toggle active' : 'markup-toggle'} onClick={() => {setMarkupEnabled((enabled) => !enabled);setPivotEnabled(false);}} title="Draw routes, zones, and notes on the map">Draw</button>
             <button disabled={markupPaths.length === 0} onClick={() => setMarkupPaths((current) => current.slice(0, -1))} title="Undo the last markup stroke">Undo ink</button>
             <button className="danger-button" disabled={markupPaths.length === 0} onClick={() => setMarkupPaths([])} title="Clear all markup">Clear ink</button>
             {selected && markerCoherencyIssues.has(selected.id) && <span className="coherency-chip" title={markerCoherencyIssues.get(selected.id)?.join('; ')}>Out of coherency</span>}
@@ -521,23 +574,32 @@ export default function DeploymentPlanner() {
               {sightLines.filter((line) => line.clear).length} visible · {sightLines.filter((line) => !line.clear).length} blocked
             </span>}
           </div>
+          <PlanManager getPlan={currentPlan} onOpen={openSavedPlan} requestedId={searchParams.get('plan')} ready={restoredLayout===storageKey} layoutId={layout.id} armyId={armyId}/>
+          {pivotEnabled&&<p className="pivot-help">Click and drag to place a pivot and rotate its line in both directions. With a pivot selected, drag anywhere on the map to rotate it again. Choose New pivot to add another. Manual visual guide; terrain blocking is not calculated.</p>}
+          {threatEnabled&&selected&&<ThreatCalculator value={threatSettings} onChange={setThreatSettings} label={selected.label} ruleTags={selected.ruleTags}/>}
         </nav>
 
         <div className="planner-main-row">
           <aside className="army-sidebar">
-            <div className="army-sidebar-title"><strong>Army list</strong><span>{armyData.pointsLimit} pts</span></div>
+            <div className="army-sidebar-title"><strong>{armyData.faction}</strong><span>{armyData.pointsLimit} pts</span></div>
+            <label className="planner-army-select">Army<select aria-label="Army" value={armyId} onChange={event=>router.push(`/planner/?layout=${layout.id}&army=${event.target.value}`)}><option value="thousand-sons">Somehow...Magnus returned</option><option value="necrons">Brighton Necrons</option></select></label>
+            <p className="planner-roster-note">{armyData.name}</p>
+            <button onClick={loadArmy}>Load army staging</button>
+            <p className="planner-roster-note">Staging is a model tray: drag units into legal deployment positions. {armyId === 'thousand-sons' && 'Scarabs + leader and Prince start in deep strike.'}</p>
             <div className="side-toggle" aria-label="Base side">
               <button className={side === 'blue' ? 'active blue' : ''} onClick={() => setSide('blue')}>Blue</button>
               <button className={side === 'red' ? 'active red' : ''} onClick={() => setSide('red')}>Red</button>
             </div>
-            <div className="army-roster">
+            <div className="side-toggle" aria-label="Model catalogue"><button aria-pressed={!showEnemy} onClick={()=>setShowEnemy(false)}>Your army</button><button aria-pressed={showEnemy} onClick={()=>setShowEnemy(true)}>Enemy models</button></div>
+            {showEnemy?<EnemyModels onAdd={addEnemy} markers={[...markers,...deepStrikeMarkers]}/>:<div className="army-roster">
               {armyData.units.map((unit) => (
                 <div className="army-roster-unit" key={unit.id}>
-                  <div><strong>{unit.name}</strong><span>{accountedByArmyUnit.get(unit.id) ?? 0}/{unit.models} placed/DS · {unit.points} pts · M {unit.movementInches}″</span></div>
-                  <button disabled={(accountedByArmyUnit.get(unit.id) ?? 0) >= unit.models} onClick={() => addArmyUnit(unit)}>Add</button>
+                  <div><strong title={unit.name}>{unit.name}</strong><span>{accountedByArmyUnit.get(unit.id) ?? 0}/{unit.models} placed/DS · {unit.points} pts · ⌀{unit.baseMm}mm · M {unit.movementInches}″</span>{unit.source && <a href={unit.source} target="_blank" rel="noreferrer" className="planner-base-source">Base / M ↗</a>}</div>
+                  <button aria-label={`Add ${unit.name}`} disabled={(accountedByArmyUnit.get(unit.id) ?? 0) >= unit.models} onClick={() => addArmyUnit(unit)}>Add</button>
                 </div>
               ))}
             </div>
+            }
             {deepStrikeMarkers.length > 0 && <div className="deep-strike-list">
               <strong>Deep strike</strong>
               {[...new Set(deepStrikeMarkers.map(({ label }) => label))].map((label) => <span key={label}>{label}</span>)}
@@ -554,6 +616,8 @@ export default function DeploymentPlanner() {
             onPointerCancel={finishBoardPointer}
           >
             <img src={`${referenceRoot}/maps/layout-${page}.jpg`} alt={`Map-only view of layout ${layout.layout}`} draggable={false} />
+            <svg className="pivot-overlay" viewBox="0 0 44 60" aria-label="Pivot sight lines">{pivotLines.map(p=>{const [a,b]=pivotEndpoints(p);return <g key={p.id} data-pivot={p.id}><line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={p.color} strokeWidth=".14"/><circle cx={p.x} cy={p.y} r=".4" fill={p.color} stroke={selectedPivot===p.id?'white':'#111'} strokeWidth=".12"/><title>Pivot {p.id} · {(p.angle*180/Math.PI).toFixed(1)}°</title></g>})}</svg>
+            {threatEnabled&&selected&&<ThreatOverlay marker={selected} settings={applyThreatRules(threatSettings,selected.ruleTags??[])}/>}
             {auditEnabled && (
               <MapAuditOverlay
                 mapUrl={`${referenceRoot}/maps/layout-${page}.jpg`}
@@ -656,6 +720,7 @@ export default function DeploymentPlanner() {
                 key={marker.id}
                 className={`base-marker ${marker.side}${selectedIdSet.has(marker.id) ? ' selected' : ''}${markerCoherencyIssues.has(marker.id) ? ' incoherent' : ''}`}
                 style={{
+                  borderRadius: marker.shape==='hull'?'3px':undefined,
                   left: `${marker.x * 100}%`,
                   top: `${marker.y * 100}%`,
                   width: `${(marker.widthMm / MM_PER_INCH / TABLE_WIDTH) * 100}%`,
@@ -664,6 +729,7 @@ export default function DeploymentPlanner() {
                 title={`${marker.label}, ${dimensions(marker.widthMm, marker.heightMm)}, ${marker.side}`}
                 aria-label={`${marker.label}, ${dimensions(marker.widthMm, marker.heightMm)}, ${marker.side}`}
                 onPointerDown={(event) => {
+                  if(pivotEnabled)return;
                   event.stopPropagation();
                   event.currentTarget.setPointerCapture(event.pointerId);
                   const additive = event.metaKey || event.ctrlKey;

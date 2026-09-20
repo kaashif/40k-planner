@@ -1,0 +1,6 @@
+'use client';
+import Link from 'next/link';
+import {useSyncExternalStore} from 'react';
+import {NAMED_PLANS_KEY,readNamedPlans} from '../planner/plan-files';
+const subscribe=(fn:()=>void)=>{window.addEventListener('storage',fn);window.addEventListener('planner-plans-changed',fn);return()=>{window.removeEventListener('storage',fn);window.removeEventListener('planner-plans-changed',fn);};};
+export default function NamedPlanLinks(){const raw=useSyncExternalStore(subscribe,()=>localStorage.getItem(NAMED_PLANS_KEY)??'[]',()=>'[]');let plans;try{plans=readNamedPlans(raw);}catch{return <p>Saved-plan data could not be read. The original data has been left intact.</p>;}return <section className="named-plan-library"><h2>Named deployments</h2>{plans.length?<ul>{plans.map(p=><li key={p.planId}><Link href={`/planner/?layout=${encodeURIComponent(p.layoutId)}&army=${p.armyId??'necrons'}&plan=${encodeURIComponent(p.planId)}`}>{p.name}</Link><span> · {p.layoutId} · {p.markers.length} on board / {p.deepStrikeMarkers?.length??0} in reserve</span></li>)}</ul>:<p>Save a named deployment in the planner to keep several versions of a layout. Saves live in this browser; export JSON to move them elsewhere.</p>}</section>}

@@ -78,7 +78,7 @@ function ReviewCard({ review }: { review: (typeof reviewData.reviews)[number] })
         <div><dt>Objective</dt><dd>{review.objective}{review.abandonHome ? ' · Abandon Home' : ''}</dd></div>
         <div><dt>Layout</dt><dd>{review.layout} · {review.opponentDisposition}</dd></div>
       </dl>
-      <a className="review-board" href={`${basePath}/planner/?layout=${review.layoutId}`} aria-label={`Open ${review.id} layout in the planner`}>
+      <a className="review-board" href={`${basePath}/planner/?layout=${review.layoutId}&army=necrons`} aria-label={`Open ${review.id} layout in the planner`}>
         <img loading="lazy" src={`${referenceRoot}/maps/layout-${page}.jpg`} alt={`${review.id}: layout ${review.layout} against ${review.opponent}`} />
         <svg viewBox="0 0 44 60" preserveAspectRatio="none" aria-hidden="true">
           {review.markers.map((marker) => {

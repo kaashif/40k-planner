@@ -1,0 +1,346 @@
+{
+  "id": "joe",
+  "name": "Joe — World Eaters",
+  "faction": "World Eaters",
+  "detachments": "Berzerker Warband · Purge the Foe",
+  "edition": 11,
+  "reviewed": "2026-09-20",
+  "note": "Supplied attachments preserved. Rhino passengers are staged separately; this does not assume they start embarked.",
+  "units": [
+    {
+      "id": "exalted-1",
+      "name": "Slaughterbound with Battle-lust + 3 Exalted Eightbound",
+      "points": 250,
+      "models": [
+        {
+          "name": "Slaughterbound",
+          "count": 1,
+          "widthMm": 50,
+          "heightMm": 50,
+          "move": 10,
+          "scout": 0
+        },
+        {
+          "name": "Exalted Eightbound",
+          "count": 3,
+          "widthMm": 40,
+          "heightMm": 40,
+          "move": 10,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Slaughterbound",
+      "rules": [
+        "we",
+        "battle-lust"
+      ],
+      "components": [
+        {
+          "name": "Slaughterbound",
+          "points": 120,
+          "enhancement": "Battle-lust"
+        },
+        {
+          "name": "3 Exalted Eightbound",
+          "points": 130
+        }
+      ]
+    },
+    {
+      "id": "exalted-2",
+      "name": "Slaughterbound + 3 Exalted Eightbound",
+      "points": 230,
+      "models": [
+        {
+          "name": "Slaughterbound",
+          "count": 1,
+          "widthMm": 50,
+          "heightMm": 50,
+          "move": 10,
+          "scout": 0
+        },
+        {
+          "name": "Exalted Eightbound",
+          "count": 3,
+          "widthMm": 40,
+          "heightMm": 40,
+          "move": 10,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Slaughterbound",
+      "rules": [
+        "we"
+      ],
+      "components": [
+        {
+          "name": "Slaughterbound",
+          "points": 100,
+          "enhancement": null
+        },
+        {
+          "name": "3 Exalted Eightbound",
+          "points": 130
+        }
+      ]
+    },
+    {
+      "id": "berzerkers",
+      "name": "Khârn + 10 Berzerkers",
+      "points": 275,
+      "models": [
+        {
+          "name": "Khârn",
+          "count": 1,
+          "widthMm": 40,
+          "heightMm": 40,
+          "move": 8,
+          "scout": 0
+        },
+        {
+          "name": "Berzerker",
+          "count": 10,
+          "widthMm": 32,
+          "heightMm": 32,
+          "move": 8,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Kh-rn-The-Betrayer",
+      "rules": [
+        "we",
+        "berzerkers"
+      ],
+      "note": "Blood Surge can move D6+2″ after shooting destroys a model; not added to normal-turn threat rings. Khârn’s hit/wound rerolls do not reroll charges.",
+      "components": [
+        {
+          "name": "Khârn the Betrayer",
+          "points": 115
+        },
+        {
+          "name": "10 Khorne Berzerkers",
+          "points": 160
+        }
+      ]
+    },
+    {
+      "id": "angron",
+      "name": "Angron",
+      "points": 330,
+      "models": [
+        {
+          "name": "Angron",
+          "count": 1,
+          "widthMm": 100,
+          "heightMm": 100,
+          "move": 14,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Angron",
+      "rules": [
+        "we"
+      ],
+      "note": ""
+    },
+    {
+      "id": "rhino",
+      "name": "Chaos Rhino",
+      "points": 75,
+      "models": [
+        {
+          "name": "Chaos Rhino",
+          "count": 1,
+          "widthMm": 80,
+          "heightMm": 120,
+          "move": 12,
+          "scout": 0,
+          "shape": "hull"
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Chaos-Rhino",
+      "rules": [
+        "we"
+      ],
+      "note": "120 mm long × 80 mm wide: owner-reported hull dimensions; rectangular planning envelope.",
+      "hullSource": "https://www.reddit.com/r/Warhammer40k/comments/u9gugi/"
+    },
+    {
+      "id": "spawn",
+      "name": "Chaos Spawn",
+      "points": 95,
+      "models": [
+        {
+          "name": "Chaos Spawn",
+          "count": 2,
+          "widthMm": 50,
+          "heightMm": 50,
+          "move": 10,
+          "scout": 8
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Chaos-Spawn",
+      "rules": [
+        "we",
+        "advance-charge"
+      ],
+      "note": "Scouts 8″; To Slake its Rage permits Advance and Charge."
+    },
+    {
+      "id": "eightbound-1",
+      "name": "Eightbound 1",
+      "points": 125,
+      "models": [
+        {
+          "name": "Eightbound 1",
+          "count": 3,
+          "widthMm": 40,
+          "heightMm": 40,
+          "move": 10,
+          "scout": 6
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Eightbound",
+      "rules": [
+        "we"
+      ],
+      "note": ""
+    },
+    {
+      "id": "eightbound-2",
+      "name": "Eightbound 2",
+      "points": 125,
+      "models": [
+        {
+          "name": "Eightbound 2",
+          "count": 3,
+          "widthMm": 40,
+          "heightMm": 40,
+          "move": 10,
+          "scout": 6
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Eightbound",
+      "rules": [
+        "we"
+      ],
+      "note": ""
+    },
+    {
+      "id": "forgefiend-1",
+      "name": "Forgefiend 1",
+      "points": 145,
+      "models": [
+        {
+          "name": "Forgefiend 1",
+          "count": 1,
+          "widthMm": 120,
+          "heightMm": 92,
+          "move": 10,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Forgefiend",
+      "rules": [
+        "we"
+      ],
+      "note": "",
+      "loadout": "2 Hades autocannons; ectoplasma cannon; Forgefiend claws"
+    },
+    {
+      "id": "forgefiend-2",
+      "name": "Forgefiend 2",
+      "points": 145,
+      "models": [
+        {
+          "name": "Forgefiend 2",
+          "count": 1,
+          "widthMm": 120,
+          "heightMm": 92,
+          "move": 10,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Forgefiend",
+      "rules": [
+        "we"
+      ],
+      "note": "",
+      "loadout": "2 Hades autocannons; ectoplasma cannon; Forgefiend claws"
+    },
+    {
+      "id": "goremongers",
+      "name": "Goremongers",
+      "points": 75,
+      "models": [
+        {
+          "name": "Goremongers",
+          "count": 8,
+          "widthMm": 32,
+          "heightMm": 32,
+          "move": 9,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Goremongers",
+      "rules": [
+        "we"
+      ],
+      "note": "Infiltrators; reactive D6″ move when an enemy ends a move within 8″, while unengaged. Reposition before calculating next-turn reach."
+    },
+    {
+      "id": "jakhals-1",
+      "name": "Jakhals 1",
+      "points": 65,
+      "models": [
+        {
+          "name": "Jakhal",
+          "count": 9,
+          "widthMm": 28.5,
+          "heightMm": 28.5,
+          "move": 7,
+          "scout": 0
+        },
+        {
+          "name": "Dishonoured",
+          "count": 1,
+          "widthMm": 40,
+          "heightMm": 40,
+          "move": 7,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Jakhals",
+      "rules": [
+        "we"
+      ]
+    },
+    {
+      "id": "jakhals-2",
+      "name": "Jakhals 2",
+      "points": 65,
+      "models": [
+        {
+          "name": "Jakhal",
+          "count": 9,
+          "widthMm": 28.5,
+          "heightMm": 28.5,
+          "move": 7,
+          "scout": 0
+        },
+        {
+          "name": "Dishonoured",
+          "count": 1,
+          "widthMm": 40,
+          "heightMm": 40,
+          "move": 7,
+          "scout": 0
+        }
+      ],
+      "source": "https://wahapedia.ru/wh40k11ed/factions/world-eaters/Jakhals",
+      "rules": [
+        "we"
+      ]
+    }
+  ]
+}

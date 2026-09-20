@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useSyncExternalStore } from 'react';
+import NamedPlanLinks from './NamedPlanLinks';
+import { useMemo, useState, useSyncExternalStore } from 'react';
 import layoutsData from '../../public/reference/11th-edition/data/event-layouts.json';
 import deploymentPlans from '../../public/reference/11th-edition/plans/index.json';
 
@@ -13,16 +14,16 @@ function subscribeToLocalSaves(callback: () => void) {
 }
 
 function localSaveSnapshot() {
-  return layoutsData.layouts
-    .filter((layout) => localStorage.getItem(`deployment-planner:v2:${layout.id}`) !== null)
-    .map(({ id }) => id)
-    .join(',');
+  return ['necrons','thousand-sons'].flatMap(army => layoutsData.layouts
+    .filter(layout => localStorage.getItem(army === 'necrons' ? `deployment-planner:v2:${layout.id}` : `deployment-planner:v3:thousand-sons:${layout.id}`) !== null)
+    .map(({id}) => `${army}:${id}`)).join(',');
 }
 
 export default function PlanLibrary() {
+  const [army,setArmy] = useState('thousand-sons');
   const savedSnapshot = useSyncExternalStore(subscribeToLocalSaves, localSaveSnapshot, () => '');
-  const savedLayouts = useMemo(() => new Set(savedSnapshot ? savedSnapshot.split(',') : []), [savedSnapshot]);
-  const plannedLayouts = useMemo(() => new Map(deploymentPlans.plans.map((plan) => [plan.layoutId, plan])), []);
+  const savedLayouts = useMemo(() => new Set(savedSnapshot.split(',').filter(s=>s.startsWith(`${army}:`)).map(s=>s.slice(army.length+1))), [savedSnapshot,army]);
+  const plannedLayouts = useMemo(() => new Map((army==='necrons'?deploymentPlans.plans:[]).map((plan) => [plan.layoutId, plan])), [army]);
   const matchups = useMemo(() => {
     const grouped = new Map<string, typeof layoutsData.layouts>();
     for (const layout of layoutsData.layouts) {
@@ -42,8 +43,10 @@ export default function PlanLibrary() {
           <p>Every objective matchup and official layout. Bundled plans and local browser saves are marked.</p>
         </div>
       </header>
+      <NamedPlanLinks/>
+      <label>Army <select aria-label="Army" value={army} onChange={e=>setArmy(e.target.value)}><option value="thousand-sons">Somehow...Magnus returned</option><option value="necrons">Brighton Necrons</option></select></label>
       <div className="plan-library-summary">
-        <strong>{deploymentPlans.plans.length} bundled plans</strong>
+        <strong>{plannedLayouts.size} bundled plans</strong>
         <span>{savedLayouts.size} layouts saved locally</span>
       </div>
       <div className="plan-matchup-grid">
@@ -56,7 +59,7 @@ export default function PlanLibrary() {
                 const bundled = plannedLayouts.get(layout.id);
                 const saved = savedLayouts.has(layout.id);
                 return (
-                  <Link className={`plan-layout-card${bundled || saved ? ' planned' : ''}`} href={`/planner/?layout=${layout.id}`} key={layout.id}>
+                  <Link className={`plan-layout-card${bundled || saved ? ' planned' : ''}`} href={`/planner/?layout=${layout.id}&army=${army}`} key={layout.id}>
                     <img
                       src={bundled ? `${basePath}/reference/11th-edition/plans/${bundled.preview}` : `${basePath}/reference/11th-edition/maps/layout-${page}.jpg`}
                       alt=""

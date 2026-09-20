@@ -11,7 +11,11 @@ export type PlannerMarker = {
   label: string;
   side: 'blue' | 'red';
   unitId?: string;
+  rosterUnitId?: string;
   moveInches?: number;
+  scoutInches?: number;
+  shape?: 'hull';
+  ruleTags?: string[];
 };
 
 function unitGroupKey(marker: PlannerMarker) {
@@ -35,10 +39,11 @@ function directionalRadius(marker: PlannerMarker, dx: number, dy: number) {
   const uy = dy / distance;
   const radiusX = marker.widthMm / MM_PER_INCH / 2;
   const radiusY = marker.heightMm / MM_PER_INCH / 2;
+  if(marker.shape==='hull')return Math.min(radiusX/Math.abs(ux),radiusY/Math.abs(uy));
   return 1 / Math.sqrt((ux * ux) / (radiusX * radiusX) + (uy * uy) / (radiusY * radiusY));
 }
 
-/** Shortest horizontal distance between the two base edges, in inches. */
+/** Base-edge gap along the line of centres (an approximation for non-circular footprints). */
 export function baseEdgeDistance(left: PlannerMarker, right: PlannerMarker) {
   const dx = (right.x - left.x) * TABLE_WIDTH;
   const dy = (right.y - left.y) * TABLE_HEIGHT;

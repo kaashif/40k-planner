@@ -1,0 +1,186 @@
+{
+  "id": "thousand-sons",
+  "name": "Somehow...Magnus returned",
+  "faction": "Thousand Sons",
+  "edition": 11,
+  "pointsLimit": 2000,
+  "detachment": "Grand Coven",
+  "forceDisposition": "Priority Assets",
+  "reviewed": "2026-09-20",
+  "notes": [
+    "Supplied app v2.6.0 / data v946 roster, preserving the intended 2,000-point header and both bow Enlightened entries.",
+    "Terminator Sorcerer joins Scarabs; Exalted Disc Sorcerer joins bow unit 1, as assumed in the analysed plan.",
+    "Base sizes and Movement characteristics checked against linked 11th-edition datasheets."
+  ],
+  "units": [
+    {
+      "id": "ts-magnus",
+      "label": "M",
+      "name": "Magnus the Red",
+      "points": 455,
+      "models": 1,
+      "baseMm": 100,
+      "movementInches": 14,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Magnus-The-Red",
+      "defaultDeepStrike": false
+    },
+    {
+      "id": "ts-prince",
+      "label": "DP",
+      "name": "Winged Daemon Prince · Eldritch Vortex of E’Taph",
+      "points": 205,
+      "models": 1,
+      "baseMm": 60,
+      "movementInches": 13,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Daemon-Prince-of-Tzeentch-with-Wings",
+      "defaultDeepStrike": true
+    },
+    {
+      "id": "ts-sorcerer-1",
+      "label": "S1",
+      "name": "Sorcerer · Rubric unit 1",
+      "points": 95,
+      "models": 1,
+      "baseMm": 32,
+      "movementInches": 6,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Sorcerer",
+      "defaultDeepStrike": false,
+      "attachedTo": "ts-rubrics-1"
+    },
+    {
+      "id": "ts-rubrics-1",
+      "label": "R1",
+      "name": "Rubric Marines · unit 1",
+      "points": 100,
+      "models": 5,
+      "baseMm": 32,
+      "movementInches": 6,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Rubric-Marines",
+      "defaultDeepStrike": false
+    },
+    {
+      "id": "ts-sorcerer-2",
+      "label": "S2",
+      "name": "Sorcerer · Rubric unit 2",
+      "points": 95,
+      "models": 1,
+      "baseMm": 32,
+      "movementInches": 6,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Sorcerer",
+      "defaultDeepStrike": false,
+      "attachedTo": "ts-rubrics-2"
+    },
+    {
+      "id": "ts-rubrics-2",
+      "label": "R2",
+      "name": "Rubric Marines · unit 2",
+      "points": 100,
+      "models": 5,
+      "baseMm": 32,
+      "movementInches": 6,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Rubric-Marines",
+      "defaultDeepStrike": false
+    },
+    {
+      "id": "ts-disc",
+      "label": "D",
+      "name": "Exalted Sorcerer on Disc · Incandaeum",
+      "points": 105,
+      "models": 1,
+      "baseMm": 40,
+      "movementInches": 10,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Exalted-Sorcerer-on-Disc-of-Tzeentch",
+      "defaultDeepStrike": false,
+      "attachedTo": "ts-bows-1"
+    },
+    {
+      "id": "ts-bows-1",
+      "label": "B1",
+      "name": "Bow Enlightened · unit 1",
+      "points": 55,
+      "models": 3,
+      "baseMm": 40,
+      "movementInches": 10,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Tzaangor-Enlightened-with-Fatecaster-Greatbows",
+      "defaultDeepStrike": false
+    },
+    {
+      "id": "ts-terminator-sorcerer",
+      "label": "TS",
+      "name": "Terminator Sorcerer · Umbralefic Crystal",
+      "points": 130,
+      "models": 1,
+      "baseMm": 40,
+      "movementInches": 5,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Sorcerer-In-Terminator-Armour",
+      "defaultDeepStrike": true,
+      "attachedTo": "ts-scarabs"
+    },
+    {
+      "id": "ts-scarabs",
+      "label": "SO",
+      "name": "Scarab Occult Terminators",
+      "points": 385,
+      "models": 10,
+      "baseMm": 40,
+      "movementInches": 5,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Scarab-Occult-Terminators",
+      "defaultDeepStrike": true
+    },
+    {
+      "id": "ts-spawn",
+      "label": "Sp",
+      "name": "Chaos Spawn",
+      "points": 65,
+      "models": 2,
+      "baseMm": 50,
+      "movementInches": 8,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Chaos-Spawn",
+      "defaultDeepStrike": false
+    },
+    {
+      "id": "ts-robots",
+      "label": "Rob",
+      "name": "Sekhetar Robots",
+      "points": 85,
+      "models": 2,
+      "baseMm": 40,
+      "movementInches": 8,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Sekhetar-Robots",
+      "defaultDeepStrike": false
+    },
+    {
+      "id": "ts-spears",
+      "label": "En",
+      "name": "Spear Enlightened",
+      "points": 50,
+      "models": 3,
+      "baseMm": 40,
+      "movementInches": 10,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Tzaangor-Enlightened",
+      "defaultDeepStrike": false
+    },
+    {
+      "id": "ts-bows-2",
+      "label": "B2",
+      "name": "Bow Enlightened · unit 2",
+      "points": 55,
+      "models": 3,
+      "baseMm": 40,
+      "movementInches": 10,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Tzaangor-Enlightened-with-Fatecaster-Greatbows",
+      "defaultDeepStrike": false
+    },
+    {
+      "id": "ts-tzaangors",
+      "label": "Tz",
+      "name": "Tzaangors",
+      "points": 75,
+      "models": 10,
+      "baseMm": 32,
+      "movementInches": 6,
+      "source": "https://wahapedia.ru/wh40k11ed/factions/thousand-sons/Tzaangors",
+      "defaultDeepStrike": false
+    }
+  ]
+}

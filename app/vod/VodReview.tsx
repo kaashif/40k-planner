@@ -4,10 +4,12 @@ import { games } from './games';
 import './vod.css';
 import GameTable from './GameTable';
 
-export default function VodReview() {
+export default function VodReview({embedded=false}:{embedded?:boolean}) {
+  const Container=embedded?'section':'main';
+  const Title=embedded?'h2':'h1';
   const count = (status:Game['deployment']['terminators']) => games.filter(game=>game.deployment.terminators===status).length;
-  return <main className="vod-site">
-    <h1>Grand Coven · Magnus</h1>
+  return <Container className={embedded?"home-game-studies":"vod-site"}>
+    <Title>Grand Coven · Magnus</Title>
     <section className="vod-focus" aria-label="Fast melee study">
       <h2>Winning into fast melee</h2>
       <p>Reviewed 19 September 2026. New analyses: Blood Angels, <strong>21 August · 11th edition</strong>; Slaanesh Daemons, <strong>14 August · 11th edition</strong>. New to this collection, 29 and 36 days old at review.</p>
@@ -24,5 +26,5 @@ export default function VodReview() {
     <p className="vod-reserve-summary">Confirmed Terminator starts: <strong>{count('on-board')} on-board · {count('reserve')} in reserve</strong> (both Fowler). {count('unknown')} unknown starts; Terroxer has no Terminators. Lists confirm Terminators in both new games, but do not establish their reserve declarations. This tiny, win-only sample is not a general usage rate.</p>
     <GameTable/>
     <footer className="vod-footer"><nav><Link href="/missions/">Missions</Link><Link href="/planner/">Planner</Link><Link href="/plans/">Plans</Link><Link href="/reviews/">Reviews</Link></nav></footer>
-  </main>;
+  </Container>;
 }
