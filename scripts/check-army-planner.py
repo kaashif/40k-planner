@@ -171,7 +171,7 @@ try:
         assert '1 layouts saved locally' in page.locator('.plan-library-summary').inner_text()
         assert page.locator('.named-plan-library li').count()==2
         page.goto(origin,wait_until='networkidle')
-        assert page.locator('.tool-directory a').count()==9
+        assert page.locator('.tool-directory a').count()==10
         assert page.locator('.vod-game-table tbody tr').count()==5
         page.screenshot(path=str(out/'homepage.png'),full_page=True)
         page.goto(origin+'threat-ranges/',wait_until='networkidle')
