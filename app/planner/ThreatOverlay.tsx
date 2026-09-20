@@ -1,6 +1,6 @@
 'use client';
 import {useRef,type PointerEvent} from 'react';
-import {threatOutline,threatBands,threatRayEndpoint,type ThreatSettings} from './threat-utils';
+import {threatOutline,threatBands,threatSegments,threatRayEndpoint,type ThreatSettings} from './threat-utils';
 import {TABLE_WIDTH,TABLE_HEIGHT,type PlannerMarker} from './planner-utils';
 export default function ThreatOverlay({marker,settings,onAngleChange}:{marker:PlannerMarker;settings:ThreatSettings;onAngleChange:(angle:number)=>void}){
  const dragging=useRef(false),svg=useRef<SVGSVGElement>(null);
@@ -18,18 +18,25 @@ export default function ThreatOverlay({marker,settings,onAngleChange}:{marker:Pl
  return <svg ref={svg} className="threat-overlay" viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-label={`${marker.label} threat ranges`}>
   <g transform={`translate(${marker.x*TABLE_WIDTH} ${marker.y*TABLE_HEIGHT})`}>
    {bands.map(({name,range,color})=><path key={name} data-band={name} d={threatOutline(marker.widthMm,marker.heightMm,range,marker.shape)} fill={color} fillOpacity=".025" stroke={color} strokeWidth=".38" strokeDasharray={name.includes('advance')?'.8 .4':undefined}><title>{`${name}: ${range} inches from base edge`}</title></path>)}
-   {bands.map(({name,range,color},i)=>{
-    const direction=angle+(i-(bands.length-1)/2)*Math.PI/30;
-    const end=threatRayEndpoint(marker.widthMm,marker.heightMm,range,direction,marker.shape);
-    const length=Math.hypot(end.x,end.y),head=Math.min(1.2,length*.2);
-    const degrees=direction*180/Math.PI;
-    return <g key={name} className="threat-ray" data-band={name} data-end-x={end.x} data-end-y={end.y}>
-     <title>{`${name}: ${range}″ from base edge`}</title>
+   {threatSegments(settings).map(({range,bands:labels},i,segments)=>{
+    const end=threatRayEndpoint(marker.widthMm,marker.heightMm,range,angle,marker.shape);
+    const previous=i?threatRayEndpoint(marker.widthMm,marker.heightMm,segments[i-1].range,angle,marker.shape):{x:0,y:0};
+    const length=Math.hypot(end.x,end.y),start=Math.hypot(previous.x,previous.y);
+    const head=Math.min(1,length-start),color=labels[0].color;
+    const degrees=angle*180/Math.PI,flip=Math.cos(angle)<0;
+    const labelSide=((TABLE_WIDTH/2-cx)*-s+(TABLE_HEIGHT/2-cy)*c)>=0?1:-1;
+    const labelLane=segments.slice(0,i).reduce((n,segment)=>n+segment.bands.length,0);
+    const labelY=labelSide*(1.4+labelLane*1.5);
+    return <g key={range} className="threat-ray" data-band={labels.map(b=>b.name).join(' / ')} data-start={start} data-end={length} data-end-x={end.x} data-end-y={end.y}>
+     <title>{labels.map(b=>`${b.name}: ${range}″ from base edge`).join('; ')}</title>
      <g transform={`rotate(${degrees})`}>
-      <line x1="0" y1="0" x2={length-head*.7} y2="0" stroke="#0a1018" strokeWidth=".58"/>
-      <line x1="0" y1="0" x2={length-head*.7} y2="0" stroke={color} strokeWidth=".3"/>
-      <polygon points={`${length},0 ${length-head},.5 ${length-head},-.5`} fill={color} stroke="#0a1018" strokeWidth=".12"/>
-      <text x={length*.73} y="-.5" fill={color} transform={Math.cos(direction)<0?`rotate(180 ${length*.73} -.5)`:undefined}>{name} {range}″</text>
+      <line x1={start} y1="0" x2={length-head*.7} y2="0" stroke="#0a1018" strokeWidth=".65"/>
+      <line x1={start} y1="0" x2={length-head*.7} y2="0" stroke={color} strokeWidth=".4"/>
+      <polygon points={`${length},0 ${length-head},.45 ${length-head},-.45`} fill={color} stroke="#0a1018" strokeWidth=".12"/>
+      <line className="threat-label-leader" x1={length} y1="0" x2={length} y2={labelY} stroke={color} strokeWidth=".1"/>
+      <text x={length} y={labelY} transform={flip?`rotate(180 ${length} ${labelY})`:undefined}>
+       {labels.map((b,j)=><tspan key={b.name} x={length} dy={j?1.25:0} fill={b.color}>{b.name} {range}″</tspan>)}
+      </text>
      </g>
     </g>;
    })}

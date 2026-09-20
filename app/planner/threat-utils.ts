@@ -65,3 +65,11 @@ export function threatRayEndpoint(widthMm:number,heightMm:number,range:number,an
  for(let i=0;i<50;i++){const t=(low+high)/2,p=point(t);if(Math.atan2(p.y,p.x)<target)low=t;else high=t;}
  const p=point((low+high)/2);return {x:Math.sign(c)*p.x,y:Math.sign(s)*p.y};
 }
+
+/** Equal thresholds share a tip; distinct thresholds form one ordered chain. */
+export function threatSegments(settings:ThreatSettings){
+ const sorted=threatBands(settings).sort((a,b)=>a.range-b.range);
+ const groups:{range:number;bands:ReturnType<typeof threatBands>}[]=[];
+ for(const band of sorted){const previous=groups.at(-1);if(previous?.range===band.range)previous.bands.push(band);else groups.push({range:band.range,bands:[band]});}
+ return groups;
+}

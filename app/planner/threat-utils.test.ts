@@ -46,3 +46,14 @@ test('Rotating arrows terminate on circular, oval and hull range boundaries',asy
  const p=threatRayEndpoint(120,92,r,Math.atan2(expected.y,expected.x));
  assert(Math.hypot(p.x-expected.x,p.y-expected.y)<1e-8);
 });
+
+test('Threat arrow segments follow distance order and merge coincident thresholds',async()=>{
+ const {threatSegments}=await import('./threat-utils.ts');
+ const segments=threatSegments(defaultThreat);
+ assert.deepEqual(segments.map(s=>s.range),[16,18,19,20,21,26]);
+ assert.deepEqual(segments.map(s=>s.bands[0].name),['80% advance','50% advance','80% charge','Max advance','50% charge','Max charge']);
+ const ties=threatSegments({...defaultThreat,chargeBonus:1});
+ assert.equal(ties.reduce((n,s)=>n+s.bands.length,0),6);
+ assert(ties.some(s=>s.bands.length>1));
+ assert(ties.every((s,i)=>!i||s.range>ties[i-1].range));
+});

@@ -47,6 +47,6 @@ Choose **Arrow**, select a bright colour using the colour swatch beside **Ruler*
 
 ## Rotating threat arrows
 
-Threat ranges use thicker coloured rings and a matching fan of six arrows for maximum, 50% and 80% Advance/charge reach. Drag the white handle around the selected model to rotate the fan; the focused handle also accepts arrow keys in 5° steps. Arrow tips meet the appropriate ring, including oval bases and vehicle hulls. Labels retain the base-edge threat distance, even though the arrows start at the model centre. Direction is included in saved plans and JSON.
+Threat ranges use thicker coloured rings and a matching chain of arrow segments for maximum, 50% and 80% Advance/charge reach. Drag the white handle around the selected model to rotate the entire chain; the focused handle also accepts arrow keys in 5° steps. Segments run along one direction in increasing distance order, each beginning where the previous segment ends. Arrow tips meet the appropriate ring, including oval bases and vehicle hulls. Coincident thresholds share a tip with both labels; labels are staggered to remain readable. Labels retain the base-edge threat distance, even though the arrows start at the model centre. Direction is included in saved plans and JSON.
 
 Threat settings open in a separate right-hand sidebar that does not cover the board. **Hide threat settings** keeps the rings and arrows visible while freeing map space; **Show threat settings** brings the sidebar back.

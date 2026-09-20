@@ -96,6 +96,12 @@ try:
         page.get_by_label('Advance and charge permitted',exact=True).uncheck()
         assert page.locator('.threat-overlay path').count()==6
         assert page.locator('.threat-ray').count()==6
+        chain=page.locator('.threat-ray').evaluate_all('(els)=>els.map(e=>({start:+e.dataset.start,end:+e.dataset.end,x:+e.dataset.endX,y:+e.dataset.endY}))')
+        assert chain[0]['start']==0
+        for i,segment in enumerate(chain):
+            assert segment['end']>segment['start']
+            if i: assert abs(segment['start']-chain[i-1]['end'])<1e-8
+            assert abs(segment['x']*chain[0]['y']-segment['y']*chain[0]['x'])<1e-7
         assert page.locator('.threat-overlay path').first.get_attribute('stroke-width')=='.38'
         sidebar=page.locator('.threat-sidebar').bounding_box()
         board=page.locator('.battlefield').bounding_box()
