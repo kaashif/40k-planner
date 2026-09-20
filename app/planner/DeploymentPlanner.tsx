@@ -18,6 +18,7 @@ import {spawnOpponents,type OpponentUnit} from './opponent-utils';
 import {applyThreatRules} from './threat-rules';
 import ThreatCalculator from './ThreatCalculator';
 import ThreatOverlay from './ThreatOverlay';
+import ThreatPercentile from './ThreatPercentile';
 import MeasuredArrow from './MeasuredArrow';
 import {defaultThreat,type ThreatSettings} from './threat-utils';
 import {validatePlan,correctThousandSonsRoster,type PlanFile} from './plan-files';
@@ -594,6 +595,7 @@ export default function DeploymentPlanner() {
 
         <div className="planner-main-row">
           <aside className="army-sidebar">
+            {threatEnabled&&selected&&<ThreatPercentile value={threatSettings} onChange={setThreatSettings} ruleTags={selected.ruleTags}/>}
             <button onClick={loadArmy}>Reset army off board</button>
             <div className="side-toggle" aria-label="Base side">
               <button className={side === 'blue' ? 'active blue' : ''} onClick={() => setSide('blue')}>Blue</button>

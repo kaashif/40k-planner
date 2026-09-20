@@ -1,4 +1,4 @@
-export type ThreatSettings={directionAngle?:number;move:number;scout:number;useScout:boolean;advance:number;useAdvance:boolean;advanceCharge:boolean;charge:number;chargeBonus:number;advanceBonus?:number;rerollCharge?:boolean;rerollAdvance?:boolean;activeRules?:string[]};
+export type ThreatSettings={percentile?:number;directionAngle?:number;move:number;scout:number;useScout:boolean;advance:number;useAdvance:boolean;advanceCharge:boolean;charge:number;chargeBonus:number;advanceBonus?:number;rerollCharge?:boolean;rerollAdvance?:boolean;activeRules?:string[]};
 export const defaultThreat:ThreatSettings={move:14,scout:0,useScout:false,advance:6,useAdvance:false,advanceCharge:false,charge:12,chargeBonus:0};
 export function threatRanges(s:ThreatSettings){
  const scout=s.useScout?s.scout:0;
@@ -42,14 +42,21 @@ export function probabilityRange(s:ThreatSettings,kind:'advance'|'charge',thresh
  for(let n=0;n<=18;n++){const distance=start+n;if(reachChance(distance,s,kind)+1e-10>=Math.max(1e-8,threshold))best=distance;}
  return best;
 }
-export function threatBands(s:ThreatSettings){return [
+/** Conservative reach threshold; for an exact 50/50 split use the median midpoint. */
+export function selectedProbabilityRange(s:ThreatSettings,kind:'advance'|'charge'){
+ const threshold=(s.percentile??50)/100;
+ const result=probabilityRange(s,kind,threshold);
+ return threshold===.5&&result>0&&Math.abs(reachChance(result,s,kind)-.5)<1e-10?result-.5:result;
+}
+export function threatBands(s:ThreatSettings){const p=s.percentile??50;return [
+ ...(s.useScout&&s.scout>0?[{name:'Scout (fixed)',range:s.scout,color:'#ffffff'}]:[]),
  {name:'Max charge',range:probabilityRange(s,'charge',1e-10),color:'#ff7baa'},
- {name:'50% charge',range:probabilityRange(s,'charge',.5),color:'#bb8cff'},
- {name:'80% charge',range:probabilityRange(s,'charge',.8),color:'#4ce0eb'},
+ {name:`${p}% charge`,range:selectedProbabilityRange(s,'charge'),color:'#bb8cff'},
+ ...(p===80?[]:[{name:'80% charge',range:probabilityRange(s,'charge',.8),color:'#4ce0eb'}]),
  {name:'Max advance',range:probabilityRange(s,'advance',1e-10),color:'#ffc65c'},
- {name:'50% advance',range:probabilityRange(s,'advance',.5),color:'#f3ef80'},
- {name:'80% advance',range:probabilityRange(s,'advance',.8),color:'#92e5a1'},
-];}
+ {name:`${p}% advance`,range:selectedProbabilityRange(s,'advance'),color:'#f3ef80'},
+ ...(p===80?[]:[{name:'80% advance',range:probabilityRange(s,'advance',.8),color:'#92e5a1'}]),
+].filter(b=>b.range>0);}
 
 /** Centre-to-ring ray intersection, including the base footprint and its offset. */
 export function threatRayEndpoint(widthMm:number,heightMm:number,range:number,angle:number,shape?:string){
@@ -72,4 +79,11 @@ export function threatSegments(settings:ThreatSettings){
  const groups:{range:number;bands:ReturnType<typeof threatBands>}[]=[];
  for(const band of sorted){const previous=groups.at(-1);if(previous?.range===band.range)previous.bands.push(band);else groups.push({range:band.range,bands:[band]});}
  return groups;
+}
+
+/** Mean raw dice result, rerolling once only when the first result is below its mean. */
+export function meanRoll(kind:'advance'|'charge',reroll=false){
+ const rolls=kind==='advance'?Array.from({length:6},(_,i)=>i+1):Array.from({length:36},(_,i)=>Math.floor(i/6)+i%6+2);
+ const mean=rolls.reduce((sum,roll)=>sum+roll,0)/rolls.length;
+ return reroll?rolls.reduce((sum,roll)=>sum+Math.max(roll,mean),0)/rolls.length:mean;
 }

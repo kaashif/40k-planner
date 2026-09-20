@@ -50,10 +50,30 @@ test('Rotating arrows terminate on circular, oval and hull range boundaries',asy
 test('Threat arrow segments follow distance order and merge coincident thresholds',async()=>{
  const {threatSegments}=await import('./threat-utils.ts');
  const segments=threatSegments(defaultThreat);
- assert.deepEqual(segments.map(s=>s.range),[16,18,19,20,21,26]);
+ assert.deepEqual(segments.map(s=>s.range),[16,17.5,19,20,21,26]);
  assert.deepEqual(segments.map(s=>s.bands[0].name),['80% advance','50% advance','80% charge','Max advance','50% charge','Max charge']);
  const ties=threatSegments({...defaultThreat,chargeBonus:1});
  assert.equal(ties.reduce((n,s)=>n+s.bands.length,0),6);
  assert(ties.some(s=>s.bands.length>1));
  assert(ties.every((s,i)=>!i||s.range>ties[i-1].range));
+});
+
+ test('Selected percentile separates fixed Scout and includes it once in both totals',async()=>{
+ const {selectedProbabilityRange,threatBands}=await import('./threat-utils.ts');
+ const s={...defaultThreat,move:8,scout:8,useScout:true};
+ assert.equal(selectedProbabilityRange(s,'advance'),19.5);
+ assert.equal(selectedProbabilityRange(s,'charge'),23);
+ assert.equal(selectedProbabilityRange({...s,percentile:80},'advance'),18);
+ assert.equal(selectedProbabilityRange({...s,percentile:80},'charge'),21);
+ assert.equal(threatBands(s).find(b=>b.name==='Scout (fixed)')?.range,8);
+ assert(!threatBands({...s,useScout:false}).some(b=>b.name==='Scout (fixed)'));
+ assert.equal(selectedProbabilityRange({...s,useScout:false},'advance'),11.5);
+ assert.equal(selectedProbabilityRange({...s,percentile:100},'charge'),0);
+ const bands=threatBands({...s,percentile:80});assert.equal(new Set(bands.map(b=>b.name)).size,bands.length);
+});
+
+test('Optional full-roll rerolls improve means without keeping the discarded result',async()=>{
+ const {meanRoll}=await import('./threat-utils.ts');
+ assert.equal(meanRoll('advance'),3.5);assert.equal(meanRoll('charge'),7);
+ assert.equal(meanRoll('advance',true),4.25);assert(Math.abs(meanRoll('charge',true)-287/36)<1e-10);
 });

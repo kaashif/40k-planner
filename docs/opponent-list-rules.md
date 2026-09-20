@@ -44,3 +44,9 @@ A Command Re-roll can be enabled manually; it does not stack with Battle-lust. C
 - Cawl's hit rerolls, Thulia's shooting rules, and Ironstrider Desperate Escape rerolls are not charge rerolls. Technoarcheologist's 12″ reinforcement exclusion is separate from threat rings and the existing generic 8″ screen overlay.
 
 All listed datasheets were checked, including the support characters, transports and utility units. Each roster row links its datasheet. Rules from other detachments and Crusade/Boarding Actions sections are not enabled.
+
+### Reroll controls and mean rolls
+
+Rechecked 20 September 2026 against the linked 11th-edition rules: Joe's first Slaughterbound/Exalted group has Battle-lust charge rerolls. Unbridled Bloodlust gives that group +2 charge in total, and other eligible units +1. Neither is an army-wide Advance or charge reroll. No inherent Advance reroll was found in Joe's supplied roster.
+
+The left percentile box exposes **Advance reroll** and **Charge reroll**. Battle-lust automatically checks and locks the latter; manual Command Re-roll never stacks another reroll. Mean raw dice are 3.50″ / 7.00″ without rerolls, or 4.25″ / 7.97″ when rerolling a below-average result once. These mean values exclude modifiers and movement, and use a mean-maximising policy. Percentile bands use a target-success-maximising policy instead. Optional checkboxes represent an available ability or CP expenditure; they do not grant permission or spend CP.

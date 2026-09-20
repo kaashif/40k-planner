@@ -95,6 +95,19 @@ try:
         assert 'Charge threat 32″' in page.locator('.threat-results').inner_text()
         page.get_by_label('Advance and charge permitted',exact=True).uncheck()
         assert page.locator('.threat-overlay path').count()==6
+        slider=page.get_by_role('slider',name='Threat percentile',exact=True)
+        assert page.locator('.army-sidebar .threat-percentile').count()==1
+        assert 'Advance 17.5″' in page.locator('.percentile-distances').inner_text()
+        page.get_by_label('Advance reroll',exact=True).check()
+        page.get_by_label('Charge reroll',exact=True).check()
+        assert 'Advance 4.25″ · Charge 7.97″' in page.locator('.mean-rolls').inner_text()
+        assert page.get_by_label('Re-roll failed charge (e.g. Command Re-roll)',exact=True).is_checked()
+        page.get_by_label('Advance reroll',exact=True).uncheck()
+        page.get_by_label('Charge reroll',exact=True).uncheck()
+        slider.fill('80')
+        assert page.locator('.threat-ray').count()==4
+        assert 'Advance 16″' in page.locator('.percentile-distances').inner_text()
+        slider.fill('50')
         assert page.locator('.threat-ray').count()==6
         chain=page.locator('.threat-ray').evaluate_all('(els)=>els.map(e=>({start:+e.dataset.start,end:+e.dataset.end,x:+e.dataset.endX,y:+e.dataset.endY}))')
         assert chain[0]['start']==0
@@ -130,6 +143,7 @@ try:
         exported=json.loads((out/'export.json').read_text())
         assert sum(m['side']=='red' for m in exported['markers'])==1
         assert len(exported['deepStrikeMarkers'])==12
+        assert exported['threatSettings']['percentile']==50
         assert abs(exported['threatSettings']['directionAngle']*180/3.141592653589793+85)<1
         page.screenshot(path=str(out/'threat-planner.png'),full_page=True)
         page.get_by_label('Layout',exact=True).select_option('B')
@@ -178,6 +192,8 @@ try:
         assert page.locator('.base-marker.red').count()==59
         page.get_by_role('button',name='Slaughterbound, 50mm, red',exact=True).first.click()
         if page.get_by_role('button',name='Threat ranges',exact=True).get_attribute('aria-pressed')!='true':page.get_by_role('button',name='Threat ranges',exact=True).click()
+        assert page.get_by_label('Charge reroll',exact=True).is_checked()
+        assert page.get_by_label('Charge reroll',exact=True).is_disabled()
         page.get_by_label('Unbridled Bloodlust active:',exact=False).check()
         assert '50% charge: 20″' in page.locator('.threat-legend').inner_text()
         assert '80% charge: 19″' in page.locator('.threat-legend').inner_text()
@@ -186,6 +202,17 @@ try:
         page.get_by_role('button',name='Add whole opponent list',exact=True).click()
         assert page.locator('.base-marker.red').count()==97
         assert page.get_by_role('button',name='Ranger with arquebus, 60×35.5mm, red',exact=True).count()==1
+        page.get_by_role('button',name='Chaos Spawn, 50mm, red',exact=True).first.click()
+        assert page.locator('.threat-ray[data-band="Scout (fixed)"]').count()==1
+        fixed_before=page.locator('.threat-ray[data-band="Scout (fixed)"]').get_attribute('data-end')
+        page.get_by_role('slider',name='Threat percentile',exact=True).fill('80')
+        assert page.locator('.threat-ray[data-band="Scout (fixed)"]').get_attribute('data-end')==fixed_before
+        for width,height in [(1440,1100),(1366,768)]:
+            page.set_viewport_size({'width':width,'height':height})
+            page.screenshot(path=str(out/'threat-percentile-scout.png'))
+            assert page.locator('.opponent-roster').evaluate('(e)=>e.scrollHeight <= e.clientHeight+1')
+        page.screenshot(path=str(out/'threat-percentile-scout.png'))
+        page.set_viewport_size({'width':1440,'height':1100})
         page.get_by_role('button',name='Kastelan Robot, 60mm, red',exact=True).first.click()
         page.get_by_label('Motive Imperative',exact=False).check()
         assert 'Max charge: 23″' in page.locator('.threat-legend').inner_text()
