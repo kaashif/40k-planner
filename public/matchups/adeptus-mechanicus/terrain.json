@@ -1,0 +1,10 @@
+{
+  "plannerId": "take-and-hold-vs-priority-assets-b",
+  "page": 22,
+  "variant": "B",
+  "sourceImage": "/reference/11th-edition/maps/layout-22.jpg",
+  "image": "/matchups/adeptus-mechanicus/longways-b.png",
+  "orientation": "Transpose portrait artwork: 60 inches horizontally, 44 vertically; Take and Hold left, Priority Assets right.",
+  "sourceSha256": "8f3695ac2e4caba6d298b5b74530fcba2a35f84ecf1ee811dbdb884587de8ad5",
+  "sha256": "b2d57a4e6a0877e4663f065d97daddd697d1cacc7658aaf7e0a79d8f4563997a"
+}
