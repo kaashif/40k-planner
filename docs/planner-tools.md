@@ -47,14 +47,20 @@ Choose **Arrow**, select a bright colour using the colour swatch beside **Ruler*
 
 ## Rotating threat arrows
 
-Threat ranges use thicker coloured rings and a matching chain of arrow segments for maximum, 50% and 80% Advance/charge reach. Drag the white handle around the selected model to rotate the entire chain; the focused handle also accepts arrow keys in 5° steps. Segments run along one direction in increasing distance order, each beginning where the previous segment ends. Arrow tips meet the appropriate ring, including oval bases and vehicle hulls. Coincident thresholds share a tip with both labels; labels are staggered to remain readable. Labels retain the base-edge threat distance, even though the arrows start at the model centre. Direction is included in saved plans and JSON.
+Threat ranges use thicker coloured rings and a matching chain of arrow segments for fixed Scout, fixed movement, and the selected overall reach probability. Drag the white handle around the selected model to rotate the entire chain; the focused handle also accepts arrow keys in 5° steps. Segments run along one direction in increasing distance order, each beginning where the previous segment ends. Arrow tips meet the appropriate ring, including oval bases and vehicle hulls. Coincident thresholds share a tip with both labels; labels are staggered to remain readable. Labels retain the base-edge threat distance, even though the arrows start at the model centre. Direction is included in saved plans and JSON.
 
 Threat settings open in a separate right-hand sidebar that does not cover the board. **Hide threat settings** keeps the rings and arrows visible while freeing map space; **Show threat settings** brings the sidebar back.
 
 ## Percentile slider and fixed Scout
 
-With threat ranges enabled, the left sidebar has a **Percentile** slider (1–100%). It controls the selected Advance and Charge bands together; maximum and 80% reference bands remain. Percentages mean chance of reaching the displayed total: larger percentages give more conservative distances. At 50%, the midpoint median gives a normal D6 Advance of 3.5″ and a normal 2D6 charge of 7″, plus movement and any enabled Scout. Rerolls can separate median and arithmetic mean. A dash at 100% charge means no guaranteed eligible charge.
+With threat ranges enabled, the left sidebar has an **Overall probability** slider (1–100%). It controls a single combined reach threshold; phase-specific maximum and 80% comparisons remain in the right-hand details. Percentages mean chance of reaching the displayed total: larger percentages give more conservative distances. At 50%, the midpoint median gives a normal D6 Advance of 3.5″ and a normal 2D6 charge of 7″, plus movement and any enabled Scout. Rerolls can separate median and arithmetic mean. “No eligible charge” at 100% means there is no guaranteed eligible charge.
 
 Enabled Scout has its own white, fixed ring and first arrow segment. Moving the slider never changes Scout distance. Totals include Scout exactly once; switch it off after the pre-battle move. The slider value is saved with the plan.
 
 The percentile box also has Advance/Charge reroll checkboxes and mean raw dice results. Its built-in charge checkbox is locked on for Battle-lust. Mean values exclude movement and modifiers and assume one reroll of below-average results; target-specific percentile calculations instead maximise the chance of reaching that target. See [Joe's reroll audit](opponent-list-rules.md#reroll-controls-and-mean-rolls).
+
+## Overall probability control
+
+The left **Overall probability** slider now chooses one probability for the complete charge-reaching sequence. The large **Total reach** value and purple arrow endpoint update together. With Advance and Charge enabled, this comes from the joint Advance/charge distribution, with both enabled rerolls accounted for; it does not add separate percentile distances or multiply two 50% targets. Scout and normal Move have fixed arrow segments. Phase-specific comparison values remain in the right-hand details.
+
+For example, with Move 10″, Scout 8″ enabled, and unmodified Advance and Charge, the 50% total is 28.5″ (18″ fixed plus the 10.5″ median of D6 + 2D6). At 80% it is 26″. The 80% total differs from adding independently calculated 80% Advance and 80% charge results.

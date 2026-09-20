@@ -74,8 +74,8 @@ export function threatRayEndpoint(widthMm:number,heightMm:number,range:number,an
 }
 
 /** Equal thresholds share a tip; distinct thresholds form one ordered chain. */
-export function threatSegments(settings:ThreatSettings){
- const sorted=threatBands(settings).sort((a,b)=>a.range-b.range);
+export function threatSegments(settings:ThreatSettings,overall=false){
+ const sorted=(overall?overallThreatBands(settings):threatBands(settings)).sort((a,b)=>a.range-b.range);
  const groups:{range:number;bands:ReturnType<typeof threatBands>}[]=[];
  for(const band of sorted){const previous=groups.at(-1);if(previous?.range===band.range)previous.bands.push(band);else groups.push({range:band.range,bands:[band]});}
  return groups;
@@ -86,4 +86,14 @@ export function meanRoll(kind:'advance'|'charge',reroll=false){
  const rolls=kind==='advance'?Array.from({length:6},(_,i)=>i+1):Array.from({length:36},(_,i)=>Math.floor(i/6)+i%6+2);
  const mean=rolls.reduce((sum,roll)=>sum+roll,0)/rolls.length;
  return reroll?rolls.reduce((sum,roll)=>sum+Math.max(roll,mean),0)/rolls.length:mean;
+}
+
+/** One joint outcome, with deterministic Scout and movement separated on the arrow. */
+export function overallThreatBands(s:ThreatSettings){
+ const scout=s.useScout?s.scout:0,total=selectedProbabilityRange(s,'charge');
+ return [
+  ...(scout>0?[{name:'Scout (fixed)',range:scout,color:'#ffffff'}]:[]),
+  ...(s.move>0?[{name:'Move (fixed)',range:scout+s.move,color:'#75d5ff'}]:[]),
+  ...(total>0?[{name:`${s.percentile??50}% total`,range:total,color:'#d49cff'}]:[]),
+ ];
 }

@@ -1,11 +1,11 @@
 'use client';
 import {useRef,type PointerEvent} from 'react';
-import {threatOutline,threatBands,threatSegments,threatRayEndpoint,type ThreatSettings} from './threat-utils';
+import {threatOutline,overallThreatBands,threatSegments,threatRayEndpoint,type ThreatSettings} from './threat-utils';
 import {TABLE_WIDTH,TABLE_HEIGHT,type PlannerMarker} from './planner-utils';
 export default function ThreatOverlay({marker,settings,onAngleChange}:{marker:PlannerMarker;settings:ThreatSettings;onAngleChange:(angle:number)=>void}){
  const dragging=useRef(false),svg=useRef<SVGSVGElement>(null);
  const angle=settings.directionAngle??Math.atan2((.5-marker.y)*TABLE_HEIGHT,(.5-marker.x)*TABLE_WIDTH);
- const bands=threatBands(settings).sort((a,b)=>b.range-a.range);
+ const bands=overallThreatBands(settings).sort((a,b)=>b.range-a.range);
  const rotate=(event:PointerEvent<SVGCircleElement>)=>{
   const matrix=svg.current?.getScreenCTM();if(!matrix)return;
   const point=new DOMPoint(event.clientX,event.clientY).matrixTransform(matrix.inverse());
@@ -18,7 +18,7 @@ export default function ThreatOverlay({marker,settings,onAngleChange}:{marker:Pl
  return <svg ref={svg} className="threat-overlay" viewBox={`0 0 ${TABLE_WIDTH} ${TABLE_HEIGHT}`} aria-label={`${marker.label} threat ranges`}>
   <g transform={`translate(${marker.x*TABLE_WIDTH} ${marker.y*TABLE_HEIGHT})`}>
    {bands.map(({name,range,color})=><path key={name} data-band={name} d={threatOutline(marker.widthMm,marker.heightMm,range,marker.shape)} fill={color} fillOpacity=".025" stroke={color} strokeWidth=".38" strokeDasharray={name.includes('advance')?'.8 .4':undefined}><title>{`${name}: ${range} inches from base edge`}</title></path>)}
-   {threatSegments(settings).map(({range,bands:labels},i,segments)=>{
+   {threatSegments(settings,true).map(({range,bands:labels},i,segments)=>{
     const end=threatRayEndpoint(marker.widthMm,marker.heightMm,range,angle,marker.shape);
     const previous=i?threatRayEndpoint(marker.widthMm,marker.heightMm,segments[i-1].range,angle,marker.shape):{x:0,y:0};
     const length=Math.hypot(end.x,end.y),start=Math.hypot(previous.x,previous.y);

@@ -77,3 +77,16 @@ test('Optional full-roll rerolls improve means without keeping the discarded res
  assert.equal(meanRoll('advance'),3.5);assert.equal(meanRoll('charge'),7);
  assert.equal(meanRoll('advance',true),4.25);assert(Math.abs(meanRoll('charge',true)-287/36)<1e-10);
 });
+
+test('Overall slider selects the joint Advance + charge outcome and moves only the final segment',async()=>{
+ const {overallThreatBands,selectedProbabilityRange,reachChance,threatSegments}=await import('./threat-utils.ts');
+ const s={...defaultThreat,move:10,scout:8,useScout:true,useAdvance:true,advanceCharge:true,percentile:50};
+ assert.equal(selectedProbabilityRange(s,'charge'),28.5);
+ assert(Math.abs(reachChance(28.5,s,'charge')-.5)<1e-10);
+ const safer={...s,percentile:80};assert.equal(selectedProbabilityRange(safer,'charge'),26);
+ assert(reachChance(26,safer,'charge')>=.8);assert(reachChance(27,safer,'charge')<.8);
+ assert.deepEqual(overallThreatBands(s).map(b=>b.range),[8,18,28.5]);
+ assert.deepEqual(overallThreatBands(safer).map(b=>b.range),[8,18,26]);
+ assert.equal(threatSegments(safer,true).at(-1)?.range,26);
+ assert.equal(selectedProbabilityRange({...s,advanceCharge:false},'charge'),25);
+});

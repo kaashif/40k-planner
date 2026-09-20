@@ -94,21 +94,23 @@ try:
         page.get_by_label('Advance and charge permitted',exact=True).check()
         assert 'Charge threat 32″' in page.locator('.threat-results').inner_text()
         page.get_by_label('Advance and charge permitted',exact=True).uncheck()
-        assert page.locator('.threat-overlay path').count()==6
-        slider=page.get_by_role('slider',name='Threat percentile',exact=True)
+        assert page.locator('.threat-overlay path').count()==2
+        slider=page.get_by_role('slider',name='Overall reach probability',exact=True)
         assert page.locator('.army-sidebar .threat-percentile').count()==1
-        assert 'Advance 17.5″' in page.locator('.percentile-distances').inner_text()
+        assert 'Total reach 21″' in page.locator('.percentile-distances').inner_text()
         page.get_by_label('Advance reroll',exact=True).check()
         page.get_by_label('Charge reroll',exact=True).check()
         assert 'Advance 4.25″ · Charge 7.97″' in page.locator('.mean-rolls').inner_text()
         assert page.get_by_label('Re-roll failed charge (e.g. Command Re-roll)',exact=True).is_checked()
         page.get_by_label('Advance reroll',exact=True).uncheck()
         page.get_by_label('Charge reroll',exact=True).uncheck()
+        endpoint_before=float(page.locator('.threat-ray').last.get_attribute('data-end'))
         slider.fill('80')
-        assert page.locator('.threat-ray').count()==4
-        assert 'Advance 16″' in page.locator('.percentile-distances').inner_text()
+        assert float(page.locator('.threat-ray').last.get_attribute('data-end'))<endpoint_before
+        assert page.locator('.threat-ray').count()==2
+        assert 'Total reach 19″' in page.locator('.percentile-distances').inner_text()
         slider.fill('50')
-        assert page.locator('.threat-ray').count()==6
+        assert page.locator('.threat-ray').count()==2
         chain=page.locator('.threat-ray').evaluate_all('(els)=>els.map(e=>({start:+e.dataset.start,end:+e.dataset.end,x:+e.dataset.endX,y:+e.dataset.endY}))')
         assert chain[0]['start']==0
         for i,segment in enumerate(chain):
@@ -204,9 +206,12 @@ try:
         assert page.get_by_role('button',name='Ranger with arquebus, 60×35.5mm, red',exact=True).count()==1
         page.get_by_role('button',name='Chaos Spawn, 50mm, red',exact=True).first.click()
         assert page.locator('.threat-ray[data-band="Scout (fixed)"]').count()==1
+        assert 'Total reach 28.5″' in page.locator('.percentile-distances').inner_text()
         fixed_before=page.locator('.threat-ray[data-band="Scout (fixed)"]').get_attribute('data-end')
-        page.get_by_role('slider',name='Threat percentile',exact=True).fill('80')
+        page.get_by_role('slider',name='Overall reach probability',exact=True).fill('80')
         assert page.locator('.threat-ray[data-band="Scout (fixed)"]').get_attribute('data-end')==fixed_before
+        assert 'Total reach 26″' in page.locator('.percentile-distances').inner_text()
+        assert page.locator('.threat-ray[data-band="80% total"]').count()==1
         for width,height in [(1440,1100),(1366,768)]:
             page.set_viewport_size({'width':width,'height':height})
             page.screenshot(path=str(out/'threat-percentile-scout.png'))
