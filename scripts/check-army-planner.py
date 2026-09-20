@@ -57,7 +57,7 @@ try:
         assert page.locator('.army-sidebar').bounding_box()['height']>1000
         saved=page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',key)
         page.get_by_label('Army',exact=True).select_option('necrons')
-        page.wait_for_function('document.querySelectorAll(".army-roster-unit").length === 12')
+        page.wait_for_function('document.querySelectorAll(".army-roster-unit").length === 12 && document.querySelectorAll(".base-marker").length === 0')
         assert page.locator('.base-marker').count()==0
         page.get_by_label('Army',exact=True).select_option('thousand-sons')
         page.wait_for_function('document.querySelectorAll(".base-marker").length === 5')
