@@ -598,7 +598,7 @@ export default function DeploymentPlanner() {
               <button className={screenSide === 'red' ? 'active red' : ''} onClick={() => setScreenSide('red')} title="Use red models for screening">R</button>
             </span>
             <button className={screenEnabled ? 'screen-toggle active' : 'screen-toggle'} onClick={() => setScreenEnabled((enabled) => !enabled)} title={`Show the area where enemy deep strike is denied by ${screenSide} models, measured 8″ from their base edges`}>Deep strike 8″</button>
-            <button className={measureEnabled ? 'measure-toggle active' : 'measure-toggle'} onClick={() => {setArrowEnabled(false);setMeasureEnabled((enabled) => !enabled);setPivotEnabled(false);setMarkupEnabled(false);}} title="Drag between any two points to measure distance">Ruler</button>
+            <button className={measureEnabled ? 'measure-toggle active' : 'measure-toggle'} onClick={() => {setArrowEnabled(false);setMeasureEnabled((enabled) => !enabled);setPivotEnabled(false);setMarkupEnabled(false);}} title="Drag between any two points to measure distance; double-click the board to clear the ruler">Ruler</button>
             <input className="toolbar-colour" aria-label="Markup colour" title="Markup colour" type="color" value={markupColor} onChange={(event) => setMarkupColor(event.target.value)} />
             <button aria-pressed={pivotEnabled} onClick={()=>{setArrowEnabled(false);setPivotEnabled(v=>!v);setMarkupEnabled(false);setMeasureEnabled(false);}}>Pivot sight line</button>
             {pivotEnabled&&<><button onClick={()=>setSelectedPivot(null)}>New pivot</button><select aria-label="Selected pivot" value={selectedPivot??''} onChange={e=>setSelectedPivot(e.target.value?Number(e.target.value):null)}><option value="">Place new pivot</option>{pivotLines.map(p=><option key={p.id} value={p.id}>Pivot {p.id}</option>)}</select><button disabled={selectedPivot===null} onClick={()=>{setPivotLines(lines=>lines.filter(p=>p.id!==selectedPivot));setSelectedPivot(null);}}>Delete pivot</button></>}
@@ -648,6 +648,7 @@ export default function DeploymentPlanner() {
             onPointerMove={onBoardPointerMove}
             onPointerUp={finishBoardPointer}
             onPointerCancel={finishBoardPointer}
+            onDoubleClick={() => { measureDrag.current = false; setMeasurement(null); }}
           >
             <img src={`${referenceRoot}/maps/layout-${page}.jpg`} alt={`Map-only view of layout ${layout.layout}`} draggable={false} />
             <svg className="pivot-overlay" viewBox="0 0 44 60" aria-label="Pivot sight lines">{pivotLines.map(p=>{const [a,b]=pivotEndpoints(p);return <g key={p.id} data-pivot={p.id}><line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={p.color} strokeWidth=".14"/><circle cx={p.x} cy={p.y} r=".4" fill={p.color} stroke={selectedPivot===p.id?'white':'#111'} strokeWidth=".12"/><title>Pivot {p.id} · {(p.angle*180/Math.PI).toFixed(1)}°</title></g>})}</svg>
