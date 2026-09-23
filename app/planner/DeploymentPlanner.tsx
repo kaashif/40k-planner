@@ -73,6 +73,7 @@ type SavedPlanner = {
   visibilityEnabled?: boolean;
   screenEnabled?: boolean;
   screenSide?: Side;
+  screenRange?: 6 | 8;
   measureEnabled?: boolean;
   movementEnabled?: boolean;
   boundedMoveEnabled?: boolean;
@@ -143,6 +144,7 @@ export default function DeploymentPlanner() {
   const [visibilityEnabled, setVisibilityEnabled] = useState(false);
   const [screenEnabled, setScreenEnabled] = useState(false);
   const [screenSide, setScreenSide] = useState<Side>('blue');
+  const [screenRange, setScreenRange] = useState<6 | 8>(8);
   const [measureEnabled, setMeasureEnabled] = useState(false);
   const [movementEnabled, setMovementEnabled] = useState(false);
   const [boundedMoveEnabled, setBoundedMoveEnabled] = useState(false);
@@ -245,6 +247,7 @@ export default function DeploymentPlanner() {
         if (typeof data.visibilityEnabled === 'boolean') setVisibilityEnabled(data.visibilityEnabled);
         if (typeof data.screenEnabled === 'boolean') setScreenEnabled(data.screenEnabled);
         if (data.screenSide) setScreenSide(data.screenSide);
+        setScreenRange(data.screenRange === 6 ? 6 : 8);
         if (typeof data.measureEnabled === 'boolean') setMeasureEnabled(data.measureEnabled);
         if (typeof data.movementEnabled === 'boolean') setMovementEnabled(data.movementEnabled);
         if (typeof data.boundedMoveEnabled === 'boolean') setBoundedMoveEnabled(data.boundedMoveEnabled);
@@ -279,7 +282,7 @@ export default function DeploymentPlanner() {
     const savedAt = new Date().toISOString();
     const saved: SavedPlanner = {
       markers, deepStrikeMarkers, planName, planIntent, sightLines, markupPaths, pivotLines, threatSettings, threatEnabled, side, visibilityEnabled, screenEnabled,
-      screenSide, measureEnabled, movementEnabled, boundedMoveEnabled, markupEnabled, markupColor, auditEnabled, infiltrateEnabled,
+      screenSide, screenRange, measureEnabled, movementEnabled, boundedMoveEnabled, markupEnabled, markupColor, auditEnabled, infiltrateEnabled,
       measurement, selectedIds, savedAt,rosterRevision:2,
     };
     const serialized = JSON.stringify(saved);
@@ -287,7 +290,7 @@ export default function DeploymentPlanner() {
     if (previous && previous !== serialized) localStorage.setItem(`${storageKey}:backup`, previous);
     localStorage.setItem(storageKey, serialized);
     setLastSavedAt(savedAt);
-  }, [auditEnabled, boundedMoveEnabled, deepStrikeMarkers, infiltrateEnabled, storageKey, markers, markupColor, markupEnabled, markupPaths, measureEnabled, measurement, movementEnabled, planIntent, planName, pivotLines, threatSettings, threatEnabled, restoredLayout, screenEnabled, screenSide, selectedIds, side, sightLines, visibilityEnabled]);
+  }, [auditEnabled, boundedMoveEnabled, deepStrikeMarkers, infiltrateEnabled, storageKey, markers, markupColor, markupEnabled, markupPaths, measureEnabled, measurement, movementEnabled, planIntent, planName, pivotLines, threatSettings, threatEnabled, restoredLayout, screenEnabled, screenSide, screenRange, selectedIds, side, sightLines, visibilityEnabled]);
 
   function pointFromEvent(event: PointerEvent) {
     const bounds = boardRef.current!.getBoundingClientRect();
@@ -597,7 +600,7 @@ export default function DeploymentPlanner() {
               <button className={screenSide === 'blue' ? 'active blue' : ''} onClick={() => setScreenSide('blue')} title="Use blue models for screening">B</button>
               <button className={screenSide === 'red' ? 'active red' : ''} onClick={() => setScreenSide('red')} title="Use red models for screening">R</button>
             </span>
-            <button className={screenEnabled ? 'screen-toggle active' : 'screen-toggle'} onClick={() => setScreenEnabled((enabled) => !enabled)} title={`Show the area where enemy deep strike is denied by ${screenSide} models, measured 8″ from their base edges`}>Deep strike 8″</button>
+            {([6, 8] as const).map(range => <button key={range} className={screenEnabled && screenRange === range ? 'screen-toggle active' : 'screen-toggle'} aria-pressed={screenEnabled && screenRange === range} onClick={() => { setScreenRange(range); setScreenEnabled(!screenEnabled || screenRange !== range); }} title={`Show the ${range}″ Deep Strike exclusion zone around ${screenSide} models, measured from their base edges`}>Deep strike {range}″</button>)}
             <button className={measureEnabled ? 'measure-toggle active' : 'measure-toggle'} onClick={() => {setArrowEnabled(false);setMeasureEnabled((enabled) => !enabled);setPivotEnabled(false);setMarkupEnabled(false);}} title="Drag between any two points to measure distance; double-click the board to clear the ruler">Ruler</button>
             <input className="toolbar-colour" aria-label="Markup colour" title="Markup colour" type="color" value={markupColor} onChange={(event) => setMarkupColor(event.target.value)} />
             <button aria-pressed={pivotEnabled} onClick={()=>{setArrowEnabled(false);setPivotEnabled(v=>!v);setMarkupEnabled(false);setMeasureEnabled(false);}}>Pivot sight line</button>
@@ -695,8 +698,8 @@ export default function DeploymentPlanner() {
                         key={marker.id}
                         cx={marker.x * TABLE_WIDTH}
                         cy={marker.y * TABLE_HEIGHT}
-                        rx={8 + marker.widthMm / MM_PER_INCH / 2}
-                        ry={8 + marker.heightMm / MM_PER_INCH / 2}
+                        rx={screenRange + marker.widthMm / MM_PER_INCH / 2}
+                        ry={screenRange + marker.heightMm / MM_PER_INCH / 2}
                         fill="white"
                       />
                     ))}
