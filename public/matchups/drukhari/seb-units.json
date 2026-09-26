@@ -1,0 +1,627 @@
+[
+  {
+    "slug": "Lady-Malys",
+    "name": "Lady Malys",
+    "stats": "7|3|4+|5|6+|2|4+",
+    "loadout": "100pts; leads 10 Incubi; Warlord.",
+    "abilities": [
+      "Core: Leader; Feel No Pain 5+. Archon of the Poisoned Tongue (Pain): when her unit shoots or fights, one token empowers it and grants either Sustained Hits 1 or Lethal Hits for that phase.",
+      "Precognisant: redeploy up to three Drukhari units after both armies deploy; they may enter Strategic Reserves beyond the normal quantity limit.",
+      "Mind Like a Steel Trap: once per turn, increase by 1CP a stratagem used on an opposing unit within 12″ of Malys."
+    ],
+    "impact": "Her attachment carries the main Incubi hammer. Keep CP available for a taxed defensive stratagem. Do not lock your deployment around her initial position; she can change three drops.",
+    "weapons": [
+      [
+        "Lady’s Blade",
+        "Melee",
+        "6",
+        "2+",
+        "5",
+        "−3",
+        "3",
+        "Devastating Wounds, Hazardous"
+      ],
+      [
+        "Razor fan",
+        "Melee",
+        "6",
+        "2+",
+        "3",
+        "0",
+        "1",
+        "Extra Attacks"
+      ]
+    ]
+  },
+  {
+    "slug": "Incubi",
+    "name": "Incubi",
+    "stats": "7|3|3+|1 / Klaivex 2|6+|1|5+",
+    "loadout": "10 models/180pts with Malys (2 tokens); 5/90pts with Drazhar (1 token). Each Klaivex has demiklaives.",
+    "abilities": [
+      "Decapitating Strikes (Pain): empower when selected to fight; melee gains Devastating Wounds against Infantry for that phase.",
+      "Tormentors: nearby engaged enemies test Battle-shock at the start of the Fight phase; Incubi gain +1 to hit Battle-shocked targets.",
+      "Each Shrine token is once per battle: turn one Incubi/Klaivex hit or wound roll into an unmodified 6. It cannot change an attached character’s roll."
+    ],
+    "impact": "Dangerous into Scarabs: two-damage klaives and token-generated critical wounds can bypass saves. Their Infantry-only Pain benefit does not grant those devastating wounds against Magnus.",
+    "weapons": [
+      [
+        "Klaive",
+        "Melee",
+        "3",
+        "3+",
+        "5",
+        "−2",
+        "2",
+        "—"
+      ],
+      [
+        "Demiklaives: single",
+        "Melee",
+        "4",
+        "3+",
+        "5",
+        "−2",
+        "2",
+        "Choose one mode"
+      ],
+      [
+        "Demiklaives: dual",
+        "Melee",
+        "6",
+        "3+",
+        "4",
+        "−2",
+        "1",
+        "Twin-linked; choose one mode"
+      ]
+    ]
+  },
+  {
+    "slug": "Drazhar",
+    "name": "Drazhar",
+    "stats": "7|3|2+|5|6+|1|4+",
+    "loadout": "85pts; leads 5 Incubi.",
+    "abilities": [
+      "Core: Leader. Master of Blades (Pain): empower when selected to fight; the unit gains +1 to wound in melee.",
+      "Onslaught: while leading, the unit’s pile-in and consolidation maximum becomes 6″.",
+      "Silent Executioner: Drazhar rerolls hits against depleted units and also wounds against units below half-strength."
+    ],
+    "impact": "A dead screen can give his unit access to a second unit through 6″ post-charge moves, subject to movement conditions. His +1 to wound and Lance do not produce an unrestricted +2: wound-roll modifiers are capped.",
+    "weapons": [
+      [
+        "Executioner’s demiklaives: single",
+        "Melee",
+        "6",
+        "2+",
+        "6",
+        "−2",
+        "3",
+        "Devastating Wounds"
+      ],
+      [
+        "Executioner’s demiklaives: dual",
+        "Melee",
+        "8",
+        "2+",
+        "5",
+        "−2",
+        "2",
+        "Devastating Wounds; choose one mode"
+      ]
+    ]
+  },
+  {
+    "slug": "Archon",
+    "name": "Archon",
+    "stats": "7|3|4+|4|6+|1|2+ conditional",
+    "loadout": "100pts including Nightmare Shroud; leads Kabalites; huskblade and Soul Trap, no pistol.",
+    "abilities": [
+      "Core: Leader. Hatred Eternal (Pain): empower when selected to shoot/fight for unit-wide hit rerolls that phase.",
+      "Overlord: once per battle, at a phase’s start, clear Battle-shock from a friendly Drukhari unit within 12″.",
+      "Devious Mastermind: once per battle round, one bearer in the army discounts a stratagem targeting its unit by 1CP.",
+      "Shadowfield: no save rerolls for the unit while he has his invulnerable save; losing a non-mortal wound removes his invulnerable save for the battle.",
+      "Soul Trap adds 1 attack and Strength to his melee weapon; after his first melee model-kill it adds another 1 to each for the battle."
+    ],
+    "impact": "With Kabalites, one Shooting-phase empowerment activates both the leader’s hit rerolls and their wound rerolls. Nightmare Shroud protects his own disembarked unit from Overwatch, not every passenger elsewhere.",
+    "weapons": [
+      [
+        "Huskblade with Soul Trap",
+        "Melee",
+        "5 → 6",
+        "2+",
+        "4 → 5",
+        "−2",
+        "3",
+        "Devastating Wounds; second values after first melee kill"
+      ]
+    ]
+  },
+  {
+    "slug": "Kabalite-Warriors",
+    "name": "Kabalite Warriors",
+    "stats": "7|3|4+|1|7+|2|6+",
+    "loadout": "10/110pts; Archon attached; 5 rifles, dark lance, blaster, shredder, cannon; Sybarite blast pistol, power weapon and grenade launcher.",
+    "abilities": [
+      "Sadistic Raiders (Pain): empower on shoot/fight selection; reroll wound rolls of 1, or all wound rolls against a target on an objective.",
+      "Cruel Enforcers: an objective held at the end of their Command phase remains controlled until the opponent exceeds their control at a phase end.",
+      "Phantasm Grenade Launcher gives Smoke and Grenades. No Kabalite Icon is listed. A Venom can split the squad during battle formations."
+    ],
+    "impact": "Remove these scoring pieces when possible: sticky control lets the army leave objectives. Archon plus special weapons becomes a strong disembarking shooting package.",
+    "weapons": [
+      [
+        "Splinter rifle ×5",
+        "24″",
+        "2",
+        "3+",
+        "2",
+        "0",
+        "1",
+        "Anti-Infantry 3+, Assault"
+      ],
+      [
+        "Dark lance",
+        "36″",
+        "1",
+        "4+",
+        "12",
+        "−3",
+        "D6+2",
+        "Heavy"
+      ],
+      [
+        "Blaster",
+        "18″",
+        "1",
+        "3+",
+        "8",
+        "−4",
+        "D6+1",
+        "Assault"
+      ],
+      [
+        "Shredder",
+        "18″",
+        "D6",
+        "—",
+        "6",
+        "0",
+        "1",
+        "Assault, Torrent"
+      ],
+      [
+        "Splinter cannon",
+        "36″",
+        "3",
+        "4+",
+        "3",
+        "−1",
+        "2",
+        "Anti-Infantry 3+, Heavy, Sustained Hits 1"
+      ],
+      [
+        "Blast pistol",
+        "6″",
+        "1",
+        "3+",
+        "8",
+        "−3",
+        "D3",
+        "Pistol"
+      ],
+      [
+        "Power weapon",
+        "Melee",
+        "3",
+        "3+",
+        "3",
+        "−2",
+        "1",
+        "Anti-Infantry 3+"
+      ],
+      [
+        "Close combat weapon ×9",
+        "Melee",
+        "2",
+        "3+",
+        "3",
+        "0",
+        "1",
+        "—"
+      ]
+    ]
+  },
+  {
+    "slug": "Lelith-Hesperax",
+    "name": "Lelith Hesperax",
+    "stats": "8|3|6+|4|6+|1|4+",
+    "loadout": "80pts; leads upgraded Wyches.",
+    "abilities": [
+      "Core: Leader, Fights First. Blur of Blades gives Fights First to her led unit.",
+      "Brides of Death (Pain): empower when selected to fight; improve melee Strength and AP by 1 for her unit.",
+      "Thrilling Spectacle: once per battle at the Fight phase’s start, her attacks become 12 and her invulnerable save becomes 3+ for that phase."
+    ],
+    "impact": "Shoot this unit before committing Scarabs into melee. Precision and Anti-Infantry 2+ make exposed Sorcerers vulnerable. Her own S3 and anti-Infantry do not translate into automatic wounds on Magnus.",
+    "weapons": [
+      [
+        "Lelith’s blades",
+        "Melee",
+        "8 / 12 once",
+        "2+",
+        "3",
+        "−2",
+        "1",
+        "Anti-Infantry 2+, Precision, Sustained Hits 2"
+      ]
+    ]
+  },
+  {
+    "slug": "Wyches",
+    "name": "Wyches",
+    "stats": "8|3|6+|1|7+|2|6+ ranged / 4+ melee",
+    "loadout": "Two units of 10/90pts each. Lelith squad: 3 gladiatorial weapons, 6 blades/pistols, Hekatrix power weapon/blast pistol. Succubus squad: 10 blades/pistols.",
+    "abilities": [
+      "Acrobatic Gladiators (Pain): empower at the start of their Charge phase to charge after an advance or fall-back that turn.",
+      "No Escape: enemy units leaving engagement by falling back must test every model for Desperate Escape, except Monsters/Vehicles; Battle-shocked escapees suffer −1 to those tests."
+    ],
+    "impact": "M8 plus advance-and-charge makes a fast threat. Trapping Rubrics/Scarabs is dangerous; Magnus is excluded from this particular fall-back penalty. Charge and Fight phase empowerment are separate expenditures.",
+    "weapons": [
+      [
+        "Hekatarii blade",
+        "Melee",
+        "4",
+        "3+",
+        "3",
+        "−1",
+        "1",
+        "—"
+      ],
+      [
+        "Gladiatorial weapons",
+        "Melee",
+        "5",
+        "3+",
+        "4",
+        "−2",
+        "1",
+        "Lelith squad only"
+      ],
+      [
+        "Power weapon",
+        "Melee",
+        "5",
+        "3+",
+        "3",
+        "−2",
+        "1",
+        "Anti-Infantry 3+; Lelith squad Hekatrix"
+      ],
+      [
+        "Blast pistol",
+        "6″",
+        "1",
+        "3+",
+        "8",
+        "−4",
+        "D3",
+        "Pistol; Lelith squad Hekatrix"
+      ],
+      [
+        "Splinter pistol",
+        "12″",
+        "1",
+        "3+",
+        "2",
+        "0",
+        "1",
+        "Anti-Infantry 3+, Assault, Pistol"
+      ]
+    ]
+  },
+  {
+    "slug": "Succubus",
+    "name": "Succubus",
+    "stats": "8|3|6+|4|7+|1|4+",
+    "loadout": "70pts including Periapt of Torments; leads basic Wyches.",
+    "abilities": [
+      "Core: Leader. Lithe Agility (Pain): empower when selected to advance or before a charge roll; reroll advance/charge rolls while empowered that phase.",
+      "Storm of Blades: while leading, her unit’s melee weapons gain Sustained Hits 1.",
+      "Bloody Spectacle: her attacks reroll hits/wounds against Character units; her unit destroying a Character model generates 1CP."
+    ],
+    "impact": "Periapt prevents snap-shooting attacks against the attachment. Spend through Wyches at the start of Charge to enable an advance-and-charge and activate the Succubus charge reroll. A Movement-phase advance reroll needs a separate empowerment.",
+    "weapons": [
+      [
+        "Archite glaive and agoniser",
+        "Melee",
+        "7",
+        "2+",
+        "3",
+        "−2",
+        "1",
+        "Anti-Infantry 3+, Precision"
+      ]
+    ]
+  },
+  {
+    "slug": "Raider",
+    "name": "Raider",
+    "stats": "14|8|4+|10|7+|2|6+",
+    "loadout": "Two at 75pts; one dark lance each; capacity 11 Drukhari Infantry, excluding Jump Pack.",
+    "abilities": [
+      "Core: Deep Strike, Firing Deck 11, Deadly Demise D3. Splinter Racks (Pain): empower to shoot; if occupied, reroll hits for its ranged Anti weapons.",
+      "Vanguard of the Dark City: select ONE mode in Command, lasting until next Command: sticky control with embarked Kabalites; wholly-within-6″ Wych disembarks (not emergency); extra boarding attacks per embarked Wrack; or advance/charge rerolls while carrying Drukhari."
+    ],
+    "impact": "A full ten-model squad plus leader fits. The Wych disembark mode and occupied-boat reroll mode are alternatives. No Wracks are listed, so that option has no payload here.",
+    "weapons": [
+      [
+        "Dark lance",
+        "36″",
+        "1",
+        "3+",
+        "12",
+        "−3",
+        "D6+2",
+        "—"
+      ],
+      [
+        "Bladevanes and chainsnares",
+        "Melee",
+        "D3+3",
+        "4+",
+        "6",
+        "−1",
+        "1",
+        "—"
+      ]
+    ]
+  },
+  {
+    "slug": "Venom",
+    "name": "Venom",
+    "stats": "14|6|4+|6|7+|1|6+",
+    "loadout": "Three at 65pts; two splinter cannons each; capacity 6 Drukhari Infantry excluding Jump Pack.",
+    "abilities": [
+      "Core: Deep Strike, Stealth, Firing Deck 6, Deadly Demise 1. Rapid Deployment (Pain): empower when advancing to let passengers use shock disembark after that advance.",
+      "Aerialists: at the Fight phase’s end, an empty Venom can pick up an unengaged, non-Flying Drukhari Infantry unit of at most six models wholly within 6″, including a unit that disembarked that turn.",
+      "Before battle formations, each Venom may split one previously unsplit Kabalite/Hand/Wych squad equally; one half must start inside it."
+    ],
+    "impact": "Confirm every five-model split, which half gets the character and where the special weapons went. A full ten plus leader cannot ride in one Venom. The pickup means exposed infantry may disappear after the fight.",
+    "weapons": [
+      [
+        "Splinter cannon ×2",
+        "36″",
+        "3 each",
+        "3+",
+        "3",
+        "−1",
+        "2",
+        "Anti-Infantry 3+, Sustained Hits 1"
+      ],
+      [
+        "Bladevanes",
+        "Melee",
+        "3",
+        "4+",
+        "5",
+        "−1",
+        "1",
+        "—"
+      ]
+    ]
+  },
+  {
+    "slug": "Cronos",
+    "name": "Cronos",
+    "stats": "7|7|3+|7|7+|2|6+",
+    "loadout": "One/55pts; no spirit vortex in the supplied list.",
+    "abilities": [
+      "Core: Feel No Pain 5+, Deadly Demise 1. Pain Parasite (Pain): empower for shooting/fighting; killing models can heal up to three wounds after attacks. Its multi-model resurrection clause cannot restore a destroyed single-model starting unit.",
+      "Pain Engine: empowerment tokens spent for friendly units within 9″ can be refunded on 5+, with +1 to the roll when a Cronos lacks a vortex. This listed model therefore refunds on a natural 4+. Other token expenditures do not qualify."
+    ],
+    "impact": "The support engine sustains repeated empowerments. Remove it when doing so does not cost your answer to an immediate assault.",
+    "weapons": [
+      [
+        "Spirit syphon",
+        "12″",
+        "D6",
+        "—",
+        "5",
+        "−1",
+        "1",
+        "Torrent, Ignores Cover"
+      ],
+      [
+        "Spirit-leech tentacles",
+        "Melee",
+        "6",
+        "3+",
+        "5",
+        "−1",
+        "1",
+        "Anti-Infantry 2+"
+      ]
+    ]
+  },
+  {
+    "slug": "Mandrakes",
+    "name": "Mandrakes",
+    "stats": "8|3|7+|1|7+|1|5+",
+    "loadout": "5/80pts.",
+    "abilities": [
+      "Core: Deep Strike, Infiltrators, Stealth. Fade Away (Pain): spend a token at the end of your opponent’s Fight phase to remove the unengaged unit into Strategic Reserves.",
+      "Shade Weavers: ranged attackers must be within 18″ to target them."
+    ],
+    "impact": "They screen, score and redeploy. Do not assume Magnus can clear them with a 24″ shot from outside their 18″ targeting restriction. Occupy landing pockets around the mission terrain.",
+    "weapons": [
+      [
+        "Baleblast",
+        "18″",
+        "2",
+        "3+",
+        "5",
+        "−1",
+        "1",
+        "Assault, Devastating Wounds, Ignores Cover"
+      ],
+      [
+        "Glimmersteel blade",
+        "Melee",
+        "3",
+        "3+",
+        "5",
+        "−1",
+        "1",
+        "Devastating Wounds"
+      ]
+    ]
+  },
+  {
+    "slug": "Ravager",
+    "name": "Ravager",
+    "stats": "14|9|4+|11|7+|3|6+",
+    "loadout": "125pts including three dark lances.",
+    "abilities": [
+      "Core: Deep Strike, Deadly Demise D3. Agonising Suppression (Pain): empower to shoot; after shooting select a hit enemy unit to suffer −1 to hit until Seb’s next turn.",
+      "Eradicate the Foe: reroll hits against a target still at starting strength. At 1–4 remaining wounds, this Ravager suffers −1 to hit."
+    ],
+    "impact": "Three S12 shots and natural hit rerolls threaten Magnus. Removing this gun platform is often more useful than scattering damage across several boats.",
+    "weapons": [
+      [
+        "Dark lance ×3",
+        "36″",
+        "1 each",
+        "3+",
+        "12",
+        "−3",
+        "D6+2",
+        "—"
+      ],
+      [
+        "Bladevanes",
+        "Melee",
+        "3",
+        "4+",
+        "6",
+        "−1",
+        "1",
+        "—"
+      ]
+    ]
+  },
+  {
+    "slug": "Reavers",
+    "name": "Reavers",
+    "stats": "16|4|4+|2|7+|2|6+",
+    "loadout": "Two units of 3/75pts; one heat lance and one cluster caltrops each.",
+    "abilities": [
+      "Matchless Swiftness (Pain): empower when advancing for a fixed +8″ instead of rolling, giving a 24″ advance move.",
+      "Eviscerating Fly-by: after a normal/advance move over a non-Monster/Vehicle enemy, roll per bike; each 4+ inflicts one mortal wound. The listed caltrops reroll one of those dice."
+    ],
+    "impact": "These are fast objective thieves and Wych Cult stratagem users. Advance-and-action can help them steal space; no automatic advance-and-charge follows from being Wych Cult. Fly-by cannot target Magnus.",
+    "weapons": [
+      [
+        "Heat lance",
+        "18″",
+        "1",
+        "3+",
+        "14",
+        "−4",
+        "D6",
+        "Assault, Melta 3"
+      ],
+      [
+        "Splinter rifle ×2",
+        "24″",
+        "2 each",
+        "3+",
+        "2",
+        "0",
+        "1",
+        "Anti-Infantry 3+, Assault"
+      ],
+      [
+        "Splinter pistol ×3",
+        "12″",
+        "1 each",
+        "3+",
+        "2",
+        "0",
+        "1",
+        "Anti-Infantry 3+, Assault, Pistol"
+      ],
+      [
+        "Bladevanes",
+        "Melee",
+        "4",
+        "3+",
+        "4",
+        "−1",
+        "1",
+        "Lance"
+      ]
+    ]
+  },
+  {
+    "slug": "Scourges-with-Heavy-Weapons",
+    "name": "Scourges with Heavy Weapons",
+    "stats": "14|3|4+|1|7+|1|5+",
+    "loadout": "Two units of 5: 130pts with four dark lances; 110pts with four heat lances. Each Solarite has blast pistol, power weapon and close combat weapon.",
+    "abilities": [
+      "Core: Deep Strike. Winged Strike (Pain): empower on shooting selection for hit rerolls that phase.",
+      "Airborne Evasion: after shooting, if unengaged, make a normal move up to 6″; doing so prevents charging that turn."
+    ],
+    "impact": "Plan around shoot-then-hide rather than expecting a return shot. Four heat lances become D6+3 within 9″. Heavy rewards remaining stationary; Assault belongs to the heat lances, not the dark lances.",
+    "weapons": [
+      [
+        "Dark lance ×4 (unit 1)",
+        "36″",
+        "1 each",
+        "4+",
+        "12",
+        "−3",
+        "D6+2",
+        "Heavy"
+      ],
+      [
+        "Heat lance ×4 (unit 2)",
+        "18″",
+        "1 each",
+        "4+",
+        "14",
+        "−4",
+        "D6",
+        "Assault, Heavy, Melta 3"
+      ],
+      [
+        "Blast pistol",
+        "6″",
+        "1",
+        "3+",
+        "8",
+        "−3",
+        "D3",
+        "Pistol"
+      ],
+      [
+        "Power weapon",
+        "Melee",
+        "3",
+        "3+",
+        "3",
+        "−2",
+        "1",
+        "Anti-Infantry 3+"
+      ],
+      [
+        "Close combat weapon",
+        "Melee",
+        "2",
+        "3+",
+        "3",
+        "0",
+        "1",
+        "—"
+      ]
+    ]
+  }
+]
