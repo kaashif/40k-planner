@@ -2,6 +2,7 @@ import Link from 'next/link';
 import VodReview from './vod/VodReview';
 import './vod/vod.css';
 const tools=[
+ ['/armies/daemonic-incursion/','Daemonic Incursion: lists and winning games','Exact recent tournament rosters, confirmed winning VODs, Monster Mash comparisons and rules reminders.'],
  ['/matchups/drukhari/','Thousand Sons vs Seb’s Drukhari','PA vs Recon objectives, every unit and weapon, transport threats, detachments and tactics.'],
  ['/matchups/adeptus-mechanicus/','Thousand Sons vs Kastelans','Longways deployment diagrams, screens, AdMech rules, reserve denial and Robot threat ranges.'],
  ['/planner/','Deployment planner','Your Thousand Sons roster, measured bases, enemy models, named saves and threat rings.'],

@@ -1,0 +1,45 @@
+.daemons-page { max-width: 1160px; margin: auto; padding: 28px 24px 60px; line-height: 1.65; }
+.daemons-page h1, .daemons-page h2, .daemons-page h3, .daemons-page h4 { line-height: 1.2; color: var(--ink); }
+.daemons-page h1 { font-size: clamp(32px, 6vw, 52px); margin: 8px 0; letter-spacing: -.035em; }
+.daemons-page h2 { font-size: 25px; margin: 0; }
+.daemons-page h3 { font-size: 20px; margin: 0; }
+.daemons-page h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; margin: 20px 0 5px; color: #b4bdca; }
+.daemons-page p { margin: 8px 0 14px; }
+.daemons-header { max-width: 810px; }
+.daemons-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); margin-top: 28px !important; }
+.daemons-intro { font-size: 20px; color: #c9d0db; }
+.daemons-nav { display: flex; flex-wrap: wrap; gap: 10px 24px; padding: 16px 0; border-block: 1px solid var(--line); margin: 26px 0 32px; }
+.daemons-nav a { font-size: 13px; }
+.daemons-page section, .daemons-page footer { margin-top: 42px; scroll-margin-top: 20px; }
+.daemons-section-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 18px; margin-bottom: 12px; }
+.daemons-section-heading > span, .daemons-meta { color: #adb6c5; font-size: 12px; }
+.daemons-table-wrap { overflow-x: auto; border: 1px solid var(--line); margin: 20px 0; }
+.daemons-page table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 13px; }
+.daemons-page caption { text-align: left; padding: 10px 14px; background: var(--panel); color: #b4bdca; font-size: 12px; }
+.daemons-page th, .daemons-page td { padding: 12px 14px; text-align: left; vertical-align: top; border-top: 1px solid var(--line); }
+.daemons-page thead { background: var(--panel-raised); }
+.daemons-page tbody th { width: 42%; font-weight: 400; }
+.daemons-page table small { display: block; color: #adb6c5; font-size: 11px; margin-top: 4px; }
+.daemons-list-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.daemons-card { min-width: 0; background: var(--panel); border: 1px solid var(--line); padding: 22px; scroll-margin-top: 20px; }
+.daemons-card-title { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.daemons-record { flex-shrink: 0; border: 1px solid #776338; background: #292416; color: #f0cf82; padding: 3px 9px; font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.daemons-card > .daemons-eyebrow { margin-top: 0 !important; }
+.daemons-comparison { padding-top: 14px; border-top: 1px solid var(--line); color: #c1cad7; }
+.daemons-links { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; margin: 14px 0; }
+.daemons-page details { border-top: 1px solid var(--line); margin-top: 16px; }
+.daemons-page summary { cursor: pointer; padding: 14px 0; font-weight: 600; }
+.daemons-page summary:hover { color: #e2bd61; }
+.daemons-page a:focus-visible, .daemons-page summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.daemons-page pre { font-family: ui-monospace, monospace; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; line-height: 1.7; background: #10141b; padding: 16px; max-height: 650px; overflow-y: auto; }
+.daemons-note { border-left: 3px solid var(--accent); padding: 15px 20px; margin-top: 22px; background: #1d1d1b; }
+.daemons-note p { margin-bottom: 0; }
+.daemons-watch { display: inline-block; padding: 9px 14px; margin: 4px 0; background: #2c271a; border: 1px solid #776338; text-decoration: none; }
+.daemons-watch:hover { background: #3d3420; }
+.daemons-rules { padding: 0 20px 8px; border: 1px solid var(--line); background: var(--panel); }
+.daemons-rules details { margin-top: 0; }
+.daemons-rules details:first-child { border-top: 0; }
+.daemons-rules details > div { padding-bottom: 18px; max-width: 850px; }
+.daemons-page footer { padding-top: 25px; border-top: 1px solid var(--line); }
+@media (max-width: 700px) { .daemons-page { padding: 20px 16px 40px; } .daemons-list-grid { grid-template-columns: 1fr; } .daemons-card { padding: 18px; } .daemons-section-heading > span { display: block; } .daemons-card-title h3 { font-size: 19px; } }
+@media print { .daemons-page { color: #111; max-width: none; } .daemons-card, .daemons-rules, .daemons-note { background: white; break-inside: avoid; } .daemons-page h1, .daemons-page h2, .daemons-page h3, .daemons-page h4 { color: #111; } .daemons-nav { display: none; } }

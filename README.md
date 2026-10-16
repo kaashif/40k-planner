@@ -43,6 +43,12 @@ npm run plan:example
 
 Open a deployment planner or the `/plans/` library. Its compact top bar adds complete units without asking for base sizes and exposes movement, Movement-locked dragging with live measurement, coherency, sight-line/deployment-zone audit, opponent deployment-zone infiltrate exclusion, screening, visibility, deep strike, and markup overlays. A suggested deployment loads automatically on a bundled layout; “Hide suggestion” removes its bases and labels from view without deleting it, and “Show suggestion” restores it. The planner warns when army models are neither placed nor accounted for in deep strike. Drag a box, click a unit label, or Ctrl/Cmd-click models to multi-select; dragging any selected model moves the group. Every edit and view setting is saved to local browser storage with a rolling backup. Edit the plan files listed by `plans/take-take-mirror.json` and rebuild to iterate. Coordinates are model centres in inches from the board's top-left corner on the 44×60in portrait map.
 
+## Daemonic Incursion study
+
+`/armies/daemonic-incursion/` collects the 16 October 2026 research: four August–October Listhammer Daemonic Incursion results with direct roster links and full saved exports; two September winning VODs and two older-rules Leeds wins; comparisons with Kaashif's Monster Mash; and sourced rules reminders. The dated snapshot is `public/daemonic-incursion/research-2026-10-16.json`, selected from Listhammer's public `api/recentLists` endpoint (Chaos Daemons, pages 0 and 1). It is a selected sample, not a win-rate estimate or live feed. VOD outcomes are indexed results, not a claim of footage review. Historical points remain in the verbatim roster exports.
+
+The original roster and printable sheet are copied from `ref-sheet` into `public/daemonic-incursion/`; refresh these copies deliberately if the source changes. The route is linked from the homepage and respects `NEXT_PUBLIC_BASE_PATH`. Validate with `NEXT_PUBLIC_BASE_PATH=/40k-planner npm run build` and check the exported page at desktop and mobile widths.
+
 ## Development
 
 ```sh
